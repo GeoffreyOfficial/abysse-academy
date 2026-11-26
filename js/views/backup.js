@@ -93,7 +93,7 @@
       /* Copies de secours */
       st.snapshots().then(list => {
         const box = u.$("#snaps"); if (!box) return;
-        box.innerHTML = list.length ? list.map(s => `<div class="dq"><span class="ck">${AA.icon("calendar")}</span><span><b class="small">${s.date}</b><span class="xs muted"> · ${s.xp} XP</span></span><button class="btn ghost sm" data-snap="${s.key}">${t("bk.restore")}</button></div>`).join("") : `<p class="xs muted">${t("bk.noSnap")}</p>`;
+        box.innerHTML = list.length ? list.map(s => `<div class="dq"><span class="ck">${AA.icon("calendar")}</span><span><b class="small">${s.reset ? t("rs.snapLabel") + " · " : ""}${s.date}</b><span class="xs muted"> · ${s.xp} XP</span></span><button class="btn ghost sm" data-snap="${s.key}">${t("bk.restore")}</button></div>`).join("") : `<p class="xs muted">${t("bk.noSnap")}</p>`;
         u.on(box, "click", "[data-snap]", (e, b) => ui.confirm(t("bk.restoreQ"), t("bk.restore"), async () => { if (await st.restoreSnapshot(b.dataset.snap)) { msg(t("set.restored", { xp: AA.S.xp })); AA.ui.applyTheme(); AA.router.refresh(); } }));
       }).catch(() => {});
     }

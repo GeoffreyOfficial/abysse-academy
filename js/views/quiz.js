@@ -19,6 +19,33 @@
     }, opts || {});
     AA.router.go("quiz", ctx);
   };
+  /* ----- Correction détaillée : méthode pas à pas, piège classique, cours ----- */
+  const reOk = (re, s) => { try { return new RegExp(re, "i").test(s); } catch (e) { return false; } };
+  Q.methodFor = q => {
+    const L = C.methods || [], txt = q.q + " " + (q.e || "");
+    if (q.gen) { const g = L.find(x => (x.gen || []).includes(q.gen)); if (g) return g; }
+    if (!/\d/.test(txt)) return null; /* questions de calcul en priorité */
+    return L.find(x => x.re && (!x.m || x.m.includes(q.m)) && reOk(x.re, txt)) || null;
+  };
+  Q.pitfallFor = q => (C.pitfalls || []).find(p => (q.gen && (p.gen || []).includes(q.gen)) || (!q.gen && p.re && (!p.m || p.m.includes(q.m)) && reOk(p.re, q.q))) || null;
+  Q.explain = (q, okNow) => {
+    if (!q || !q.m) return "";
+    const me = Q.methodFor(q), pf = okNow ? null : Q.pitfallFor(q), mod = C.byId[q.m];
+    return `${me ? `<details class="method" ${okNow ? "" : "open"}><summary>${AA.icon("brain")} ${t("ex.steps")} · ${u.esc(me.title)}</summary><ol>${me.steps.map(s => `<li>${s}</li>`).join("")}</ol>${me.tip ? `<p class="method-tip">${AA.icon("bolt")} ${me.tip}</p>` : ""}</details>` : ""}
+      ${pf ? `<div class="pit"><b>${AA.icon("info")} ${t("ex.trap")} : ${u.esc(pf.title)}</b><p>${u.esc(pf.why)}</p><p><b>${t("ex.fix")}</b> ${u.esc(pf.fix)}</p></div>` : ""}
+      ${mod ? `<button class="btn ghost sm rev-btn" id="revcours">${AA.icon("book")} ${t("ex.review", { title: u.esc(mod.title) })}</button>` : ""}`;
+  };
+  /* Revoir le cours sans quitter la série : l'essentiel et « À retenir » dans un panneau. */
+  Q.review = mid => {
+    const m = C.byId[mid]; if (!m) return; fx.sfx.flip();
+    AA.ui.sheet(`<div class="rev-sheet"><p class="eyebrow">${t("ex.course")}</p><h3>${u.esc(m.title)}</h3>
+      ${m.memo && m.memo.length ? `<p class="eyebrow">${t("ex.memo")}</p><div class="memo">${m.memo.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="muted">${u.esc(b)}</span></div>`).join("")}</div>` : ""}
+      <p class="eyebrow">${t("ex.essential")}</p>${m.diagram && C.diagrams[m.diagram] ? C.diagrams[m.diagram]() : ""}<div class="prose">${m.essentiel}</div>
+      <button class="btn block" data-no>${AA.icon("back")} ${t("ex.backQuiz")}</button>
+      <a class="btn ghost block" href="#/lesson/${m.id}">${t("ex.fullLesson")}</a><p class="xs muted center" style="margin:0">${t("ex.fullLessonS")}</p></div>`, m.title);
+    const pr = document.querySelector(".rev-sheet .prose"); if (pr && AA.gloss) try { AA.gloss.link(pr); } catch (e) {}
+  };
+
   /* ----- Lanceurs ----- */
   Q.module = (m, deepOnly) => {
     const pool = deepOnly ? m.quiz.filter(q => q.lvl === 2) : m.quiz;
@@ -204,10 +231,12 @@
           ${AA.S.profile.gestures !== false && (AA.S.gestHint || 0) < 4 ? `<p class="xs muted gesture-hint">${AA.icon("hand")} ${t("gest.quizHint")}</p>` : ""}` : ""}
         ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : t("quiz.bad")}</h4>
           ${okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
-          ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}</div>
+          ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}
+          ${Q.explain(q, okNow)}</div>
           <div class="qactions"><button class="btn block" id="nextq">${isEnd(c) ? t("quiz.seeResult") : t("quiz.next")} ${AA.icon("next")}</button></div>` : ""}
       </div>`;
     u.$("#qclose").onclick = () => AA.ui.confirm(t("quiz.quitQ"), t("quiz.quitYes"), () => { clearInterval(c.timer); AA.router.go(c.back || "home"); }, c.answers.length === 0);
+    const rv = u.$("#revcours"); if (rv) rv.onclick = () => Q.review(q.m);
     u.$$(".choice", el).forEach(b => {
       b.onclick = () => answer(c, +b.dataset.ci, b);
       if (answered) return;

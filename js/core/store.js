@@ -15,7 +15,7 @@
   const FRESH = () => ({
     schema: SCHEMA, savedAt: 0, createdAt: u.today(),
     profile: { name: "", goal: "n2", dailyGoal: 20, theme: "abysse", lang: "fr", sound: true, haptics: true, onboarded: false, examDate: "", imported: false,
-      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "", avatar: null },
+      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "", avatar: null, driveNag: "", driveNagN: 0 },
     xp: 0, days: [], themes: {}, stats: {}, seen: {}, last: {}, errors: {}, doubt: {}, exams: [],
     cards: {}, table: [], daily: {}, scen: {}, simOk: 0, flashCount: 0, duels: 0, apnee: 0, bestCombo: 0, rescued: 0,
     badges: {}, claimed: {}, real: {}, dayc: {}, keepDone: false, keepDay: "", qod: "",
@@ -23,7 +23,9 @@
     /* v3 (Abysse Academy 1.1) */
     wrong: {}, aqua: {}, boss: {}, story: {}, five: 0, glossSeen: {}, searches: [],
     /* 1.1.1 */
-    qodAns: null, pcBest: 0, pcRuns: 0
+    qodAns: null, pcBest: 0, pcRuns: 0,
+    /* 1.2 */
+    aquaCfg: {}, fedOn: "", evoSeen: null
   });
 
   /* Migrations : de la version N vers N+1. Ajoute la suivante ici. */
@@ -104,15 +106,15 @@
   };
 
   /* Copies de secours automatiques : une par jour, les 5 dernières, dans IndexedDB. */
-  store.snapshot = async () => {
+  store.snapshot = async name => {
     if (!AA.S.xp) return;
-    const key = "snap-" + u.today(), list = (await DB.get("snaps")) || [];
+    const key = "snap-" + (name ? name + "-" : "") + u.today(), list = (await DB.get("snaps")) || [];
     DB.put(key, u.clone(AA.S));
     if (!list.includes(key)) { list.push(key); list.sort(); while (list.length > 5) DB.del(list.shift()); DB.put("snaps", list); }
   };
   store.snapshots = async () => {
     await DB.open(); const list = (await DB.get("snaps")) || [], out = [];
-    for (const k of list.slice().reverse()) { const v = await DB.get(k); if (valid(v)) out.push({ key: k, date: k.slice(5), xp: v.xp, savedAt: v.savedAt }); }
+    for (const k of list.slice().reverse()) { const v = await DB.get(k); if (valid(v)) out.push({ key: k, date: k.slice(5).replace(/^reset-/, ""), reset: /^snap-reset-/.test(k), xp: v.xp, savedAt: v.savedAt }); }
     return out;
   };
   store.restoreSnapshot = async key => { const v = await DB.get(key); if (!valid(v)) return false; AA.S = migrate(v); AA.S.profile.onboarded = true; store.save(true); return true; };
@@ -128,10 +130,14 @@
   };
   store.onSave = f => store.listeners.push(f);
 
-  store.reset = () => {
+  /* Réinitialisation complète : une copie de secours « avant réinitialisation »
+     est gardée dans IndexedDB (récupérable dans Sauvegarde), puis on repart
+     de zéro, accueil compris. Seuls le thème et la langue sont gardés. */
+  store.reset = async () => {
     const keep = AA.S.profile;
+    try { await store.snapshot("reset"); } catch (e) {}
     AA.S = FRESH();
-    AA.S.profile = Object.assign(FRESH().profile, { theme: keep.theme, lang: keep.lang, sound: keep.sound, haptics: keep.haptics, name: keep.name, onboarded: true });
+    AA.S.profile = Object.assign(FRESH().profile, { theme: keep.theme, lang: keep.lang, textSize: keep.textSize, cvd: keep.cvd });
     store.save(true);
   };
   store.exportText = () => JSON.stringify(Object.assign({ app: "abysse-academy", version: AA.VERSION }, AA.S));

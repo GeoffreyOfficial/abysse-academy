@@ -334,3 +334,42 @@ AA.i18n.add("fr", {
   "sim.paused": "En pause", "sim.pausedS": "Le temps est figé. Réfléchis, puis choisis une action ou reprends.", "sim.thinkS": "Que fais-tu ? Choisis une action, le temps reprendra.", "sim.backS": "Tu reprends là où tu t’étais arrêté.",
   "sim.settings": "Réglages", "sim.autoPause": "Pause automatique à chaque nouvelle alarme", "sim.start": "Appuie sur ▼ Descendre pour commencer"
 });
+
+/* 1.2 : réinitialisation, Google Drive conseillé, compagnons, aquarium */
+AA.i18n.add("fr", {
+  "set.reset": "Réinitialiser mon profil",
+  "rs.title": "Réinitialiser mon profil", "rs.zoneS": "Efface toute ta progression pour repartir de zéro. Plusieurs confirmations te seront demandées.",
+  "rs.t1": "Attention : tout va être effacé", "rs.s1": "Ton niveau, ton XP, tes thèmes, tes trophées, ton aquarium, ton avatar et tes révisions. Voici ce que tu perdrais :",
+  "rs.l.xp": "Niveau", "rs.l.themes": "Thèmes commencés", "rs.l.trophies": "Trophées", "rs.l.aqua": "Espèces de l’aquarium", "rs.l.cards": "Flashcards en révision", "rs.l.exams": "Examens blancs",
+  "rs.download": "Télécharger ma sauvegarde d’abord", "rs.keep": "Non, je garde ma progression", "rs.continue": "Continuer la réinitialisation", "rs.dlT": "Sauvegarde",
+  "rs.t2": "Es-tu vraiment sûr ?", "rs.s2": "C’est définitif pour cet appareil. Si tu veux juste changer de prénom, d’avatar ou d’objectif, fais-le dans les réglages : pas besoin de tout effacer.",
+  "rs.drive": "Ta copie Google Drive n’est pas effacée. L’appli sera déconnectée du Drive, sinon la synchro remettrait ton ancienne progression.",
+  "rs.understand": "J’ai compris que toute ma progression sur cet appareil sera effacée.",
+  "rs.t3": "Dernière étape", "rs.s3": "Pour confirmer, écris {w} dans la case.", "rs.word": "EFFACER",
+  "rs.wait": "Patiente… {n}", "rs.final": "Effacer définitivement", "rs.doneT": "Profil réinitialisé", "rs.doneS": "Une copie « avant réinitialisation » reste dans Sauvegarde, au cas où.",
+  "rs.snapLabel": "Avant réinitialisation",
+  "dr.onbT": "Protège ta progression", "dr.onbS": "Ta progression est enregistrée sur cet appareil. Si tu le perds, le changes ou vides le navigateur, elle disparaît. Avec Google Drive, elle est copiée dans ton propre Drive.",
+  "dr.p1": "Rien à faire ensuite : la copie se met à jour toute seule.", "dr.p2": "Ta progression te suit du téléphone à l’ordinateur.", "dr.p3": "L’appli ne voit que son propre fichier dans ton Drive, rien d’autre.",
+  "dr.link": "Lier mon Google Drive", "dr.later": "Plus tard", "dr.laterS": "Tu pourras le faire quand tu veux dans Sauvegarde.", "dr.save": "Protéger ma progression",
+  "dr.cardT": "Ta progression n’est pas encore protégée", "dr.cardS": "Tes {xp} XP ne sont que sur cet appareil. Lie ton Google Drive pour ne jamais les perdre (conseillé).",
+  "dr.cardArt": "Ici, ta progression ne reste que dans ce navigateur. Ouvre l’appli en ligne pour la lier à Google Drive, ou télécharge une sauvegarde.",
+  "dr.okT": "Google Drive lié", "dr.okS": "Ta progression est maintenant copiée dans ton Drive.", "dr.failT": "Drive non lié", "dr.failS": "Réessaie depuis Sauvegarde quand tu veux.",
+  "dr.snoozeT": "D’accord", "dr.snoozeS": "Je te le rappellerai dans {n} jours.",
+  "ava.compS": "{n} compagnons. Chacun évolue avec ton niveau, jusqu’à sa forme légendaire.",
+  "ava.evoT": "Évolution !", "ava.evoS": "{a} évolue en {b} !", "ava.evoLvl": "Niveau {l} atteint", "ava.evoOk": "Génial",
+  "aq2.tLook": "Ambiance", "aq2.tDecor": "Décors", "aq2.tFish": "Habitants", "aq2.tGrow": "Agrandir",
+  "aq2.bg": "Fond", "aq2.floor": "Sol", "aq2.light": "Lumière", "aq2.day": "Jour", "aq2.night": "Nuit", "aq2.nightHint": "À partir de l’aquarium « Océan » (niveau 9), la nuit s’allume de plancton lumineux.",
+  "aq2.decorS": "{n} décors sur {tot}. Touche « Décorer » pour les déplacer dans l’aquarium.", "aq2.placed": "Dans l’aquarium", "aq2.stored": "Rangé", "aq2.resetPos": "Remettre les décors en place",
+  "aq2.fishS": "{n} habitants visibles sur {max} places.", "aq2.rename": "Renommer", "aq2.nickPh": "Surnom",
+  "aq2.tierS": "{n} habitants visibles sur {max}", "aq2.tierPerks": ["4 habitants", "8 habitants, bulles et plancton bientôt", "12 habitants, plancton qui dérive", "18 habitants, poissons plus grands", "Tous tes habitants, plancton lumineux la nuit"],
+  "aq2.nextTier": "Prochain agrandissement : {name} au niveau {l}.", "aq2.maxTier": "Ton aquarium est au maximum : un vrai océan !",
+  "aq2.feed": "Nourrir", "aq2.fedT": "Miam !", "aq2.fedS": "Tes poissons se régalent. +5 XP (une fois par jour).",
+  "aq2.decorate": "Décorer", "aq2.done": "Terminé", "aq2.editHint": "Fais glisser un décor pour le déplacer. Touche-le pour changer sa taille ou son sens.",
+  "aq2.smaller": "Plus petit", "aq2.bigger": "Plus grand", "aq2.flip": "Retourner", "aq2.hide": "Ranger", "aq2.full": "Plein écran"
+});
+
+AA.i18n.add("fr", {
+  "ex.steps": "Comprendre pas à pas", "ex.trap": "Piège classique", "ex.fix": "Le réflexe :", "ex.review": "Revoir le cours : {title}",
+  "ex.course": "Cours", "ex.memo": "À retenir", "ex.essential": "L’essentiel", "ex.backQuiz": "Revenir à la question",
+  "ex.fullLesson": "Ouvrir le cours complet", "ex.fullLessonS": "Le cours complet quitte la série en cours."
+});

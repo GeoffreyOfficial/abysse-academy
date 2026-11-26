@@ -902,6 +902,116 @@ mark.hl{animation:hl 2.2s var(--ease)} @keyframes hl{0%,30%{background:var(--gol
 .pc-legend li{display:grid;grid-template-columns:4.2rem minmax(0,1fr);gap:10px;align-items:baseline}
 .pc-legend b{color:var(--primary)} .pc-legend span{font-size:var(--fs-sm)}
 
+/* ===== 1.2 ===== */
+/* Réinitialisation */
+.danger-zone{border-color:color-mix(in srgb,var(--bad) 45%,var(--line))} .danger-zone h3{display:flex;gap:8px;align-items:center;color:var(--bad)}
+.btn.danger{--b:var(--bad);--bi:#fff;background:var(--bad);color:#fff}
+.btn.ghost.danger{background:transparent;color:var(--bad);border:1px solid color-mix(in srgb,var(--bad) 60%,transparent)}
+.linkbtn.danger{color:var(--bad);justify-self:center}
+.btn.danger:disabled{opacity:.45;cursor:not-allowed}
+.rs-steps{display:flex;gap:6px;justify-content:center} .rs-steps i{width:28px;height:6px;border-radius:3px;background:var(--surface-3)} .rs-steps i.on{background:var(--bad)}
+.rs-warn{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;padding:14px;border-radius:var(--r-md);background:color-mix(in srgb,var(--bad) 14%,var(--surface));border:1px solid color-mix(in srgb,var(--bad) 40%,transparent)}
+.rs-warn>svg{width:1.6rem;height:1.6rem;color:var(--bad)} .rs-warn p{margin:4px 0 0;font-size:var(--fs-sm)}
+.rs-check{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:var(--r-md);background:var(--surface-2);cursor:pointer} .rs-check input{width:1.3rem;height:1.3rem;margin-top:2px;flex:0 0 auto}
+#rsword{font-size:1.3rem;letter-spacing:.2em;text-transform:uppercase}
+
+/* Conseil Google Drive */
+.drive-card{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-3);margin-top:var(--sp-4);border-color:color-mix(in srgb,var(--gold) 55%,var(--line));background:linear-gradient(135deg,color-mix(in srgb,var(--gold) 12%,var(--surface)),var(--surface))}
+.drive-ic{width:2.8rem;height:2.8rem;border-radius:50%;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold)} .drive-ic svg{width:1.4rem;height:1.4rem}
+.drive-hero{width:4rem;height:4rem;border-radius:50%;display:grid;place-items:center;background:var(--gold-soft);color:var(--gold);margin:0 auto var(--sp-3)} .drive-hero svg{width:2rem;height:2rem}
+
+/* Compagnons et évolution */
+.ava-comps{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.4rem,1fr));gap:8px}
+.ava-comp{display:grid;justify-items:center;gap:4px;padding:6px 4px;border-radius:var(--r-md);border:2px solid var(--line);background:var(--surface-2);color:var(--ink);cursor:pointer;font:inherit}
+.ava-comp .ava{width:3.8rem} .ava-comp span{font-size:.72rem;line-height:1.2;text-align:center}
+.ava-comp[aria-pressed="true"]{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.evo-scene{display:grid;gap:var(--sp-3);text-align:center}
+.evo-stage{position:relative;height:10rem;display:grid;place-items:center}
+.evo-stage>div{position:absolute;inset:0;display:grid;place-items:center}
+.evo-old{animation:evoOut 2.2s ease-in forwards} .evo-new{opacity:0;animation:evoIn 1s 2s ease-out forwards}
+.evo-flash{background:radial-gradient(circle,#fff 0,rgba(255,255,255,0) 60%);opacity:0;animation:evoFlash 1s 1.6s ease-out}
+@keyframes evoOut{0%,30%{filter:none}35%,45%,55%,65%,75%{filter:brightness(4)}40%,50%,60%,70%{filter:none}90%{filter:brightness(6);opacity:1}100%{opacity:0;filter:brightness(6)}}
+@keyframes evoIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+@keyframes evoFlash{30%{opacity:1}100%{opacity:0}}
+.reduce-motion .evo-old{animation:none;opacity:0} .reduce-motion .evo-new{animation:none;opacity:1} .reduce-motion .evo-flash{animation:none}
+
+/* Aquarium 1.2 */
+.aq-layout{display:grid;gap:var(--sp-4);grid-template-columns:minmax(0,1fr);margin-top:var(--sp-3)}
+@media (min-width:1100px){.aq-layout{grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);align-items:start}.aq-main{position:sticky;top:var(--sp-4)}}
+.aq-tierbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.aq-main .tank{margin-top:var(--sp-2)}
+.tank{touch-action:pan-y}
+.tank.tier-0{height:clamp(220px,48vw,360px)} .tank.tier-1{height:clamp(240px,52vw,420px)} .tank.tier-2{height:clamp(260px,56vw,480px)} .tank.tier-3,.tank.tier-4{height:clamp(280px,60vw,560px)}
+@media (min-width:1100px){.tank.tier-0,.tank.tier-1,.tank.tier-2,.tank.tier-3,.tank.tier-4{height:clamp(360px,36vw,640px)}}
+.tank:fullscreen{height:100vh!important;border-radius:0}
+.tank.bg-med{background:linear-gradient(180deg,#0C5A78 0%,#0A3F5C 55%,#082C44 100%)!important}
+.tank.bg-lagon{background:linear-gradient(180deg,#6FE0EC 0%,#22A9C2 55%,#13809C 100%)!important}
+.tank.bg-sunset{background:linear-gradient(180deg,#F2A65A 0%,#C4577A 22%,#3B3F7A 55%,#152A4A 100%)!important}
+.tank.bg-grotte{background:radial-gradient(ellipse at 50% 10%,#2E6A86 0,#0F2A3A 45%,#06121A 100%)!important}
+.tank.bg-grotte::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 30%,transparent 60%,#101A20 61%);pointer-events:none;z-index:0}
+.tank.bg-recif{background:linear-gradient(180deg,#7FF0E0 0%,#1FB5C9 40%,#0B7FA6 100%)!important}
+.tank.bg-abysse{background:radial-gradient(ellipse at 50% -10%,#1D3F6A 0,#0A1630 40%,#03060F 100%)!important}
+.aq-floor{position:absolute;left:0;right:0;bottom:0;height:16%;z-index:1;pointer-events:none;border-radius:50% 50% 0 0/22% 22% 0 0}
+.floor-sand .aq-floor{background:linear-gradient(180deg,#E6CE97,#C9AE74)}
+.floor-pebble .aq-floor{background:radial-gradient(circle at 20% 40%,#9AA6AE 0 6px,transparent 7px),radial-gradient(circle at 60% 60%,#7E8A92 0 8px,transparent 9px),radial-gradient(circle at 85% 30%,#B8C2C8 0 5px,transparent 6px),linear-gradient(180deg,#8C989F,#6A757C);background-size:60px 40px,80px 50px,50px 36px,auto}
+.floor-black .aq-floor{background:linear-gradient(180deg,#3A3A42,#1C1C22)}
+.aq-dec{position:absolute;transform:translateX(-50%);aspect-ratio:1;pointer-events:none;margin-bottom:6%}
+.aq-dec svg{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 3px 4px rgba(0,0,0,.25))}
+.aq-dec.edit{pointer-events:auto;cursor:grab;touch-action:none;outline:2px dashed rgba(255,255,255,.35);outline-offset:2px;border-radius:8px}
+.aq-dec.edit:focus-visible,.aq-dec.sel{outline:3px solid var(--gold)}
+.aq-dec.edit:active{cursor:grabbing}
+.aq-sway{transform-box:fill-box;transform-origin:bottom;animation:sway 4s ease-in-out infinite alternate}
+.aq-glow{animation:aqGlow 2.4s ease-in-out infinite alternate} @keyframes aqGlow{to{opacity:.55}}
+.aq-col{position:absolute;left:50%;bottom:20%;width:16px;height:420%;transform:translateX(-50%);pointer-events:none}
+.aq-col i{position:absolute;bottom:0;left:50%;width:8px;height:8px;border-radius:50%;border:1.5px solid rgba(255,255,255,.75);animation:aqRise 3.5s linear infinite}
+@keyframes aqRise{0%{transform:translate(-50%,0);opacity:0}10%{opacity:1}100%{transform:translate(calc(-50% + 6px),-1000%);opacity:0}}
+.aq-plankton i,.aq-biolum i{position:absolute;width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.55);animation:aqDrift 9s ease-in-out infinite alternate;pointer-events:none}
+@keyframes aqDrift{to{transform:translate(18px,-24px)}}
+.aq-biolum i{width:5px;height:5px;background:#7DF0FF;box-shadow:0 0 10px 3px #7DF0FF;animation:aqBlink 3s ease-in-out infinite alternate,aqDrift 9s ease-in-out infinite alternate}
+@keyframes aqBlink{0%{opacity:.15}100%{opacity:1}}
+.tank.night::after{content:"";position:absolute;inset:0;background:rgba(2,6,20,.55);pointer-events:none;z-index:3}
+.tank.night .aq-biolum{position:absolute;inset:0;z-index:4;pointer-events:none}
+.tank.night .aq-glow{filter:drop-shadow(0 0 8px #FFD36E)}
+.tank .aq-fish{width:calc(clamp(56px,12vw,104px) * var(--sz,1))} .tank .aq-bottom{width:calc(clamp(48px,9vw,80px) * var(--sz,1))}
+.tank.fed .aq-swim{animation-duration:6s!important} .tank.fed .aq-fish .creature{animation-duration:.6s}
+.aq-food{position:absolute;inset:0;pointer-events:none;z-index:5}
+.aq-food i{position:absolute;top:-4%;width:6px;height:6px;border-radius:2px;background:#E8B33A;animation:aqFood 3.6s ease-in forwards}
+@keyframes aqFood{to{transform:translate(10px,330px) rotate(200deg);opacity:0}}
+.aq-fs{position:absolute;top:10px;right:10px;z-index:6;background:rgba(0,0,0,.25);color:#fff;border-color:rgba(255,255,255,.25)}
+.aq-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:var(--sp-3)}
+.aq-edithint{margin-top:var(--sp-2);font-size:var(--fs-sm);color:var(--muted)}
+.aq-tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:var(--sp-2);padding:8px 10px;border-radius:var(--r-md);background:var(--surface-2)} .aq-tools[hidden]{display:none} .aq-tools b{margin-right:auto;font-size:var(--fs-sm)}
+.aq-tabs{width:100%} .aq-tabs button{display:inline-flex;gap:6px;align-items:center;justify-content:center} .aq-tabs svg{width:1rem;height:1rem}
+@media (max-width:420px){.aq-tabs button{padding:8px 6px;font-size:var(--fs-xs)} .aq-tabs svg{display:none}} @media (max-width:330px){.aq-tabs button span{display:none} .aq-tabs svg{display:inline}}
+.aq-swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(6.4rem,1fr));gap:8px}
+.aq-bgsw{display:grid;gap:4px;padding:6px;border-radius:var(--r-md);border:2px solid var(--line);background:var(--surface-2);color:var(--ink);font:inherit;cursor:pointer;text-align:left}
+.aq-bgsw i{display:block;height:2.6rem;border-radius:8px}
+.aq-bgsw.bg-med i{background:linear-gradient(180deg,#0C5A78,#082C44)} .aq-bgsw.bg-lagon i{background:linear-gradient(180deg,#6FE0EC,#13809C)} .aq-bgsw.bg-sunset i{background:linear-gradient(180deg,#F2A65A,#C4577A 30%,#152A4A)}
+.aq-bgsw.bg-grotte i{background:radial-gradient(ellipse at 50% 10%,#2E6A86,#06121A)} .aq-bgsw.bg-recif i{background:linear-gradient(180deg,#7FF0E0,#0B7FA6)} .aq-bgsw.bg-abysse i{background:radial-gradient(ellipse at 50% 0,#1D3F6A,#03060F)}
+.aq-bgsw b{font-size:var(--fs-xs)} .aq-bgsw span{font-size:.68rem;color:var(--muted);display:flex;gap:4px;align-items:center} .aq-bgsw span svg{width:.8rem;height:.8rem}
+.aq-bgsw[aria-pressed="true"]{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)} .aq-bgsw:disabled{opacity:.5;cursor:default}
+.aq-declist{display:grid;gap:6px;max-height:26rem;overflow:auto;padding-right:2px}
+.aq-decrow{display:flex;gap:10px;align-items:center;padding:6px 8px;border-radius:var(--r-md);background:var(--surface-2)} .aq-decrow.off{opacity:.6}
+.aq-decrow .grow{display:grid;min-width:0} .aq-decrow b{font-size:var(--fs-sm)} .aq-decrow .xs{display:flex;gap:4px;align-items:center} .aq-decrow .xs svg{width:.8rem;height:.8rem}
+.aq-decic{width:2.6rem;height:2.6rem;flex:0 0 auto;display:grid;place-items:center;border-radius:10px;background:linear-gradient(180deg,#0C5A78,#082C44);border:0;padding:3px}
+.aq-decic svg{width:100%;height:100%}
+.aq-tiers{display:grid;gap:6px}
+.aq-tiers>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:8px 10px;border-radius:var(--r-md);background:var(--surface-2);opacity:.6}
+.aq-tiers>div.on{opacity:1} .aq-tiers>div.here{outline:2px solid var(--primary)}
+.aq-tiers .xs{grid-column:1/-1;color:var(--muted)}
+/* Correction détaillée */
+.feedback .method{margin-top:var(--sp-3);border-radius:var(--r-md);background:rgba(255,255,255,.05);border:1px solid var(--line-soft);padding:10px 12px;text-align:left}
+.feedback .method summary{cursor:pointer;font-weight:700;display:flex;gap:8px;align-items:center;list-style:none} .feedback .method summary::-webkit-details-marker{display:none}
+.feedback .method summary::after{content:"▾";margin-left:auto;transition:transform .2s} .feedback .method[open] summary::after{transform:rotate(180deg)}
+.feedback .method summary svg,.pit svg,.method-tip svg,.rev-btn svg{width:1.05rem;height:1.05rem;flex:0 0 auto}
+.feedback .method ol{margin:10px 0 0;padding-left:1.3rem;display:grid;gap:8px;font-size:var(--fs-sm);line-height:1.5}
+.method-tip{display:flex;gap:8px;align-items:flex-start;margin:10px 0 0;padding:8px 10px;border-radius:10px;background:var(--gold-soft);color:var(--ink);font-size:var(--fs-sm);font-weight:600}
+.pit{margin-top:var(--sp-3);padding:10px 12px;border-radius:var(--r-md);background:color-mix(in srgb,var(--gold) 12%,transparent);border-left:3px solid var(--gold);text-align:left;font-size:var(--fs-sm)}
+.pit b:first-child{display:flex;gap:6px;align-items:center} .pit p{margin:6px 0 0}
+.rev-btn{margin-top:var(--sp-3)}
+.rev-sheet{display:grid;gap:var(--sp-3)} .rev-sheet h3{margin:0 2.5rem 0 0} .rev-sheet .eyebrow{margin:var(--sp-2) 0 0} .rev-sheet svg{max-width:100%;height:auto}
+.tank.editing .aq-fish{pointer-events:none;opacity:.55} .tank.editing .aq-fs{display:none}
+
 </style>
 </head>
 <body>
@@ -924,7 +1034,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "1.1.1";
+  AA.VERSION = "1.2.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -1031,7 +1141,7 @@ window.AA={BUNDLED:true};
   const FRESH = () => ({
     schema: SCHEMA, savedAt: 0, createdAt: u.today(),
     profile: { name: "", goal: "n2", dailyGoal: 20, theme: "abysse", lang: "fr", sound: true, haptics: true, onboarded: false, examDate: "", imported: false,
-      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "", avatar: null },
+      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "", avatar: null, driveNag: "", driveNagN: 0 },
     xp: 0, days: [], themes: {}, stats: {}, seen: {}, last: {}, errors: {}, doubt: {}, exams: [],
     cards: {}, table: [], daily: {}, scen: {}, simOk: 0, flashCount: 0, duels: 0, apnee: 0, bestCombo: 0, rescued: 0,
     badges: {}, claimed: {}, real: {}, dayc: {}, keepDone: false, keepDay: "", qod: "",
@@ -1039,7 +1149,9 @@ window.AA={BUNDLED:true};
     /* v3 (Abysse Academy 1.1) */
     wrong: {}, aqua: {}, boss: {}, story: {}, five: 0, glossSeen: {}, searches: [],
     /* 1.1.1 */
-    qodAns: null, pcBest: 0, pcRuns: 0
+    qodAns: null, pcBest: 0, pcRuns: 0,
+    /* 1.2 */
+    aquaCfg: {}, fedOn: "", evoSeen: null
   });
 
   /* Migrations : de la version N vers N+1. Ajoute la suivante ici. */
@@ -1120,15 +1232,15 @@ window.AA={BUNDLED:true};
   };
 
   /* Copies de secours automatiques : une par jour, les 5 dernières, dans IndexedDB. */
-  store.snapshot = async () => {
+  store.snapshot = async name => {
     if (!AA.S.xp) return;
-    const key = "snap-" + u.today(), list = (await DB.get("snaps")) || [];
+    const key = "snap-" + (name ? name + "-" : "") + u.today(), list = (await DB.get("snaps")) || [];
     DB.put(key, u.clone(AA.S));
     if (!list.includes(key)) { list.push(key); list.sort(); while (list.length > 5) DB.del(list.shift()); DB.put("snaps", list); }
   };
   store.snapshots = async () => {
     await DB.open(); const list = (await DB.get("snaps")) || [], out = [];
-    for (const k of list.slice().reverse()) { const v = await DB.get(k); if (valid(v)) out.push({ key: k, date: k.slice(5), xp: v.xp, savedAt: v.savedAt }); }
+    for (const k of list.slice().reverse()) { const v = await DB.get(k); if (valid(v)) out.push({ key: k, date: k.slice(5).replace(/^reset-/, ""), reset: /^snap-reset-/.test(k), xp: v.xp, savedAt: v.savedAt }); }
     return out;
   };
   store.restoreSnapshot = async key => { const v = await DB.get(key); if (!valid(v)) return false; AA.S = migrate(v); AA.S.profile.onboarded = true; store.save(true); return true; };
@@ -1144,10 +1256,14 @@ window.AA={BUNDLED:true};
   };
   store.onSave = f => store.listeners.push(f);
 
-  store.reset = () => {
+  /* Réinitialisation complète : une copie de secours « avant réinitialisation »
+     est gardée dans IndexedDB (récupérable dans Sauvegarde), puis on repart
+     de zéro, accueil compris. Seuls le thème et la langue sont gardés. */
+  store.reset = async () => {
     const keep = AA.S.profile;
+    try { await store.snapshot("reset"); } catch (e) {}
     AA.S = FRESH();
-    AA.S.profile = Object.assign(FRESH().profile, { theme: keep.theme, lang: keep.lang, sound: keep.sound, haptics: keep.haptics, name: keep.name, onboarded: true });
+    AA.S.profile = Object.assign(FRESH().profile, { theme: keep.theme, lang: keep.lang, textSize: keep.textSize, cvd: keep.cvd });
     store.save(true);
   };
   store.exportText = () => JSON.stringify(Object.assign({ app: "abysse-academy", version: AA.VERSION }, AA.S));
@@ -1375,6 +1491,7 @@ window.AA={BUNDLED:true};
     stop: S('<rect x="6" y="6" width="12" height="12" rx="2"/>', true),
     pause: S('<rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/>', true),
     edit: S('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>'),
+    expand: S('<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/>'),
     transfer: S('<path d="M7 7h13l-4-4M17 17H4l4 4"/>'),
     shell: S('<path d="M12 21c-5 0-9-3-9-8 0-4 4-9 9-9s9 5 9 9c0 5-4 8-9 8zM12 21V8M7 18l3-9M17 18l-3-9M4 14l5-4M20 14l-5-4"/>'),
     offline: S('<path d="M2 8.5a16 16 0 0120 0M5 12a11 11 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01M3 3l18 18"/>'),
@@ -1437,7 +1554,8 @@ window.AA={BUNDLED:true};
    avatar = { kind: "diver" | "creature" | "letter", skin, hair, hairC, suit, id }
    Évolutions (niveaux 1, 3, 5, 7, 9) : le plongeur s'équipe peu à peu,
    le cadre passe de l'eau claire au bronze, à l'argent, à l'or puis aux
-   abysses. Les créatures se choisissent parmi celles de l'aquarium.
+   abysses. Les compagnons (content/fr/companions.js) évoluent en 5 formes
+   avec chacune son nom, sa taille et ses couleurs, jusqu'à la forme légendaire.
    ===================================================================== */
 (function () {
   "use strict";
@@ -1482,11 +1600,41 @@ window.AA={BUNDLED:true};
     return `<circle cx="50" cy="50" r="45" fill="${A.SUITS[av.suit] || A.SUITS[0]}" opacity=".85"/><text x="50" y="64" text-anchor="middle" font-size="42" font-weight="800" fill="#fff" font-family="var(--font-display),sans-serif">${u.esc(n)}</text>`;
   }
 
+  /* ---------- Compagnons qui évoluent ---------- */
+  const hex = h => { const m = /^#?([0-9a-f]{6})$/i.exec(h || ""); return m ? [0, 2, 4].map(i => parseInt(m[1].substr(i, 2), 16)) : null; };
+  const mix = (a, b, k) => { const x = hex(a), y = hex(b); if (!x || !y) return a; return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * k).toString(16).padStart(2, "0")).join(""); };
+  A.comps = () => AA.content.companions || [];
+  /* Ancien choix (créature de l'aquarium) : on prend le compagnon de même forme. */
+  A.comp = id => { const L = A.comps(); let f = L.find(c => c.id === id); if (!f) { const cr = (AA.content.creatures || []).find(c => c.id === id); f = cr && L.find(c => c.shape === cr.shape); } return f || L[0]; };
+  A.colorsAt = (f, st) => st === 0 ? f.c.map(x => mix(x, "#FFFFFF", .45)) : st === 1 ? f.c.map(x => mix(x, "#FFFFFF", .18)) : st === 2 ? f.c : st === 3 ? f.c.map((x, i) => mix(x, f.L[i], .45)) : f.L;
+  A.formName = (av, l) => { const st = A.stage(l); if (av.kind === "creature") { const f = A.comp(av.id); return f ? f.n[st] : ""; } return AA.i18n.raw("ava.stages")[st]; };
   function creature(av, st) {
-    const c = (AA.content.creatures || []).find(x => x.id === av.id) || { shape: "fish", c: ["var(--primary)", "var(--accent)", "var(--gold)"] };
-    const s = .62 + st * .04, svg = AA.creature(c.shape, c.c).replace(/^<svg[^>]*>|<\/svg>$/g, "");
-    return `<g transform="translate(${50 - 60 * s} ${54 - 40 * s}) scale(${s})">${svg}</g><path d="M6 92q44-14 88 0v10H6z" fill="#E9D7A8" opacity=".55"/>`;
+    const f = A.comp(av.id); if (!f) return "";
+    const s = [.42, .52, .62, .7, .78][st], cols = A.colorsAt(f, st), svg = AA.creature(f.shape, cols).replace(/^<svg[^>]*>|<\/svg>$/g, "");
+    const top = 52 - 40 * s, gid = "cg" + (++uid);
+    let o = `<path d="M6 92q44-14 88 0v10H6z" fill="#E9D7A8" opacity=".5"/>`;
+    if (st >= 3) o += `<defs><radialGradient id="${gid}"><stop offset="0" stop-color="${f.L[1]}" stop-opacity=".55"/><stop offset="1" stop-color="${f.L[1]}" stop-opacity="0"/></radialGradient></defs><circle cx="50" cy="52" r="${30 + st * 3}" fill="url(#${gid})" class="ava-glow"/>`;
+    if (st === 0) o += `<circle cx="50" cy="52" r="24" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.55)" stroke-width="1.2"/><path d="M38 40a14 14 0 0 1 10-6" stroke="rgba(255,255,255,.8)" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    o += `<g transform="translate(${50 - 60 * s} ${52 - 40 * s}) scale(${s})">${svg}</g>`;
+    if (st >= 2) o += `<path d="M${50 - 6} ${top + 2}l3 -5 3 5 3 -5 3 5" fill="none" stroke="${st >= 3 ? "#F2C14E" : "rgba(255,255,255,.7)"}" stroke-width="1.6" stroke-linejoin="round" opacity="${st >= 4 ? 0 : .9}"/>`;
+    if (st >= 4) o += `<path d="M40 ${top - 1}l3-9 4 6 3-8 3 8 4-6 3 9z" fill="#F2C14E" stroke="#8E5A00" stroke-width=".8"/><circle cx="50" cy="${top - 9}" r="1.6" fill="#FFF3C4"/>`;
+    return o;
   }
+  /* Grande scène d'évolution (une fois par nouvelle forme), comme dans les jeux. */
+  A.checkEvolution = () => {
+    const S = AA.S, l = A.level(), st = A.stage(l);
+    if (S.evoSeen == null) { S.evoSeen = st; AA.store.save(true); return; }
+    if (st <= S.evoSeen) return;
+    const av = A.get(), from = A.STAGES[S.evoSeen], name0 = A.formName(av, from), name1 = A.formName(av, l);
+    S.evoSeen = st; AA.store.save(true);
+    setTimeout(() => {
+      AA.ui.sheet(`<div class="evo-scene"><p class="eyebrow">${AA.t("ava.evoT")}</p>
+        <div class="evo-stage"><div class="evo-old">${A.svg(av, from, "xl")}</div><div class="evo-new">${A.svg(av, l, "xl")}</div><div class="evo-flash"></div></div>
+        <h3>${AA.t("ava.evoS", { a: u.esc(name0), b: u.esc(name1) })}</h3><p class="small muted">${AA.t("ava.evoLvl", { l })}</p>
+        <button class="btn block" data-no>${AA.icon("check")} ${AA.t("ava.evoOk")}</button></div>`, AA.t("ava.evoT"));
+      AA.fx.sfx.up(); AA.fx.burst(innerWidth / 2, innerHeight / 2, 50, "rgba(242,193,78,.9)");
+    }, 400);
+  };
 
   function diver(av, st) {
     const skin = A.SKINS[av.skin] || A.SKINS[1], hc = A.HAIRC[av.hairC] || A.HAIRC[0], suit = A.SUITS[av.suit] || A.SUITS[0];
@@ -1531,7 +1679,6 @@ window.AA={BUNDLED:true};
   A.picker = onDone => {
     const t = AA.t, S = AA.S, lv = A.level();
     let cur = A.get();
-    const unlocked = AA.content.creatures.filter(c => S.aqua[c.id]);
     const sw = (key, arr) => `<div class="ava-sw" data-k="${key}">${arr.map((c, i) => `<button class="dot-sw" data-v="${i}" style="--c:${c}" aria-pressed="${cur[key] === i}" aria-label="${i + 1}"></button>`).join("")}</div>`;
     const body = () => `
       <div class="ava-pick">
@@ -1542,11 +1689,11 @@ window.AA={BUNDLED:true};
           <p class="eyebrow">${t("ava.hairC")}</p>${sw("hairC", A.HAIRC)}
           <p class="eyebrow">${t("ava.skin")}</p>${sw("skin", A.SKINS)}
           <p class="eyebrow">${t("ava.suit")}</p>${sw("suit", A.SUITS)}` : ""}
-        ${cur.kind === "creature" ? (unlocked.length ? `<p class="small muted" style="margin:0">${t("ava.creatureS", { n: unlocked.length, tot: AA.content.creatures.length })}</p>
-          <div class="ava-opts">${AA.content.creatures.map(c => S.aqua[c.id] ? `<button class="ava-opt" data-cid="${c.id}" aria-pressed="${cur.id === c.id}" aria-label="${u.esc(c.name)}">${A.svg({ kind: "creature", id: c.id }, 1)}</button>` : `<span class="ava-opt off" title="${u.esc(c.how)}">${AA.icon("lock")}</span>`).join("")}</div>` : `<p class="small muted">${t("ava.noCreature")}</p><a class="btn ghost sm" href="#/aquarium">${t("aqua.title")}</a>`) : ""}
+        ${cur.kind === "creature" ? `<p class="small muted" style="margin:0">${t("ava.compS", { n: A.comps().length })}</p>
+          <div class="ava-comps">${A.comps().map(c => `<button class="ava-comp" data-cid="${c.id}" aria-pressed="${A.comp(cur.id) === c}">${A.svg({ kind: "creature", id: c.id }, lv)}<span>${u.esc(c.n[A.stage(lv)])}</span></button>`).join("")}</div>` : ""}
         ${cur.kind === "letter" ? `<p class="eyebrow">${t("ava.suit")}</p>${sw("suit", A.SUITS)}` : ""}
         <p class="eyebrow">${t("ava.evo")}</p>
-        <div class="ava-evo">${A.STAGES.map((min, i) => `<div class="${lv >= min ? "" : "off"} ${A.stage(lv) === i ? "here" : ""}">${A.svg(cur, min)}<b>${t("ava.lvl", { l: min })}</b><span>${AA.i18n.raw("ava.stages")[i]}</span></div>`).join("")}</div>
+        <div class="ava-evo">${A.STAGES.map((min, i) => `<div class="${lv >= min ? "" : "off"} ${A.stage(lv) === i ? "here" : ""}">${A.svg(cur, min)}<b>${t("ava.lvl", { l: min })}</b><span>${u.esc(A.formName(cur, min))}</span></div>`).join("")}</div>
         <button class="btn block" id="avok">${AA.icon("check")} ${t("ava.save")}</button>
       </div>`;
     const close = AA.ui.sheet(`<h3 style="margin:0 2.5rem var(--sp-3) 0">${t("ava.title")}</h3><div id="avbody">${body()}</div>`, t("ava.title"));
@@ -1555,13 +1702,93 @@ window.AA={BUNDLED:true};
     root.addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b) return;
       if (b.id === "avok") { S.profile.avatar = cur; AA.store.save(true); AA.fx.sfx.ok(); close(); onDone && onDone(); return; }
-      if (b.dataset.kind) { cur.kind = b.dataset.kind; if (cur.kind === "creature" && !cur.id && unlocked[0]) cur.id = unlocked[0].id; }
+      if (b.dataset.kind) { cur.kind = b.dataset.kind; if (cur.kind === "creature" && !A.comps().some(c => c.id === cur.id)) cur.id = A.comp(cur.id).id; }
       else if (b.dataset.hair) cur.hair = +b.dataset.hair;
       else if (b.dataset.cid) cur.id = b.dataset.cid;
       else if (b.dataset.v) cur[b.parentNode.dataset.k] = +b.dataset.v;
       else return;
       AA.fx.sfx.tap(); redraw();
     });
+  };
+})();
+
+/* js/ui/reset.js */
+/* =====================================================================
+   Abysse Academy · réinitialiser son profil (en 3 étapes, exprès lentes)
+   1. Ce qui sera effacé, et l'offre de télécharger une sauvegarde.
+   2. Case « j'ai compris » + ce qui arrive au Google Drive.
+   3. Taper EFFACER, puis un bouton qui ne s'active qu'après 5 secondes.
+   Une copie « avant réinitialisation » reste dans Sauvegarde > Copies de secours.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, fx = { sfx: { ok: () => AA.fx.sfx.ok() }, buzz: p => AA.fx.buzz(p), toast: (...a) => AA.fx.toast(...a) };
+  const WORD = () => t("rs.word");
+
+  AA.resetFlow = () => {
+    const S = AA.S, G = AA.game, C = AA.content, lv = G.levelOf(S.xp);
+    const sum = [
+      [t("rs.l.xp"), `${S.xp} XP · ${t("prof.level", { l: lv.l, rank: u.esc(lv.rank) })}`],
+      [t("rs.l.themes"), Object.keys(S.themes).length],
+      [t("rs.l.trophies"), Object.keys(S.badges).length + " / " + C.badges.length],
+      [t("rs.l.aqua"), Object.keys(S.aqua).length + " / " + C.creatures.length],
+      [t("rs.l.cards"), Object.keys(S.cards).length],
+      [t("rs.l.exams"), S.exams.length]
+    ];
+    let step = 1, timer = null;
+    const linked = AA.sync && AA.sync.linked();
+    const body = () => {
+      const dots = `<div class="rs-steps" aria-hidden="true">${[1, 2, 3].map(i => `<i class="${i <= step ? "on" : ""}"></i>`).join("")}</div>`;
+      if (step === 1) return `${dots}<div class="rs-warn">${AA.icon("info")}<div><b>${t("rs.t1")}</b><p>${t("rs.s1")}</p></div></div>
+        <div class="tbl"><table>${sum.map(([k, v]) => `<tr><td>${k}</td><td class="mono">${v}</td></tr>`).join("")}</table></div>
+        <button class="btn block" id="rsdl">${AA.icon("save")} ${t("rs.download")}</button>
+        <button class="btn ghost block" data-no>${t("rs.keep")}</button>
+        <button class="linkbtn danger" id="rsnext">${t("rs.continue")}</button>`;
+      if (step === 2) return `${dots}<div class="rs-warn">${AA.icon("info")}<div><b>${t("rs.t2")}</b><p>${t("rs.s2")}</p></div></div>
+        ${linked ? `<p class="callout"><span class="eyebrow">Google Drive</span>${t("rs.drive")}</p>` : ""}
+        <label class="rs-check"><input type="checkbox" id="rsok"> <span>${t("rs.understand")}</span></label>
+        <button class="btn ghost block" data-no>${t("rs.keep")}</button>
+        <button class="btn block danger" id="rsnext" disabled>${t("rs.continue")}</button>`;
+      return `${dots}<div class="rs-warn">${AA.icon("info")}<div><b>${t("rs.t3")}</b><p>${t("rs.s3", { w: WORD() })}</p></div></div>
+        <input class="input center mono" id="rsword" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="${WORD()}" aria-label="${t("rs.s3", { w: WORD() })}">
+        <button class="btn ghost block" data-no>${t("rs.keep")}</button>
+        <button class="btn block danger" id="rsgo" disabled>${t("rs.final")}</button>`;
+    };
+    const close = AA.ui.sheet(`<h3 style="margin:0 2.5rem var(--sp-3) 0">${t("rs.title")}</h3><div id="rsbody" class="stack"></div>`, t("rs.title"));
+    const root = document.getElementById("rsbody");
+    const draw = () => {
+      clearInterval(timer);
+      root.innerHTML = body();
+      const nx = u.$("#rsnext", root);
+      if (step === 1) {
+        u.$("#rsdl", root).onclick = () => { AA.S.profile.backupAt = u.today(); AA.pwa.saveFile("abysse-academy-" + u.today() + ".json", AA.store.exportText(), m => fx.toast(t("rs.dlT"), m, "save")); };
+        nx.onclick = () => { step = 2; fx.buzz(30); draw(); };
+      } else if (step === 2) {
+        u.$("#rsok", root).onchange = e => { nx.disabled = !e.target.checked; };
+        nx.onclick = () => { step = 3; fx.buzz([30, 40, 30]); draw(); };
+      } else {
+        const inp = u.$("#rsword", root), go = u.$("#rsgo", root);
+        let left = 0;
+        const check = () => {
+          const okWord = inp.value.trim().toUpperCase() === WORD();
+          clearInterval(timer);
+          if (!okWord) { go.disabled = true; go.textContent = t("rs.final"); return; }
+          left = 5; go.disabled = true; go.textContent = t("rs.wait", { n: left });
+          timer = setInterval(() => { left--; if (left > 0) go.textContent = t("rs.wait", { n: left }); else { clearInterval(timer); go.disabled = false; go.textContent = t("rs.final"); } }, 1000);
+        };
+        inp.oninput = check; inp.focus();
+        go.onclick = async () => {
+          if (go.disabled || inp.value.trim().toUpperCase() !== WORD()) return;
+          go.disabled = true; clearInterval(timer);
+          if (AA.sync && AA.sync.linked()) AA.sync.disconnect();
+          await AA.store.reset();
+          close(); AA.ctx = {}; AA.ui.applyTheme(); AA.a11y.apply(); AA.ui.hud();
+          fx.toast(t("rs.doneT"), t("rs.doneS"), "refresh");
+          AA.router.go("welcome", {}, true);
+        };
+      }
+    };
+    draw();
   };
 })();
 
@@ -2024,7 +2251,7 @@ window.AA={BUNDLED:true};
     if (after.l > before) {
       AA.fx.sfx.up(); AA.fx.buzz([30, 60, 30]);
       const evo = AA.avatar && AA.avatar.stage(after.l) > AA.avatar.stage(before);
-      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.i18n.raw("ava.stages")[AA.avatar.stage(after.l)] }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
+      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.avatar.formName(AA.avatar.get(), after.l) }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
       AA.fx.burst(innerWidth / 2, innerHeight * .6, 40, "rgba(255,200,87,.9)");
     }
     AA.ui && AA.ui.hud();
@@ -2542,7 +2769,8 @@ window.AA={BUNDLED:true};
     render(el) {
       const S = AA.S, P = S.profile;
       const o = AA.ctx.onb || (AA.ctx.onb = { step: 0, name: P.name, goal: P.goal, daily: P.dailyGoal, theme: P.theme, exam: P.examDate });
-      const steps = 5, dots = `<div class="dots" aria-hidden="true">${Array.from({ length: steps }, (_, i) => `<i class="${i === o.step ? "on" : ""}"></i>`).join("")}</div>`;
+      const drv = AA.sync.possible() && !!AA.sync.clientId() && !AA.sync.linked();
+      const steps = drv ? 6 : 5, last = steps - 1, dots = `<div class="dots" aria-hidden="true">${Array.from({ length: steps }, (_, i) => `<i class="${i === o.step ? "on" : ""}"></i>`).join("")}</div>`;
       const nav = (label, extra) => `<div class="stack">${dots}<button class="btn block" id="onext">${label} ${AA.icon("next")}</button>${extra || ""}</div>`;
       let h = "";
       if (o.step === 0) {
@@ -2552,19 +2780,24 @@ window.AA={BUNDLED:true};
           <ul class="onb-points">${["onb.p1", "onb.p2", "onb.p3"].map((k, i) => `<li>${AA.icon(["book", "sparkle", "refresh"][i])}<span>${t(k)}</span></li>`).join("")}</ul>
           ${nav(t("onb.start"), `<a class="linkbtn" href="#/backup">${AA.icon("transfer")} ${t("onb.have")}</a>`)}`;
       } else if (o.step === 1) {
-        h = `<div><p class="eyebrow">1 / 4</p><h1>${t("onb.nameQ")}</h1><p class="muted">${t("onb.nameS")}</p></div>
+        h = `<div><p class="eyebrow">1 / ${last}</p><h1>${t("onb.nameQ")}</h1><p class="muted">${t("onb.nameS")}</p></div>
           <div class="field"><label for="oname" class="sr">${t("onb.nameQ")}</label><input class="input center" id="oname" maxlength="24" autocomplete="given-name" placeholder="${t("onb.namePh")}" value="${u.esc(o.name)}"></div>${nav(t("common.next"))}`;
       } else if (o.step === 2) {
         const goals = C.worlds.filter(w => !w.soon);
-        h = `<div><p class="eyebrow">2 / 4</p><h1>${t("onb.goalQ")}</h1><p class="muted">${t("onb.goalS")}</p></div>
+        h = `<div><p class="eyebrow">2 / ${last}</p><h1>${t("onb.goalQ")}</h1><p class="muted">${t("onb.goalS")}</p></div>
           <div class="choicecards">${goals.map(w => `<button data-goal="${w.id}" aria-pressed="${o.goal === w.id}" style="--wc:var(${w.color})"><span class="ic" style="color:var(${w.color})">${AA.icon(w.icon)}</span><span><b>${u.esc(w.title)}</b><span>${u.esc(w.sub)}</span></span></button>`).join("")}</div>
           <div class="field"><label for="oexam">${t("onb.examQ")}</label><input class="input" type="date" id="oexam" value="${u.esc(o.exam)}"></div>${nav(t("common.next"))}`;
       } else if (o.step === 3) {
-        h = `<div><p class="eyebrow">3 / 4</p><h1>${t("onb.dailyQ")}</h1><p class="muted">${t("onb.dailyS")}</p></div>
+        h = `<div><p class="eyebrow">3 / ${last}</p><h1>${t("onb.dailyQ")}</h1><p class="muted">${t("onb.dailyS")}</p></div>
           <div class="choicecards">${[[10, "relax", "wave"], [20, "regular", "target"], [40, "intense", "flame"]].map(([n, k, ic]) => `<button data-daily="${n}" aria-pressed="${o.daily === n}"><span class="ic">${AA.icon(ic)}</span><span><b>${t("onb.d." + k)}</b><span>${t("onb.dailyN", { n })}</span></span></button>`).join("")}</div>${nav(t("common.next"))}`;
+      } else if (o.step === 4) {
+        h = `<div><p class="eyebrow">4 / ${last}</p><h1>${t("onb.themeQ")}</h1><p class="muted">${t("onb.themeS")}</p></div>
+          ${swatches(o.theme)}${nav(drv ? t("common.next") : t("onb.go"))}`;
       } else {
-        h = `<div><p class="eyebrow">4 / 4</p><h1>${t("onb.themeQ")}</h1><p class="muted">${t("onb.themeS")}</p></div>
-          ${swatches(o.theme)}${nav(t("onb.go"))}`;
+        h = `<div><p class="eyebrow">5 / ${last}</p><div class="drive-hero">${AA.icon("save")}</div><h1>${t("dr.onbT")}</h1><p class="muted">${t("dr.onbS")}</p></div>
+          <ul class="onb-points">${["dr.p1", "dr.p2", "dr.p3"].map((k, i) => `<li>${AA.icon(["check", "transfer", "lock"][i])}<span>${t(k)}</span></li>`).join("")}</ul>
+          <div class="stack">${dots}<button class="btn block" id="odrive">${AA.icon("transfer")} ${t("dr.link")}</button>
+          <button class="btn ghost block" id="onext">${t("dr.later")}</button><p class="xs muted center" style="margin:0">${t("dr.laterS")}</p></div>`;
       }
       el.innerHTML = `<section class="onb">${h}${o.step ? `<button class="linkbtn" id="oback">${t("nav.back")}</button>` : ""}</section>`;
       const save = () => { const n = u.$("#oname"); if (n) o.name = n.value.trim(); const e = u.$("#oexam"); if (e) o.exam = e.value; };
@@ -2575,11 +2808,16 @@ window.AA={BUNDLED:true};
       const n = u.$("#oname"); if (n) { n.focus(); n.onkeydown = e => { if (e.key === "Enter") u.$("#onext").click(); }; }
       u.$("#onext").onclick = () => {
         save(); fx.sfx.tap();
-        if (o.step < 4) { o.step++; AA.router.refresh(); return; }
+        if (o.step < last) { o.step++; AA.router.refresh(); return; }
+        finish();
+        if (drv) { AA.S.profile.driveNag = u.addDays(3); AA.S.profile.driveNagN = 1; AA.store.save(true); }
+      };
+      const finish = () => {
         Object.assign(AA.S.profile, { name: o.name, goal: o.goal, dailyGoal: o.daily, theme: o.theme, examDate: o.exam, onboarded: true });
         AA.store.save(true); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 2, 50, "rgba(62,230,216,.8)");
         AA.router.go("home", {}, true);
       };
+      const od = u.$("#odrive"); if (od) od.onclick = () => { finish(); AA.sync.connect().then(ok => fx.toast(ok ? t("dr.okT") : t("dr.failT"), ok ? t("dr.okS") : t("dr.failS"), ok ? "check" : "info")); };
     }
   });
   const swatches = cur => `<div class="swatches" role="group" aria-label="${t("set.theme")}">${AA.THEMES.map(th => `<button class="swatch" data-theme="${th.id}" aria-pressed="${cur === th.id}"><i style="background:linear-gradient(135deg,${th.preview[0]} 0 50%,${th.preview[1]} 50% 75%,${th.preview[2]} 75%)"></i>${t("theme." + th.id)}</button>`).join("")}</div>`;
@@ -2587,6 +2825,26 @@ window.AA={BUNDLED:true};
 
   /* Ordre des choix stable dans la journée, mais mélangé. */
   const qodOrder = q => { const r = u.seeded(u.seedOf(u.today() + q.id)); return q.c.map((_, i) => i).map(i => [r(), i]).sort((a, b) => a[0] - b[0]).map(x => x[1]); };
+  /* ---------- Conseil : lier Google Drive (jamais obligatoire) ---------- */
+  const driveCard = () => {
+    const P = AA.S.profile, sy = AA.sync, today = u.today();
+    if (sy.linked() || (P.driveNag && P.driveNag > today)) return "";
+    const can = sy.possible() && !!sy.clientId();
+    return `<section class="card drive-card" id="drivecard"><div class="drive-ic">${AA.icon("save")}</div><div class="stack" style="gap:6px">
+      <b class="h4">${t("dr.cardT")}</b><p class="small" style="margin:0">${can ? t("dr.cardS", { xp: AA.S.xp }) : t("dr.cardArt")}</p>
+      <div class="row">${can ? `<button class="btn sm" id="drlink">${AA.icon("transfer")} ${t("dr.link")}</button>` : `<a class="btn sm" href="#/backup">${AA.icon("save")} ${t("dr.save")}</a>`}<button class="btn ghost sm" id="drlater">${t("dr.later")}</button></div></div></section>`;
+  };
+  const wireDrive = () => {
+    const l = u.$("#drlink"), z = u.$("#drlater");
+    if (l) l.onclick = () => { l.disabled = true; AA.sync.connect().then(ok => { fx.toast(ok ? t("dr.okT") : t("dr.failT"), ok ? t("dr.okS") : t("dr.failS"), ok ? "check" : "info"); AA.router.refresh(); }); };
+    if (z) z.onclick = () => {
+      const P = AA.S.profile, n = (P.driveNagN || 0) + 1, days = n <= 1 ? 3 : 7;
+      P.driveNag = u.addDays(days); P.driveNagN = n; AA.store.save();
+      fx.toast(t("dr.snoozeT"), t("dr.snoozeS", { n: days }), "calendar");
+      const c = u.$("#drivecard"); if (c) c.remove();
+    };
+  };
+
   /* ---------- Accueil ---------- */
   AA.view("home", {
     tab: "home", depth: 0,
@@ -2603,6 +2861,7 @@ window.AA={BUNDLED:true};
       const qod = G.qod();
       el.innerHTML = `
         <header class="hello has-ava"><a class="ava-link" href="#/profile" aria-label="${t("tab.profile")}">${AA.avatar.mine("md")}</a><div><h1>${hello}</h1><p>${line}</p></div></header>
+        ${driveCard()}
         <div class="home-grid"><div class="col-main">
         <section class="card today" style="margin-top:var(--sp-5)">
           ${AA.ui.ring(done / goal, Math.min(done, 999), "/ " + goal, done >= goal)}
@@ -2635,6 +2894,7 @@ window.AA={BUNDLED:true};
         <section class="card" id="qod"><p class="qtext" style="margin-bottom:var(--sp-4)">${u.esc(qod.q)}</p><div class="choices">${qodOrder(qod).map((i, k) => `<button class="choice" data-qi="${i}"><span class="k">${"ABCD"[k]}</span><span>${u.esc(qod.c[i])}</span><span class="mk"></span></button>`).join("")}</div><div id="qodx"></div></section>` : ""}
         </aside></div>
       `;
+      wireDrive(); AA.avatar.checkEvolution();
       u.$("#daily").onclick = () => AA.quiz.daily();
       u.$("#five").onclick = () => { fx.sfx.tap(); AA.quiz.five(); };
       u.$("#rescue").onclick = () => AA.quiz.errors();
@@ -2871,6 +3131,33 @@ window.AA={BUNDLED:true};
     }, opts || {});
     AA.router.go("quiz", ctx);
   };
+  /* ----- Correction détaillée : méthode pas à pas, piège classique, cours ----- */
+  const reOk = (re, s) => { try { return new RegExp(re, "i").test(s); } catch (e) { return false; } };
+  Q.methodFor = q => {
+    const L = C.methods || [], txt = q.q + " " + (q.e || "");
+    if (q.gen) { const g = L.find(x => (x.gen || []).includes(q.gen)); if (g) return g; }
+    if (!/\d/.test(txt)) return null; /* questions de calcul en priorité */
+    return L.find(x => x.re && (!x.m || x.m.includes(q.m)) && reOk(x.re, txt)) || null;
+  };
+  Q.pitfallFor = q => (C.pitfalls || []).find(p => (q.gen && (p.gen || []).includes(q.gen)) || (!q.gen && p.re && (!p.m || p.m.includes(q.m)) && reOk(p.re, q.q))) || null;
+  Q.explain = (q, okNow) => {
+    if (!q || !q.m) return "";
+    const me = Q.methodFor(q), pf = okNow ? null : Q.pitfallFor(q), mod = C.byId[q.m];
+    return `${me ? `<details class="method" ${okNow ? "" : "open"}><summary>${AA.icon("brain")} ${t("ex.steps")} · ${u.esc(me.title)}</summary><ol>${me.steps.map(s => `<li>${s}</li>`).join("")}</ol>${me.tip ? `<p class="method-tip">${AA.icon("bolt")} ${me.tip}</p>` : ""}</details>` : ""}
+      ${pf ? `<div class="pit"><b>${AA.icon("info")} ${t("ex.trap")} : ${u.esc(pf.title)}</b><p>${u.esc(pf.why)}</p><p><b>${t("ex.fix")}</b> ${u.esc(pf.fix)}</p></div>` : ""}
+      ${mod ? `<button class="btn ghost sm rev-btn" id="revcours">${AA.icon("book")} ${t("ex.review", { title: u.esc(mod.title) })}</button>` : ""}`;
+  };
+  /* Revoir le cours sans quitter la série : l'essentiel et « À retenir » dans un panneau. */
+  Q.review = mid => {
+    const m = C.byId[mid]; if (!m) return; fx.sfx.flip();
+    AA.ui.sheet(`<div class="rev-sheet"><p class="eyebrow">${t("ex.course")}</p><h3>${u.esc(m.title)}</h3>
+      ${m.memo && m.memo.length ? `<p class="eyebrow">${t("ex.memo")}</p><div class="memo">${m.memo.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="muted">${u.esc(b)}</span></div>`).join("")}</div>` : ""}
+      <p class="eyebrow">${t("ex.essential")}</p>${m.diagram && C.diagrams[m.diagram] ? C.diagrams[m.diagram]() : ""}<div class="prose">${m.essentiel}</div>
+      <button class="btn block" data-no>${AA.icon("back")} ${t("ex.backQuiz")}</button>
+      <a class="btn ghost block" href="#/lesson/${m.id}">${t("ex.fullLesson")}</a><p class="xs muted center" style="margin:0">${t("ex.fullLessonS")}</p></div>`, m.title);
+    const pr = document.querySelector(".rev-sheet .prose"); if (pr && AA.gloss) try { AA.gloss.link(pr); } catch (e) {}
+  };
+
   /* ----- Lanceurs ----- */
   Q.module = (m, deepOnly) => {
     const pool = deepOnly ? m.quiz.filter(q => q.lvl === 2) : m.quiz;
@@ -3056,10 +3343,12 @@ window.AA={BUNDLED:true};
           ${AA.S.profile.gestures !== false && (AA.S.gestHint || 0) < 4 ? `<p class="xs muted gesture-hint">${AA.icon("hand")} ${t("gest.quizHint")}</p>` : ""}` : ""}
         ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : t("quiz.bad")}</h4>
           ${okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
-          ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}</div>
+          ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}
+          ${Q.explain(q, okNow)}</div>
           <div class="qactions"><button class="btn block" id="nextq">${isEnd(c) ? t("quiz.seeResult") : t("quiz.next")} ${AA.icon("next")}</button></div>` : ""}
       </div>`;
     u.$("#qclose").onclick = () => AA.ui.confirm(t("quiz.quitQ"), t("quiz.quitYes"), () => { clearInterval(c.timer); AA.router.go(c.back || "home"); }, c.answers.length === 0);
+    const rv = u.$("#revcours"); if (rv) rv.onclick = () => Q.review(q.m);
     u.$$(".choice", el).forEach(b => {
       b.onclick = () => answer(c, +b.dataset.ci, b);
       if (answered) return;
@@ -3636,7 +3925,7 @@ window.AA={BUNDLED:true};
         <section class="profile"><button class="ava-btn" id="avedit" aria-label="${t("ava.change")}">${AA.avatar.mine("lg")}<span class="ava-pen">${AA.icon("edit")}</span></button><div class="stack" style="gap:6px">
           <h1 style="font-size:var(--fs-2xl)">${u.esc(name)}</h1><span class="chip gold" style="justify-self:start">${t("prof.level", { l: lv.l, rank: u.esc(lv.rank) })}</span>
           ${ui.bar(lv.into / lv.need)}<span class="xs muted">${t("prof.toNext", { n: lv.need - lv.into })}</span>
-          <span class="xs muted">${t("ava.now", { s: AA.avatar.stage(lv.l) + 1, n: AA.avatar.STAGES.length, name: AA.i18n.raw("ava.stages")[AA.avatar.stage(lv.l)] })}${AA.avatar.next(lv.l) ? " · " + t("ava.nextAt", { l: AA.avatar.next(lv.l), name: AA.i18n.raw("ava.stages")[AA.avatar.stage(lv.l) + 1] }) : ""}</span>
+          <span class="xs muted">${t("ava.now", { s: AA.avatar.stage(lv.l) + 1, n: AA.avatar.STAGES.length, name: u.esc(AA.avatar.formName(AA.avatar.get(), lv.l)) })}${AA.avatar.next(lv.l) ? " · " + t("ava.nextAt", { l: AA.avatar.next(lv.l), name: u.esc(AA.avatar.formName(AA.avatar.get(), AA.avatar.next(lv.l))) }) : ""}</span>
           <button class="btn ghost sm" id="avedit2" style="justify-self:start">${AA.icon("edit")} ${t("ava.change")}</button></div></section>
         <div class="stats" style="margin-top:var(--sp-5)">
           <div class="stat"><b>${S.xp}</b><span>XP</span></div>
@@ -3661,6 +3950,7 @@ window.AA={BUNDLED:true};
         <a class="btn ghost block" style="margin-top:var(--sp-5)" href="#/settings">${AA.icon("gear")} ${t("nav.settings")}</a>`;
       u.on(el, "click", ".tile", (e, b) => AA.router.go(b.dataset.t));
       u.$("#avedit").onclick = u.$("#avedit2").onclick = () => AA.avatar.picker(() => AA.router.refresh());
+      AA.avatar.checkEvolution();
     }
   });
 
@@ -3744,7 +4034,7 @@ window.AA={BUNDLED:true};
           <p class="xs muted"><span class="chip ${navigator.onLine ? "ok" : "warn"}">${AA.icon(navigator.onLine ? "check" : "offline")} ${navigator.onLine ? t("set.online") : t("set.offline")}</span> ${t("set.offlineS")}</p></section>
         <section class="card" style="margin-top:var(--sp-4)" id="valider"><h3>${t("set.validate")}</h3><p class="small muted">${t("set.validateS")}</p>
           <div class="memo">${C.validate.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="small muted">${u.esc(b)}</span></div>`).join("")}</div></section>
-        <section class="card" style="margin-top:var(--sp-4)"><h3>${t("set.danger")}</h3><button class="btn ghost block" id="reset">${t("set.reset")}</button></section>
+        <section class="card danger-zone" style="margin-top:var(--sp-4)"><h3>${AA.icon("info")} ${t("set.danger")}</h3><p class="small muted">${t("rs.zoneS")}</p><button class="btn ghost block danger" id="reset">${t("set.reset")}</button></section>
         <p class="center xs muted" style="margin-top:var(--sp-5)">${t("app.name")} · v${AA.VERSION}<br>${t("set.about")}</p>`;
       u.$$("[data-theme]", el).forEach(b => b.onclick = () => { p.theme = b.dataset.theme; AA.store.save(); ui.applyTheme(); fx.sfx.tap(); AA.router.refresh(); });
       const lg = u.$("#lang"); if (lg) lg.onchange = () => { p.lang = lg.value; AA.store.save(true); location.reload(); };
@@ -3765,7 +4055,7 @@ window.AA={BUNDLED:true};
       u.$("#gst").onchange = e => { p.gestures = e.target.checked; AA.store.save(); };
       u.$$("[data-vr]", el).forEach(b => b.onclick = () => { p.voiceRate = +b.dataset.vr; AA.store.save(); u.$$("[data-vr]", el).forEach(x => x.setAttribute("aria-pressed", x === b)); A.speak(t("set.voiceSample")); });
       const vt = u.$("#vtest"); if (vt) vt.onclick = () => A.speak(t("set.voiceSample"));
-      u.$("#reset").onclick = () => ui.confirm(t("set.resetQ"), t("set.resetYes"), () => { AA.store.reset(); msg(t("set.resetDone")); ui.hud(); AA.router.go("home"); });
+      u.$("#reset").onclick = () => AA.resetFlow();
       if (anchor) { const a = u.$("#" + anchor); if (a) setTimeout(() => a.scrollIntoView({ behavior: "smooth" }), 60); }
     }
   });
@@ -3774,51 +4064,165 @@ window.AA={BUNDLED:true};
 /* js/views/aquarium.js */
 /* =====================================================================
    Abysse Academy · aquarium personnel et antre des boss
+   L'aquarium grandit avec le niveau (bocal → océan), se décore à la main
+   (mode « Décorer » : glisser, agrandir, retourner, masquer), change de
+   fond et de sol, passe en mode nuit, et ses habitants se nourrissent.
+   Réglages dans S.aquaCfg = { bg, floor, night, dec: {id: {x, y, s, f, off}}, hide: {id}, nick: {id} }.
    ===================================================================== */
 (function () {
   "use strict";
   const AA = window.AA, u = AA.u, t = AA.t, G = AA.game, C = AA.content, fx = AA.fx, ui = AA.ui;
 
-  /* ---------- Décors du fond de l'aquarium (viewBox 0 0 400 120) ---------- */
+  /* ---------- Décors (viewBox 0 0 100 100, posés sur le bas) ---------- */
+  const sway = (i, d) => `class="aq-sway" style="animation-delay:-${i * .4}s;animation-duration:${d || 4}s"`;
   const DECOR = {
-    sand: () => `<path d="M0 96c60-10 120 6 200-2s140-8 200 2v24H0z" fill="#D9C08A" opacity=".9"/><path d="M0 104c80-6 160 6 240 0s120-4 160 2v14H0z" fill="#C9AE74"/>`,
-    rock: () => `<path d="M24 104c2-20 24-30 44-22 14-10 34-4 36 14l2 8z" fill="#5E6B73"/><path d="M300 104c4-14 20-20 34-14 10-6 24 0 24 14z" fill="#4E5A62"/>`,
-    grass: () => [130, 140, 150, 160, 350, 360].map((x, i) => `<path class="kelp" style="animation-delay:-${i * .5}s" d="M${x} 104c-6-20 6-34 0-56" stroke="#3F8F5A" stroke-width="5" fill="none" stroke-linecap="round"/>`).join(""),
-    gorgon: () => `<g stroke="#D9402B" stroke-width="3" fill="none" stroke-linecap="round"><path d="M270 104v-30M270 84l-12-14M270 78l14-16M258 70l-6-12M284 62l4-12M264 72l2-14"/></g>`,
-    amphora: () => `<g transform="translate(196 76) rotate(-70)"><path d="M0 0c-8 0-10 6-10 14s6 18 10 22c4-4 10-14 10-22S8 0 0 0z" fill="#B5673A"/><path d="M-4 -4h8v6h-8zM-6 2c-6 0-6 8 0 8M6 2c6 0 6 8 0 8" stroke="#8E4E2A" stroke-width="2" fill="#B5673A"/></g>`,
-    anchor: () => `<g stroke="#7A8690" stroke-width="4" fill="none" stroke-linecap="round" transform="translate(90 70) rotate(18)"><circle cx="0" cy="-10" r="4"/><path d="M0 -6v34M-10 4h20M-16 20c4 10 12 12 16 12s12-2 16-12"/></g>`,
-    wreck: () => `<path d="M300 100l10-26h70l10 26z" fill="#3B3026" opacity=".9"/><path d="M330 74v-30l16 14z" fill="#4A3D30"/><circle cx="330" cy="88" r="4" fill="#1E1812"/><circle cx="352" cy="88" r="4" fill="#1E1812"/>`,
-    chest: () => `<g transform="translate(40 86)"><rect width="34" height="18" rx="3" fill="#8A5A2A"/><path d="M0 4c0-10 34-10 34 0" fill="#A06C34"/><rect x="14" y="6" width="6" height="7" rx="1" fill="#FFC857"/><circle cx="40" cy="2" r="2" fill="#FFC857" class="glint"/></g>`
+    rock: [22, () => `<path d="M6 100c2-30 26-46 46-36 16-14 40-4 42 22l2 14z" fill="#5E6B73"/><path d="M30 78c8-6 18-6 24 0M60 70c6-4 14-3 18 2" stroke="#7A8890" stroke-width="3" fill="none"/>`],
+    grass: [14, () => [12, 26, 40, 54, 68, 82].map((x, i) => `<path ${sway(i)} d="M${x} 100c-8-30 8-50 0-86" stroke="#3F8F5A" stroke-width="6" fill="none" stroke-linecap="round"/>`).join("")],
+    gorgon: [16, () => `<g stroke="#D9402B" stroke-width="4" fill="none" stroke-linecap="round" ${sway(0, 6)}><path d="M50 100V60M50 76L30 50M50 66l24-28M30 50l-10-18M74 38l6-18M38 56l2-24M62 50l12-6M30 50l-14 2"/></g>`],
+    amphora: [10, () => `<g transform="translate(50 62) rotate(-60)"><path d="M0 -30c-14 0-18 12-18 26s10 30 18 38c8-8 18-24 18-38S14 -30 0 -30z" fill="#B5673A"/><path d="M-7 -38h14v10h-14zM-10 -28c-12 0-12 14 0 14M10 -28c12 0 12 14 0 14" stroke="#8E4E2A" stroke-width="3" fill="#B5673A"/></g>`],
+    anchor: [12, () => `<g stroke="#7A8690" stroke-width="7" fill="none" stroke-linecap="round" transform="translate(50 56) rotate(14)"><circle cx="0" cy="-34" r="7"/><path d="M0 -27v62M-18 -10h36M-28 18c6 18 20 22 28 22s22-4 28-22"/></g>`],
+    wreck: [34, () => `<path d="M4 98l14-40h70l10 40z" fill="#3B3026"/><path d="M40 58V14l30 26z" fill="#4A3D30"/><path d="M40 14v44" stroke="#2A2118" stroke-width="3"/><circle cx="36" cy="80" r="6" fill="#1E1812"/><circle cx="58" cy="80" r="6" fill="#1E1812"/><circle cx="78" cy="80" r="5" fill="#1E1812"/>`],
+    chest: [12, () => `<g transform="translate(8 58)"><rect width="84" height="42" rx="6" fill="#8A5A2A"/><path d="M0 10c0-24 84-24 84 0" fill="#A06C34"/><rect x="36" y="12" width="12" height="16" rx="2" fill="#FFC857"/><circle cx="92" cy="2" r="4" fill="#FFC857" class="glint"/></g>`],
+    shells: [10, () => `<path d="M10 100c0-16 10-24 20-24s20 8 20 24z" fill="#F2D4C2"/><path d="M30 76v24M20 80l4 20M40 80l-4 20" stroke="#D9A88E" stroke-width="2"/><path d="M58 100c2-12 10-18 18-18 10 0 14 8 14 18z" fill="#E8C07A"/><path d="M62 94c6-8 16-10 22-2" stroke="#C99A4E" stroke-width="2" fill="none"/>`],
+    anemone: [12, () => `<ellipse cx="50" cy="96" rx="26" ry="6" fill="#8E3B5A"/>${Array.from({ length: 9 }, (_, i) => `<path ${sway(i, 3)} d="M${22 + i * 7} 96c-4-18 6-28 ${(i - 4) * 3} ${-40 - (i % 3) * 8}" stroke="#F07AA8" stroke-width="5" fill="none" stroke-linecap="round"/>`).join("")}`],
+    urchins: [12, () => [[24, 92, 12], [56, 90, 14], [82, 94, 9]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#2A1830"/>${Array.from({ length: 12 }, (_, k) => { const a = k / 12 * 6.283; return `<path d="M${x} ${y}l${(Math.cos(a) * r * 1.8).toFixed(1)} ${(Math.sin(a) * r * 1.8 - 2).toFixed(1)}" stroke="#4A2A55" stroke-width="2"/>`; }).join("")}`).join("")],
+    coral: [14, () => `<path d="M8 100c0-40 20-56 42-56s42 16 42 56z" fill="#E59A6A"/>${[0, 1, 2, 3, 4].map(i => `<path d="M${16 + i * 4} ${96 - i * 9}c10-8 20 8 30 0s20 8 30 0" stroke="#B86A3C" stroke-width="3" fill="none"/>`).join("")}`],
+    lantern: [7, () => `<path d="M50 6v14" stroke="#7A6A50" stroke-width="4"/><rect x="28" y="20" width="44" height="66" rx="10" fill="#3B3026"/><rect x="36" y="30" width="28" height="46" rx="6" fill="#FFD36E" class="aq-glow"/><rect x="24" y="86" width="52" height="14" rx="4" fill="#3B3026"/>`],
+    column: [10, () => `<path d="M20 100h60v-10H20zM26 90h48V30l-8 6-8-10-8 12-8-8-8 10-8-6z" fill="#D8D0BE"/><path d="M36 88V40M50 88V36M64 88V40" stroke="#B5AC96" stroke-width="3"/>`],
+    clam: [12, () => `<path d="M6 100c4-26 20-36 44-36s40 10 44 36z" fill="#7FA9B8"/><path d="M6 100c10-8 26-12 44-12s34 4 44 12" fill="#4FD2C8"/><path d="M18 92l6-24M34 88l4-26M50 86V60M66 88l-4-26M82 92l-6-24" stroke="#5E8A99" stroke-width="3"/>`],
+    helmet: [12, () => `<path d="M14 100v-14h72v14z" fill="#8E6A2A"/><circle cx="50" cy="52" r="36" fill="#C9963A"/><circle cx="50" cy="52" r="16" fill="#1E3A46" stroke="#E8C46A" stroke-width="5"/><circle cx="20" cy="56" r="8" fill="#1E3A46" stroke="#E8C46A" stroke-width="3"/><circle cx="80" cy="56" r="8" fill="#1E3A46" stroke="#E8C46A" stroke-width="3"/><path d="M42 44l8-6" stroke="#9FD8E8" stroke-width="3" opacity=".7"/>`],
+    kelp: [14, () => [20, 46, 72].map((x, i) => `<path ${sway(i, 7)} d="M${x} 100c-14-30 14-50 0-80s10-16 4-20" stroke="#5E7A2A" stroke-width="9" fill="none" stroke-linecap="round"/><ellipse ${sway(i, 7)} cx="${x + 8}" cy="${40 + i * 6}" rx="8" ry="4" fill="#6E8B3D"/>`).join("")],
+    arch: [30, () => `<path d="M2 100V50C2 20 22 8 50 8s48 12 48 42v50H74V56c0-14-10-24-24-24S26 42 26 56v44z" fill="#4E5A62"/><path d="M8 60c6-20 18-30 36-34M70 30c10 4 18 12 22 24" stroke="#62707A" stroke-width="4" fill="none"/>`],
+    statue: [14, () => `<path d="M20 100h60V86H20z" fill="#9AA6AE"/><path d="M30 86c0-20 8-30 20-30s20 10 20 30z" fill="#B8C2C8"/><circle cx="50" cy="38" r="16" fill="#B8C2C8"/><path d="M40 30c4-12 16-12 20 0" stroke="#9AA6AE" stroke-width="3" fill="none"/><path d="M44 40h3M53 40h3" stroke="#7E8A92" stroke-width="2.5"/>`],
+    lighthouse: [9, () => `<path d="M30 100l8-70h24l8 70z" fill="#E8EEF2"/><path d="M33 76h34l2 12H31zM36 50h28l2 10H34z" fill="#D9402B"/><rect x="36" y="16" width="28" height="14" rx="3" fill="#FFD36E" class="aq-glow"/><path d="M34 16l16-12 16 12z" fill="#2A3A46"/>`],
+    bubbler: [6, () => `<ellipse cx="50" cy="94" rx="30" ry="8" fill="#5E6B73"/><rect x="38" y="80" width="24" height="12" rx="4" fill="#7A8890"/>`]
   };
-  const decorSvg = got => `<svg class="aq-decor" viewBox="0 0 400 120" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${C.decor.filter(d => got(d)).map(d => (DECOR[d.kind] || (() => ""))()).join("")}</svg>`;
+  const BUBBLY = { bubbler: 1, clam: 1 };
   const decorOk = d => G.met(d.test);
+  const cfg = () => { const c = AA.S.aquaCfg || (AA.S.aquaCfg = {}); c.dec = c.dec || {}; c.hide = c.hide || {}; c.nick = c.nick || {}; return c; };
+  const defPos = (d, i) => ({ x: [8, 70, 30, 52, 86, 62, 18, 40, 76, 24, 92, 46, 12, 58, 34, 82, 4, 66, 28, 50][i % 20], y: [0, 2, 0, 1, 3, 0, 2, 1][i % 8], s: 1, f: 0 });
+  const tierOf = l => { let k = 0; C.aquaTiers.forEach((x, i) => { if (l >= x.lvl) k = i; }); return k; };
+  const nameOf = f => (cfg().nick[f.id] || f.name);
+
+  function tankHtml(edit) {
+    const S = AA.S, c = cfg(), lv = G.levelOf(S.xp).l, tier = C.aquaTiers[tierOf(lv)];
+    const got = C.creatures.filter(f => S.aqua[f.id]), shown = got.filter(f => !c.hide[f.id]).slice(0, tier.max), r = u.seeded(u.seedOf("aq" + got.length));
+    const fishes = shown.map((f, i) => {
+      const y = 8 + r() * 58, dur = 14 + r() * 16, dl = -r() * dur, dir = r() < .5 ? "l" : "r", s = f.shape;
+      const bottom = s === "star" || s === "crab" || s === "sponge" || s === "nudi", float = s === "jelly" || s === "seahorse";
+      const cls = bottom ? "aq-bottom" : float ? "aq-float" : "aq-swim " + dir;
+      const style = (bottom ? `left:${6 + (i * 37) % 82}%` : float ? `left:${10 + r() * 75}%;top:${y}%;animation-duration:${6 + r() * 4}s` : `top:${y}%;animation-duration:${dur}s;animation-delay:${dl}s`) + `;--sz:${tier.size}`;
+      return `<button class="aq-fish ${cls}" data-f="${f.id}" style="${style}" aria-label="${u.esc(nameOf(f))}">${AA.creature(f.shape, f.c)}</button>`;
+    }).join("");
+    const decs = C.decor.map((d, i) => [d, i]).filter(([d]) => decorOk(d) && !(c.dec[d.id] || {}).off).map(([d, i]) => {
+      const p = Object.assign(defPos(d, i), c.dec[d.id] || {}), k = DECOR[d.kind] || DECOR.rock;
+      return `<div class="aq-dec ${edit ? "edit" : ""}" data-d="${d.id}" style="left:${p.x}%;bottom:${p.y}%;width:${(k[0] * p.s).toFixed(1)}%;z-index:${1 + Math.round(10 - p.y)}" ${edit ? `tabindex="0" role="button" aria-label="${u.esc(d.name)}"` : ""}><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet" style="${p.f ? "transform:scaleX(-1)" : ""}" aria-hidden="true">${k[1]()}</svg>${BUBBLY[d.kind] ? `<span class="aq-col">${[0, 1, 2, 3, 4].map(j => `<i style="animation-delay:-${j * .7}s"></i>`).join("")}</span>` : ""}</div>`;
+    }).join("");
+    const glow = c.night && tierOf(lv) >= 4 ? `<div class="aq-biolum">${Array.from({ length: 16 }, (_, i) => `<i style="left:${(i * 53) % 97}%;top:${(i * 31) % 80 + 5}%;animation-delay:-${i * .6}s"></i>`).join("")}</div>` : "";
+    const plankton = tierOf(lv) >= 2 ? `<div class="aq-plankton">${Array.from({ length: 14 }, (_, i) => `<i style="left:${(i * 41) % 98}%;top:${(i * 23) % 90}%;animation-delay:-${i * 1.3}s"></i>`).join("")}</div>` : "";
+    return `<div class="tank bg-${c.bg || "med"} floor-${c.floor || "sand"} tier-${tierOf(lv)} ${c.night ? "night" : ""} ${edit ? "editing" : ""}" id="tank">
+      <div class="tank-light" aria-hidden="true"></div>${plankton}
+      ${got.length ? "" : `<p class="tank-empty">${t("aqua.empty")}</p>`}
+      <div class="aq-floor" aria-hidden="true"></div>${decs}${fishes}${glow}<div class="aq-food" id="food"></div>
+      <button class="aq-fs iconbtn" id="aqfs" aria-label="${t("aq2.full")}">${AA.icon("expand")}</button></div>`;
+  }
 
   AA.view("aquarium", {
     tab: "profile", depth: 8,
+    leave() { if (!/^#\/aquarium/.test(location.hash) && AA.ctx) AA.ctx.aqEdit = false; },
     render(el, [focus]) {
-      const S = AA.S, got = C.creatures.filter(f => S.aqua[f.id]), r = u.seeded(u.seedOf("aq" + got.length));
-      const fishes = got.map((f, i) => {
-        const y = 10 + r() * 62, dur = 14 + r() * 16, dl = -r() * dur, dir = r() < .5 ? "l" : "r", s = f.shape;
-        const bottom = s === "star" || s === "crab" || s === "sponge" || s === "nudi", float = s === "jelly" || s === "seahorse";
-        const cls = bottom ? "aq-bottom" : float ? "aq-float" : "aq-swim " + dir;
-        const style = bottom ? `left:${8 + (i * 37) % 80}%` : float ? `left:${10 + r() * 75}%;top:${y}%;animation-duration:${6 + r() * 4}s` : `top:${y}%;animation-duration:${dur}s;animation-delay:${dl}s`;
-        return `<button class="aq-fish ${cls}" data-f="${f.id}" style="${style}" aria-label="${u.esc(f.name)}">${AA.creature(f.shape, f.c)}</button>`;
-      }).join("");
-      const dec = C.decor.filter(decorOk);
+      const S = AA.S, c = cfg(), lv = G.levelOf(S.xp).l, ti = tierOf(lv), tier = C.aquaTiers[ti], nextT = C.aquaTiers[ti + 1];
+      const got = C.creatures.filter(f => S.aqua[f.id]), dec = C.decor.filter(decorOk);
+      const edit = !!AA.ctx.aqEdit, tab = AA.ctx.aqTab || "look", fedToday = S.fedOn === u.today();
+      const tabs = [["look", "palette", t("aq2.tLook")], ["decor", "shell", t("aq2.tDecor")], ["fish", "fish", t("aq2.tFish")], ["grow", "trophy", t("aq2.tGrow")]];
+      let panel = "";
+      if (tab === "look") panel = `
+        <p class="eyebrow">${t("aq2.bg")}</p><div class="aq-swatches">${C.aquaBgs.map(b => { const ok = lv >= b.lvl; return `<button class="aq-bgsw bg-${b.id}" data-bg="${b.id}" aria-pressed="${(c.bg || "med") === b.id}" ${ok ? "" : "disabled"}><i></i><b>${u.esc(b.name)}</b><span>${ok ? "" : AA.icon("lock") + " " + t("ava.lvl", { l: b.lvl })}</span></button>`; }).join("")}</div>
+        <p class="eyebrow">${t("aq2.floor")}</p><div class="seg">${C.aquaFloors.map(f => `<button data-floor="${f.id}" aria-pressed="${(c.floor || "sand") === f.id}" ${lv >= f.lvl ? "" : "disabled"}>${lv >= f.lvl ? "" : "🔒 "}${u.esc(f.name)}</button>`).join("")}</div>
+        <p class="eyebrow">${t("aq2.light")}</p><div class="seg"><button data-night="0" aria-pressed="${!c.night}">☀ ${t("aq2.day")}</button><button data-night="1" aria-pressed="${!!c.night}">☾ ${t("aq2.night")}</button></div>
+        ${ti < 4 ? `<p class="xs muted">${t("aq2.nightHint")}</p>` : ""}`;
+      else if (tab === "decor") panel = `
+        <p class="small muted" style="margin:0">${t("aq2.decorS", { n: dec.length, tot: C.decor.length })}</p>
+        <div class="aq-declist">${C.decor.map(d => { const ok = decorOk(d), on = ok && !(c.dec[d.id] || {}).off; return `<div class="aq-decrow ${ok ? "" : "off"}"><span class="aq-decic"><svg viewBox="0 0 100 100" aria-hidden="true">${(DECOR[d.kind] || DECOR.rock)[1]()}</svg></span><span class="grow"><b>${u.esc(d.name)}</b><span class="xs muted">${ok ? (on ? t("aq2.placed") : t("aq2.stored")) : AA.icon("lock") + " " + u.esc(d.how || "")}</span></span>${ok ? `<label class="switch"><input type="checkbox" data-dt="${d.id}" ${on ? "checked" : ""} aria-label="${u.esc(d.name)}"><i></i></label>` : ""}</div>`; }).join("")}</div>
+        <button class="btn ghost sm" id="aqresetpos">${AA.icon("refresh")} ${t("aq2.resetPos")}</button>`;
+      else if (tab === "fish") panel = got.length ? `
+        <p class="small muted" style="margin:0">${t("aq2.fishS", { n: Math.min(tier.max, got.filter(f => !c.hide[f.id]).length), max: tier.max >= 99 ? "∞" : tier.max })}</p>
+        <div class="aq-declist">${got.map(f => `<div class="aq-decrow"><button class="aq-decic" data-f="${f.id}" aria-label="${u.esc(nameOf(f))}">${AA.creature(f.shape, f.c)}</button><span class="grow"><b>${u.esc(nameOf(f))}</b>${c.nick[f.id] ? `<span class="xs muted">${u.esc(f.name)}</span>` : ""}</span><button class="btn ghost sm" data-nick="${f.id}" aria-label="${t("aq2.rename")}">${AA.icon("edit")}</button><label class="switch"><input type="checkbox" data-ft="${f.id}" ${c.hide[f.id] ? "" : "checked"} aria-label="${u.esc(nameOf(f))}"><i></i></label></div>`).join("")}</div>` : `<p class="muted">${t("aqua.empty")}</p>`;
+      else panel = `
+        <div class="aq-tiers">${C.aquaTiers.map((x, i) => `<div class="${i <= ti ? "on" : ""} ${i === ti ? "here" : ""}"><b>${u.esc(x.name)}</b><span>${t("ava.lvl", { l: x.lvl })}</span><span class="xs">${AA.i18n.raw("aq2.tierPerks")[i]}</span></div>`).join("")}</div>
+        ${nextT ? `<p class="small">${t("aq2.nextTier", { name: u.esc(nextT.name), l: nextT.lvl })}</p>` : `<p class="small">${t("aq2.maxTier")}</p>`}`;
       el.innerHTML = `${ui.head(t("aqua.title"), "profile", `<span class="chip gold">${got.length} / ${C.creatures.length}</span>`)}
-        <p class="muted">${t("aqua.intro")}</p>
-        <div class="tank" id="tank">${fishes || `<p class="tank-empty">${t("aqua.empty")}</p>`}${decorSvg(decorOk)}<div class="tank-light" aria-hidden="true"></div></div>
+        <div class="aq-layout"><div class="aq-main">
+          <div class="aq-tierbar"><span class="chip">${AA.icon("fish")} ${u.esc(tier.name)}</span><span class="xs muted">${t("aq2.tierS", { n: Math.min(tier.max, got.length), max: tier.max >= 99 ? "∞" : tier.max })}</span></div>
+          ${tankHtml(edit)}
+          <div class="aq-actions">
+            <button class="btn ${fedToday ? "ghost" : ""} sm" id="aqfeed">${AA.icon("sparkle")} ${t("aq2.feed")}${fedToday ? "" : " · +5 XP"}</button>
+            <button class="btn ${edit ? "gold" : "ghost"} sm" id="aqedit" aria-pressed="${edit}">${AA.icon(edit ? "check" : "edit")} ${edit ? t("aq2.done") : t("aq2.decorate")}</button>
+          </div>
+          ${edit ? `<div class="aq-edithint" id="aqhint">${t("aq2.editHint")}</div><div class="aq-tools" id="aqtools" hidden><b id="aqsel"></b><button class="btn ghost sm" data-tool="smaller" aria-label="${t("aq2.smaller")}">−</button><button class="btn ghost sm" data-tool="bigger" aria-label="${t("aq2.bigger")}">+</button><button class="btn ghost sm" data-tool="flip">${t("aq2.flip")}</button><button class="btn ghost sm" data-tool="hide">${t("aq2.hide")}</button></div>` : ""}
+        </div>
+        <div class="aq-side card">
+          <div class="seg aq-tabs" role="tablist">${tabs.map(([id, ic, l]) => `<button role="tab" data-tab="${id}" aria-selected="${tab === id}" aria-pressed="${tab === id}">${AA.icon(ic)} <span>${l}</span></button>`).join("")}</div>
+          <div class="stack" style="margin-top:var(--sp-3)">${panel}</div>
+        </div></div>
         <div class="section-title"><h3>${t("aqua.collection")}</h3><span class="xs muted">${t("aqua.tap")}</span></div>
-        <div class="aq-grid">${C.creatures.map(f => { const ok = !!S.aqua[f.id]; return `<button class="aq-card ${ok ? "" : "off"}" data-f="${f.id}">${AA.creature(f.shape, ok ? f.c : ["var(--surface-3)", "var(--surface-3)", "var(--surface-3)"])}<b>${ok ? u.esc(f.name) : "?"}</b><span>${ok ? t("aqua.since", { d: S.aqua[f.id] }) : u.esc(f.how)}</span></button>`; }).join("")}</div>
-        <div class="section-title"><h3>${t("aqua.decor")}</h3><span class="xs muted">${dec.length} / ${C.decor.length}</span></div>
-        <div class="row">${C.decor.map(d => `<span class="chip ${decorOk(d) ? "ok" : ""}">${decorOk(d) ? AA.icon("check") : AA.icon("lock")} ${u.esc(d.name)}</span>`).join("")}</div>`;
+        <div class="aq-grid">${C.creatures.map(f => { const ok = !!S.aqua[f.id]; return `<button class="aq-card ${ok ? "" : "off"}" data-f="${f.id}">${AA.creature(f.shape, ok ? f.c : ["var(--surface-3)", "var(--surface-3)", "var(--surface-3)"])}<b>${ok ? u.esc(nameOf(f)) : "?"}</b><span>${ok ? t("aqua.since", { d: S.aqua[f.id] }) : u.esc(f.how)}</span></button>`; }).join("")}</div>`;
+
+      const save = () => AA.store.save();
       const open = id => {
+        if (AA.ctx.aqEdit) return;
         const f = C.creatures.find(x => x.id === id); if (!f) return;
         const ok = !!S.aqua[f.id]; fx.sfx.flip();
-        ui.sheet(`<div class="aq-sheet">${AA.creature(f.shape, ok ? f.c : ["var(--surface-3)", "var(--surface-3)", "var(--surface-3)"])}<h3>${ok ? u.esc(f.name) : t("aqua.unknown")}</h3>
-          ${ok ? `<p>${u.esc(f.fact)}</p><p class="xs muted">${t("aqua.since", { d: S.aqua[f.id] })} · ${t("aqua.how", { how: u.esc(f.how) })}</p>` : `<p class="muted">${t("aqua.toUnlock", { how: u.esc(f.how) })}</p>`}</div>`, f.name);
+        const close = ui.sheet(`<div class="aq-sheet">${AA.creature(f.shape, ok ? f.c : ["var(--surface-3)", "var(--surface-3)", "var(--surface-3)"])}<h3>${ok ? u.esc(nameOf(f)) : t("aqua.unknown")}</h3>
+          ${ok ? `${c.nick[f.id] ? `<p class="xs muted" style="margin:0">${u.esc(f.name)}</p>` : ""}<p>${u.esc(f.fact)}</p><p class="xs muted">${t("aqua.since", { d: S.aqua[f.id] })} · ${t("aqua.how", { how: u.esc(f.how) })}</p>
+            <div class="row" style="justify-content:center"><input class="input" id="nickin" maxlength="18" placeholder="${t("aq2.nickPh")}" value="${u.esc(c.nick[f.id] || "")}" style="max-width:14rem"><button class="btn sm" id="nickok">${t("aq2.rename")}</button></div>` : `<p class="muted">${t("aqua.toUnlock", { how: u.esc(f.how) })}</p>`}</div>`, f.name);
+        const nb = u.$("#nickok"); if (nb) nb.onclick = () => { const v = u.$("#nickin").value.trim(); if (v) c.nick[f.id] = v; else delete c.nick[f.id]; save(); close(); AA.router.refresh(); };
       };
       u.on(el, "click", "[data-f]", (e, b) => open(b.dataset.f));
+      u.on(el, "click", "[data-tab]", (e, b) => { AA.ctx.aqTab = b.dataset.tab; fx.sfx.tap(); AA.router.refresh(); });
+      u.on(el, "click", "[data-bg]", (e, b) => { c.bg = b.dataset.bg; save(); fx.sfx.tap(); AA.router.refresh(); });
+      u.on(el, "click", "[data-floor]", (e, b) => { c.floor = b.dataset.floor; save(); fx.sfx.tap(); AA.router.refresh(); });
+      u.on(el, "click", "[data-night]", (e, b) => { c.night = b.dataset.night === "1"; save(); fx.sfx.tap(); AA.router.refresh(); });
+      u.on(el, "change", "[data-dt]", (e, b) => { const d = c.dec[b.dataset.dt] = c.dec[b.dataset.dt] || {}; d.off = !b.checked; save(); AA.router.refresh(); });
+      u.on(el, "change", "[data-ft]", (e, b) => { if (b.checked) delete c.hide[b.dataset.ft]; else c.hide[b.dataset.ft] = 1; save(); AA.router.refresh(); });
+      u.on(el, "click", "[data-nick]", (e, b) => open(b.dataset.nick));
+      const rp = u.$("#aqresetpos"); if (rp) rp.onclick = () => { Object.keys(c.dec).forEach(k => { const o = c.dec[k].off; c.dec[k] = o ? { off: true } : {}; }); save(); AA.router.refresh(); };
+      u.$("#aqedit").onclick = () => { AA.ctx.aqEdit = !edit; if (!edit) AA.ctx.aqTab = "decor"; fx.sfx.tap(); AA.router.refresh(); };
+      u.$("#aqfeed").onclick = () => {
+        const tank = u.$("#tank"), food = u.$("#food"); if (!tank) return;
+        food.innerHTML = Array.from({ length: 16 }, (_, i) => `<i style="left:${20 + Math.random() * 60}%;animation-delay:${(Math.random() * .8).toFixed(2)}s"></i>`).join("");
+        tank.classList.add("fed"); fx.sfx.ok(); setTimeout(() => { tank.classList.remove("fed"); food.innerHTML = ""; }, 4200);
+        if (S.fedOn !== u.today() && got.length) { S.fedOn = u.today(); G.addXp(5, u.$("#aqfeed")); save(); fx.toast(t("aq2.fedT"), t("aq2.fedS"), "fish"); const fb = u.$("#aqfeed"); fb.classList.add("ghost"); fb.lastChild.textContent = " " + t("aq2.feed"); }
+      };
+      const fs = u.$("#aqfs"); if (fs) fs.onclick = () => { const tk = u.$("#tank"); if (document.fullscreenElement) document.exitFullscreen(); else if (tk.requestFullscreen) tk.requestFullscreen().catch(() => {}); };
+
+      /* Mode décorer : glisser pour déplacer, outils pour la taille, le sens et masquer. */
+      if (edit) {
+        const tank = u.$("#tank"); let sel = null;
+        const pick = node => { u.$$(".aq-dec.sel", tank).forEach(x => x.classList.remove("sel")); sel = node; if (!node) { u.$("#aqtools").hidden = true; return; } node.classList.add("sel"); u.$("#aqtools").hidden = false; const d = C.decor.find(x => x.id === node.dataset.d); u.$("#aqsel").textContent = d ? d.name : ""; };
+        const P = id => { const i = C.decor.findIndex(x => x.id === id); return c.dec[id] = Object.assign(defPos(C.decor[i], i), c.dec[id] || {}); };
+        tank.addEventListener("pointerdown", e => {
+          const node = e.target.closest(".aq-dec"); if (!node) { pick(null); return; }
+          e.preventDefault(); pick(node); node.setPointerCapture(e.pointerId);
+          const R = tank.getBoundingClientRect(), p = P(node.dataset.d), sx = e.clientX, sy = e.clientY, x0 = p.x, y0 = p.y;
+          const move = ev => { p.x = u.clamp(x0 + (ev.clientX - sx) / R.width * 100, -5, 95); p.y = u.clamp(y0 - (ev.clientY - sy) / R.height * 100, 0, 30); node.style.left = p.x + "%"; node.style.bottom = p.y + "%"; node.style.zIndex = 1 + Math.round(10 - p.y); };
+          const up = () => { node.removeEventListener("pointermove", move); node.removeEventListener("pointerup", up); node.removeEventListener("pointercancel", up); p.x = Math.round(p.x * 10) / 10; p.y = Math.round(p.y * 10) / 10; save(); };
+          node.addEventListener("pointermove", move); node.addEventListener("pointerup", up); node.addEventListener("pointercancel", up);
+        });
+        tank.addEventListener("keydown", e => {
+          const node = e.target.closest(".aq-dec"); if (!node) return; const p = P(node.dataset.d), st = e.shiftKey ? 5 : 1;
+          const k = { ArrowLeft: [-st, 0], ArrowRight: [st, 0], ArrowUp: [0, st], ArrowDown: [0, -st] }[e.key]; if (!k) return;
+          e.preventDefault(); pick(node); p.x = u.clamp(p.x + k[0], -5, 95); p.y = u.clamp(p.y + k[1], 0, 30); node.style.left = p.x + "%"; node.style.bottom = p.y + "%"; save();
+        });
+        u.$("#aqtools").addEventListener("click", e => {
+          const b = e.target.closest("[data-tool]"); if (!b || !sel) return; const id = sel.dataset.d, p = P(id), k = (DECOR[C.decor.find(x => x.id === id).kind] || DECOR.rock)[0];
+          if (b.dataset.tool === "bigger") p.s = Math.min(2, Math.round((p.s + .15) * 100) / 100);
+          if (b.dataset.tool === "smaller") p.s = Math.max(.5, Math.round((p.s - .15) * 100) / 100);
+          if (b.dataset.tool === "flip") { p.f = p.f ? 0 : 1; u.$("svg", sel).style.transform = p.f ? "scaleX(-1)" : ""; }
+          if (b.dataset.tool === "hide") { p.off = true; save(); AA.router.refresh(); return; }
+          sel.style.width = (k * p.s).toFixed(1) + "%"; save(); fx.sfx.tap();
+        });
+      }
       if (focus) setTimeout(() => open(focus), 300);
     }
   });
@@ -4275,7 +4679,7 @@ window.AA={BUNDLED:true};
       /* Copies de secours */
       st.snapshots().then(list => {
         const box = u.$("#snaps"); if (!box) return;
-        box.innerHTML = list.length ? list.map(s => `<div class="dq"><span class="ck">${AA.icon("calendar")}</span><span><b class="small">${s.date}</b><span class="xs muted"> · ${s.xp} XP</span></span><button class="btn ghost sm" data-snap="${s.key}">${t("bk.restore")}</button></div>`).join("") : `<p class="xs muted">${t("bk.noSnap")}</p>`;
+        box.innerHTML = list.length ? list.map(s => `<div class="dq"><span class="ck">${AA.icon("calendar")}</span><span><b class="small">${s.reset ? t("rs.snapLabel") + " · " : ""}${s.date}</b><span class="xs muted"> · ${s.xp} XP</span></span><button class="btn ghost sm" data-snap="${s.key}">${t("bk.restore")}</button></div>`).join("") : `<p class="xs muted">${t("bk.noSnap")}</p>`;
         u.on(box, "click", "[data-snap]", (e, b) => ui.confirm(t("bk.restoreQ"), t("bk.restore"), async () => { if (await st.restoreSnapshot(b.dataset.snap)) { msg(t("set.restored", { xp: AA.S.xp })); AA.ui.applyTheme(); AA.router.refresh(); } }));
       }).catch(() => {});
     }
@@ -4633,6 +5037,45 @@ AA.i18n.add("fr", {
   "sim.pad": "Commandes du plongeur", "sim.holdS": "même profondeur", "sim.pause": "Pause", "sim.resume": "Reprendre", "sim.spaceKey": "touche Espace",
   "sim.paused": "En pause", "sim.pausedS": "Le temps est figé. Réfléchis, puis choisis une action ou reprends.", "sim.thinkS": "Que fais-tu ? Choisis une action, le temps reprendra.", "sim.backS": "Tu reprends là où tu t’étais arrêté.",
   "sim.settings": "Réglages", "sim.autoPause": "Pause automatique à chaque nouvelle alarme", "sim.start": "Appuie sur ▼ Descendre pour commencer"
+});
+
+/* 1.2 : réinitialisation, Google Drive conseillé, compagnons, aquarium */
+AA.i18n.add("fr", {
+  "set.reset": "Réinitialiser mon profil",
+  "rs.title": "Réinitialiser mon profil", "rs.zoneS": "Efface toute ta progression pour repartir de zéro. Plusieurs confirmations te seront demandées.",
+  "rs.t1": "Attention : tout va être effacé", "rs.s1": "Ton niveau, ton XP, tes thèmes, tes trophées, ton aquarium, ton avatar et tes révisions. Voici ce que tu perdrais :",
+  "rs.l.xp": "Niveau", "rs.l.themes": "Thèmes commencés", "rs.l.trophies": "Trophées", "rs.l.aqua": "Espèces de l’aquarium", "rs.l.cards": "Flashcards en révision", "rs.l.exams": "Examens blancs",
+  "rs.download": "Télécharger ma sauvegarde d’abord", "rs.keep": "Non, je garde ma progression", "rs.continue": "Continuer la réinitialisation", "rs.dlT": "Sauvegarde",
+  "rs.t2": "Es-tu vraiment sûr ?", "rs.s2": "C’est définitif pour cet appareil. Si tu veux juste changer de prénom, d’avatar ou d’objectif, fais-le dans les réglages : pas besoin de tout effacer.",
+  "rs.drive": "Ta copie Google Drive n’est pas effacée. L’appli sera déconnectée du Drive, sinon la synchro remettrait ton ancienne progression.",
+  "rs.understand": "J’ai compris que toute ma progression sur cet appareil sera effacée.",
+  "rs.t3": "Dernière étape", "rs.s3": "Pour confirmer, écris {w} dans la case.", "rs.word": "EFFACER",
+  "rs.wait": "Patiente… {n}", "rs.final": "Effacer définitivement", "rs.doneT": "Profil réinitialisé", "rs.doneS": "Une copie « avant réinitialisation » reste dans Sauvegarde, au cas où.",
+  "rs.snapLabel": "Avant réinitialisation",
+  "dr.onbT": "Protège ta progression", "dr.onbS": "Ta progression est enregistrée sur cet appareil. Si tu le perds, le changes ou vides le navigateur, elle disparaît. Avec Google Drive, elle est copiée dans ton propre Drive.",
+  "dr.p1": "Rien à faire ensuite : la copie se met à jour toute seule.", "dr.p2": "Ta progression te suit du téléphone à l’ordinateur.", "dr.p3": "L’appli ne voit que son propre fichier dans ton Drive, rien d’autre.",
+  "dr.link": "Lier mon Google Drive", "dr.later": "Plus tard", "dr.laterS": "Tu pourras le faire quand tu veux dans Sauvegarde.", "dr.save": "Protéger ma progression",
+  "dr.cardT": "Ta progression n’est pas encore protégée", "dr.cardS": "Tes {xp} XP ne sont que sur cet appareil. Lie ton Google Drive pour ne jamais les perdre (conseillé).",
+  "dr.cardArt": "Ici, ta progression ne reste que dans ce navigateur. Ouvre l’appli en ligne pour la lier à Google Drive, ou télécharge une sauvegarde.",
+  "dr.okT": "Google Drive lié", "dr.okS": "Ta progression est maintenant copiée dans ton Drive.", "dr.failT": "Drive non lié", "dr.failS": "Réessaie depuis Sauvegarde quand tu veux.",
+  "dr.snoozeT": "D’accord", "dr.snoozeS": "Je te le rappellerai dans {n} jours.",
+  "ava.compS": "{n} compagnons. Chacun évolue avec ton niveau, jusqu’à sa forme légendaire.",
+  "ava.evoT": "Évolution !", "ava.evoS": "{a} évolue en {b} !", "ava.evoLvl": "Niveau {l} atteint", "ava.evoOk": "Génial",
+  "aq2.tLook": "Ambiance", "aq2.tDecor": "Décors", "aq2.tFish": "Habitants", "aq2.tGrow": "Agrandir",
+  "aq2.bg": "Fond", "aq2.floor": "Sol", "aq2.light": "Lumière", "aq2.day": "Jour", "aq2.night": "Nuit", "aq2.nightHint": "À partir de l’aquarium « Océan » (niveau 9), la nuit s’allume de plancton lumineux.",
+  "aq2.decorS": "{n} décors sur {tot}. Touche « Décorer » pour les déplacer dans l’aquarium.", "aq2.placed": "Dans l’aquarium", "aq2.stored": "Rangé", "aq2.resetPos": "Remettre les décors en place",
+  "aq2.fishS": "{n} habitants visibles sur {max} places.", "aq2.rename": "Renommer", "aq2.nickPh": "Surnom",
+  "aq2.tierS": "{n} habitants visibles sur {max}", "aq2.tierPerks": ["4 habitants", "8 habitants, bulles et plancton bientôt", "12 habitants, plancton qui dérive", "18 habitants, poissons plus grands", "Tous tes habitants, plancton lumineux la nuit"],
+  "aq2.nextTier": "Prochain agrandissement : {name} au niveau {l}.", "aq2.maxTier": "Ton aquarium est au maximum : un vrai océan !",
+  "aq2.feed": "Nourrir", "aq2.fedT": "Miam !", "aq2.fedS": "Tes poissons se régalent. +5 XP (une fois par jour).",
+  "aq2.decorate": "Décorer", "aq2.done": "Terminé", "aq2.editHint": "Fais glisser un décor pour le déplacer. Touche-le pour changer sa taille ou son sens.",
+  "aq2.smaller": "Plus petit", "aq2.bigger": "Plus grand", "aq2.flip": "Retourner", "aq2.hide": "Ranger", "aq2.full": "Plein écran"
+});
+
+AA.i18n.add("fr", {
+  "ex.steps": "Comprendre pas à pas", "ex.trap": "Piège classique", "ex.fix": "Le réflexe :", "ex.review": "Revoir le cours : {title}",
+  "ex.course": "Cours", "ex.memo": "À retenir", "ex.essential": "L’essentiel", "ex.backQuiz": "Revenir à la question",
+  "ex.fullLesson": "Ouvrir le cours complet", "ex.fullLessonS": "Le cours complet quitte la série en cours."
 });
 
 /* content/fr/worlds.js */
@@ -6431,17 +6874,156 @@ AA.content.addCreatures([
   { id: "manta", name: "Raie des îles", shape: "ray", c: ["#2E3C4A", "#EAF2F6", "#1E2832"], test: { k: "boss", w: "e1" }, how: "Vaincre la Raie des îles", fact: "Le trophée des initiateurs. Une grande raie qui plane au-dessus des tombants, comme en vol." }
 ]);
 
-/* Décors : ils s'ajoutent au fond de l'aquarium. kind : sand, rock, grass, gorgon, amphora, anchor, wreck, chest */
+/* Décors : on les place où on veut dans l'aquarium (mode « Décorer »).
+   kind : dessin dans js/views/aquarium.js. how : comment l'obtenir. */
 AA.content.addDecor([
-  { id: "sable", kind: "sand", name: "Sable fin", test: { k: "modulesDone", n: 0 } },
-  { id: "rocher", kind: "rock", name: "Rochers", test: { k: "level", n: 2 } },
-  { id: "posidonie", kind: "grass", name: "Herbier de posidonie", test: { k: "level", n: 3 } },
-  { id: "gorgone", kind: "gorgon", name: "Gorgone rouge", test: { k: "level", n: 5 } },
-  { id: "amphore", kind: "amphora", name: "Amphore", test: { k: "exam", min: 10 } },
-  { id: "ancre", kind: "anchor", name: "Vieille ancre", test: { k: "bossAny", n: 1 } },
-  { id: "epave", kind: "wreck", name: "Épave", test: { k: "level", n: 10 } },
-  { id: "coffre", kind: "chest", name: "Coffre", test: { k: "worldStars", w: "n2", n: "all", min: 3 } }
+  { id: "sable", kind: "shells", name: "Coquillages", how: "Dès le départ", test: { k: "modulesDone", n: 0 } },
+  { id: "rocher", kind: "rock", name: "Rochers", how: "Niveau 2", test: { k: "level", n: 2 } },
+  { id: "posidonie", kind: "grass", name: "Herbier de posidonie", how: "Niveau 3", test: { k: "level", n: 3 } },
+  { id: "gorgone", kind: "gorgon", name: "Gorgone rouge", how: "Niveau 5", test: { k: "level", n: 5 } },
+  { id: "amphore", kind: "amphora", name: "Amphore", how: "10/20 ou plus à un examen", test: { k: "exam", min: 10 } },
+  { id: "ancre", kind: "anchor", name: "Vieille ancre", how: "Vaincre un boss", test: { k: "bossAny", n: 1 } },
+  { id: "epave", kind: "wreck", name: "Épave", how: "Niveau 10", test: { k: "level", n: 10 } },
+  { id: "coffre", kind: "chest", name: "Coffre", how: "3 étoiles partout en N2", test: { k: "worldStars", w: "n2", n: "all", min: 3 } },
+  { id: "anemone", kind: "anemone", name: "Anémone", how: "Niveau 2", test: { k: "level", n: 2 } },
+  { id: "bulleur", kind: "bubbler", name: "Diffuseur de bulles", how: "Niveau 3", test: { k: "level", n: 3 } },
+  { id: "oursins", kind: "urchins", name: "Oursins", how: "3 jours d’affilée", test: { k: "streak", n: 3 } },
+  { id: "corail", kind: "coral", name: "Corail cerveau", how: "Niveau 4", test: { k: "level", n: 4 } },
+  { id: "lanterne", kind: "lantern", name: "Lanterne", how: "3 sessions « 5 minutes »", test: { k: "five", n: 3 } },
+  { id: "colonne", kind: "column", name: "Colonne antique", how: "Finir une aventure", test: { k: "story", n: 1 } },
+  { id: "benitier", kind: "clam", name: "Bénitier", how: "300 réponses", test: { k: "answers", n: 300 } },
+  { id: "scaphandre", kind: "helmet", name: "Casque de scaphandrier", how: "Niveau 6", test: { k: "level", n: 6 } },
+  { id: "laminaires", kind: "kelp", name: "Laminaires géantes", how: "Niveau 7", test: { k: "level", n: 7 } },
+  { id: "arche", kind: "arch", name: "Arche rocheuse", how: "Niveau 8", test: { k: "level", n: 8 } },
+  { id: "statue", kind: "statue", name: "Statue engloutie", how: "Vaincre 2 boss", test: { k: "bossAny", n: 2 } },
+  { id: "phare", kind: "lighthouse", name: "Petit phare", how: "Niveau 9", test: { k: "level", n: 9 } }
 ]);
+
+/* Fonds d'aquarium et sols, débloqués avec le niveau. */
+AA.content.aquaBgs = [
+  { id: "med", name: "Méditerranée", lvl: 1 }, { id: "lagon", name: "Lagon", lvl: 2 }, { id: "sunset", name: "Coucher de soleil", lvl: 4 },
+  { id: "grotte", name: "Grotte", lvl: 6 }, { id: "recif", name: "Récif tropical", lvl: 8 }, { id: "abysse", name: "Abysses", lvl: 10 }
+];
+AA.content.aquaFloors = [{ id: "sand", name: "Sable fin", lvl: 1 }, { id: "pebble", name: "Galets", lvl: 3 }, { id: "black", name: "Sable volcanique", lvl: 6 }];
+/* Taille de l'aquarium selon le niveau : nombre d'habitants visibles et bonus. */
+AA.content.aquaTiers = [
+  { lvl: 1, name: "Bocal", max: 4, size: .8 }, { lvl: 3, name: "Aquarium", max: 8, size: .9 }, { lvl: 5, name: "Grand bac", max: 12, size: 1 },
+  { lvl: 7, name: "Lagon privé", max: 18, size: 1.1 }, { lvl: 9, name: "Océan", max: 99, size: 1.2 }
+];
+
+/* content/fr/companions.js */
+/* Abysse Academy · contenu FR · Compagnons (avatar créature)
+   Chaque compagnon évolue avec ton niveau, en 5 formes (niveaux 1, 3, 5, 7, 9).
+   shape : forme dessinée par js/ui/creatures.js ; c : couleurs [corps, motif, nageoires]
+   de la forme adulte ; L : couleurs de la forme légendaire ; n : nom de chaque forme. */
+AA.content.companions = [
+  { id: "poulpe", shape: "octopus", c: ["#C8553D", "#F2A65A", "#8E3B2B"], L: ["#6B2FA8", "#7DF0FF", "#2A0F4A"], n: ["Poulpinet", "Poulpe", "Poulpe malin", "Poulpe des grottes", "Kraken des abysses"] },
+  { id: "hippo", shape: "seahorse", c: ["#E3A33B", "#B5651D", "#F6D27A"], L: ["#F2C14E", "#FFF3C4", "#E07A1F"], n: ["Hippopuce", "Hippocampe", "Hippocampe moucheté", "Cavalier des herbiers", "Hippocampe céleste"] },
+  { id: "tortue", shape: "turtle", c: ["#6E8B3D", "#3E5223", "#A7B86A"], L: ["#2D9C8F", "#F2C14E", "#86E0D0"], n: ["Tortinette", "Tortue", "Tortue caouanne", "Tortue luth", "Tortue ancestrale"] },
+  { id: "raie", shape: "ray", c: ["#3E5566", "#D9E4EA", "#2A3A46"], L: ["#1A1F4A", "#9BE7FF", "#3B2A7A"], n: ["Raiette", "Pastenague", "Raie aigle", "Manta", "Manta astrale"] },
+  { id: "meduse", shape: "jelly", c: ["#E58FB8", "#F7C6DE", "#B8578A"], L: ["#7DF0FF", "#C9A8FF", "#F2C14E"], n: ["Gouttelette", "Méduse", "Pélagie", "Méduse lune", "Méduse aurore"] },
+  { id: "merou", shape: "grouper", c: ["#7A5A3C", "#E8D3A8", "#5A4029"], L: ["#3A2A1C", "#F2C14E", "#8E5A2A"], n: ["Mérillon", "Mérou", "Mérou brun", "Mérou ancien", "Mérou titan"] },
+  { id: "murene", shape: "moray", c: ["#5D5A2E", "#E5D68C", "#3B3A1C"], L: ["#13212E", "#7DF0FF", "#F2C14E"], n: ["Murénette", "Murène", "Murène tigrée", "Murène gardienne", "Murène des abysses"] },
+  { id: "nudi", shape: "nudi", c: ["#8E5BD9", "#F2A65A", "#FFFFFF"], L: ["#FF5FA2", "#7DF0FF", "#F2C14E"], n: ["Nudi", "Flabelline", "Doris dorée", "Nudibranche royal", "Nudi arc-en-ciel"] },
+  { id: "etoile", shape: "star", c: ["#D9402B", "#F6A07C", "#D9402B"], L: ["#F2C14E", "#FFFFFF", "#F2C14E"], n: ["Étoilette", "Étoile de mer", "Étoile rouge", "Étoile filante", "Étoile polaire"] },
+  { id: "lune", shape: "sunfish", c: ["#9DAAB3", "#5E6B73", "#C9D2D8"], L: ["#D7E3FF", "#7A8BD9", "#F2C14E"], n: ["Lunette", "Poisson-lune", "Môle", "Môle géant", "Lune des abysses"] },
+  { id: "barra", shape: "barracuda", c: ["#A9B8C2", "#3A4650", "#E5C24A"], L: ["#E8F0F5", "#2B6FD6", "#7DF0FF"], n: ["Bécunette", "Bécune", "Barracuda", "Barracuda éclair", "Barracuda d’argent"] },
+  { id: "rascasse", shape: "scorpion", c: ["#C9452F", "#F3B38A", "#8E2B1E"], L: ["#5A0F1E", "#F2C14E", "#E0482B"], n: ["Rascassou", "Rascasse", "Rascasse rouge", "Chapon", "Rascasse dragon"] },
+  { id: "congre", shape: "conger", c: ["#4E5A62", "#C9D2D8", "#2E363C"], L: ["#1C2A4A", "#BFF3F7", "#7DF0FF"], n: ["Congrillon", "Congre", "Congre géant", "Seigneur de l’épave", "Congre fantôme"] },
+  { id: "crabe", shape: "crab", c: ["#D2642F", "#FFFFFF", "#A8461C"], L: ["#2D2A6E", "#F2C14E", "#7DF0FF"], n: ["Crabichon", "Crabe", "Crabe vert", "Araignée de mer", "Crabe titan"] },
+  { id: "girelle", shape: "wrasse", c: ["#E8763A", "#2BA8C8", "#F3C64A"], L: ["#2BD9A0", "#FF5FA2", "#F2C14E"], n: ["Girellette", "Girelle", "Girelle paon", "Girelle royale", "Girelle arc-en-ciel"] },
+  { id: "demoiselle", shape: "damsel", c: ["#2B6FD6", "#7DD6FF", "#1A4A9A"], L: ["#00C2FF", "#FFFFFF", "#F2C14E"], n: ["Bleuet", "Castagnole", "Castagnole bleue", "Demoiselle", "Demoiselle d’azur"] },
+  { id: "sar", shape: "bream", c: ["#C9D2D8", "#3A4650", "#9AA6AE"], L: ["#F2C14E", "#8E5A2A", "#FFE08A"], n: ["Sarillon", "Sar", "Sar tambour", "Sar impérial", "Sar d’or"] },
+  { id: "daurade", shape: "fish", c: ["#B8C4CC", "#E6B93C", "#7E95A0"], L: ["#F2C14E", "#FFFFFF", "#E07A1F"], n: ["Daurinette", "Daurade", "Daurade royale", "Daurade dorée", "Daurade solaire"] },
+  { id: "eponge", shape: "sponge", c: ["#E3A33B", "#F6D27A", "#C9452F"], L: ["#9B6CFF", "#7DF0FF", "#F2C14E"], n: ["Bourgeon", "Éponge", "Éponge tube", "Éponge géante", "Récif vivant"] }
+];
+
+/* content/fr/methods.js */
+/* Abysse Academy · contenu FR · Méthodes pas à pas
+   Affichées sous la correction (« Comprendre pas à pas ») pour expliquer le
+   POURQUOI de chaque étape d'un calcul. Une méthode s'applique à une question :
+   - gen : générateurs de calculs (content/fr/generators.js) ;
+   - re  : expression cherchée dans le texte de la question, avec m (modules).
+   steps : les étapes, dans l'ordre ; tip : astuce pour retenir. */
+AA.content.methods = [
+  { id: "pabs", title: "Pression absolue et profondeur", gen: ["pabs", "prof"], m: ["pression"], re: "pression absolue|bar.*profondeur|profondeur.*bar|absolue",
+    steps: [
+      "En surface, tu as déjà <b>1 bar</b> sur toi : c’est le poids de l’air (pression atmosphérique).",
+      "L’eau ajoute <b>1 bar tous les 10 m</b>. Pression de l’eau (relative) = profondeur ÷ 10.",
+      "Pression absolue = <b>1 (l’air) + profondeur ÷ 10 (l’eau)</b>. Exemple : à 20 m, 1 + 2 = 3 bar.",
+      "Dans l’autre sens (on connaît la pression absolue) : on <b>retire d’abord le 1 bar de l’air</b>, car il ne correspond à aucun mètre d’eau. Il reste la pression de l’eau.",
+      "Puis profondeur = pression de l’eau × 10. Exemple : 3,5 bar absolu − 1 = 2,5 bar d’eau, × 10 = 25 m."
+    ], tip: "Absolue = air + eau. Pour retrouver des mètres, on enlève l’air (−1), puis × 10." },
+  { id: "alti", title: "Plonger en altitude", gen: ["alti"], m: ["pression"], re: "altitude|lac",
+    steps: [
+      "En montagne, il y a moins d’air au-dessus de toi : la pression en surface est <b>inférieure à 1 bar</b> (environ 0,8 bar vers 2 000 m).",
+      "L’eau, elle, ajoute toujours 1 bar tous les 10 m.",
+      "Pression absolue = pression en surface du lac + profondeur ÷ 10.",
+      "Comme la surface est plus faible, les variations de pression sont plus fortes en proportion : c’est pour ça que les procédures de déco changent en altitude."
+    ], tip: "Remplace le « 1 » de la mer par la pression du lac." },
+  { id: "mariotte", title: "Loi de Mariotte (volume et pression)", gen: ["ballon", "descente"], m: ["mariotte"], re: "volume|ballon|parachute|poumon|gilet|stab",
+    steps: [
+      "À température constante, un gaz enfermé se comprime quand la pression monte, et se dilate quand elle baisse.",
+      "La règle : <b>P1 × V1 = P2 × V2</b> (pression × volume reste constant).",
+      "On utilise toujours la <b>pression absolue</b> (avec le +1 de l’air), jamais la pression de l’eau seule.",
+      "Calcule P1 et P2 en absolu, puis V2 = P1 × V1 ÷ P2.",
+      "Exemple : 6 L à 20 m (3 bar) remontés en surface (1 bar) : 3 × 6 ÷ 1 = 18 L. Le volume triple !"
+    ], tip: "Pressions TOUJOURS en absolu. Plus on remonte, plus ça gonfle." },
+  { id: "conso", title: "Consommation et autonomie", gen: ["conso", "autonomie"], m: ["mariotte"], re: "autonomie|consomm|bloc|réserve|litres",
+    steps: [
+      "Air disponible dans le bloc = volume du bloc (L) × pression utilisable (bar). Pression utilisable = pression du bloc − réserve.",
+      "Au fond, tu respires de l’air à la pression ambiante : ta consommation est <b>multipliée par la pression absolue</b>.",
+      "Consommation au fond (L/min) = consommation en surface × pression absolue.",
+      "Durée possible (min) = air disponible ÷ consommation au fond.",
+      "Exemple : bloc 15 L à 200 bar, réserve 50 bar → 15 × 150 = 2 250 L. À 20 m (3 bar), 20 L/min × 3 = 60 L/min. 2 250 ÷ 60 ≈ 37 min."
+    ], tip: "Air dispo = V × (P − réserve). Conso fond = conso surface × P abs." },
+  { id: "archimede", title: "Flottabilité (Archimède)", gen: ["lest", "relevage"], m: ["archimede"], re: "lest|flott|poussée|poids apparent|relevage|parachute",
+    steps: [
+      "Un objet dans l’eau est poussé vers le haut par une force égale au <b>poids de l’eau qu’il déplace</b> (la poussée d’Archimède).",
+      "Poussée (kg) = volume de l’objet (L) × densité de l’eau (1 en eau douce, environ 1,03 en mer).",
+      "Poids apparent = poids réel − poussée. Positif : il coule. Négatif : il flotte. Zéro : il est équilibré.",
+      "Pour équilibrer, on ajoute du lest (si ça flotte) ou du volume d’air (si ça coule) égal au poids apparent.",
+      "En mer l’eau est plus dense : la poussée est plus forte, il faut un peu plus de lest qu’en lac."
+    ], tip: "Poids apparent = poids réel − volume × densité." },
+  { id: "dalton", title: "Pressions partielles (Dalton)", gen: ["ppo2", "ppn2", "co"], m: ["dalton"], re: "partielle|pp ?o|pp ?n|ppo2|ppn2|dalton|monoxyde|co\\b",
+    steps: [
+      "L’air est un mélange : environ <b>21 % d’oxygène et 79 % d’azote</b>.",
+      "Chaque gaz « pèse » sa part de la pression totale : c’est sa pression partielle.",
+      "Pression partielle = <b>pression absolue × pourcentage du gaz</b> (en décimal : 21 % = 0,21).",
+      "N’oublie pas le +1 : la pression absolue à 30 m vaut 4 bar, donc PpO₂ = 4 × 0,21 = 0,84 bar.",
+      "Un gaz toxique (comme le CO) devient dangereux plus vite en profondeur, car sa pression partielle augmente avec la pression."
+    ], tip: "Pp = P abs × %. Toujours la pression absolue." },
+  { id: "maxo2", title: "Profondeur maximale d’un mélange", gen: ["maxo2"], m: ["dalton"], re: "profondeur maxi|limite|toxicité|nitrox",
+    steps: [
+      "On part de la limite de PpO₂ à ne pas dépasser (par exemple 1,6 bar).",
+      "Pression absolue maxi = PpO₂ limite ÷ pourcentage d’oxygène (en décimal).",
+      "On retire 1 bar d’air pour garder seulement la pression de l’eau.",
+      "Profondeur maxi = pression de l’eau × 10.",
+      "Exemple avec l’air : 1,6 ÷ 0,21 ≈ 7,6 bar → 7,6 − 1 = 6,6 → environ 66 m."
+    ], tip: "P abs max = Pp limite ÷ %, puis −1, puis × 10." },
+  { id: "deco", title: "Lire une procédure de décompression", gen: ["ligne", "remontee", "consec"], m: ["deco"], re: "palier|table|remontée|GPS|successive|consécutive",
+    steps: [
+      "On cherche la ligne avec la <b>profondeur réelle maximale</b> atteinte (si elle n’existe pas, on prend la suivante, plus profonde).",
+      "Puis la <b>durée</b> : du début de la descente au début de la remontée (si elle n’existe pas, on prend la suivante, plus longue).",
+      "On lit sur cette ligne les paliers et le groupe de plongée successive.",
+      "La vitesse de remontée se respecte jusqu’au premier palier, puis entre les paliers.",
+      "Les valeurs exactes dépendent de la table de ton club : vérifie toujours avec ton moniteur."
+    ], tip: "Toujours arrondir vers le plus défavorable : plus profond, plus long." },
+  { id: "o2", title: "Réserve d’oxygène (secours)", m: ["r-o2"], re: "débit|litres|bouteille d.oxyg|autonomie",
+    steps: [
+      "Oxygène disponible (L) = volume de la bouteille (L) × pression (bar).",
+      "Durée (min) = oxygène disponible ÷ débit (L/min).",
+      "Exemple : 5 L à 200 bar = 1 000 L. À 15 L/min : 1 000 ÷ 15 ≈ 66 min.",
+      "Garde une marge : on prévient les secours tôt, sans attendre la fin de la bouteille."
+    ], tip: "Litres = V × P. Durée = litres ÷ débit." },
+  { id: "charles", title: "Pression et température", m: ["mariotte", "materiel"], re: "température|chauffe|soleil|°C|kelvin",
+    steps: [
+      "À volume constant (un bloc fermé), la pression monte quand le gaz chauffe et baisse quand il refroidit.",
+      "La règle : P1 ÷ T1 = P2 ÷ T2, avec des températures en <b>kelvins</b> (°C + 273).",
+      "Exemple : bloc à 200 bar et 40 °C (313 K) plongé dans une eau à 15 °C (288 K) : 200 × 288 ÷ 313 ≈ 184 bar.",
+      "C’est pour ça qu’un bloc gonflé chaud semble « perdre » de la pression dans l’eau froide."
+    ], tip: "Températures en kelvins : + 273." }
+];
 
 /* content/fr/glossary.js */
 /* Abysse Academy · contenu FR · Glossaire illustré

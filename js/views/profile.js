@@ -26,7 +26,7 @@
         <section class="profile"><button class="ava-btn" id="avedit" aria-label="${t("ava.change")}">${AA.avatar.mine("lg")}<span class="ava-pen">${AA.icon("edit")}</span></button><div class="stack" style="gap:6px">
           <h1 style="font-size:var(--fs-2xl)">${u.esc(name)}</h1><span class="chip gold" style="justify-self:start">${t("prof.level", { l: lv.l, rank: u.esc(lv.rank) })}</span>
           ${ui.bar(lv.into / lv.need)}<span class="xs muted">${t("prof.toNext", { n: lv.need - lv.into })}</span>
-          <span class="xs muted">${t("ava.now", { s: AA.avatar.stage(lv.l) + 1, n: AA.avatar.STAGES.length, name: AA.i18n.raw("ava.stages")[AA.avatar.stage(lv.l)] })}${AA.avatar.next(lv.l) ? " · " + t("ava.nextAt", { l: AA.avatar.next(lv.l), name: AA.i18n.raw("ava.stages")[AA.avatar.stage(lv.l) + 1] }) : ""}</span>
+          <span class="xs muted">${t("ava.now", { s: AA.avatar.stage(lv.l) + 1, n: AA.avatar.STAGES.length, name: u.esc(AA.avatar.formName(AA.avatar.get(), lv.l)) })}${AA.avatar.next(lv.l) ? " · " + t("ava.nextAt", { l: AA.avatar.next(lv.l), name: u.esc(AA.avatar.formName(AA.avatar.get(), AA.avatar.next(lv.l))) }) : ""}</span>
           <button class="btn ghost sm" id="avedit2" style="justify-self:start">${AA.icon("edit")} ${t("ava.change")}</button></div></section>
         <div class="stats" style="margin-top:var(--sp-5)">
           <div class="stat"><b>${S.xp}</b><span>XP</span></div>
@@ -51,6 +51,7 @@
         <a class="btn ghost block" style="margin-top:var(--sp-5)" href="#/settings">${AA.icon("gear")} ${t("nav.settings")}</a>`;
       u.on(el, "click", ".tile", (e, b) => AA.router.go(b.dataset.t));
       u.$("#avedit").onclick = u.$("#avedit2").onclick = () => AA.avatar.picker(() => AA.router.refresh());
+      AA.avatar.checkEvolution();
     }
   });
 
@@ -134,7 +135,7 @@
           <p class="xs muted"><span class="chip ${navigator.onLine ? "ok" : "warn"}">${AA.icon(navigator.onLine ? "check" : "offline")} ${navigator.onLine ? t("set.online") : t("set.offline")}</span> ${t("set.offlineS")}</p></section>
         <section class="card" style="margin-top:var(--sp-4)" id="valider"><h3>${t("set.validate")}</h3><p class="small muted">${t("set.validateS")}</p>
           <div class="memo">${C.validate.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="small muted">${u.esc(b)}</span></div>`).join("")}</div></section>
-        <section class="card" style="margin-top:var(--sp-4)"><h3>${t("set.danger")}</h3><button class="btn ghost block" id="reset">${t("set.reset")}</button></section>
+        <section class="card danger-zone" style="margin-top:var(--sp-4)"><h3>${AA.icon("info")} ${t("set.danger")}</h3><p class="small muted">${t("rs.zoneS")}</p><button class="btn ghost block danger" id="reset">${t("set.reset")}</button></section>
         <p class="center xs muted" style="margin-top:var(--sp-5)">${t("app.name")} · v${AA.VERSION}<br>${t("set.about")}</p>`;
       u.$$("[data-theme]", el).forEach(b => b.onclick = () => { p.theme = b.dataset.theme; AA.store.save(); ui.applyTheme(); fx.sfx.tap(); AA.router.refresh(); });
       const lg = u.$("#lang"); if (lg) lg.onchange = () => { p.lang = lg.value; AA.store.save(true); location.reload(); };
@@ -155,7 +156,7 @@
       u.$("#gst").onchange = e => { p.gestures = e.target.checked; AA.store.save(); };
       u.$$("[data-vr]", el).forEach(b => b.onclick = () => { p.voiceRate = +b.dataset.vr; AA.store.save(); u.$$("[data-vr]", el).forEach(x => x.setAttribute("aria-pressed", x === b)); A.speak(t("set.voiceSample")); });
       const vt = u.$("#vtest"); if (vt) vt.onclick = () => A.speak(t("set.voiceSample"));
-      u.$("#reset").onclick = () => ui.confirm(t("set.resetQ"), t("set.resetYes"), () => { AA.store.reset(); msg(t("set.resetDone")); ui.hud(); AA.router.go("home"); });
+      u.$("#reset").onclick = () => AA.resetFlow();
       if (anchor) { const a = u.$("#" + anchor); if (a) setTimeout(() => a.scrollIntoView({ behavior: "smooth" }), 60); }
     }
   });

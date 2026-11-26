@@ -32,7 +32,7 @@ async function newPage(b, w, h) {
   return { ctx, p };
 }
 const ready = p => p.waitForFunction(() => window.AA && AA.router && AA.router.name && document.documentElement.classList.contains("ready"));
-const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA.S; S.profile.onboarded = true; S.profile.name = "Test"; S.xp = 500; AA.content.questions.slice(0, 30).forEach((q, i) => { S.stats[q.id] = { n: 2, ok: i % 2 }; if (i % 2) S.wrong[q.id] = { [(q.a + 1) % q.c.length]: 1 }; }); AA.store.save(true); }); };
+const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA.S; S.profile.onboarded = true; S.profile.name = "Test"; S.xp = 500; S.evoSeen = 9; S.profile.driveNag = "2099-01-01"; AA.content.questions.slice(0, 30).forEach((q, i) => { S.stats[q.id] = { n: 2, ok: i % 2 }; if (i % 2) S.wrong[q.id] = { [(q.a + 1) % q.c.length]: 1 }; }); AA.store.save(true); }); };
 
 (async () => {
   await new Promise(r => server.listen(PORT, r));
@@ -41,8 +41,8 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
     console.log("• Premier lancement");
     { const { ctx, p } = await newPage(b, 390, 844);
       await p.goto(URL); await p.waitForSelector("#onext");
-      for (let i = 0; i < 5; i++) { if (i === 1) await p.fill("#oname", "Test"); await p.click("#onext"); await p.waitForTimeout(150); }
-      ok(await p.evaluate(() => AA.router.name === "home" && AA.S.profile.onboarded), "accueil atteint après l’accueil en 5 étapes");
+      for (let i = 0; i < 6 && await p.$("#onext"); i++) { if (i === 1) await p.fill("#oname", "Test"); if (i === 5) ok(!!await p.$("#odrive"), "étape « Protège ta progression » (Google Drive conseillé)"); await p.click("#onext"); await p.waitForTimeout(150); }
+      ok(await p.evaluate(() => AA.router.name === "home" && AA.S.profile.onboarded), "accueil atteint après l’accueil");
       await ctx.close(); }
 
     console.log("• Écrans et largeurs");
@@ -88,6 +88,15 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok((await p.$$(".result")).length > 0, "la recherche trouve « narcose »");
       await p.goto(URL + "#/lesson/dalton"); await p.waitForTimeout(250);
       ok((await p.$$(".prose .gl")).length > 0, "mots du glossaire cliquables dans un cours");
+      /* Correction détaillée : méthode pas à pas + revoir le cours sans quitter */
+      await p.evaluate(() => AA.quiz.start("gen", [AA.game.gen("prof")], { title: "t", back: "home" })); await p.waitForTimeout(300);
+      const wrongCi = await p.evaluate(() => { const q = AA.ctx.items[0].q; return (q.a + 1) % q.c.length; });
+      await p.click(`.choice[data-ci="${wrongCi}"]`); await p.waitForTimeout(150);
+      const exp = await p.evaluate(() => ({ m: !!document.querySelector(".feedback details.method[open] ol li"), pit: !!document.querySelector(".feedback .pit"), rev: !!document.querySelector("#revcours") }));
+      await p.click("#revcours"); await p.waitForTimeout(200);
+      const sheet = await p.evaluate(() => !!document.querySelector(".rev-sheet .prose") && AA.router.name === "quiz");
+      ok(exp.m && exp.pit && exp.rev && sheet, "correction : méthode pas à pas, piège classique et cours sans quitter la série");
+      await p.keyboard.press("Escape");
       /* Labo : chaque tuile ouvre son propre écran */
       await p.goto(URL + "#/lab"); await p.waitForTimeout(200);
       const tiles = await p.$$eval("#view .tile", a => a.map(b => b.dataset.t)), opened = [];
@@ -117,6 +126,30 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       await p.click('[data-hair="2"]'); await p.click('[data-k="suit"] [data-v="3"]'); await p.click("#avok"); await p.waitForTimeout(200);
       ok(await p.evaluate(() => AA.S.profile.avatar && AA.S.profile.avatar.hair === 2 && AA.S.profile.avatar.suit === 3 && !!document.querySelector(".profile .ava")), "avatar modifié et enregistré");
       ok(await p.evaluate(() => { const a = AA.avatar; return a.stage(1) === 0 && a.stage(3) === 1 && a.stage(9) === 4 && /ava-s4/.test(a.svg(a.get(), 10)); }), "avatar : évolutions par niveau");
+      /* Compagnons : évolution */
+      await p.click("#avedit"); await p.waitForTimeout(150); await p.click('[data-kind="creature"]'); await p.waitForTimeout(100);
+      const nComp = (await p.$$(".ava-comp")).length; await p.click('.ava-comp[data-cid="poulpe"]'); await p.click("#avok"); await p.waitForTimeout(150);
+      ok(nComp >= 15 && await p.evaluate(() => { const a = AA.avatar, av = a.get(); return av.kind === "creature" && av.id === "poulpe" && a.formName(av, 1) === "Poulpinet" && a.formName(av, 9) === "Kraken des abysses"; }), `compagnons : ${nComp} au choix, le poulpe évolue en Kraken`);
+      /* Aquarium : décorer */
+      await p.evaluate(() => { AA.S.xp = 5000; AA.S.aqua = { castagnole: "2026-11-01", girelle: "2026-11-02" }; AA.store.save(true); });
+      await p.goto(URL + "#/aquarium"); await p.waitForTimeout(300); await p.click("#aqedit"); await p.waitForTimeout(250);
+      const dec = await p.$(".aq-dec.edit"); const bb = dec && await dec.boundingBox();
+      if (bb) { await p.mouse.move(bb.x + bb.width / 2, bb.y + bb.height / 2); await p.mouse.down(); await p.mouse.move(bb.x + bb.width / 2 + 60, bb.y + bb.height / 2, { steps: 5 }); await p.mouse.up(); }
+      const moved = await p.evaluate(() => Object.values(AA.S.aquaCfg.dec || {}).find(d => d.x != null) ? 1 : null);
+      await p.click('[data-tab="look"]'); await p.waitForTimeout(150); await p.click('[data-bg="lagon"]'); await p.waitForTimeout(150);
+      const bgOk = await p.evaluate(() => AA.S.aquaCfg.bg === "lagon" && !!document.querySelector(".tank.bg-lagon"));
+      ok(moved != null && bgOk, "aquarium : décor déplacé, fond changé (" + moved + ", " + bgOk + ")");
+      await p.click("#aqfeed"); await p.waitForTimeout(100);
+      ok(await p.evaluate(() => AA.S.fedOn === AA.u.today()), "aquarium : poissons nourris");
+      /* Réinitialisation : 3 étapes, bouton bloqué tant que le mot n'est pas tapé */
+      await p.goto(URL + "#/settings"); await p.waitForTimeout(200); await p.click("#reset"); await p.waitForTimeout(150);
+      await p.click("#rsnext"); await p.waitForTimeout(100);
+      const lock2 = await p.$eval("#rsnext", b => b.disabled); await p.check("#rsok"); await p.click("#rsnext"); await p.waitForTimeout(100);
+      await p.fill("#rsword", "effacer"); const lock3 = await p.$eval("#rsgo", b => b.disabled);
+      await p.waitForFunction(() => !document.querySelector("#rsgo").disabled, null, { timeout: 8000 }); await p.click("#rsgo"); await p.waitForTimeout(500);
+      ok(lock2 && lock3 && await p.evaluate(() => AA.S.xp === 0 && !AA.S.profile.onboarded && AA.router.name === "welcome"), "réinitialisation en 3 étapes, puis retour à l’accueil");
+      ok(await p.evaluate(async () => (await AA.store.snapshots()).some(s => s.reset)), "copie « avant réinitialisation » gardée");
+      await seed(p); await p.goto(URL + "#/profile"); await p.waitForTimeout(250);
       const pathW = await p.evaluate(() => { const s = document.querySelector(".path li>span"); return s ? s.getBoundingClientRect().width : 0; });
       ok(pathW > 200, "parcours vers E2 : texte sur toute la largeur (" + Math.round(pathW) + " px)");
       await ctx.close(); }

@@ -4,7 +4,8 @@
    avatar = { kind: "diver" | "creature" | "letter", skin, hair, hairC, suit, id }
    Évolutions (niveaux 1, 3, 5, 7, 9) : le plongeur s'équipe peu à peu,
    le cadre passe de l'eau claire au bronze, à l'argent, à l'or puis aux
-   abysses. Les créatures se choisissent parmi celles de l'aquarium.
+   abysses. Les compagnons (content/fr/companions.js) évoluent en 5 formes
+   avec chacune son nom, sa taille et ses couleurs, jusqu'à la forme légendaire.
    ===================================================================== */
 (function () {
   "use strict";
@@ -49,11 +50,41 @@
     return `<circle cx="50" cy="50" r="45" fill="${A.SUITS[av.suit] || A.SUITS[0]}" opacity=".85"/><text x="50" y="64" text-anchor="middle" font-size="42" font-weight="800" fill="#fff" font-family="var(--font-display),sans-serif">${u.esc(n)}</text>`;
   }
 
+  /* ---------- Compagnons qui évoluent ---------- */
+  const hex = h => { const m = /^#?([0-9a-f]{6})$/i.exec(h || ""); return m ? [0, 2, 4].map(i => parseInt(m[1].substr(i, 2), 16)) : null; };
+  const mix = (a, b, k) => { const x = hex(a), y = hex(b); if (!x || !y) return a; return "#" + x.map((v, i) => Math.round(v + (y[i] - v) * k).toString(16).padStart(2, "0")).join(""); };
+  A.comps = () => AA.content.companions || [];
+  /* Ancien choix (créature de l'aquarium) : on prend le compagnon de même forme. */
+  A.comp = id => { const L = A.comps(); let f = L.find(c => c.id === id); if (!f) { const cr = (AA.content.creatures || []).find(c => c.id === id); f = cr && L.find(c => c.shape === cr.shape); } return f || L[0]; };
+  A.colorsAt = (f, st) => st === 0 ? f.c.map(x => mix(x, "#FFFFFF", .45)) : st === 1 ? f.c.map(x => mix(x, "#FFFFFF", .18)) : st === 2 ? f.c : st === 3 ? f.c.map((x, i) => mix(x, f.L[i], .45)) : f.L;
+  A.formName = (av, l) => { const st = A.stage(l); if (av.kind === "creature") { const f = A.comp(av.id); return f ? f.n[st] : ""; } return AA.i18n.raw("ava.stages")[st]; };
   function creature(av, st) {
-    const c = (AA.content.creatures || []).find(x => x.id === av.id) || { shape: "fish", c: ["var(--primary)", "var(--accent)", "var(--gold)"] };
-    const s = .62 + st * .04, svg = AA.creature(c.shape, c.c).replace(/^<svg[^>]*>|<\/svg>$/g, "");
-    return `<g transform="translate(${50 - 60 * s} ${54 - 40 * s}) scale(${s})">${svg}</g><path d="M6 92q44-14 88 0v10H6z" fill="#E9D7A8" opacity=".55"/>`;
+    const f = A.comp(av.id); if (!f) return "";
+    const s = [.42, .52, .62, .7, .78][st], cols = A.colorsAt(f, st), svg = AA.creature(f.shape, cols).replace(/^<svg[^>]*>|<\/svg>$/g, "");
+    const top = 52 - 40 * s, gid = "cg" + (++uid);
+    let o = `<path d="M6 92q44-14 88 0v10H6z" fill="#E9D7A8" opacity=".5"/>`;
+    if (st >= 3) o += `<defs><radialGradient id="${gid}"><stop offset="0" stop-color="${f.L[1]}" stop-opacity=".55"/><stop offset="1" stop-color="${f.L[1]}" stop-opacity="0"/></radialGradient></defs><circle cx="50" cy="52" r="${30 + st * 3}" fill="url(#${gid})" class="ava-glow"/>`;
+    if (st === 0) o += `<circle cx="50" cy="52" r="24" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.55)" stroke-width="1.2"/><path d="M38 40a14 14 0 0 1 10-6" stroke="rgba(255,255,255,.8)" stroke-width="2" fill="none" stroke-linecap="round"/>`;
+    o += `<g transform="translate(${50 - 60 * s} ${52 - 40 * s}) scale(${s})">${svg}</g>`;
+    if (st >= 2) o += `<path d="M${50 - 6} ${top + 2}l3 -5 3 5 3 -5 3 5" fill="none" stroke="${st >= 3 ? "#F2C14E" : "rgba(255,255,255,.7)"}" stroke-width="1.6" stroke-linejoin="round" opacity="${st >= 4 ? 0 : .9}"/>`;
+    if (st >= 4) o += `<path d="M40 ${top - 1}l3-9 4 6 3-8 3 8 4-6 3 9z" fill="#F2C14E" stroke="#8E5A00" stroke-width=".8"/><circle cx="50" cy="${top - 9}" r="1.6" fill="#FFF3C4"/>`;
+    return o;
   }
+  /* Grande scène d'évolution (une fois par nouvelle forme), comme dans les jeux. */
+  A.checkEvolution = () => {
+    const S = AA.S, l = A.level(), st = A.stage(l);
+    if (S.evoSeen == null) { S.evoSeen = st; AA.store.save(true); return; }
+    if (st <= S.evoSeen) return;
+    const av = A.get(), from = A.STAGES[S.evoSeen], name0 = A.formName(av, from), name1 = A.formName(av, l);
+    S.evoSeen = st; AA.store.save(true);
+    setTimeout(() => {
+      AA.ui.sheet(`<div class="evo-scene"><p class="eyebrow">${AA.t("ava.evoT")}</p>
+        <div class="evo-stage"><div class="evo-old">${A.svg(av, from, "xl")}</div><div class="evo-new">${A.svg(av, l, "xl")}</div><div class="evo-flash"></div></div>
+        <h3>${AA.t("ava.evoS", { a: u.esc(name0), b: u.esc(name1) })}</h3><p class="small muted">${AA.t("ava.evoLvl", { l })}</p>
+        <button class="btn block" data-no>${AA.icon("check")} ${AA.t("ava.evoOk")}</button></div>`, AA.t("ava.evoT"));
+      AA.fx.sfx.up(); AA.fx.burst(innerWidth / 2, innerHeight / 2, 50, "rgba(242,193,78,.9)");
+    }, 400);
+  };
 
   function diver(av, st) {
     const skin = A.SKINS[av.skin] || A.SKINS[1], hc = A.HAIRC[av.hairC] || A.HAIRC[0], suit = A.SUITS[av.suit] || A.SUITS[0];
@@ -98,7 +129,6 @@
   A.picker = onDone => {
     const t = AA.t, S = AA.S, lv = A.level();
     let cur = A.get();
-    const unlocked = AA.content.creatures.filter(c => S.aqua[c.id]);
     const sw = (key, arr) => `<div class="ava-sw" data-k="${key}">${arr.map((c, i) => `<button class="dot-sw" data-v="${i}" style="--c:${c}" aria-pressed="${cur[key] === i}" aria-label="${i + 1}"></button>`).join("")}</div>`;
     const body = () => `
       <div class="ava-pick">
@@ -109,11 +139,11 @@
           <p class="eyebrow">${t("ava.hairC")}</p>${sw("hairC", A.HAIRC)}
           <p class="eyebrow">${t("ava.skin")}</p>${sw("skin", A.SKINS)}
           <p class="eyebrow">${t("ava.suit")}</p>${sw("suit", A.SUITS)}` : ""}
-        ${cur.kind === "creature" ? (unlocked.length ? `<p class="small muted" style="margin:0">${t("ava.creatureS", { n: unlocked.length, tot: AA.content.creatures.length })}</p>
-          <div class="ava-opts">${AA.content.creatures.map(c => S.aqua[c.id] ? `<button class="ava-opt" data-cid="${c.id}" aria-pressed="${cur.id === c.id}" aria-label="${u.esc(c.name)}">${A.svg({ kind: "creature", id: c.id }, 1)}</button>` : `<span class="ava-opt off" title="${u.esc(c.how)}">${AA.icon("lock")}</span>`).join("")}</div>` : `<p class="small muted">${t("ava.noCreature")}</p><a class="btn ghost sm" href="#/aquarium">${t("aqua.title")}</a>`) : ""}
+        ${cur.kind === "creature" ? `<p class="small muted" style="margin:0">${t("ava.compS", { n: A.comps().length })}</p>
+          <div class="ava-comps">${A.comps().map(c => `<button class="ava-comp" data-cid="${c.id}" aria-pressed="${A.comp(cur.id) === c}">${A.svg({ kind: "creature", id: c.id }, lv)}<span>${u.esc(c.n[A.stage(lv)])}</span></button>`).join("")}</div>` : ""}
         ${cur.kind === "letter" ? `<p class="eyebrow">${t("ava.suit")}</p>${sw("suit", A.SUITS)}` : ""}
         <p class="eyebrow">${t("ava.evo")}</p>
-        <div class="ava-evo">${A.STAGES.map((min, i) => `<div class="${lv >= min ? "" : "off"} ${A.stage(lv) === i ? "here" : ""}">${A.svg(cur, min)}<b>${t("ava.lvl", { l: min })}</b><span>${AA.i18n.raw("ava.stages")[i]}</span></div>`).join("")}</div>
+        <div class="ava-evo">${A.STAGES.map((min, i) => `<div class="${lv >= min ? "" : "off"} ${A.stage(lv) === i ? "here" : ""}">${A.svg(cur, min)}<b>${t("ava.lvl", { l: min })}</b><span>${u.esc(A.formName(cur, min))}</span></div>`).join("")}</div>
         <button class="btn block" id="avok">${AA.icon("check")} ${t("ava.save")}</button>
       </div>`;
     const close = AA.ui.sheet(`<h3 style="margin:0 2.5rem var(--sp-3) 0">${t("ava.title")}</h3><div id="avbody">${body()}</div>`, t("ava.title"));
@@ -122,7 +152,7 @@
     root.addEventListener("click", e => {
       const b = e.target.closest("button"); if (!b) return;
       if (b.id === "avok") { S.profile.avatar = cur; AA.store.save(true); AA.fx.sfx.ok(); close(); onDone && onDone(); return; }
-      if (b.dataset.kind) { cur.kind = b.dataset.kind; if (cur.kind === "creature" && !cur.id && unlocked[0]) cur.id = unlocked[0].id; }
+      if (b.dataset.kind) { cur.kind = b.dataset.kind; if (cur.kind === "creature" && !A.comps().some(c => c.id === cur.id)) cur.id = A.comp(cur.id).id; }
       else if (b.dataset.hair) cur.hair = +b.dataset.hair;
       else if (b.dataset.cid) cur.id = b.dataset.cid;
       else if (b.dataset.v) cur[b.parentNode.dataset.k] = +b.dataset.v;

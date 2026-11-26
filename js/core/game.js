@@ -100,7 +100,7 @@
     if (after.l > before) {
       AA.fx.sfx.up(); AA.fx.buzz([30, 60, 30]);
       const evo = AA.avatar && AA.avatar.stage(after.l) > AA.avatar.stage(before);
-      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.i18n.raw("ava.stages")[AA.avatar.stage(after.l)] }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
+      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.avatar.formName(AA.avatar.get(), after.l) }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
       AA.fx.burst(innerWidth / 2, innerHeight * .6, 40, "rgba(255,200,87,.9)");
     }
     AA.ui && AA.ui.hud();

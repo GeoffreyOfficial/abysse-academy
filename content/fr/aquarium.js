@@ -30,14 +30,39 @@ AA.content.addCreatures([
   { id: "manta", name: "Raie des îles", shape: "ray", c: ["#2E3C4A", "#EAF2F6", "#1E2832"], test: { k: "boss", w: "e1" }, how: "Vaincre la Raie des îles", fact: "Le trophée des initiateurs. Une grande raie qui plane au-dessus des tombants, comme en vol." }
 ]);
 
-/* Décors : ils s'ajoutent au fond de l'aquarium. kind : sand, rock, grass, gorgon, amphora, anchor, wreck, chest */
+/* Décors : on les place où on veut dans l'aquarium (mode « Décorer »).
+   kind : dessin dans js/views/aquarium.js. how : comment l'obtenir. */
 AA.content.addDecor([
-  { id: "sable", kind: "sand", name: "Sable fin", test: { k: "modulesDone", n: 0 } },
-  { id: "rocher", kind: "rock", name: "Rochers", test: { k: "level", n: 2 } },
-  { id: "posidonie", kind: "grass", name: "Herbier de posidonie", test: { k: "level", n: 3 } },
-  { id: "gorgone", kind: "gorgon", name: "Gorgone rouge", test: { k: "level", n: 5 } },
-  { id: "amphore", kind: "amphora", name: "Amphore", test: { k: "exam", min: 10 } },
-  { id: "ancre", kind: "anchor", name: "Vieille ancre", test: { k: "bossAny", n: 1 } },
-  { id: "epave", kind: "wreck", name: "Épave", test: { k: "level", n: 10 } },
-  { id: "coffre", kind: "chest", name: "Coffre", test: { k: "worldStars", w: "n2", n: "all", min: 3 } }
+  { id: "sable", kind: "shells", name: "Coquillages", how: "Dès le départ", test: { k: "modulesDone", n: 0 } },
+  { id: "rocher", kind: "rock", name: "Rochers", how: "Niveau 2", test: { k: "level", n: 2 } },
+  { id: "posidonie", kind: "grass", name: "Herbier de posidonie", how: "Niveau 3", test: { k: "level", n: 3 } },
+  { id: "gorgone", kind: "gorgon", name: "Gorgone rouge", how: "Niveau 5", test: { k: "level", n: 5 } },
+  { id: "amphore", kind: "amphora", name: "Amphore", how: "10/20 ou plus à un examen", test: { k: "exam", min: 10 } },
+  { id: "ancre", kind: "anchor", name: "Vieille ancre", how: "Vaincre un boss", test: { k: "bossAny", n: 1 } },
+  { id: "epave", kind: "wreck", name: "Épave", how: "Niveau 10", test: { k: "level", n: 10 } },
+  { id: "coffre", kind: "chest", name: "Coffre", how: "3 étoiles partout en N2", test: { k: "worldStars", w: "n2", n: "all", min: 3 } },
+  { id: "anemone", kind: "anemone", name: "Anémone", how: "Niveau 2", test: { k: "level", n: 2 } },
+  { id: "bulleur", kind: "bubbler", name: "Diffuseur de bulles", how: "Niveau 3", test: { k: "level", n: 3 } },
+  { id: "oursins", kind: "urchins", name: "Oursins", how: "3 jours d’affilée", test: { k: "streak", n: 3 } },
+  { id: "corail", kind: "coral", name: "Corail cerveau", how: "Niveau 4", test: { k: "level", n: 4 } },
+  { id: "lanterne", kind: "lantern", name: "Lanterne", how: "3 sessions « 5 minutes »", test: { k: "five", n: 3 } },
+  { id: "colonne", kind: "column", name: "Colonne antique", how: "Finir une aventure", test: { k: "story", n: 1 } },
+  { id: "benitier", kind: "clam", name: "Bénitier", how: "300 réponses", test: { k: "answers", n: 300 } },
+  { id: "scaphandre", kind: "helmet", name: "Casque de scaphandrier", how: "Niveau 6", test: { k: "level", n: 6 } },
+  { id: "laminaires", kind: "kelp", name: "Laminaires géantes", how: "Niveau 7", test: { k: "level", n: 7 } },
+  { id: "arche", kind: "arch", name: "Arche rocheuse", how: "Niveau 8", test: { k: "level", n: 8 } },
+  { id: "statue", kind: "statue", name: "Statue engloutie", how: "Vaincre 2 boss", test: { k: "bossAny", n: 2 } },
+  { id: "phare", kind: "lighthouse", name: "Petit phare", how: "Niveau 9", test: { k: "level", n: 9 } }
 ]);
+
+/* Fonds d'aquarium et sols, débloqués avec le niveau. */
+AA.content.aquaBgs = [
+  { id: "med", name: "Méditerranée", lvl: 1 }, { id: "lagon", name: "Lagon", lvl: 2 }, { id: "sunset", name: "Coucher de soleil", lvl: 4 },
+  { id: "grotte", name: "Grotte", lvl: 6 }, { id: "recif", name: "Récif tropical", lvl: 8 }, { id: "abysse", name: "Abysses", lvl: 10 }
+];
+AA.content.aquaFloors = [{ id: "sand", name: "Sable fin", lvl: 1 }, { id: "pebble", name: "Galets", lvl: 3 }, { id: "black", name: "Sable volcanique", lvl: 6 }];
+/* Taille de l'aquarium selon le niveau : nombre d'habitants visibles et bonus. */
+AA.content.aquaTiers = [
+  { lvl: 1, name: "Bocal", max: 4, size: .8 }, { lvl: 3, name: "Aquarium", max: 8, size: .9 }, { lvl: 5, name: "Grand bac", max: 12, size: 1 },
+  { lvl: 7, name: "Lagon privé", max: 18, size: 1.1 }, { lvl: 9, name: "Océan", max: 99, size: 1.2 }
+];

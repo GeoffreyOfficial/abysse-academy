@@ -97,6 +97,9 @@ C.pitfalls.forEach(p => {
 });
 const shapes = fs.readFileSync(path.join(ROOT, "js/ui/creatures.js"), "utf8");
 C.creatures.forEach(f => { ok(new RegExp("\\b" + f.shape + ":").test(shapes), `espèce ${f.id} : forme ${f.shape} inconnue`); ok(f.test && f.test.k, `espèce ${f.id} : condition manquante`); });
+(C.companions || []).forEach(f => { ok(new RegExp("\\b" + f.shape + ":").test(shapes), `compagnon ${f.id} : forme inconnue`); ok(f.n && f.n.length === 5 && f.c.length === 3 && f.L.length === 3, `compagnon ${f.id} : 5 noms et 2 palettes attendus`); });
+ok(new Set((C.companions || []).map(f => f.id)).size === (C.companions || []).length && C.companions.length >= 15, "compagnons : au moins 15, identifiants uniques");
+C.decor.forEach(d => ok(d.how && d.test, `décor ${d.id} : condition manquante`));
 C.worlds.filter(w => w.boss).forEach(w => { ok(new RegExp("\\b" + w.boss.creature + ":").test(shapes), `boss ${w.id} : créature inconnue`); ok(w.boss.hp <= w.boss.n, `boss ${w.id} : plus de points de vie que de questions`); });
 
 section("Textes d'interface");
