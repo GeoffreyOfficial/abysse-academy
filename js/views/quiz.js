@@ -47,7 +47,7 @@
     Q.start("exam", u.shuffle(pick.slice(0, n - nc).concat(rest, calcs)), { full, timeLeft: (full ? 45 : 20) * 60, title: t(full ? "mode.examFull" : "mode.examQuick"), back: "train" });
   };
   Q.apnee = () => Q.start("apnee", u.shuffle(C.questions.filter(q => q.world === G.goalWorld() && G.unlocked(q.m))), { time: 60, title: t("mode.apnee"), back: "train" });
-  Q.computer = () => Q.start("pc", u.shuffle(C.computer), { title: t("mode.pc"), back: "lab" });
+  Q.computer = n => Q.start("pc", u.shuffle(C.computer).slice(0, n || C.computer.length), { title: t("mode.pc"), back: "pc", n });
   Q.duel = (a, b) => {
     const qs = u.shuffle(C.questions.filter(q => q.world === "n2" && q.lvl !== 2)).slice(0, 6).concat([G.gen(), G.gen()]);
     Q.start("duel", qs, { players: [a, b], turn: 0, qs, scores: [], times: [], title: t("mode.duel"), back: "club" });
@@ -83,7 +83,7 @@
     else if (m === "apnee") Q.apnee();
     else if (m === "daily") Q.daily();
     else if (m === "errors") Q.errors();
-    else if (m === "pc") Q.computer();
+    else if (m === "pc") Q.computer(c.n);
     else if (m === "stale") Q.stale();
     else if (m === "boss") Q.boss(c.world);
     else if (m === "five") Q.five();
@@ -265,6 +265,7 @@
     const n = c.mode === "apnee" ? c.answers.length : c.items.length, good = c.answers.filter(a => a.ok).length;
     const pct = Math.round(good / Math.max(n, 1) * 100);
     let head = "", sub = "", extra = "";
+    if (c.mode === "pc" && !c.pcSaved) { c.pcSaved = true; S.pcBest = Math.max(S.pcBest || 0, pct); S.pcRuns = (S.pcRuns || 0) + 1; AA.store.save(); }
     if (c.mode === "exam") {
       const score = Math.round(good / n * 20 * 2) / 2;
       if (!c.saved) { S.exams.push({ date: u.today(), score, full: !!c.full }); c.saved = true; AA.store.save(); G.checkBadges(); }

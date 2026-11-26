@@ -15,13 +15,15 @@
   const FRESH = () => ({
     schema: SCHEMA, savedAt: 0, createdAt: u.today(),
     profile: { name: "", goal: "n2", dailyGoal: 20, theme: "abysse", lang: "fr", sound: true, haptics: true, onboarded: false, examDate: "", imported: false,
-      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "" },
+      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "", avatar: null },
     xp: 0, days: [], themes: {}, stats: {}, seen: {}, last: {}, errors: {}, doubt: {}, exams: [],
     cards: {}, table: [], daily: {}, scen: {}, simOk: 0, flashCount: 0, duels: 0, apnee: 0, bestCombo: 0, rescued: 0,
     badges: {}, claimed: {}, real: {}, dayc: {}, keepDone: false, keepDay: "", qod: "",
     read: {}, notes: {}, unlockAll: false,
     /* v3 (Abysse Academy 1.1) */
-    wrong: {}, aqua: {}, boss: {}, story: {}, five: 0, glossSeen: {}, searches: []
+    wrong: {}, aqua: {}, boss: {}, story: {}, five: 0, glossSeen: {}, searches: [],
+    /* 1.1.1 */
+    qodAns: null, pcBest: 0, pcRuns: 0
   });
 
   /* Migrations : de la version N vers N+1. Ajoute la suivante ici. */
@@ -146,7 +148,7 @@
   store.merge = (a, b) => {
     const [o, n] = (a.savedAt || 0) >= (b.savedAt || 0) ? [b, a] : [a, b]; /* n = la plus récente */
     const r = u.clone(n), max = (x, y) => Math.max(x || 0, y || 0);
-    ["simOk", "flashCount", "duels", "apnee", "bestCombo", "rescued", "five"].forEach(k => (r[k] = max(o[k], n[k])));
+    ["simOk", "flashCount", "duels", "apnee", "bestCombo", "rescued", "five", "pcBest", "pcRuns"].forEach(k => (r[k] = max(o[k], n[k])));
     r.days = Array.from(new Set((o.days || []).concat(n.days || []))).sort().slice(-400);
     r.xp = max(o.xp, n.xp);
     const byKey = (k, pick) => { r[k] = Object.assign({}, o[k] || {}); Object.entries(n[k] || {}).forEach(([id, v]) => { r[k][id] = r[k][id] == null ? v : pick(r[k][id], v); }); };

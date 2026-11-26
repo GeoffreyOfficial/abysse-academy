@@ -7,6 +7,7 @@ Appli d’apprentissage de la plongée, ludique et hors ligne : N2 et PA20, RIFA
 - **Mémoire** : révisions espacées (flashcards en 5 boîtes), « Sauvetage » des erreurs, rappel des thèmes non revus depuis 10 jours, bouton « Je doute ».
 - **Labo** : simulateur de plongée, mode ordinateur, scénarios d’accident, atelier tables (ta propre table du club), calculette.
 - **Nouveautés 1.1** : fond marin qui change avec la profondeur, carte en parallaxe avec un plongeur qui descend, boss de fin de monde, aventures à choix, aquarium personnel, mode « 5 minutes », recherche globale, glossaire illustré, page « Mes erreurs fréquentes », gestes tactiles, taille du texte, mode daltonien, lecture vocale.
+- **1.1.1** : avatar au choix (plongeur, créature de ton aquarium ou initiale) qui s’équipe en 5 évolutions avec ton niveau ; simulateur avec pause (touche Espace), grandes commandes et pause automatique à la première alarme ; écran d’accueil du mode ordinateur ; question du jour gardée après fermeture ; correction des clics qui ouvraient le mauvais écran et du parcours vers E2 écrasé.
 - **Partout** : du petit téléphone (Z Fold fermé) à l’écran 4K. Sur ordinateur, menu latéral, colonnes, raccourcis clavier (`/` ou Ctrl+K pour chercher, A à D pour répondre, Entrée pour continuer).
 - **Hors ligne** : appli installable (PWA). Progression stockée sur l’appareil (IndexedDB + localStorage), copies de secours quotidiennes.
 - **Synchro** : Google Drive entre téléphone et ordinateur (un seul fichier, droit `drive.file`), ou transfert sans compte par lien ou fichier.

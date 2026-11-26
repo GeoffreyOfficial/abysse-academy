@@ -88,6 +88,8 @@
     text: S('<path d="M4 20l5-14 5 14M6 15h6M15 20l3-8 3 8M16 18h4"/>'),
     eye: S('<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
     stop: S('<rect x="6" y="6" width="12" height="12" rx="2"/>', true),
+    pause: S('<rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/>', true),
+    edit: S('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>'),
     transfer: S('<path d="M7 7h13l-4-4M17 17H4l4 4"/>'),
     shell: S('<path d="M12 21c-5 0-9-3-9-8 0-4 4-9 9-9s9 5 9 9c0 5-4 8-9 8zM12 21V8M7 18l3-9M17 18l-3-9M4 14l5-4M20 14l-5-4"/>'),
     offline: S('<path d="M2 8.5a16 16 0 0120 0M5 12a11 11 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01M3 3l18 18"/>'),

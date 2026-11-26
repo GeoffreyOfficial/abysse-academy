@@ -51,7 +51,9 @@
       reg.addEventListener("updatefound", () => { const w = reg.installing; w && w.addEventListener("statechange", () => { if (w.state === "installed" && navigator.serviceWorker.controller) ask(w); }); });
       setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
     }).catch(() => {});
-    let reloaded = false;
-    navigator.serviceWorker.addEventListener("controllerchange", () => { if (!reloaded) { reloaded = true; location.reload(); } });
+    /* Recharger seulement lors d'une mise à jour, pas à la première installation
+       (sinon la page se recharge pendant l'accueil). */
+    let reloaded = false, had = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener("controllerchange", () => { if (!had) { had = true; return; } if (!reloaded) { reloaded = true; location.reload(); } });
   };
 })();

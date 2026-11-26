@@ -312,3 +312,25 @@ AA.i18n.add("fr", {
   "set.voiceSample": "Pression absolue égale un, plus la profondeur divisée par dix.", "set.noVoice": "La lecture vocale n’est pas disponible sur ce navigateur.",
   "set.online": "En ligne", "set.offline": "Hors ligne", "set.offlineS": "Une fois installée, l’appli marche entièrement sans réseau."
 });
+
+/* 1.1.1 : avatar, simulateur, mode ordinateur */
+AA.i18n.add("fr", {
+  "ava.title": "Ton avatar", "ava.change": "Changer d’avatar", "ava.save": "Garder cet avatar",
+  "ava.kind.diver": "Plongeur", "ava.kind.creature": "Créature", "ava.kind.letter": "Initiale",
+  "ava.hair": "Coiffure", "ava.hairs": ["Court", "Long", "Chignon", "Ras"], "ava.hairC": "Couleur des cheveux", "ava.skin": "Peau", "ava.suit": "Combinaison",
+  "ava.creatureS": "Les créatures de ton aquarium ({n} sur {tot}). Les autres se débloquent en jouant.", "ava.noCreature": "Ton aquarium est encore vide. Termine un premier thème pour accueillir ta première créature.",
+  "ava.evo": "Évolutions", "ava.lvl": "Niveau {l}",
+  "ava.stages": ["Masque sur le front", "Masque et tuba", "Bloc et détendeur", "Cagoule et phare", "Aura des abysses"],
+  "ava.now": "Évolution {s}/{n} : {name}", "ava.nextAt": "prochaine au niveau {l} ({name})", "ava.evolved": "Ton avatar évolue : {name} !",
+  "pc.intro": "Un écran d’ordinateur, une situation. À toi de lire les chiffres et de choisir la bonne décision, comme sous l’eau.",
+  "pc.demo": "Exemple d’écran. Les vrais écrans varient selon les marques : regarde la notice du tien.",
+  "pc.readT": "Lire l’écran",
+  "pc.legend": [["PROF", "Profondeur actuelle"], ["NDL", "Temps restant sans palier obligatoire"], ["PALIER", "Palier obligatoire : profondeur et durée"], ["SÉCU", "Palier de sécurité conseillé"], ["▮▮▮", "Vitesse de remontée : plus il y a de barres, plus tu montes vite"], ["AIR", "Pression du bloc ou alarme en cours"]],
+  "pc.quick": "Série rapide", "pc.quickS": "{n} situations au hasard", "pc.all": "Toutes les situations", "pc.allS": "Les {n} écrans à la suite",
+  "pc.best": "Record {n} %", "pc.stats": "Meilleur score : {b} % · {r} série(s) jouée(s).",
+  "pc.validate": "Chaque ordinateur a ses réglages et ses alarmes. Fais valider tes réflexes par ton moniteur avec ton propre ordinateur.",
+  "sim.howBtn": "Comment jouer", "sim.how": ["Appuie sur « Descendre » pour commencer la plongée.", "« Stabiliser » te garde à la même profondeur, « Remonter » te fait monter à la vitesse choisie.", "« Pause » fige le temps : prends le temps de réfléchir, rien ne bouge.", "À la première alarme, le simulateur se met en pause tout seul pour que tu décides calmement.", "But : revenir en surface sans alarme. Astuce : 10 m/min maxi et un arrêt à 3 m."],
+  "sim.pad": "Commandes du plongeur", "sim.holdS": "même profondeur", "sim.pause": "Pause", "sim.resume": "Reprendre", "sim.spaceKey": "touche Espace",
+  "sim.paused": "En pause", "sim.pausedS": "Le temps est figé. Réfléchis, puis choisis une action ou reprends.", "sim.thinkS": "Que fais-tu ? Choisis une action, le temps reprendra.", "sim.backS": "Tu reprends là où tu t’étais arrêté.",
+  "sim.settings": "Réglages", "sim.autoPause": "Pause automatique à chaque nouvelle alarme", "sim.start": "Appuie sur ▼ Descendre pour commencer"
+});

@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console.error("  ✗ " + m); } };
 const WIDTHS = [[280, 653], [390, 844], [884, 1104], [1440, 900], [3840, 2160]];
-const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup"];
+const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup"];
 
 async function newPage(b, w, h) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
@@ -88,6 +88,37 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok((await p.$$(".result")).length > 0, "la recherche trouve « narcose »");
       await p.goto(URL + "#/lesson/dalton"); await p.waitForTimeout(250);
       ok((await p.$$(".prose .gl")).length > 0, "mots du glossaire cliquables dans un cours");
+      /* Labo : chaque tuile ouvre son propre écran */
+      await p.goto(URL + "#/lab"); await p.waitForTimeout(200);
+      const tiles = await p.$$eval("#view .tile", a => a.map(b => b.dataset.t)), opened = [];
+      for (const id of tiles) { await p.goto(URL + "#/lab"); await p.waitForTimeout(150); await p.click(`.tile[data-t="${id}"]`); await p.waitForTimeout(250); opened.push(await p.evaluate(() => AA.router.name) === id ? id : id + "→" + await p.evaluate(() => AA.router.name)); }
+      ok(opened.every(x => !x.includes("→")), "chaque tuile du labo ouvre son écran : " + opened.join(", "));
+      await p.goto(URL + "#/pc"); await p.waitForTimeout(200); await p.click('.tile[data-t="quick"]'); await p.waitForFunction(() => AA.router.name === "quiz", null, { timeout: 4000 }).catch(() => {});
+      ok(await p.evaluate(() => AA.router.name === "quiz" && AA.ctx.mode === "pc" && AA.ctx.items.length === 6 && !!document.querySelector("#view .dc")), "mode ordinateur : série rapide avec écran");
+      await p.goto(URL + "#/lab"); await p.waitForTimeout(150); await p.click(`.tile[data-t="scen"]`); await p.waitForTimeout(250); const sid = await p.$eval("#view .tile", b => b.dataset.t); await p.click("#view .tile"); await p.waitForTimeout(250);
+      ok(await p.evaluate(s => location.hash === "#/scen/" + s && !!document.querySelector(".qcard"), sid), "scénario ouvert depuis le labo (aucun clic fantôme)");
+      /* Simulateur : pause */
+      await p.goto(URL + "#/sim"); await p.waitForTimeout(250); await p.click("#sdown"); await p.waitForTimeout(600);
+      await p.click("#spp"); const t1 = await p.evaluate(() => AA.ctx.sim.t); await p.waitForTimeout(600);
+      const t2 = await p.evaluate(() => AA.ctx.sim.t), shown = await p.isVisible("#spause");
+      await p.keyboard.press("Space"); await p.waitForTimeout(500); const t3 = await p.evaluate(() => AA.ctx.sim.t);
+      ok(t1 > 0 && t1 === t2 && shown && t3 > t2, "simulateur : la pause fige le temps, Espace reprend");
+      await p.evaluate(() => { AA.ctx.sim = null; });
+      /* Question du jour : la réponse reste après un redémarrage */
+      await p.goto(URL + "#/home"); await p.waitForTimeout(250);
+      if (await p.$("#qod .choice")) {
+        await p.click("#qod .choice >> nth=1"); await p.waitForTimeout(150); const xp1 = await p.evaluate(() => AA.S.xp);
+        await p.reload(); await ready(p); await p.goto(URL + "#/home"); await p.waitForTimeout(300);
+        const st = await p.evaluate(() => ({ dis: [...document.querySelectorAll("#qod .choice")].every(b => b.disabled), good: !!document.querySelector("#qod .choice.good"), fb: !!document.querySelector("#qodx .feedback") }));
+        ok(st.dis && st.good && st.fb && await p.evaluate(() => AA.S.xp) === xp1, "question du jour : réponse gardée après redémarrage");
+      } else ok(false, "question du jour absente");
+      /* Avatar */
+      await p.goto(URL + "#/profile"); await p.waitForTimeout(200); await p.click("#avedit"); await p.waitForTimeout(150);
+      await p.click('[data-hair="2"]'); await p.click('[data-k="suit"] [data-v="3"]'); await p.click("#avok"); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => AA.S.profile.avatar && AA.S.profile.avatar.hair === 2 && AA.S.profile.avatar.suit === 3 && !!document.querySelector(".profile .ava")), "avatar modifié et enregistré");
+      ok(await p.evaluate(() => { const a = AA.avatar; return a.stage(1) === 0 && a.stage(3) === 1 && a.stage(9) === 4 && /ava-s4/.test(a.svg(a.get(), 10)); }), "avatar : évolutions par niveau");
+      const pathW = await p.evaluate(() => { const s = document.querySelector(".path li>span"); return s ? s.getBoundingClientRect().width : 0; });
+      ok(pathW > 200, "parcours vers E2 : texte sur toute la largeur (" + Math.round(pathW) + " px)");
       await ctx.close(); }
 
     console.log("• Sauvegardes");

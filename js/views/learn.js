@@ -52,7 +52,7 @@
   });
   function soon(w) {
     return `<section class="card soft stack" style="margin-top:var(--sp-4)"><h3>${t("map.soonT")}</h3><p class="muted">${t("map.soonS")}</p>
-      <ul class="path">${AA.i18n.raw("map.soonList").map(x => `<li><span></span><span><b>${x[0]}</b><span>${x[1]}</span></span></li>`).join("")}</ul></section>`;
+      <ul class="path">${AA.i18n.raw("map.soonList").map(x => `<li><span><b>${x[0]}</b><span>${x[1]}</span></span></li>`).join("")}</ul></section>`;
   }
   /* Le plongeur (vue de profil, tête vers la droite). */
   const diverSvg = () => `<svg viewBox="0 0 64 40" aria-hidden="true"><g class="dv-body">

@@ -72,7 +72,7 @@
       const ns = G.nextStep();
       const qod = G.qod();
       el.innerHTML = `
-        <header class="hello"><h1>${hello}</h1><p>${line}</p></header>
+        <header class="hello has-ava"><a class="ava-link" href="#/profile" aria-label="${t("tab.profile")}">${AA.avatar.mine("md")}</a><div><h1>${hello}</h1><p>${line}</p></div></header>
         <div class="home-grid"><div class="col-main">
         <section class="card today" style="margin-top:var(--sp-5)">
           ${AA.ui.ring(done / goal, Math.min(done, 999), "/ " + goal, done >= goal)}
@@ -109,14 +109,18 @@
       u.$("#five").onclick = () => { fx.sfx.tap(); AA.quiz.five(); };
       u.$("#rescue").onclick = () => AA.quiz.errors();
       const sb = u.$("#stale"); if (sb) sb.onclick = () => AA.quiz.stale();
-      u.$$("#qod .choice").forEach(b => b.onclick = () => {
-        const i = +b.dataset.qi, ok = i === qod.a;
+      const showQod = (i, b, fresh) => {
+        const ok = i === qod.a;
         u.$$("#qod .choice").forEach(x => { x.disabled = true; const k = +x.dataset.qi; if (k === qod.a) { x.classList.add("good"); u.$(".mk", x).innerHTML = AA.icon("check"); } else if (k === i) { x.classList.add("wrong"); u.$(".mk", x).innerHTML = AA.icon("x"); } });
         u.$("#qodx").innerHTML = `<div class="feedback ${ok ? "ok" : "bad"}"><h4>${ok ? t("home.qodOk") : t("quiz.bad")}</h4><p>${u.esc(qod.e)}</p><a class="small" href="#/lesson/${qod.m}">${t("result.toLesson", { title: u.esc(C.moduleTitle(qod.m)) })}</a></div>`;
+        if (!fresh) { u.$("#qod").classList.add("answered"); return; }
+        S.qodAns = { d: u.today(), id: qod.id, pick: i, ok };
         G.record(qod, ok);
         if (ok) { fx.sfx.ok(); fx.burstAt(b, 18, "rgba(61,220,151,.85)"); if (S.qod !== u.today()) { S.qod = u.today(); G.addXp(15, b); } } else { fx.sfx.bad(); fx.buzz([40, 40, 40]); }
-        AA.store.save(); G.checkBadges();
-      });
+        AA.store.save(true); G.checkBadges();
+      };
+      u.$$("#qod .choice").forEach(b => b.onclick = () => showQod(+b.dataset.qi, b, true));
+      const QA = S.qodAns; if (qod && QA && QA.d === u.today() && QA.id === qod.id) showQod(QA.pick, null, false);
     }
   });
 })();

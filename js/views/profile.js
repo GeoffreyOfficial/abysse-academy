@@ -23,9 +23,11 @@
       const weak = G.weakModules(3), claim = G.claimable();
       const name = S.profile.name || t("home.diver");
       el.innerHTML = `
-        <section class="profile"><div class="avatar">${u.esc(name.slice(0, 1).toUpperCase())}</div><div class="stack" style="gap:6px">
+        <section class="profile"><button class="ava-btn" id="avedit" aria-label="${t("ava.change")}">${AA.avatar.mine("lg")}<span class="ava-pen">${AA.icon("edit")}</span></button><div class="stack" style="gap:6px">
           <h1 style="font-size:var(--fs-2xl)">${u.esc(name)}</h1><span class="chip gold" style="justify-self:start">${t("prof.level", { l: lv.l, rank: u.esc(lv.rank) })}</span>
-          ${ui.bar(lv.into / lv.need)}<span class="xs muted">${t("prof.toNext", { n: lv.need - lv.into })}</span></div></section>
+          ${ui.bar(lv.into / lv.need)}<span class="xs muted">${t("prof.toNext", { n: lv.need - lv.into })}</span>
+          <span class="xs muted">${t("ava.now", { s: AA.avatar.stage(lv.l) + 1, n: AA.avatar.STAGES.length, name: AA.i18n.raw("ava.stages")[AA.avatar.stage(lv.l)] })}${AA.avatar.next(lv.l) ? " · " + t("ava.nextAt", { l: AA.avatar.next(lv.l), name: AA.i18n.raw("ava.stages")[AA.avatar.stage(lv.l) + 1] }) : ""}</span>
+          <button class="btn ghost sm" id="avedit2" style="justify-self:start">${AA.icon("edit")} ${t("ava.change")}</button></div></section>
         <div class="stats" style="margin-top:var(--sp-5)">
           <div class="stat"><b>${S.xp}</b><span>XP</span></div>
           <div class="stat"><b>${tot[0] ? Math.round(tot[1] / tot[0] * 100) + " %" : "—"}</b><span>${t("prof.acc", { n: tot[0] })}</span></div>
@@ -45,9 +47,10 @@
         <div class="section-title"><h3>${t("prof.trophies")}</h3><span class="muted small">${got} / ${C.badges.length}</span></div>
         <div class="trophies">${C.badges.map(b => `<div class="trophy ${S.badges[b.id] ? "" : "off"}"><div class="medal">${AA.icon(b.icon)}</div><b>${u.esc(b.name)}</b><span>${u.esc(b.desc)}</span></div>`).join("")}</div>
         <div class="section-title"><h3>${t("prof.path")}</h3></div>
-        <section class="card"><ol class="path">${C.roadmap.map(r => `<li class="${r.done ? "done" : r.here ? "here" : ""}"><span></span><span><b>${u.esc(r.t)}</b><span>${u.esc(r.d)}</span></span></li>`).join("")}</ol></section>
+        <section class="card"><ol class="path">${C.roadmap.map(r => `<li class="${r.done ? "done" : r.here ? "here" : ""}"><span><b>${u.esc(r.t)}</b><span>${u.esc(r.d)}</span></span></li>`).join("")}</ol></section>
         <a class="btn ghost block" style="margin-top:var(--sp-5)" href="#/settings">${AA.icon("gear")} ${t("nav.settings")}</a>`;
       u.on(el, "click", ".tile", (e, b) => AA.router.go(b.dataset.t));
+      u.$("#avedit").onclick = u.$("#avedit2").onclick = () => AA.avatar.picker(() => AA.router.refresh());
     }
   });
 

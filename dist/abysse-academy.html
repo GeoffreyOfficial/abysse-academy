@@ -840,6 +840,68 @@ mark.hl{animation:hl 2.2s var(--ease)} @keyframes hl{0%,30%{background:var(--gol
   .section-title{flex-wrap:wrap}
 }
 
+/* ===== 1.1.1 ===== */
+/* Parcours : texte sur toute la largeur (corrige la colonne étroite) */
+.path li>span{font-size:inherit;color:inherit;min-width:0}
+.path li>span>span{display:block;font-size:var(--fs-sm);color:var(--muted)}
+.path li b{color:var(--ink)}
+
+/* Avatar */
+.ava{display:block;width:100%;height:auto;overflow:visible}
+.ava.md{width:3.4rem} .ava.lg{width:5.6rem} .ava.xl{width:9rem;margin:0 auto}
+.ava-s4 .ava-glow{animation:ava-glow 3s ease-in-out infinite}
+@keyframes ava-glow{50%{opacity:.15}}
+.reduce-motion .ava-glow{animation:none}
+.ava-btn{position:relative;border:0;background:none;padding:0;cursor:pointer;border-radius:50%}
+.ava-btn:focus-visible{outline:3px solid var(--primary);outline-offset:3px}
+.ava-pen{position:absolute;right:-2px;bottom:6px;width:1.7rem;height:1.7rem;border-radius:50%;display:grid;place-items:center;background:var(--primary);color:var(--primary-ink,#04222b);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.ava-pen svg{width:1rem;height:1rem}
+.hello.has-ava{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-3);align-items:center}
+.ava-link{display:block;border-radius:50%}
+.ava-pick{display:grid;gap:var(--sp-3)} .ava-pick .eyebrow{margin:var(--sp-2) 0 0}
+.ava-prev{padding:var(--sp-2) 0}
+.ava-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(3.6rem,1fr));gap:8px}
+.ava-opt{display:grid;place-items:center;aspect-ratio:1;border:2px solid var(--line);border-radius:50%;background:var(--surface-2);padding:2px;color:var(--muted);cursor:pointer}
+.ava-opt[aria-pressed="true"]{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.ava-opt.off{cursor:default;opacity:.5} .ava-opt.off svg{width:1.2rem}
+.ava-sw{display:flex;flex-wrap:wrap;gap:10px}
+.dot-sw{width:2.4rem;height:2.4rem;border-radius:50%;background:var(--c);border:3px solid var(--surface);box-shadow:0 0 0 2px var(--line);cursor:pointer}
+.dot-sw[aria-pressed="true"]{box-shadow:0 0 0 3px var(--primary)}
+.ava-evo{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;text-align:center}
+.ava-evo>div{display:grid;gap:2px;justify-items:center;padding:6px 2px;border-radius:var(--r-md)}
+.ava-evo>div.here{background:var(--primary-soft)}
+.ava-evo>div.off{opacity:.45;filter:grayscale(.7)}
+.ava-evo b{font-size:var(--fs-xs)} .ava-evo span{font-size:.68rem;color:var(--muted);line-height:1.2}
+@media (max-width:420px){.ava-evo{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Simulateur : grandes commandes, pause */
+.sim-screen{position:relative}
+.sim-pause{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:10px;text-align:center;padding:var(--sp-4);background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(3px);border-radius:var(--r-md)}
+.sim-pause b{display:flex;gap:8px;align-items:center;font:800 var(--fs-xl) var(--font-display)}
+.sim-pause span{max-width:28rem;color:var(--ink)}
+.sim-pause[hidden]{display:none}
+.sim-pad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.padbtn{display:grid;justify-items:center;gap:2px;padding:14px 6px;min-height:5.2rem;border-radius:var(--r-md);border:2px solid var(--line);background:var(--surface-2);color:var(--ink);font:inherit;cursor:pointer;touch-action:manipulation;transition:transform .08s,border-color .15s,background .15s}
+.padbtn:active{transform:scale(.96)}
+.padbtn .pi{font-size:1.5rem;line-height:1;display:grid;place-items:center;height:1.6rem} .padbtn .pi svg{width:1.4rem;height:1.4rem}
+.padbtn b{font-size:var(--fs-md)} .padbtn small{font-size:var(--fs-xs);color:var(--muted)}
+.padbtn[aria-pressed="true"]{border-color:var(--primary);background:var(--primary-soft)}
+.padbtn.up[aria-pressed="true"]{border-color:var(--gold);background:var(--gold-soft)}
+.padbtn.pause{grid-column:1/-1;min-height:3.6rem;grid-auto-flow:column;align-items:center;justify-content:center;gap:10px}
+.padbtn:disabled{opacity:.45;cursor:default}
+.alertline.hot{font-weight:700}
+.sim-set summary{cursor:pointer;display:flex;gap:6px;align-items:center;color:var(--muted);font-weight:600;padding:6px 0}
+.sim-set summary svg{width:1.1rem;height:1.1rem}
+.sim-how ol{margin:0 0 var(--sp-2);padding-left:1.2rem;display:grid;gap:6px}
+.sim-how{margin-bottom:var(--sp-4)} .sim-how[hidden]{display:none}
+
+/* Mode ordinateur : écran d'accueil */
+.pc-intro{display:grid;gap:var(--sp-4);grid-template-columns:minmax(0,1fr)}
+@media (min-width:760px){.pc-intro{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+.pc-legend{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.pc-legend li{display:grid;grid-template-columns:4.2rem minmax(0,1fr);gap:10px;align-items:baseline}
+.pc-legend b{color:var(--primary)} .pc-legend span{font-size:var(--fs-sm)}
+
 </style>
 </head>
 <body>
@@ -862,7 +924,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "1.1.0";
+  AA.VERSION = "1.1.1";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -969,13 +1031,15 @@ window.AA={BUNDLED:true};
   const FRESH = () => ({
     schema: SCHEMA, savedAt: 0, createdAt: u.today(),
     profile: { name: "", goal: "n2", dailyGoal: 20, theme: "abysse", lang: "fr", sound: true, haptics: true, onboarded: false, examDate: "", imported: false,
-      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "" },
+      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "", avatar: null },
     xp: 0, days: [], themes: {}, stats: {}, seen: {}, last: {}, errors: {}, doubt: {}, exams: [],
     cards: {}, table: [], daily: {}, scen: {}, simOk: 0, flashCount: 0, duels: 0, apnee: 0, bestCombo: 0, rescued: 0,
     badges: {}, claimed: {}, real: {}, dayc: {}, keepDone: false, keepDay: "", qod: "",
     read: {}, notes: {}, unlockAll: false,
     /* v3 (Abysse Academy 1.1) */
-    wrong: {}, aqua: {}, boss: {}, story: {}, five: 0, glossSeen: {}, searches: []
+    wrong: {}, aqua: {}, boss: {}, story: {}, five: 0, glossSeen: {}, searches: [],
+    /* 1.1.1 */
+    qodAns: null, pcBest: 0, pcRuns: 0
   });
 
   /* Migrations : de la version N vers N+1. Ajoute la suivante ici. */
@@ -1100,7 +1164,7 @@ window.AA={BUNDLED:true};
   store.merge = (a, b) => {
     const [o, n] = (a.savedAt || 0) >= (b.savedAt || 0) ? [b, a] : [a, b]; /* n = la plus récente */
     const r = u.clone(n), max = (x, y) => Math.max(x || 0, y || 0);
-    ["simOk", "flashCount", "duels", "apnee", "bestCombo", "rescued", "five"].forEach(k => (r[k] = max(o[k], n[k])));
+    ["simOk", "flashCount", "duels", "apnee", "bestCombo", "rescued", "five", "pcBest", "pcRuns"].forEach(k => (r[k] = max(o[k], n[k])));
     r.days = Array.from(new Set((o.days || []).concat(n.days || []))).sort().slice(-400);
     r.xp = max(o.xp, n.xp);
     const byKey = (k, pick) => { r[k] = Object.assign({}, o[k] || {}); Object.entries(n[k] || {}).forEach(([id, v]) => { r[k][id] = r[k][id] == null ? v : pick(r[k][id], v); }); };
@@ -1309,6 +1373,8 @@ window.AA={BUNDLED:true};
     text: S('<path d="M4 20l5-14 5 14M6 15h6M15 20l3-8 3 8M16 18h4"/>'),
     eye: S('<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
     stop: S('<rect x="6" y="6" width="12" height="12" rx="2"/>', true),
+    pause: S('<rect x="6" y="5" width="4" height="14" rx="1.5"/><rect x="14" y="5" width="4" height="14" rx="1.5"/>', true),
+    edit: S('<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>'),
     transfer: S('<path d="M7 7h13l-4-4M17 17H4l4 4"/>'),
     shell: S('<path d="M12 21c-5 0-9-3-9-8 0-4 4-9 9-9s9 5 9 9c0 5-4 8-9 8zM12 21V8M7 18l3-9M17 18l-3-9M4 14l5-4M20 14l-5-4"/>'),
     offline: S('<path d="M2 8.5a16 16 0 0120 0M5 12a11 11 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01M3 3l18 18"/>'),
@@ -1362,6 +1428,141 @@ window.AA={BUNDLED:true};
   };
   AA.creature = (shape, colors, cls) => `<svg class="creature ${cls || ""}" viewBox="0 0 120 80" aria-hidden="true">${(F[shape] || F.fish)(colors || ["var(--primary)", "var(--accent)", "var(--gold)"])}</svg>`;
   AA.creatureShapes = Object.keys(F);
+})();
+
+/* js/ui/avatar.js */
+/* =====================================================================
+   Abysse Academy · avatar qui évolue avec le niveau
+   AA.avatar.svg(avatar, niveau, cls) renvoie le dessin (SVG, viewBox 100).
+   avatar = { kind: "diver" | "creature" | "letter", skin, hair, hairC, suit, id }
+   Évolutions (niveaux 1, 3, 5, 7, 9) : le plongeur s'équipe peu à peu,
+   le cadre passe de l'eau claire au bronze, à l'argent, à l'or puis aux
+   abysses. Les créatures se choisissent parmi celles de l'aquarium.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u;
+  const A = (AA.avatar = {});
+
+  A.STAGES = [1, 3, 5, 7, 9];
+  A.SKINS = ["#F6D7BE", "#E6B48C", "#C08457", "#8A5634", "#5A3622"];
+  A.HAIRC = ["#2A1C14", "#6E4423", "#C99A3E", "#B4492A", "#DCD8CF"];
+  A.SUITS = ["#1E7FA8", "#16384F", "#D9472B", "#2E9E6A", "#7A4FD1", "#E59A12"];
+  A.HAIRS = 4; /* court, long, chignon, ras */
+  const RING = ["#5CC8D8", "#C27D42", "#C9D4DB", "#F2C14E", ""];
+  const WATER = [["#8FE3EE", "#1C8DB0"], ["#6FCFE3", "#15739A"], ["#4DAFD0", "#0E5578"], ["#2E86B0", "#0A3352"], ["#1D4F80", "#070F2A"]];
+
+  A.stage = l => { let s = 0; A.STAGES.forEach((min, i) => { if (l >= min) s = i; }); return s; };
+  A.next = l => A.STAGES.find(min => min > l) || null;
+  A.get = () => Object.assign({ kind: "diver", skin: 1, hair: 0, hairC: 0, suit: 0, id: "" }, AA.S.profile.avatar || {});
+  A.level = () => AA.game.levelOf(AA.S.xp).l;
+  A.mine = cls => A.svg(A.get(), A.level(), cls);
+
+  let uid = 0;
+  A.svg = (av, level, cls) => {
+    const st = A.stage(level || 1), k = "av" + (++uid), w = WATER[st];
+    const defs = `<defs><clipPath id="${k}c"><circle cx="50" cy="50" r="45"/></clipPath>
+      <radialGradient id="${k}w" cx="50%" cy="18%" r="90%"><stop offset="0" stop-color="${w[0]}"/><stop offset="1" stop-color="${w[1]}"/></radialGradient>
+      <linearGradient id="${k}a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7DF0FF"/><stop offset=".5" stop-color="#9B6CFF"/><stop offset="1" stop-color="#F2C14E"/></linearGradient></defs>`;
+    let inner = "";
+    if (av.kind === "creature") inner = creature(av, st);
+    else if (av.kind === "letter") inner = letter(av);
+    else inner = diver(av, st);
+    const bub = [[24, 30, 2.2], [30, 20, 1.4], [76, 26, 1.8]].slice(0, 1 + st % 3).map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1"/>`).join("");
+    const glow = st >= 4 ? `<circle cx="50" cy="50" r="48" fill="none" stroke="url(#${k}a)" stroke-width="2" opacity=".55" class="ava-glow"/>${[[12, 22], [88, 30], [16, 80], [86, 78]].map(([x, y]) => `<path d="M${x} ${y - 4}l1.2 2.8 2.8 1.2-2.8 1.2-1.2 2.8-1.2-2.8-2.8-1.2 2.8-1.2z" fill="#FFE08A"/>`).join("")}` : "";
+    const stars = st ? `<g transform="translate(50 93)">${Array.from({ length: st }, (_, i) => `<path transform="translate(${(i - (st - 1) / 2) * 9} 0)" d="M0 -4l1.2 2.6 2.8.3-2.1 1.9.6 2.8L0 2.2l-2.5 1.4.6-2.8-2.1-1.9 2.8-.3z" fill="${st >= 3 ? "#F2C14E" : "#fff"}" stroke="#0A2233" stroke-width=".6"/>`).join("")}</g>` : "";
+    return `<svg class="ava ava-s${st} ${cls || ""}" viewBox="0 0 100 100" aria-hidden="true">${defs}
+      <circle cx="50" cy="50" r="45" fill="url(#${k}w)"/>
+      <g clip-path="url(#${k}c)">${bub}${inner}</g>
+      <circle cx="50" cy="50" r="45.5" fill="none" stroke="${RING[st] || `url(#${k}a)`}" stroke-width="${3 + st * .6}"/>${glow}${stars}</svg>`;
+  };
+
+  function letter(av) {
+    const n = (AA.S.profile.name || "?").trim().slice(0, 1).toUpperCase() || "?";
+    return `<circle cx="50" cy="50" r="45" fill="${A.SUITS[av.suit] || A.SUITS[0]}" opacity=".85"/><text x="50" y="64" text-anchor="middle" font-size="42" font-weight="800" fill="#fff" font-family="var(--font-display),sans-serif">${u.esc(n)}</text>`;
+  }
+
+  function creature(av, st) {
+    const c = (AA.content.creatures || []).find(x => x.id === av.id) || { shape: "fish", c: ["var(--primary)", "var(--accent)", "var(--gold)"] };
+    const s = .62 + st * .04, svg = AA.creature(c.shape, c.c).replace(/^<svg[^>]*>|<\/svg>$/g, "");
+    return `<g transform="translate(${50 - 60 * s} ${54 - 40 * s}) scale(${s})">${svg}</g><path d="M6 92q44-14 88 0v10H6z" fill="#E9D7A8" opacity=".55"/>`;
+  }
+
+  function diver(av, st) {
+    const skin = A.SKINS[av.skin] || A.SKINS[1], hc = A.HAIRC[av.hairC] || A.HAIRC[0], suit = A.SUITS[av.suit] || A.SUITS[0];
+    const hood = st >= 3, mask = st >= 1, reg = st >= 2;
+    let o = "";
+    /* bouteille derrière l'épaule */
+    if (reg) o += `<rect x="16" y="52" width="14" height="44" rx="7" fill="#F0B73A"/><rect x="20" y="46" width="6" height="8" rx="2" fill="#7A8A94"/><path d="M23 47h-6" stroke="#7A8A94" stroke-width="3" stroke-linecap="round"/>`;
+    /* cheveux longs (derrière) */
+    if (!hood && av.hair === 1) o += `<path d="M33 44c-2 16 0 26 4 32h26c4-6 6-16 4-32z" fill="${hc}"/>`;
+    /* corps */
+    o += `<path d="M14 104c0-24 16-36 36-36s36 12 36 36z" fill="${suit}"/><path d="M40 70l10 14 10-14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3"/>`;
+    if (st >= 4) o += `<path d="M22 86c10-6 18-8 28-8s18 2 28 8" fill="none" stroke="#F2C14E" stroke-width="2.5"/>`;
+    if (reg) o += `<path d="M30 72l8 28M70 72l-8 28" stroke="#111B22" stroke-width="5" stroke-linecap="round"/><rect x="64" y="84" width="10" height="7" rx="2" fill="#111B22"/>`;
+    o += `<rect x="44" y="58" width="12" height="12" rx="4" fill="${skin}"/>`;
+    /* cagoule */
+    if (hood) o += `<ellipse cx="50" cy="45" rx="19" ry="21" fill="#15232E"/>`;
+    o += `<ellipse cx="50" cy="46" rx="15" ry="17" fill="${skin}"/>`;
+    /* coiffures */
+    if (!hood) o += [
+      `<path d="M35 42c0-12 7-17 15-17s15 5 15 17c-4-5-9-8-15-8s-11 3-15 8z" fill="${hc}"/>`,
+      `<path d="M34 46c-1-14 6-21 16-21s17 7 16 21c-3-7-9-11-16-11s-13 4-16 11z" fill="${hc}"/>`,
+      `<circle cx="50" cy="24" r="7" fill="${hc}"/><path d="M35 42c0-12 7-17 15-17s15 5 15 17c-4-5-9-8-15-8s-11 3-15 8z" fill="${hc}"/>`,
+      `<path d="M36 38c2-8 8-12 14-12s12 4 14 12c-4-3-9-4-14-4s-10 1-14 4z" fill="${hc}" opacity=".55"/>`
+    ][av.hair] || "";
+    if (hood) o += `<path d="M31 40c2-12 10-19 19-19s17 7 19 19c-5-6-11-9-19-9s-14 3-19 9z" fill="#15232E"/>`;
+    /* yeux, bouche */
+    const eyes = `<circle cx="44" cy="45" r="2.1" fill="#0B1620"/><circle cx="56" cy="45" r="2.1" fill="#0B1620"/>`;
+    if (mask) {
+      o += `<path d="M34 44h32" stroke="#0B1620" stroke-width="2.5"/><rect x="36.5" y="38" width="27" height="14" rx="5" fill="rgba(170,235,255,.55)" stroke="#0B1620" stroke-width="2.6"/>${eyes}<path d="M41 40.5l5 0" stroke="#fff" stroke-width="1.4" stroke-linecap="round" opacity=".8"/>`;
+    } else {
+      o += `${eyes}<path d="M34 33h32" stroke="#0B1620" stroke-width="2"/><rect x="38" y="28" width="24" height="9" rx="4" fill="rgba(170,235,255,.55)" stroke="#0B1620" stroke-width="2.2"/>`;
+    }
+    if (reg) o += `<circle cx="50" cy="58" r="5" fill="#2B3A44"/><circle cx="50" cy="58" r="2" fill="#7A8A94"/><path d="M45 59c-8 2-14 0-20-8" fill="none" stroke="#2B3A44" stroke-width="2.5"/>`;
+    else if (mask) o += `<path d="M47 57c2 2 5 2 7 0" fill="none" stroke="#7A3B2E" stroke-width="1.8" stroke-linecap="round"/><path d="M54 57h6c2 0 3-1 3-3V22" fill="none" stroke="#1B2A33" stroke-width="3" stroke-linecap="round"/><rect x="60.5" y="17" width="5" height="7" rx="2" fill="#FF7A3A"/>`;
+    else o += `<path d="M45 56c3 3 7 3 10 0" fill="none" stroke="#7A3B2E" stroke-width="2" stroke-linecap="round"/><circle cx="40" cy="52" r="2.4" fill="#FF9A8A" opacity=".45"/><circle cx="60" cy="52" r="2.4" fill="#FF9A8A" opacity=".45"/>`;
+    /* phare frontal */
+    if (hood) o += `<path d="M58 28l30-12v20z" fill="rgba(255,240,170,.28)"/><rect x="52" y="24" width="10" height="7" rx="2.5" fill="#E8EEF2" stroke="#0B1620" stroke-width="1.4"/>`;
+    return o;
+  }
+
+  /* ---------- Choisir son avatar ---------- */
+  A.picker = onDone => {
+    const t = AA.t, S = AA.S, lv = A.level();
+    let cur = A.get();
+    const unlocked = AA.content.creatures.filter(c => S.aqua[c.id]);
+    const sw = (key, arr) => `<div class="ava-sw" data-k="${key}">${arr.map((c, i) => `<button class="dot-sw" data-v="${i}" style="--c:${c}" aria-pressed="${cur[key] === i}" aria-label="${i + 1}"></button>`).join("")}</div>`;
+    const body = () => `
+      <div class="ava-pick">
+        <div class="ava-prev">${A.svg(cur, lv, "xl")}</div>
+        <div class="seg" role="group">${["diver", "creature", "letter"].map(k => `<button data-kind="${k}" aria-pressed="${cur.kind === k}">${t("ava.kind." + k)}</button>`).join("")}</div>
+        ${cur.kind === "diver" ? `
+          <p class="eyebrow">${t("ava.hair")}</p><div class="ava-opts">${Array.from({ length: A.HAIRS }, (_, i) => `<button class="ava-opt" data-hair="${i}" aria-pressed="${cur.hair === i}" aria-label="${AA.i18n.raw("ava.hairs")[i]}">${A.svg(Object.assign({}, cur, { hair: i }), 1)}</button>`).join("")}</div>
+          <p class="eyebrow">${t("ava.hairC")}</p>${sw("hairC", A.HAIRC)}
+          <p class="eyebrow">${t("ava.skin")}</p>${sw("skin", A.SKINS)}
+          <p class="eyebrow">${t("ava.suit")}</p>${sw("suit", A.SUITS)}` : ""}
+        ${cur.kind === "creature" ? (unlocked.length ? `<p class="small muted" style="margin:0">${t("ava.creatureS", { n: unlocked.length, tot: AA.content.creatures.length })}</p>
+          <div class="ava-opts">${AA.content.creatures.map(c => S.aqua[c.id] ? `<button class="ava-opt" data-cid="${c.id}" aria-pressed="${cur.id === c.id}" aria-label="${u.esc(c.name)}">${A.svg({ kind: "creature", id: c.id }, 1)}</button>` : `<span class="ava-opt off" title="${u.esc(c.how)}">${AA.icon("lock")}</span>`).join("")}</div>` : `<p class="small muted">${t("ava.noCreature")}</p><a class="btn ghost sm" href="#/aquarium">${t("aqua.title")}</a>`) : ""}
+        ${cur.kind === "letter" ? `<p class="eyebrow">${t("ava.suit")}</p>${sw("suit", A.SUITS)}` : ""}
+        <p class="eyebrow">${t("ava.evo")}</p>
+        <div class="ava-evo">${A.STAGES.map((min, i) => `<div class="${lv >= min ? "" : "off"} ${A.stage(lv) === i ? "here" : ""}">${A.svg(cur, min)}<b>${t("ava.lvl", { l: min })}</b><span>${AA.i18n.raw("ava.stages")[i]}</span></div>`).join("")}</div>
+        <button class="btn block" id="avok">${AA.icon("check")} ${t("ava.save")}</button>
+      </div>`;
+    const close = AA.ui.sheet(`<h3 style="margin:0 2.5rem var(--sp-3) 0">${t("ava.title")}</h3><div id="avbody">${body()}</div>`, t("ava.title"));
+    const root = document.getElementById("avbody");
+    const redraw = () => { root.innerHTML = body(); };
+    root.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      if (b.id === "avok") { S.profile.avatar = cur; AA.store.save(true); AA.fx.sfx.ok(); close(); onDone && onDone(); return; }
+      if (b.dataset.kind) { cur.kind = b.dataset.kind; if (cur.kind === "creature" && !cur.id && unlocked[0]) cur.id = unlocked[0].id; }
+      else if (b.dataset.hair) cur.hair = +b.dataset.hair;
+      else if (b.dataset.cid) cur.id = b.dataset.cid;
+      else if (b.dataset.v) cur[b.parentNode.dataset.k] = +b.dataset.v;
+      else return;
+      AA.fx.sfx.tap(); redraw();
+    });
+  };
 })();
 
 /* js/core/a11y.js */
@@ -1822,7 +2023,8 @@ window.AA={BUNDLED:true};
     const after = G.levelOf(S().xp);
     if (after.l > before) {
       AA.fx.sfx.up(); AA.fx.buzz([30, 60, 30]);
-      AA.fx.toast(AA.t("toast.level", { l: after.l }), AA.t("toast.rank", { rank: after.rank }), "trophy");
+      const evo = AA.avatar && AA.avatar.stage(after.l) > AA.avatar.stage(before);
+      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.i18n.raw("ava.stages")[AA.avatar.stage(after.l)] }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
       AA.fx.burst(innerWidth / 2, innerHeight * .6, 40, "rgba(255,200,87,.9)");
     }
     AA.ui && AA.ui.hud();
@@ -1937,6 +2139,8 @@ window.AA={BUNDLED:true};
     return all.sort((a, b) => G.stars(a.id) - G.stars(b.id))[0] || C.modules[0];
   };
   G.qod = () => {
+    const A = S().qodAns; /* réponse du jour déjà donnée : on garde la même question */
+    if (A && A.d === u.today()) { const q = C.questions.find(x => x.id === A.id); if (q) return q; }
     const pool = C.questions.filter(q => G.unlocked(q.m));
     if (!pool.length) return null;
     return pool[u.seedOf(u.today() + "q") % pool.length];
@@ -2037,8 +2241,10 @@ window.AA={BUNDLED:true};
     if (current && current.leave) try { current.leave(); } catch (e) {}
     R.prev = current; current = v; R.name = name;
     AA.ui.frame(v);
-    const el = document.getElementById("view");
-    el.innerHTML = ""; el.className = kind && !vt ? "view-enter view-" + kind : "";
+    /* Conteneur neuf à chaque écran : les écouteurs d'un écran précédent
+       ne doivent jamais réagir aux clics du suivant. */
+    const old = document.getElementById("view"), el = old.cloneNode(false); old.replaceWith(el);
+    el.className = kind && !vt ? "view-enter view-" + kind : "";
     v.render(el, args);
     if (AA.scene) AA.scene.set(typeof v.depth === "function" ? v.depth(args) : v.depth != null ? v.depth : 5);
     AA.ui.hud();
@@ -2118,10 +2324,10 @@ window.AA={BUNDLED:true};
     if (skip) return onOk();
     const d = document.createElement("div"); d.className = "sheet-wrap";
     d.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="${u.esc(msg)}"><p class="sheet-msg">${u.esc(msg)}</p><div class="stack"><button class="btn accent block" data-ok>${u.esc(okLabel)}</button><button class="btn ghost block" data-no>${t("common.cancel")}</button></div></div>`;
-    const close = () => { d.remove(); document.removeEventListener("keydown", esc); };
+    const close = () => { d.remove(); document.removeEventListener("keydown", esc); removeEventListener("hashchange", close); };
     const esc = e => { if (e.key === "Escape") close(); };
     d.onclick = e => { if (e.target === d || e.target.closest("[data-no]")) close(); else if (e.target.closest("[data-ok]")) { close(); onOk(); } };
-    document.addEventListener("keydown", esc);
+    document.addEventListener("keydown", esc); addEventListener("hashchange", close);
     document.body.appendChild(d); u.$("[data-ok]", d).focus();
   };
   /* Feuille du bas générique (glossaire, détails…). Renvoie une fonction de fermeture. */
@@ -2129,10 +2335,10 @@ window.AA={BUNDLED:true};
     const d = document.createElement("div"); d.className = "sheet-wrap";
     d.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="${u.esc(label || "")}"><button class="closebtn sheet-x" data-no aria-label="${t("nav.back")}">${AA.icon("close")}</button>${html}</div>`;
     const prev = document.activeElement;
-    const close = () => { d.remove(); document.removeEventListener("keydown", esc); prev && prev.focus && prev.focus({ preventScroll: true }); };
+    const close = () => { d.remove(); document.removeEventListener("keydown", esc); removeEventListener("hashchange", close); prev && prev.focus && prev.focus({ preventScroll: true }); };
     const esc = e => { if (e.key === "Escape") close(); };
     d.addEventListener("click", e => { if (e.target === d || e.target.closest("[data-no]")) close(); else if (e.target.closest("a[href^='#/']")) close(); });
-    document.addEventListener("keydown", esc);
+    document.addEventListener("keydown", esc); addEventListener("hashchange", close);
     document.body.appendChild(d); u.$(".sheet-x", d).focus({ preventScroll: true });
     return close;
   };
@@ -2203,8 +2409,10 @@ window.AA={BUNDLED:true};
       reg.addEventListener("updatefound", () => { const w = reg.installing; w && w.addEventListener("statechange", () => { if (w.state === "installed" && navigator.serviceWorker.controller) ask(w); }); });
       setInterval(() => reg.update().catch(() => {}), 60 * 60 * 1000);
     }).catch(() => {});
-    let reloaded = false;
-    navigator.serviceWorker.addEventListener("controllerchange", () => { if (!reloaded) { reloaded = true; location.reload(); } });
+    /* Recharger seulement lors d'une mise à jour, pas à la première installation
+       (sinon la page se recharge pendant l'accueil). */
+    let reloaded = false, had = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener("controllerchange", () => { if (!had) { had = true; return; } if (!reloaded) { reloaded = true; location.reload(); } });
   };
 })();
 
@@ -2394,7 +2602,7 @@ window.AA={BUNDLED:true};
       const ns = G.nextStep();
       const qod = G.qod();
       el.innerHTML = `
-        <header class="hello"><h1>${hello}</h1><p>${line}</p></header>
+        <header class="hello has-ava"><a class="ava-link" href="#/profile" aria-label="${t("tab.profile")}">${AA.avatar.mine("md")}</a><div><h1>${hello}</h1><p>${line}</p></div></header>
         <div class="home-grid"><div class="col-main">
         <section class="card today" style="margin-top:var(--sp-5)">
           ${AA.ui.ring(done / goal, Math.min(done, 999), "/ " + goal, done >= goal)}
@@ -2431,14 +2639,18 @@ window.AA={BUNDLED:true};
       u.$("#five").onclick = () => { fx.sfx.tap(); AA.quiz.five(); };
       u.$("#rescue").onclick = () => AA.quiz.errors();
       const sb = u.$("#stale"); if (sb) sb.onclick = () => AA.quiz.stale();
-      u.$$("#qod .choice").forEach(b => b.onclick = () => {
-        const i = +b.dataset.qi, ok = i === qod.a;
+      const showQod = (i, b, fresh) => {
+        const ok = i === qod.a;
         u.$$("#qod .choice").forEach(x => { x.disabled = true; const k = +x.dataset.qi; if (k === qod.a) { x.classList.add("good"); u.$(".mk", x).innerHTML = AA.icon("check"); } else if (k === i) { x.classList.add("wrong"); u.$(".mk", x).innerHTML = AA.icon("x"); } });
         u.$("#qodx").innerHTML = `<div class="feedback ${ok ? "ok" : "bad"}"><h4>${ok ? t("home.qodOk") : t("quiz.bad")}</h4><p>${u.esc(qod.e)}</p><a class="small" href="#/lesson/${qod.m}">${t("result.toLesson", { title: u.esc(C.moduleTitle(qod.m)) })}</a></div>`;
+        if (!fresh) { u.$("#qod").classList.add("answered"); return; }
+        S.qodAns = { d: u.today(), id: qod.id, pick: i, ok };
         G.record(qod, ok);
         if (ok) { fx.sfx.ok(); fx.burstAt(b, 18, "rgba(61,220,151,.85)"); if (S.qod !== u.today()) { S.qod = u.today(); G.addXp(15, b); } } else { fx.sfx.bad(); fx.buzz([40, 40, 40]); }
-        AA.store.save(); G.checkBadges();
-      });
+        AA.store.save(true); G.checkBadges();
+      };
+      u.$$("#qod .choice").forEach(b => b.onclick = () => showQod(+b.dataset.qi, b, true));
+      const QA = S.qodAns; if (qod && QA && QA.d === u.today() && QA.id === qod.id) showQod(QA.pick, null, false);
     }
   });
 })();
@@ -2498,7 +2710,7 @@ window.AA={BUNDLED:true};
   });
   function soon(w) {
     return `<section class="card soft stack" style="margin-top:var(--sp-4)"><h3>${t("map.soonT")}</h3><p class="muted">${t("map.soonS")}</p>
-      <ul class="path">${AA.i18n.raw("map.soonList").map(x => `<li><span></span><span><b>${x[0]}</b><span>${x[1]}</span></span></li>`).join("")}</ul></section>`;
+      <ul class="path">${AA.i18n.raw("map.soonList").map(x => `<li><span><b>${x[0]}</b><span>${x[1]}</span></span></li>`).join("")}</ul></section>`;
   }
   /* Le plongeur (vue de profil, tête vers la droite). */
   const diverSvg = () => `<svg viewBox="0 0 64 40" aria-hidden="true"><g class="dv-body">
@@ -2687,7 +2899,7 @@ window.AA={BUNDLED:true};
     Q.start("exam", u.shuffle(pick.slice(0, n - nc).concat(rest, calcs)), { full, timeLeft: (full ? 45 : 20) * 60, title: t(full ? "mode.examFull" : "mode.examQuick"), back: "train" });
   };
   Q.apnee = () => Q.start("apnee", u.shuffle(C.questions.filter(q => q.world === G.goalWorld() && G.unlocked(q.m))), { time: 60, title: t("mode.apnee"), back: "train" });
-  Q.computer = () => Q.start("pc", u.shuffle(C.computer), { title: t("mode.pc"), back: "lab" });
+  Q.computer = n => Q.start("pc", u.shuffle(C.computer).slice(0, n || C.computer.length), { title: t("mode.pc"), back: "pc", n });
   Q.duel = (a, b) => {
     const qs = u.shuffle(C.questions.filter(q => q.world === "n2" && q.lvl !== 2)).slice(0, 6).concat([G.gen(), G.gen()]);
     Q.start("duel", qs, { players: [a, b], turn: 0, qs, scores: [], times: [], title: t("mode.duel"), back: "club" });
@@ -2723,7 +2935,7 @@ window.AA={BUNDLED:true};
     else if (m === "apnee") Q.apnee();
     else if (m === "daily") Q.daily();
     else if (m === "errors") Q.errors();
-    else if (m === "pc") Q.computer();
+    else if (m === "pc") Q.computer(c.n);
     else if (m === "stale") Q.stale();
     else if (m === "boss") Q.boss(c.world);
     else if (m === "five") Q.five();
@@ -2905,6 +3117,7 @@ window.AA={BUNDLED:true};
     const n = c.mode === "apnee" ? c.answers.length : c.items.length, good = c.answers.filter(a => a.ok).length;
     const pct = Math.round(good / Math.max(n, 1) * 100);
     let head = "", sub = "", extra = "";
+    if (c.mode === "pc" && !c.pcSaved) { c.pcSaved = true; S.pcBest = Math.max(S.pcBest || 0, pct); S.pcRuns = (S.pcRuns || 0) + 1; AA.store.save(); }
     if (c.mode === "exam") {
       const score = Math.round(good / n * 20 * 2) / 2;
       if (!c.saved) { S.exams.push({ date: u.today(), score, full: !!c.full }); c.saved = true; AA.store.save(); G.checkBadges(); }
@@ -3127,12 +3340,12 @@ window.AA={BUNDLED:true};
       el.innerHTML = `${ui.head(t("tab.lab"))}<p class="muted">${t("lab.intro")}</p>
         <div class="tiles" style="margin-top:var(--sp-4)">
           ${ui.tile("sim", "dive", "var(--primary)", t("lab.sim"), t("lab.simS"), S.simOk ? [t("lab.simOk", { n: S.simOk }), "ok"] : null)}
-          ${ui.tile("pc", "watch", "var(--ok)", t("mode.pc"), t("lab.pcS", { n: C.computer.length }))}
+          ${ui.tile("pc", "watch", "var(--ok)", t("mode.pc"), t("lab.pcS", { n: C.computer.length }), S.pcRuns ? [t("pc.best", { n: S.pcBest }), S.pcBest === 100 ? "ok" : ""] : null)}
           ${ui.tile("scen", "cross", "var(--accent)", t("lab.scen"), t("lab.scenS"), [sc + "/" + C.scenarios.length, sc === C.scenarios.length ? "ok" : ""])}
           ${ui.tile("tables", "table", "var(--gold)", t("lab.tables"), t("lab.tablesS"), S.table.length ? [t("lab.rows", { n: S.table.length }), "gold"] : null)}
           ${ui.tile("calc", "calc", "var(--world-e2)", t("lab.calc"), t("lab.calcS"))}
         </div>`;
-      u.on(el, "click", ".tile", (e, b) => { fx.sfx.tap(); b.dataset.t === "pc" ? AA.quiz.computer() : AA.router.go(b.dataset.t); });
+      u.on(el, "click", ".tile", (e, b) => { fx.sfx.tap(); AA.router.go(b.dataset.t); });
     }
   });
 
@@ -3141,6 +3354,27 @@ window.AA={BUNDLED:true};
     <div class="dc-main"><div><small>PROF</small><b>${s.d}<i>m</i></b></div><div><small>${s.stop ? (s.deco ? "PALIER" : "SÉCU") : "NDL"}</small><b class="${s.stop && s.deco ? "dc-deco" : ""}">${s.stop ? u.esc(s.stop) : s.ndl != null ? s.ndl + "<i>min</i>" : "—"}</b></div></div>
     <div class="dc-bot"><span>MAX ${s.max} m</span><span>${s.t} min</span><span class="dc-asc">${[1, 2, 3, 4, 5].map(k => `<i class="${k <= s.bar ? "on" : ""} ${k >= 4 && k <= s.bar ? "hot" : ""}"></i>`).join("")}</span></div></div>
     ${s.dual ? `<p class="small muted" style="margin:6px 0 0">${t("lab.buddyPc")} <b>${u.esc(s.dual.ndl2)}</b></p>` : ""}</div>`;
+
+  /* ---------- Mode ordinateur : écran d'accueil, comme les scénarios ---------- */
+  AA.view("pc", {
+    tab: "lab",
+    render(el) {
+      const S = AA.S, n = C.computer.length, demo = (C.computer[0] || {}).scr;
+      el.innerHTML = `${ui.head(t("mode.pc"), "lab")}<p class="muted">${t("pc.intro")}</p>
+        <div class="pc-intro" style="margin-top:var(--sp-4)">
+          <section class="card stack">${demo ? L.computerScreen(demo) : ""}<p class="xs muted" style="margin:0">${t("pc.demo")}</p></section>
+          <section class="card stack"><h3>${t("pc.readT")}</h3>
+            <ul class="pc-legend">${AA.i18n.raw("pc.legend").map(([k, v]) => `<li><b class="mono">${k}</b><span>${v}</span></li>`).join("")}</ul></section>
+        </div>
+        ${S.pcRuns ? `<p class="small muted" style="margin-top:var(--sp-4)">${t("pc.stats", { b: S.pcBest, r: S.pcRuns })}</p>` : ""}
+        <div class="tiles one-sm" style="margin-top:var(--sp-4)">
+          ${ui.tile("quick", "bolt", "var(--ok)", t("pc.quick"), t("pc.quickS", { n: Math.min(6, n) }))}
+          ${ui.tile("all", "watch", "var(--primary)", t("pc.all"), t("pc.allS", { n }), S.pcBest === 100 ? [t("scen.ok"), "ok"] : null)}
+        </div>
+        ${ui.callout("check", t("common.validate"), t("pc.validate"))}`;
+      u.on(el, "click", ".tile", (e, b) => { fx.sfx.tap(); AA.quiz.computer(b.dataset.t === "quick" ? Math.min(6, n) : n); });
+    }
+  });
 
   /* ---------- Scénarios ---------- */
   AA.view("scen", {
@@ -3215,49 +3449,102 @@ window.AA={BUNDLED:true};
   /* ---------- Simulateur ---------- */
   const HT = [5, 10, 20, 40, 80];
   const fresh = () => ({ t: 0, d: 0, v: 0, air: 200, tis: HT.map(() => .79), hist: [[0, 0]], max: 0, alerts: new Set(), maxRatio: 1, started: false, ended: false, rate: 10, speed: 20, lastAlarm: 0 });
-  let simTimer = null;
+  let simTimer = null, simKeys = () => {}, simHide = () => {};
   AA.view("sim", {
     tab: "lab",
-    leave() { clearInterval(simTimer); },
+    leave() { clearInterval(simTimer); document.removeEventListener("keydown", simKeys); document.removeEventListener("visibilitychange", simHide); const s = AA.ctx.sim; if (s && s.started && !s.ended) s.paused = true; },
     render(el) {
       const s = AA.ctx.sim || (AA.ctx.sim = fresh());
-      el.innerHTML = `${ui.head(t("lab.sim"), "lab")}<p class="muted">${t("sim.intro")}</p>
-        <div class="sim" style="margin-top:var(--sp-4)"><div class="stack"><canvas class="simcv" id="simcv" aria-label="${t("sim.graph")}"></canvas>
-          <div class="row"><button class="btn sm" id="sdown">▼ ${t("sim.down")}</button><button class="btn ghost sm" id="sstop">■ ${t("sim.stop")}</button><button class="btn gold sm" id="sup">▲ ${t("sim.up")}</button></div>
-          <div class="row"><span class="xs muted">${t("sim.rate")}</span><div class="seg">${[6, 10, 15, 25].map(r => `<button data-rate="${r}" aria-pressed="${s.rate === r}">${r} m/min</button>`).join("")}</div></div>
-          <div class="row"><span class="xs muted">${t("sim.speed")}</span><div class="seg">${[10, 20, 60].map(r => `<button data-sp="${r}" aria-pressed="${s.speed === r}">×${r}</button>`).join("")}</div><button class="btn ghost sm" id="sreset">${AA.icon("refresh")} ${t("sim.reset")}</button></div>
-          <p class="alertline" id="salert" role="status"></p></div>
-          <div><div class="readout">${[["r-d", t("sim.depth"), "m"], ["r-t", t("sim.time"), ""], ["r-p", t("sim.pabs"), "bar"], ["r-a", t("sim.air"), "bar"], ["r-n", "PP N₂", "bar"], ["r-c", t("sim.conso"), "L/min"]].map(([id, l, un]) => `<div><small>${l}</small><b id="${id}">0</b> <span class="xs muted">${un}</span></div>`).join("")}</div>
+      if (s.autoPause == null) s.autoPause = true;
+      el.innerHTML = `${ui.head(t("lab.sim"), "lab", `<button class="btn ghost sm" id="shelp" aria-expanded="false">${AA.icon("info")} ${t("sim.howBtn")}</button>`)}
+        <div class="sim-how card" id="showto" hidden><ol>${AA.i18n.raw("sim.how").map(x => `<li>${x}</li>`).join("")}</ol><p class="xs muted" style="margin:0">${t("sim.intro")}</p></div>
+        <div class="sim">
+          <div class="stack">
+            <div class="sim-screen"><canvas class="simcv" id="simcv" aria-label="${t("sim.graph")}"></canvas>
+              <div class="sim-pause" id="spause" hidden><b>${AA.icon("pause")} ${t("sim.paused")}</b><span id="spwhy">${t("sim.pausedS")}</span><button class="btn" id="sresume">${AA.icon("play")} ${t("sim.resume")}</button></div></div>
+            <p class="alertline" id="salert" role="status"></p>
+            <div class="sim-pad" role="group" aria-label="${t("sim.pad")}">
+              <button class="padbtn down" id="sdown" aria-pressed="false"><span class="pi">▼</span><b>${t("sim.down")}</b><small>20 m/min</small></button>
+              <button class="padbtn hold" id="sstop" aria-pressed="false"><span class="pi">■</span><b>${t("sim.stop")}</b><small>${t("sim.holdS")}</small></button>
+              <button class="padbtn up" id="sup" aria-pressed="false"><span class="pi">▲</span><b>${t("sim.up")}</b><small id="supv">${s.rate} m/min</small></button>
+              <button class="padbtn pause" id="spp"><span class="pi" id="sppi">${AA.icon("pause")}</span><b id="sppl">${t("sim.pause")}</b><small>${t("sim.spaceKey")}</small></button>
+            </div>
+            <details class="sim-set"><summary>${AA.icon("gear")} ${t("sim.settings")}</summary>
+              <div class="stack" style="margin-top:var(--sp-3)">
+                <div class="row"><span class="xs muted">${t("sim.rate")}</span><div class="seg">${[6, 10, 15, 25].map(r => `<button data-rate="${r}" aria-pressed="${s.rate === r}">${r} m/min</button>`).join("")}</div></div>
+                <div class="row"><span class="xs muted">${t("sim.speed")}</span><div class="seg">${[10, 20, 60].map(r => `<button data-sp="${r}" aria-pressed="${s.speed === r}">×${r}</button>`).join("")}</div></div>
+                <label class="row small"><input type="checkbox" id="sauto" ${s.autoPause ? "checked" : ""}> ${t("sim.autoPause")}</label>
+                <button class="btn ghost sm" id="sreset" style="justify-self:start">${AA.icon("refresh")} ${t("sim.reset")}</button></div></details>
+          </div>
+          <div><div class="readout">${[["r-d", t("sim.depth"), "m"], ["r-t", t("sim.time"), ""], ["r-a", t("sim.air"), "bar"], ["r-p", t("sim.pabs"), "bar"], ["r-n", "PP N₂", "bar"], ["r-c", t("sim.conso"), "L/min"]].map(([id, l, un]) => `<div><small>${l}</small><b id="${id}">0</b> <span class="xs muted">${un}</span></div>`).join("")}</div>
           <div id="tis" style="margin-top:var(--sp-3)"></div><p class="xs muted">${t("sim.tissues")}</p></div></div>
         <div id="simres"></div>
         ${ui.callout("check", t("sim.modelT"), t("sim.model"))}`;
-      u.$("#sdown").onclick = () => { if (s.ended) return; s.v = 20; s.started = true; run(); };
-      u.$("#sstop").onclick = () => { s.v = 0; };
-      u.$("#sup").onclick = () => { s.v = -s.rate; if (!s.ended && s.started) run(); };
-      u.$$("[data-rate]", el).forEach(b => b.onclick = () => { s.rate = +b.dataset.rate; if (s.v < 0) s.v = -s.rate; u.$$("[data-rate]", el).forEach(x => x.setAttribute("aria-pressed", x === b)); });
+      const live = () => s.started && !s.ended;
+      const setMove = v => { if (s.ended) return; s.v = v; if (v > 0) s.started = true; if (s.paused) s.paused = false; if (s.started) run(); sync(); };
+      u.$("#sdown").onclick = () => { fx.sfx.tap(); setMove(20); };
+      u.$("#sstop").onclick = () => { fx.sfx.tap(); setMove(0); };
+      u.$("#sup").onclick = () => { fx.sfx.tap(); setMove(-s.rate); };
+      u.$("#spp").onclick = () => togglePause();
+      u.$("#sresume").onclick = () => togglePause(false);
+      u.$("#shelp").onclick = e => { const h = u.$("#showto"); h.hidden = !h.hidden; e.currentTarget.setAttribute("aria-expanded", !h.hidden); };
+      u.$("#sauto").onchange = e => { s.autoPause = e.target.checked; };
+      u.$$("[data-rate]", el).forEach(b => b.onclick = () => { s.rate = +b.dataset.rate; if (s.v < 0) s.v = -s.rate; u.$("#supv").textContent = s.rate + " m/min"; u.$$("[data-rate]", el).forEach(x => x.setAttribute("aria-pressed", x === b)); });
       u.$$("[data-sp]", el).forEach(b => b.onclick = () => { s.speed = +b.dataset.sp; u.$$("[data-sp]", el).forEach(x => x.setAttribute("aria-pressed", x === b)); });
       u.$("#sreset").onclick = () => { clearInterval(simTimer); AA.ctx.sim = fresh(); AA.router.refresh(); };
-      function run() { clearInterval(simTimer); simTimer = setInterval(step, 100); }
+      function togglePause(force, why) {
+        if (!live()) return;
+        s.paused = force == null ? !s.paused : force;
+        if (s.paused) clearInterval(simTimer); else run();
+        s.pauseWhy = s.paused ? why || "" : "";
+        sync();
+      }
+      function sync() {
+        const p = u.$("#spause"); if (!p) return;
+        p.hidden = !s.paused;
+        u.$("#spwhy").textContent = s.pauseWhy || t("sim.pausedS");
+        u.$("#sppl").textContent = s.paused ? t("sim.resume") : t("sim.pause");
+        u.$("#sppi").innerHTML = AA.icon(s.paused ? "play" : "pause");
+        u.$("#spp").disabled = !live();
+        [["sdown", s.v > 0], ["sstop", live() && s.v === 0], ["sup", s.v < 0]].forEach(([id, on]) => u.$("#" + id).setAttribute("aria-pressed", on));
+        u.$("#sdown").disabled = s.ended; u.$("#sup").disabled = s.ended || !s.started; u.$("#sstop").disabled = s.ended || !s.started;
+      }
+      simKeys = e => {
+        if (AA.router.name !== "sim" || e.target.closest("input,textarea,select") || e.ctrlKey || e.metaKey || e.altKey) return;
+        const k = e.key;
+        if (k === " " || k === "p" || k === "P") { e.preventDefault(); togglePause(); }
+        else if (k === "ArrowDown") { e.preventDefault(); setMove(20); }
+        else if (k === "ArrowUp") { e.preventDefault(); if (s.started) setMove(-s.rate); }
+        else if (k === "s" || k === "S" || k === "Enter") { if (s.started) { e.preventDefault(); setMove(0); } }
+      };
+      simHide = () => { if (document.hidden && live() && !s.paused) togglePause(true); };
+      document.addEventListener("keydown", simKeys); document.addEventListener("visibilitychange", simHide);
+      function run() { clearInterval(simTimer); if (!s.paused) simTimer = setInterval(step, 100); }
       function step() {
         if (AA.router.name !== "sim") return clearInterval(simTimer);
+        if (s.paused) return clearInterval(simTimer);
         const dt = .1 * s.speed / 60;
         s.d = u.clamp(s.d + s.v * dt, 0, 60); if (s.d >= 60 && s.v > 0) s.v = 0;
+        if (s.d <= 0 && s.v < 0) s.v = 0;
         const P = 1 + s.d / 10, pn = .79 * P; s.t += dt; s.air = Math.max(0, s.air - 20 * P * dt / 15);
         s.tis = s.tis.map((x, i) => x + (pn - x) * (1 - Math.exp(-Math.LN2 / HT[i] * dt))); s.max = Math.max(s.max, s.d);
         s.hist.push([s.t, s.d]); if (s.hist.length > 4000) s.hist = s.hist.filter((_, i) => i % 2 === 0);
         const ratio = Math.max(...s.tis) / P; s.maxRatio = Math.max(s.maxRatio, ratio);
-        let al = "", bad = false;
-        if (s.v < 0 && -s.v > 17 && s.d > .5) { al = t("sim.aFast"); s.alerts.add("vitesse"); bad = true; }
-        else if (ratio > 2) { al = t("sim.aSat"); s.alerts.add("sursat"); bad = true; }
-        else if (s.air <= 0) { al = t("sim.aAir"); s.alerts.add("air"); bad = true; }
-        else if (s.air < 50) { al = t("sim.aRes"); s.alerts.add("reserve"); bad = true; }
-        else if (s.d > 40) { al = t("sim.aDeep"); s.alerts.add("prof"); bad = true; }
+        let al = "", bad = false, key = "";
+        if (s.v < 0 && -s.v > 17 && s.d > .5) { al = t("sim.aFast"); key = "vitesse"; bad = true; }
+        else if (ratio > 2) { al = t("sim.aSat"); key = "sursat"; bad = true; }
+        else if (s.air <= 0) { al = t("sim.aAir"); key = "air"; bad = true; }
+        else if (s.air < 50) { al = t("sim.aRes"); key = "reserve"; bad = true; }
+        else if (s.d > 40) { al = t("sim.aDeep"); key = "prof"; bad = true; }
         else if (pn > 3.2) al = t("sim.aNarc");
         else if (s.v > 0) al = t("sim.aEq");
-        const ae = u.$("#salert"); if (ae) { ae.textContent = al; ae.style.color = bad ? "var(--bad)" : "var(--muted)"; }
+        const first = key && !s.alerts.has(key); if (key) s.alerts.add(key);
+        const ae = u.$("#salert"); if (ae) { ae.textContent = al; ae.style.color = bad ? "var(--bad)" : "var(--muted)"; ae.classList.toggle("hot", bad); }
         if (bad && s.t - s.lastAlarm > .5) { fx.sfx.alarm(); fx.buzz(60); s.lastAlarm = s.t; }
         draw();
-        if (s.started && s.d <= 0 && s.max > 3 && s.v <= 0) { clearInterval(simTimer); s.ended = true; finish(); }
+        if (s.started && s.d <= 0 && s.max > 3 && s.v <= 0) { clearInterval(simTimer); s.ended = true; s.paused = false; sync(); finish(); return; }
+        /* Première fois qu'une alarme sonne : pause pour réfléchir. */
+        if (first && s.autoPause) togglePause(true, al + " " + t("sim.thinkS"));
       }
       function draw() {
         const cv = u.$("#simcv"); if (!cv) return;
@@ -3270,17 +3557,19 @@ window.AA={BUNDLED:true};
         for (let x = 0; x <= tmax; x += 10) g.fillText(x + "'", X(x) - 6, H - 2);
         g.strokeStyle = col("--accent"); g.lineWidth = 3; g.lineJoin = "round"; g.beginPath(); s.hist.forEach(([x, d], i) => i ? g.lineTo(X(x), Y(d)) : g.moveTo(X(x), Y(d))); g.stroke();
         const [lt, ld] = s.hist[s.hist.length - 1]; g.fillStyle = col("--gold"); g.beginPath(); g.arc(X(lt), Y(ld), 5, 0, 7); g.fill();
+        if (!s.started) { g.fillStyle = col("--ink"); g.font = "600 14px " + (col("--font-body") || "sans-serif"); g.textAlign = "center"; g.fillText(t("sim.start"), W / 2, H / 2); g.textAlign = "left"; }
         const P = 1 + s.d / 10, set = (id, v) => { const e = u.$("#" + id); if (e) e.textContent = v; };
         set("r-d", u.num(s.d, 1)); set("r-t", u.mmss(Math.floor(s.t * 60))); set("r-p", u.num(P, 2)); set("r-a", Math.round(s.air)); set("r-n", u.num(.79 * P, 2)); set("r-c", Math.round(20 * P));
         const te = u.$("#tis"); if (te) te.innerHTML = s.tis.map((x, i) => { const r = x / P, c = r > 2 ? "var(--bad)" : r > 1.05 ? "var(--gold)" : "var(--ok)"; return `<div class="tissue"><span>${HT[i]} min</span>${ui.bar(x / 4, c)}<span>${u.num(x, 2)}</span></div>`; }).join("");
       }
       function finish() {
         const clean = s.alerts.size === 0 && s.maxRatio <= 2;
-        if (clean) { AA.S.simOk++; G.addXp(30); AA.store.save(); G.checkBadges(); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 2, 40, "rgba(61,220,151,.9)"); }
+        if (clean && !s.saved) { s.saved = true; AA.S.simOk++; G.addXp(30); AA.store.save(); G.checkBadges(); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 2, 40, "rgba(61,220,151,.9)"); }
         const names = AA.i18n.raw("sim.alertNames");
-        const r = u.$("#simres"); if (r) r.innerHTML = `<div class="feedback ${clean ? "ok" : "bad"}" style="margin-top:var(--sp-4)"><h4>${clean ? t("sim.clean") : t("sim.alerts")}</h4><p>${t("sim.summary", { d: u.num(s.max, 1), t: Math.round(s.t), a: Math.round(s.air) })}${s.alerts.size ? " " + t("sim.alertList", { l: [...s.alerts].map(a => names[a]).join(", ") }) : ""}</p>${clean ? "" : `<p class="small">${t("sim.tip")}</p>`}</div>`;
+        const r = u.$("#simres"); if (r) r.innerHTML = `<div class="feedback ${clean ? "ok" : "bad"}" style="margin-top:var(--sp-4)"><h4>${clean ? t("sim.clean") : t("sim.alerts")}</h4><p>${t("sim.summary", { d: u.num(s.max, 1), t: Math.round(s.t), a: Math.round(s.air) })}${s.alerts.size ? " " + t("sim.alertList", { l: [...s.alerts].map(a => names[a]).join(", ") }) : ""}</p>${clean ? "" : `<p class="small">${t("sim.tip")}</p>`}<button class="btn block" id="sagain" style="margin-top:var(--sp-3)">${AA.icon("refresh")} ${t("sim.reset")}</button></div>`;
+        const ag = u.$("#sagain"); if (ag) ag.onclick = () => { AA.ctx.sim = fresh(); AA.router.refresh(); };
       }
-      requestAnimationFrame(() => { draw(); if (s.started && !s.ended) run(); else if (s.ended) finish(); });
+      requestAnimationFrame(() => { draw(); sync(); if (s.paused && live()) s.pauseWhy = s.pauseWhy || t("sim.backS"), sync(); if (live()) run(); else if (s.ended) finish(); });
     }
   });
 
@@ -3344,9 +3633,11 @@ window.AA={BUNDLED:true};
       const weak = G.weakModules(3), claim = G.claimable();
       const name = S.profile.name || t("home.diver");
       el.innerHTML = `
-        <section class="profile"><div class="avatar">${u.esc(name.slice(0, 1).toUpperCase())}</div><div class="stack" style="gap:6px">
+        <section class="profile"><button class="ava-btn" id="avedit" aria-label="${t("ava.change")}">${AA.avatar.mine("lg")}<span class="ava-pen">${AA.icon("edit")}</span></button><div class="stack" style="gap:6px">
           <h1 style="font-size:var(--fs-2xl)">${u.esc(name)}</h1><span class="chip gold" style="justify-self:start">${t("prof.level", { l: lv.l, rank: u.esc(lv.rank) })}</span>
-          ${ui.bar(lv.into / lv.need)}<span class="xs muted">${t("prof.toNext", { n: lv.need - lv.into })}</span></div></section>
+          ${ui.bar(lv.into / lv.need)}<span class="xs muted">${t("prof.toNext", { n: lv.need - lv.into })}</span>
+          <span class="xs muted">${t("ava.now", { s: AA.avatar.stage(lv.l) + 1, n: AA.avatar.STAGES.length, name: AA.i18n.raw("ava.stages")[AA.avatar.stage(lv.l)] })}${AA.avatar.next(lv.l) ? " · " + t("ava.nextAt", { l: AA.avatar.next(lv.l), name: AA.i18n.raw("ava.stages")[AA.avatar.stage(lv.l) + 1] }) : ""}</span>
+          <button class="btn ghost sm" id="avedit2" style="justify-self:start">${AA.icon("edit")} ${t("ava.change")}</button></div></section>
         <div class="stats" style="margin-top:var(--sp-5)">
           <div class="stat"><b>${S.xp}</b><span>XP</span></div>
           <div class="stat"><b>${tot[0] ? Math.round(tot[1] / tot[0] * 100) + " %" : "—"}</b><span>${t("prof.acc", { n: tot[0] })}</span></div>
@@ -3366,9 +3657,10 @@ window.AA={BUNDLED:true};
         <div class="section-title"><h3>${t("prof.trophies")}</h3><span class="muted small">${got} / ${C.badges.length}</span></div>
         <div class="trophies">${C.badges.map(b => `<div class="trophy ${S.badges[b.id] ? "" : "off"}"><div class="medal">${AA.icon(b.icon)}</div><b>${u.esc(b.name)}</b><span>${u.esc(b.desc)}</span></div>`).join("")}</div>
         <div class="section-title"><h3>${t("prof.path")}</h3></div>
-        <section class="card"><ol class="path">${C.roadmap.map(r => `<li class="${r.done ? "done" : r.here ? "here" : ""}"><span></span><span><b>${u.esc(r.t)}</b><span>${u.esc(r.d)}</span></span></li>`).join("")}</ol></section>
+        <section class="card"><ol class="path">${C.roadmap.map(r => `<li class="${r.done ? "done" : r.here ? "here" : ""}"><span><b>${u.esc(r.t)}</b><span>${u.esc(r.d)}</span></span></li>`).join("")}</ol></section>
         <a class="btn ghost block" style="margin-top:var(--sp-5)" href="#/settings">${AA.icon("gear")} ${t("nav.settings")}</a>`;
       u.on(el, "click", ".tile", (e, b) => AA.router.go(b.dataset.t));
+      u.$("#avedit").onclick = u.$("#avedit2").onclick = () => AA.avatar.picker(() => AA.router.refresh());
     }
   });
 
@@ -4319,6 +4611,28 @@ AA.i18n.add("fr", {
   "set.voice": "Lecture vocale", "set.voice.slow": "Lente", "set.voice.normal": "Normale", "set.voice.fast": "Rapide", "set.voiceTest": "Tester la voix",
   "set.voiceSample": "Pression absolue égale un, plus la profondeur divisée par dix.", "set.noVoice": "La lecture vocale n’est pas disponible sur ce navigateur.",
   "set.online": "En ligne", "set.offline": "Hors ligne", "set.offlineS": "Une fois installée, l’appli marche entièrement sans réseau."
+});
+
+/* 1.1.1 : avatar, simulateur, mode ordinateur */
+AA.i18n.add("fr", {
+  "ava.title": "Ton avatar", "ava.change": "Changer d’avatar", "ava.save": "Garder cet avatar",
+  "ava.kind.diver": "Plongeur", "ava.kind.creature": "Créature", "ava.kind.letter": "Initiale",
+  "ava.hair": "Coiffure", "ava.hairs": ["Court", "Long", "Chignon", "Ras"], "ava.hairC": "Couleur des cheveux", "ava.skin": "Peau", "ava.suit": "Combinaison",
+  "ava.creatureS": "Les créatures de ton aquarium ({n} sur {tot}). Les autres se débloquent en jouant.", "ava.noCreature": "Ton aquarium est encore vide. Termine un premier thème pour accueillir ta première créature.",
+  "ava.evo": "Évolutions", "ava.lvl": "Niveau {l}",
+  "ava.stages": ["Masque sur le front", "Masque et tuba", "Bloc et détendeur", "Cagoule et phare", "Aura des abysses"],
+  "ava.now": "Évolution {s}/{n} : {name}", "ava.nextAt": "prochaine au niveau {l} ({name})", "ava.evolved": "Ton avatar évolue : {name} !",
+  "pc.intro": "Un écran d’ordinateur, une situation. À toi de lire les chiffres et de choisir la bonne décision, comme sous l’eau.",
+  "pc.demo": "Exemple d’écran. Les vrais écrans varient selon les marques : regarde la notice du tien.",
+  "pc.readT": "Lire l’écran",
+  "pc.legend": [["PROF", "Profondeur actuelle"], ["NDL", "Temps restant sans palier obligatoire"], ["PALIER", "Palier obligatoire : profondeur et durée"], ["SÉCU", "Palier de sécurité conseillé"], ["▮▮▮", "Vitesse de remontée : plus il y a de barres, plus tu montes vite"], ["AIR", "Pression du bloc ou alarme en cours"]],
+  "pc.quick": "Série rapide", "pc.quickS": "{n} situations au hasard", "pc.all": "Toutes les situations", "pc.allS": "Les {n} écrans à la suite",
+  "pc.best": "Record {n} %", "pc.stats": "Meilleur score : {b} % · {r} série(s) jouée(s).",
+  "pc.validate": "Chaque ordinateur a ses réglages et ses alarmes. Fais valider tes réflexes par ton moniteur avec ton propre ordinateur.",
+  "sim.howBtn": "Comment jouer", "sim.how": ["Appuie sur « Descendre » pour commencer la plongée.", "« Stabiliser » te garde à la même profondeur, « Remonter » te fait monter à la vitesse choisie.", "« Pause » fige le temps : prends le temps de réfléchir, rien ne bouge.", "À la première alarme, le simulateur se met en pause tout seul pour que tu décides calmement.", "But : revenir en surface sans alarme. Astuce : 10 m/min maxi et un arrêt à 3 m."],
+  "sim.pad": "Commandes du plongeur", "sim.holdS": "même profondeur", "sim.pause": "Pause", "sim.resume": "Reprendre", "sim.spaceKey": "touche Espace",
+  "sim.paused": "En pause", "sim.pausedS": "Le temps est figé. Réfléchis, puis choisis une action ou reprends.", "sim.thinkS": "Que fais-tu ? Choisis une action, le temps reprendra.", "sim.backS": "Tu reprends là où tu t’étais arrêté.",
+  "sim.settings": "Réglages", "sim.autoPause": "Pause automatique à chaque nouvelle alarme", "sim.start": "Appuie sur ▼ Descendre pour commencer"
 });
 
 /* content/fr/worlds.js */

@@ -99,7 +99,8 @@
     const after = G.levelOf(S().xp);
     if (after.l > before) {
       AA.fx.sfx.up(); AA.fx.buzz([30, 60, 30]);
-      AA.fx.toast(AA.t("toast.level", { l: after.l }), AA.t("toast.rank", { rank: after.rank }), "trophy");
+      const evo = AA.avatar && AA.avatar.stage(after.l) > AA.avatar.stage(before);
+      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.i18n.raw("ava.stages")[AA.avatar.stage(after.l)] }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
       AA.fx.burst(innerWidth / 2, innerHeight * .6, 40, "rgba(255,200,87,.9)");
     }
     AA.ui && AA.ui.hud();
@@ -214,6 +215,8 @@
     return all.sort((a, b) => G.stars(a.id) - G.stars(b.id))[0] || C.modules[0];
   };
   G.qod = () => {
+    const A = S().qodAns; /* réponse du jour déjà donnée : on garde la même question */
+    if (A && A.d === u.today()) { const q = C.questions.find(x => x.id === A.id); if (q) return q; }
     const pool = C.questions.filter(q => G.unlocked(q.m));
     if (!pool.length) return null;
     return pool[u.seedOf(u.today() + "q") % pool.length];

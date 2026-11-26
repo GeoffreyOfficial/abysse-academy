@@ -58,8 +58,10 @@
     if (current && current.leave) try { current.leave(); } catch (e) {}
     R.prev = current; current = v; R.name = name;
     AA.ui.frame(v);
-    const el = document.getElementById("view");
-    el.innerHTML = ""; el.className = kind && !vt ? "view-enter view-" + kind : "";
+    /* Conteneur neuf à chaque écran : les écouteurs d'un écran précédent
+       ne doivent jamais réagir aux clics du suivant. */
+    const old = document.getElementById("view"), el = old.cloneNode(false); old.replaceWith(el);
+    el.className = kind && !vt ? "view-enter view-" + kind : "";
     v.render(el, args);
     if (AA.scene) AA.scene.set(typeof v.depth === "function" ? v.depth(args) : v.depth != null ? v.depth : 5);
     AA.ui.hud();
