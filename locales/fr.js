@@ -426,3 +426,34 @@ AA.i18n.add("fr", {
   "place.fix": "Les corrections", "place.doneT": "Parcours adapté",
   "place.doneS.review": "{w} est en révision libre.", "place.doneS.learn": "Tes acquis {w} sont validés.", "place.doneS.skip": "{w} est passé."
 });
+
+AA.i18n.add("fr", {
+  /* 1.4 · aide et orientation */
+  "help.go": "J’y vais", "help.ok": "Compris", "help.what": "C’est quoi ?", "help.first": "Première fois ici ?", "help.more": "En savoir plus", "help.gotIt": "J’ai compris",
+  "hud.xpT": "{xp} XP", "hud.xpLvl": "Niveau de joueur {l} · {rank}", "hud.earn": "Gagner des XP maintenant", "hud.seeProfile": "Voir mon profil",
+  "hud.streakT": "Série : {n} jour(s)", "hud.streakOk": "Ta flamme est allumée aujourd’hui. Reviens demain pour la garder !",
+  "hud.streakTodo": "Pas encore joué aujourd’hui : une seule question suffit à garder ta flamme.", "hud.last14": "Tes 14 derniers jours", "hud.keep": "5 minutes pour garder ma flamme",
+  "home.claim": "Récupérer", "home.doIt": "Faire", "home.whatFlash": "Flashcards ? C’est quoi",
+  /* Signalements */
+  "rep.btn": "Signaler", "rep.title": "Signaler un problème", "rep.onQ": "Une question · {m}", "rep.onL": "{m} · {tab}",
+  "rep.k.wrong": "C’est faux", "rep.k.unclear": "Pas clair", "rep.k.source": "Source à vérifier", "rep.k.typo": "Faute ou coquille", "rep.k.idea": "Idée",
+  "rep.noteQ": "Explique en quelques mots (facultatif)", "rep.notePh": "Ex. : mon moniteur dit plutôt… / je ne comprends pas pourquoi…",
+  "rep.send": "Enregistrer le signalement", "rep.where": "Gardé sur ton téléphone. Tu l’envoies quand tu veux depuis Profil › Mes signalements.",
+  "rep.okT": "Merci, c’est noté !", "rep.okS": "{n} signalement(s) en attente. Touche ici pour les envoyer.",
+  "rep.list": "Mes signalements", "rep.listS": "Exporte le fichier et envoie-le : chaque signalement indique le texte exact à corriger, puis la mise à jour arrive dans l’appli.",
+  "rep.export": "Exporter le fichier", "rep.copy": "Copier ou partager", "rep.open": "Ouvrir le cours", "rep.del": "Supprimer", "rep.clear": "Tout effacer",
+  "rep.clearQ": "Effacer tous tes signalements ? (fais-le après les avoir envoyés)", "rep.noneT": "Aucun signalement", "rep.noneS": "Touche « Signaler » sur un cours ou sous la correction d’une question.",
+  "rep.n": "{n} en attente d’envoi", "rep.tileS": "Une erreur ? Dis-le",
+  /* Sources */
+  "src.title": "Sources de ce cours", "src.page": "Sources et fiabilité", "src.tileS": "D’où viennent les cours",
+  "src.note": "Références générales : vérifie toujours la version en vigueur. Un doute ? Touche « Signaler ».",
+  /* À valider */
+  "val.whatT": "Rien à faire dans l’appli", "val.whatS": "Voici les points que l’appli ne peut pas garantir. Montre cette liste à ton moniteur : quand il confirme un point, coche-le. S’il te dit autre chose, signale-le pour qu’on corrige.",
+  "val.whatShort": "Les points à confirmer avec ton moniteur, à cocher au fur et à mesure.", "val.open": "Ouvrir la liste ({n}/{tot} validés)", "val.tileS": "{n}/{tot} confirmés",
+  "val.count": "{n} / {tot} confirmés", "val.share": "Envoyer à mon moniteur", "val.okOn": "Confirmé le {d}",
+  "val.diff": "Ton moniteur dit autre chose ? Signale-le : l’appli sera corrigée.", "val.shareHead": "Abysse Academy : points à confirmer avec mon moniteur",
+  /* Cours */
+  "lesson.readTime": "{n} min", "lesson.toc": "Dans ce cours",
+  "ex2.title": "Exemple pas à pas · tiré au hasard", "ex2.try": "Essaie d’abord seul, puis vérifie.", "ex2.show": "Voir la solution", "ex2.other": "Un autre exemple", "ex2.result": "Résultat",
+  "map.got": "obtenu"
+});

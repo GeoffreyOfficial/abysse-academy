@@ -49,7 +49,10 @@
   /* ----- Lanceurs ----- */
   Q.module = (m, deepOnly) => {
     const pool = deepOnly ? m.quiz.filter(q => q.lvl === 2) : m.quiz;
-    Q.start("module", u.shuffle(pool).slice(0, 10), { module: m.id, title: m.title, air: 200, wasStale: G.isStale(m.id), back: "lesson/" + m.id });
+    /* Plus d'aléatoire : jusqu'à 2 calculs tirés au hasard dans la série (chiffres neufs à chaque fois). */
+    const gk = deepOnly ? [] : G.genKeys(m.id), ng = gk.length ? Math.min(2, Math.max(1, Math.round(pool.length / 8))) : 0;
+    const picks = u.shuffle(pool).slice(0, 10 - ng).concat(Array.from({ length: ng }, () => G.gen(u.pick(gk))).filter(Boolean));
+    Q.start("module", u.shuffle(picks), { module: m.id, title: m.title, air: 200, wasStale: G.isStale(m.id), back: "lesson/" + m.id });
   };
   Q.calcs = (mid, n, title) => { const keys = G.genKeys(mid); Q.start("gen", Array.from({ length: n || 6 }, () => G.gen(u.pick(keys))), { title: title || t("quiz.calcs"), air: mid ? 200 : null, back: mid ? "lesson/" + mid : "train" }); };
   Q.daily = () => Q.start("daily", G.dailySet(), { title: t("mode.daily"), back: "home" });
@@ -237,11 +240,12 @@
         ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : t("quiz.bad")}</h4>
           ${okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
           ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}
-          ${Q.explain(q, okNow)}</div>
+          ${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
           <div class="qactions"><button class="btn block" id="nextq">${isEnd(c) ? t("quiz.seeResult") : t("quiz.next")} ${AA.icon("next")}</button></div>` : ""}
       </div>`;
     u.$("#qclose").onclick = () => AA.ui.confirm(t("quiz.quitQ"), t("quiz.quitYes"), () => { clearInterval(c.timer); AA.router.go(c.back || "home"); }, c.answers.length === 0);
     const rv = u.$("#revcours"); if (rv) rv.onclick = () => Q.review(q.m);
+    const rp = u.$("#qrep"); if (rp) rp.onclick = () => AA.report({ type: "question", q });
     u.$$(".choice", el).forEach(b => {
       b.onclick = () => answer(c, +b.dataset.ci, b);
       if (answered) return;

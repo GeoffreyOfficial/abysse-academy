@@ -28,7 +28,9 @@
     /* 1.2 */
     aquaCfg: {}, fedOn: "", evoSeen: null,
     /* 1.3 : parcours libre (niveaux obtenus, révision, passés, positionnement) */
-    certs: {}, path: {}, placed: {}, placeDone: {}
+    certs: {}, path: {}, placed: {}, placeDone: {},
+    /* 1.4 : aide, signalements, validations du moniteur, exemples */
+    reports: [], introSeen: {}, validOk: {}
   });
 
   /* Migrations : de la version N vers N+1. Ajoute la suivante ici. */

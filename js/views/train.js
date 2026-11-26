@@ -11,7 +11,7 @@
       const S = AA.S, nErr = Object.keys(S.errors).length, due = G.cardsDue().length, best = S.exams.length ? Math.max(...S.exams.map(e => e.score)) : null;
       const doubts = Object.keys(S.doubt).filter(id => C.qById[id]).length, stale = G.staleList().length;
       el.innerHTML = `${ui.head(t("tab.train"))}
-        <p class="muted">${t("train.intro")}</p>
+        <p class="muted">${t("train.intro")}</p>${ui.intro("flash")}
         <div class="section-title"><h3>${t("train.daily")}</h3></div>
         <div class="tiles">
           ${ui.tile("daily", "sun", "var(--gold)", t("mode.daily"), t("train.dailyS"), S.daily[u.today()] != null ? [t("train.doneToday"), "ok"] : ["+30 XP", "gold"])}
@@ -36,7 +36,7 @@
           ${ui.tile("duel", "users", "var(--primary)", t("mode.duel"), t("train.duelS"))}
         </div>
         ${S.exams.length ? `<div class="section-title"><h3>${t("train.examHist")}</h3></div><section class="card">${AA.profile.spark()}</section>` : ""}
-        <p class="small muted" style="margin-top:var(--sp-5)">${t("train.examNote")} <a href="#/settings/valider">${t("train.examNoteLink")}</a></p>`;
+        <p class="small muted" style="margin-top:var(--sp-5)">${t("train.examNote")} <a href="#/valider">${t("train.examNoteLink")}</a></p>`;
       u.on(el, "click", ".tile", (e, b) => {
         fx.sfx.tap();
         ({
@@ -64,7 +64,7 @@
       const back = mid ? "lesson/" + mid + "/memo" : "train";
       const head = `${ui.head(mid ? t("flash.of", { title: u.esc(C.moduleTitle(mid)) }) : t("mode.flash"), back)}
         <div class="boxes" aria-label="${t("flash.boxes")}">${boxes.map((n, i) => `<div><b>${n}</b>${i === 0 ? t("flash.new") : t("flash.box", { n: i })}</div>`).join("")}</div>
-        <p class="small muted" style="margin:var(--sp-3) 0 var(--sp-5)">${t("flash.how")}</p>`;
+        <p class="small muted" style="margin:var(--sp-3) 0 var(--sp-5)">${t("flash.how")} ${AA.helpBtn("flash")}</p>`;
       if (!card) {
         el.innerHTML = head + ui.empty("cards", c.done ? t("flash.bravo", { n: c.done }) : t("flash.none"), t("flash.noneS"), `<button class="btn" id="allc">${t("flash.all")}</button>`);
         u.$("#allc").onclick = () => { c.deck = null; c.all = true; c.done = 0; AA.router.refresh(); };

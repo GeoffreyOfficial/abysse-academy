@@ -19,15 +19,16 @@
       const cur = list.findIndex(m => G.unlocked(m) && G.stars(m.id) < 1);
       const boss = w.boss && !w.soon, bossOpen = boss && G.bossOpen(w.id), bossRec = (AA.S.boss || {})[w.id];
       el.innerHTML = `<h1 class="sr">${t("tab.map")}</h1>
-        <div class="seg" role="tablist" aria-label="${t("map.worlds")}">${C.worlds.map(x => `<button role="tab" data-w="${x.id}" aria-pressed="${x.id === w.id}" aria-selected="${x.id === w.id}">${!G.worldOpen(x) ? "🔒 " : AA.path.mode(x.id) === "skip" ? "⏭ " : AA.path.certified(x.id) ? "✓ " : ""}${u.esc(x.short)}</button>`).join("")}</div>
+        <div class="wstrip" role="tablist" aria-label="${t("map.worlds")}">${C.worlds.filter(x => !x.soon).map(x => { const l = C.inWorld(x.id), got = l.filter(mm => G.stars(mm.id) >= 1).length, op = G.worldOpen(x), md = AA.path.mode(x.id);
+          return `<button role="tab" class="wchip ${op ? "" : "lock"} ${md}" data-w="${x.id}" aria-pressed="${x.id === w.id}" aria-selected="${x.id === w.id}" style="--wc:var(${x.color})"><span class="wring" style="--p:${l.length ? got / l.length : 0}">${AA.icon(op ? x.icon : "lock")}</span><b>${u.esc(x.short)}</b><span class="xs">${AA.path.certified(x.id) ? "✓ " + t("map.got") : md === "skip" ? t("path.m.skip") : got + "/" + l.length}</span></button>`; }).join("")}</div>
         <section class="worldhead" style="--wc:var(${w.color});margin-top:var(--sp-4)">
-          <p class="eyebrow">${t("map.world")} ${C.worlds.indexOf(w) + 1}</p><h2>${u.esc(w.title)}</h2><p class="muted" style="margin:6px 0 12px">${u.esc(w.sub)}</p>
+          <div class="row between"><p class="eyebrow" style="margin:0">${t("map.world")} ${C.worlds.indexOf(w) + 1}</p>${AA.helpBtn("map")}</div><h2>${u.esc(w.title)}</h2><p class="muted" style="margin:6px 0 12px">${u.esc(w.sub)}</p>
           ${w.soon ? "" : `<div class="row between small"><span>${AA.icon("star")} ${starsGot} / ${starsMax}</span><span class="muted">${t("map.done", { n: list.filter(m => G.stars(m.id) >= 1).length, tot: list.length })}</span></div>${AA.ui.bar(starsGot / Math.max(1, starsMax))}`}
           ${!open && !w.soon ? `<p class="chip warn" style="margin-top:12px">${AA.icon("lock")} ${u.esc(G.worldLockReason(w))}</p>` : ""}
           ${w.soon ? "" : modeBanner(w, open)}
         </section>
         ${w.soon ? soon(w) : `${w.surface ? `<div class="surface-line">${u.esc(w.surface)}</div>` : ""}<div class="map" data-world="${w.id}" style="--wc:var(${w.color})">
-          <div class="para far" data-k=".22" aria-hidden="true"></div><div class="para mid" data-k=".1" aria-hidden="true"></div>
+          <div class="para far" data-k=".22" aria-hidden="true"></div><div class="para mid" data-k=".1" aria-hidden="true"></div><div class="fauna" aria-hidden="true"></div><div class="sunrays" aria-hidden="true"></div>
           <svg class="rope" aria-hidden="true"></svg>
           ${list.map((m, i) => {
             const ok = G.unlocked(m), st = G.stars(m.id), stale = G.isStale(m.id), cls = !ok ? "lock" : st >= 1 ? "done" : "";
@@ -49,7 +50,8 @@
       const rs = u.$("#wresume"); if (rs) rs.onclick = () => { AA.path.setMode(w.id, AA.path.certified(w.id) ? "review" : "learn"); AA.store.save(); fx.sfx.up(); AA.router.refresh(); };
       const bn = u.$("#bossnode"); if (bn) bn.onclick = () => { fx.sfx.tap(); AA.router.go("boss/" + w.id); };
       const dv = u.$("#diver"); if (dv) dv.onclick = () => { const m = list[cur >= 0 ? cur : list.length - 1]; if (m) AA.router.go("lesson/" + m.id); };
-      requestAnimationFrame(() => u.$$(".map", el).forEach(m => { rope(m); decor(m); placeDiver(m, w, list, cur); onScroll(); }));
+      requestAnimationFrame(() => u.$$(".map", el).forEach(m => { rope(m); decor(m); fauna(m); placeDiver(m, w, list, cur); onScroll(); }));
+      const ws = u.$(".wstrip [aria-pressed=true]", el); if (ws) { const st = ws.parentElement; st.scrollLeft = ws.offsetLeft - (st.clientWidth - ws.offsetWidth) / 2; }
     }
   });
   /* Bandeau du parcours libre : révision, passé, obtenu, ou « déjà ce niveau ? ». */
@@ -60,6 +62,44 @@
     if (mode === "review") return `<div class="mode-banner"><div class="row">${chips}</div><p class="xs muted" style="margin:0">${t("map.reviewS")}</p></div>`;
     if (!open) return `<p class="xs" style="margin:10px 0 0">${t("map.already")} <a href="#/parcours">${t("path.manage")}</a></p>`;
     return chips ? `<div class="row" style="margin-top:10px">${chips}</div>` : "";
+  }
+  /* ---------- Lisibilité des cours (1.4) ---------- */
+  const readMin = m => Math.max(1, Math.round(((m.essentiel || "") + (m.approfondir || "")).replace(/<[^>]+>/g, " ").split(/\s+/).length / 200));
+  /* Sommaire des sous-titres (à partir de 3). */
+  const toc = html => {
+    const hs = []; html.replace(/<h3[^>]*>([\s\S]*?)<\/h3>/g, (_, x) => hs.push(x.replace(/<[^>]+>/g, "")));
+    return hs.length >= 3 ? `<nav class="toc" aria-label="${t("lesson.toc")}"><span class="eyebrow">${t("lesson.toc")}</span><div class="toc-list">${hs.map((h, i) => `<button class="chip" data-toc="${i}">${u.esc(h)}</button>`).join("")}</div></nav>` : "";
+  };
+  /* Exemple pas à pas : un calcul tiré au hasard, avec la méthode. Jamais les chiffres du quiz. */
+  const exKeys = m => { const own = G.genKeys(m.id); return own.length ? own : (C.exampleGens && C.exampleGens[m.id] || []).filter(k => C.generators[k]); };
+  const exampleCard = m => exKeys(m).length ? `<section class="example-card" id="exbox" aria-live="polite"></section>` : "";
+  function drawExample(m) {
+    const box = u.$("#exbox"); if (!box) return;
+    const keys = exKeys(m), q = G.gen(u.pick(keys)); if (!q) { box.remove(); return; }
+    const me = AA.quiz.methodFor(q);
+    box.innerHTML = `<div class="row between"><span class="eyebrow">${AA.icon("bulb")} ${t("ex2.title")}</span>${AA.helpBtn("example")}</div>
+      <p class="ex-q">${u.esc(q.q)}</p><p class="xs muted" style="margin:0">${t("ex2.try")}</p>
+      <div class="ex-sol" hidden>${me ? `<ol class="ex-steps">${me.steps.map((s, i) => `<li style="--i:${i}">${s}</li>`).join("")}</ol>` : ""}
+        <div class="callout ok"><span class="eyebrow">${t("ex2.result")}</span><b>${u.esc(q.c[q.a])}</b><p class="small" style="margin:6px 0 0">${u.esc(q.e)}</p></div>${me && me.tip ? `<p class="small"><b>${t("ex.fix")}</b> ${me.tip}</p>` : ""}</div>
+      <div class="row"><button class="btn sm" id="exshow">${AA.icon("eye")} ${t("ex2.show")}</button><button class="btn ghost sm" id="exnew">${AA.icon("refresh")} ${t("ex2.other")}</button></div>`;
+    u.$("#exshow").onclick = () => { u.$(".ex-sol", box).hidden = false; u.$("#exshow").remove(); AA.fx.sfx.flip(); };
+    u.$("#exnew").onclick = () => { AA.fx.sfx.tap(); box.classList.remove("swap"); void box.offsetWidth; box.classList.add("swap"); drawExample(m); };
+  }
+  /* Animations d'apparition, sommaire cliquable, barre de lecture, exemple, signalement. */
+  function enhance(el, m) {
+    const body = u.$(".lesson-body", el); if (!body) return;
+    drawExample(m);
+    const hs = u.$$(".prose h3", body);
+    u.$$("[data-toc]", el).forEach(b => b.onclick = () => { const h = hs[+b.dataset.toc]; if (h) h.scrollIntoView({ behavior: AA.a11y.reduced() ? "auto" : "smooth", block: "start" }); });
+    u.$$("[data-rep]", el).forEach(b => b.onclick = () => AA.report({ type: "lesson", m: m.id, tab: b.dataset.rep }));
+    if (!AA.a11y.reduced() && "IntersectionObserver" in window) {
+      const items = u.$$(".prose > *, .diagram, .memo > div, .example-card", body);
+      const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -8% 0px" });
+      items.forEach(x => { x.classList.add("reveal"); io.observe(x); });
+    }
+    let bar = u.$("#readbar"); if (!bar) { bar = document.createElement("div"); bar.id = "readbar"; bar.setAttribute("aria-hidden", "true"); document.body.appendChild(bar); }
+    const upd = () => { if (AA.router.name !== "lesson") { bar.style.transform = "scaleX(0)"; removeEventListener("scroll", upd); return; } const r = body.getBoundingClientRect(), p = Math.min(1, Math.max(0, (innerHeight * .6 - r.top) / Math.max(1, r.height))); bar.style.transform = `scaleX(${p})`; };
+    addEventListener("scroll", upd, { passive: true }); upd();
   }
   function soon(w) {
     return `<section class="card soft stack" style="margin-top:var(--sp-4)"><h3>${t("map.soonT")}</h3><p class="muted">${t("map.soonS")}</p>
@@ -89,6 +129,21 @@
     while (ropeStops.length < pts.length) ropeStops.push(L);
   }
   /* Décors en parallaxe : falaises, algues, coraux. Tirage stable par monde. */
+  /* Faune animée : bancs de poissons, méduses, tortue, bulles des thèmes en cours. */
+  function fauna(map) {
+    const box = u.$(".fauna", map); if (!box) return;
+    const H = map.offsetHeight, r = u.seeded(u.seedOf(map.dataset.world + "fauna")), out = [];
+    const fish = (y, s, d, dir, c) => `<svg class="fz fish ${dir}" viewBox="0 0 40 20" style="top:${y}px;width:${s}px;animation-duration:${d}s;animation-delay:${(-r() * d).toFixed(1)}s;color:${c}"><path d="M4 10c6-7 18-8 26 0-8 8-20 7-26 0z" fill="currentColor"/><path d="M30 10l8-6v12z" fill="currentColor"/><circle cx="10" cy="8.5" r="1.3" fill="#001"/></svg>`;
+    const cols = ["var(--wc)", "var(--gold)", "var(--primary)", "var(--accent)"];
+    for (let y = 80; y < H - 80; y += 160 + r() * 140) {
+      const n = 1 + Math.floor(r() * 3), dir = r() < .5 ? "ltr" : "rtl", d = 18 + r() * 16, c = cols[Math.floor(r() * cols.length)];
+      for (let k = 0; k < n; k++) out.push(fish(y + k * 14, 18 + r() * 14, d, dir, c));
+    }
+    for (let y = H * .45; y < H - 60; y += 380 + r() * 200) out.push(`<svg class="fz jelly" viewBox="0 0 30 40" style="top:${y}px;left:${8 + r() * 80}%;animation-delay:${(-r() * 6).toFixed(1)}s"><path d="M3 16a12 12 0 0 1 24 0z" fill="currentColor" opacity=".75"/><path d="M7 16c0 8-2 14 0 20M12 16c0 8 2 14 0 22M18 16c0 8-2 14 0 22M23 16c0 8 2 14 0 20" stroke="currentColor" fill="none" opacity=".6"/></svg>`);
+    if (H > 900) out.push(`<svg class="fz turtle" viewBox="0 0 60 36" style="top:${H * .3}px;animation-delay:${(-r() * 30).toFixed(1)}s"><ellipse cx="30" cy="18" rx="16" ry="11" fill="currentColor"/><circle cx="50" cy="16" r="5" fill="currentColor"/><path d="M18 9l-10-7M18 27l-10 7M40 9l6-6M40 27l6 6" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><path d="M22 12l8 6 8-6M22 24l8-6 8 6" stroke="rgba(0,0,0,.25)" fill="none"/></svg>`);
+    box.innerHTML = out.join("");
+    u.$$(".node.cur", map).forEach(n => { if (!u.$(".bub", n)) n.insertAdjacentHTML("beforeend", `<span class="bub" aria-hidden="true"><i></i><i></i><i></i></span>`); });
+  }
   function decor(map) {
     const H = map.offsetHeight, wid = map.dataset.world, r = u.seeded(u.seedOf(wid + "deco"));
     const cliff = (side, amp, step) => { let d = side ? `M100 0` : `M0 0`; for (let y = 0; y <= H; y += step) { const x = amp * (.4 + r() * .6); d += ` L${side ? 100 - x : x} ${y}`; } return d + (side ? ` L100 ${H}Z` : ` L0 ${H}Z`); };
@@ -149,8 +204,9 @@
       const deepQ = m.quiz.filter(q => q.lvl === 2).length, gens = G.genKeys(m.id).length;
       const acc = G.moduleAcc(m.id);
       let body = "";
-      if (tab === "essentiel") body = `${m.diagram && C.diagrams[m.diagram] ? C.diagrams[m.diagram]() : ""}<div class="prose">${m.essentiel}</div>${readBtn("e", read.e)}`;
-      else if (tab === "approfondir") body = m.approfondir ? `<p class="callout"><span class="eyebrow">${t("lesson.deepIntro")}</span>${t("lesson.deepIntroS")}</p><div class="prose">${m.approfondir}</div>${readBtn("a", read.a)}` : AA.ui.empty("layers", t("lesson.noDeepT"), t("lesson.noDeepS"));
+      const tail = `${AA.sourcesHtml(m)}<div class="row lesson-tools">${AA.reportBtn(`data-rep="${tab}"`)}</div>`;
+      if (tab === "essentiel") body = `${toc(m.essentiel)}${m.diagram && C.diagrams[m.diagram] ? C.diagrams[m.diagram]() : ""}<div class="prose">${m.essentiel}</div>${exampleCard(m)}${readBtn("e", read.e)}${tail}`;
+      else if (tab === "approfondir") body = m.approfondir ? `<p class="callout"><span class="eyebrow">${t("lesson.deepIntro")}</span>${t("lesson.deepIntroS")}</p>${toc(m.approfondir)}<div class="prose">${m.approfondir}</div>${exampleCard(m)}${readBtn("a", read.a)}${tail}` : AA.ui.empty("layers", t("lesson.noDeepT"), t("lesson.noDeepS"));
       else if (tab === "memo") body = m.memo.length ? `<div class="memo">${m.memo.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="muted">${u.esc(b)}</span></div>`).join("")}</div>
           <p class="small muted" style="margin-top:var(--sp-4)">${t("lesson.memoHint")}</p><a class="btn ghost block" href="#/flash/${m.id}">${AA.icon("cards")} ${t("lesson.memoCards")}</a>` : AA.ui.empty("bulb", t("lesson.noMemoT"), "");
       else body = `<p class="muted">${t("lesson.coachIntro")}</p>
@@ -164,6 +220,7 @@
           <div class="row" style="gap:var(--sp-4);flex-wrap:nowrap"><span class="ic">${AA.icon(m.icon)}</span><div class="grow"><p class="eyebrow" style="color:var(--wc)">${u.esc(m.depth)}</p><h1 style="font-size:var(--fs-2xl)">${u.esc(m.title)}</h1><p class="muted" style="margin:4px 0 0">${u.esc(m.sub)}</p></div></div>
           <div class="row" style="margin-top:var(--sp-4)">
             <span class="chip ${read.e ? "ok" : ""}">${AA.icon("book")} ${read.e ? t("lesson.readOk") : t("lesson.toRead")}</span>
+            <span class="chip">${AA.icon("timer")} ${t("lesson.readTime", { n: readMin(m) })}</span>
             ${acc != null ? `<span class="chip">${AA.icon("target")} ${Math.round(acc * 100)} %</span>` : ""}
             ${note.ok ? `<span class="chip gold">${AA.icon("check")} ${t("lesson.coachOk")}</span>` : ""}
             ${G.isStale(m.id) ? `<span class="chip warn">${AA.icon("refresh")} ${t("map.stale")}</span>` : ""}
@@ -180,6 +237,7 @@
         </div></div>`;
       u.$$("[data-diagram]", el).forEach(f => { const d = C.diagrams[f.dataset.diagram]; if (d) f.outerHTML = d(); });
       u.$$(".prose", el).forEach(p => AA.gloss.link(p));
+      enhance(el, m);
       if (AA.ctx.hl) { const first = AA.search.mark(u.$(".lesson-body", el), AA.ctx.hl); AA.ctx.hl = null; if (first) setTimeout(() => first.scrollIntoView({ block: "center", behavior: AA.a11y.reduced() ? "auto" : "smooth" }), 120); }
       u.$$("[data-tab]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.router.go("lesson/" + m.id + "/" + b.dataset.tab, undefined, true); });
       u.$("#dive").onclick = () => AA.quiz.module(m, tab === "approfondir" && deepQ > 0);

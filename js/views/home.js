@@ -123,19 +123,19 @@
       const qod = G.qod();
       el.innerHTML = `
         <header class="hello has-ava"><a class="ava-link" href="#/profile" aria-label="${t("tab.profile")}">${AA.avatar.mine("md")}</a><div><h1>${hello}</h1><p>${line}</p></div></header>
-        ${driveCard()}${AA.pathView.homeCard()}
+        ${driveCard()}${AA.pathView.homeCard()}${AA.ui.intro("daily")}
         <div class="home-grid"><div class="col-main">
         <section class="card today" style="margin-top:var(--sp-5)">
           ${AA.ui.ring(done / goal, Math.min(done, 999), "/ " + goal, done >= goal)}
           <div class="stack"><div><p class="eyebrow">${t("home.goal")}</p><b class="h4">${done >= goal ? t("home.goalDone") : t("home.goalLeft", { n: goal - done })}</b></div>
             <button class="btn ${dailyDone ? "ghost" : ""} block" id="daily">${AA.icon(dailyDone ? "refresh" : "play")} ${dailyDone ? t("home.dailyAgain") : t("home.daily")}</button>
-            <span class="small muted">${t("home.dailyHint")}</span></div>
+            <span class="small muted">${t("home.dailyHint")} ${AA.helpBtn("daily")}</span></div>
         </section>
         <button class="five-cta" id="five"><span class="five-ic">${AA.icon("timer")}<b>5</b></span><span class="grow"><b>${t("home.fiveT")}</b><span class="small">${t("home.fiveS")}</span></span>${AA.icon("play")}</button>
         ${next ? `<div class="section-title"><h3>${t("home.continue")}</h3><a class="small" href="#/map/${next.world}">${t("home.seeMap")}</a></div>
         <a class="continue" href="#/lesson/${next.id}" style="--wc:var(${w.color})"><span class="orb">${AA.icon(next.icon)}</span><span><span class="eyebrow">${u.esc(w.short)} · ${u.esc(next.depth)}</span><b>${u.esc(next.title)}</b><span class="small muted">${u.esc(next.sub)}</span></span><span class="go">${AA.icon("next")}</span></a>` : ""}
         ${stale.length ? `<button class="card stalebox" id="stale"><span class="medal">${AA.icon("refresh")}</span><span><b>${t("home.staleT", { n: stale.length })}</b><span class="small muted">${stale.slice(0, 3).map(m => u.esc(m.title)).join(" · ")}</span></span><span class="chip warn">+XP</span></button>` : ""}
-        <div class="section-title"><h3>${t("home.quick")}</h3></div>
+        <div class="section-title"><h3>${t("home.quick")}</h3><button class="linkbtn small" data-help="flash">${t("home.whatFlash")}</button></div>
         <div class="quicks">
           <a class="quick" href="#/flash" style="--c:var(--primary)">${AA.icon("cards")}<b>${t("mode.flash")}</b><span>${t("home.due", { n: due })}</span></a>
           <button class="quick" id="rescue" style="--c:var(--accent)">${AA.icon("buoy")}<b>${t("mode.errors")}</b><span>${t("home.errs", { n: errs })}</span></button>
@@ -149,15 +149,18 @@
           <a class="xcard" href="#/glossary" style="--c:var(--gold)">${AA.icon("book")}<b>${t("gloss.title")}</b><span>${t("home.glossS", { n: C.glossary.length })}</span></a>
         </div>
         </div><aside class="col-side">
-        <div class="section-title"><h3>${t("home.quests")}</h3><a class="small" href="#/quests">${t("home.allQuests")}</a></div>
-        <section class="card">${G.todayQuests().map(q => { const [v, n] = G.cond(q.test), ok = v >= n; return `<div class="dq ${ok ? "done" : ""}"><span class="ck">${ok ? AA.icon("check") : ""}</span><span><b class="small">${u.esc(q.t)}</b>${AA.ui.bar(v / n)}</span><span class="mono xs muted">${Math.min(v, n)}/${n}</span></div>`; }).join("")}
+        <div class="section-title"><h3>${t("home.quests")} ${AA.helpBtn("quests")}</h3><a class="small" href="#/quests">${t("home.allQuests")}</a></div>
+        <section class="card">${G.todayQuests().map(q => { const [v, n] = G.cond(q.test), ok = v >= n, cl = S.claimed[u.today() + q.id], go = G.questGo(q.test);
+          return ok ? `<a class="dq done dq-go" href="#/quests"><span class="ck">${AA.icon("check")}</span><span><b class="small">${u.esc(q.t)}</b>${AA.ui.bar(1)}</span>${cl ? `<span class="chip ok">✓</span>` : `<span class="chip gold">${t("home.claim")}</span>`}</a>`
+            : `<button class="dq dq-go" data-go="${u.esc(go || "")}"><span class="ck"></span><span><b class="small">${u.esc(q.t)}</b>${AA.ui.bar(v / n)}</span><span class="dq-do">${t("home.doIt")} ${AA.icon("next")}</span></button>`; }).join("")}
           ${ns ? `<a class="questline" href="#/quests"><span class="eyebrow">${t("home.questNow")}</span><b>${u.esc(ns.st.t)}</b><span class="small muted">${u.esc(ns.c.title)}</span></a>` : ""}</section>
-        ${qod ? `<div class="section-title"><h3>${t("home.qod")}</h3><span class="chip">${u.esc(C.moduleTitle(qod.m))}</span></div>
+        ${qod ? `<div class="section-title"><h3>${t("home.qod")} ${AA.helpBtn("qod")}</h3><span class="chip">${u.esc(C.moduleTitle(qod.m))}</span></div>
         <section class="card" id="qod"><p class="qtext" style="margin-bottom:var(--sp-4)">${u.esc(qod.q)}</p><div class="choices">${qodOrder(qod).map((i, k) => `<button class="choice" data-qi="${i}"><span class="k">${"ABCD"[k]}</span><span>${u.esc(qod.c[i])}</span><span class="mk"></span></button>`).join("")}</div><div id="qodx"></div></section>` : ""}
         </aside></div>
       `;
       wireDrive(); AA.pathView.wireHome(); AA.avatar.checkEvolution();
       u.$("#daily").onclick = () => AA.quiz.daily();
+      u.$$("[data-go]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.goTo(b.dataset.go || "daily"); });
       u.$("#five").onclick = () => { fx.sfx.tap(); AA.quiz.five(); };
       u.$("#rescue").onclick = () => AA.quiz.errors();
       const sb = u.$("#stale"); if (sb) sb.onclick = () => AA.quiz.stale();

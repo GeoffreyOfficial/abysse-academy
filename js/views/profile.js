@@ -38,6 +38,9 @@
           ${ui.tile("quests", "flag", "var(--gold)", t("prof.quests"), t("prof.questsS"), claim ? [t("prof.claim", { n: claim }), "gold"] : null)}
           ${ui.tile("club", "users", "var(--primary)", t("prof.club"), t("prof.clubS"))}
           ${ui.tile("aquarium", "fish", "var(--primary)", t("aqua.title"), t("home.aquaS", { n: Object.keys(S.aqua).length, tot: C.creatures.length }))}
+          ${ui.tile("reports", "flag", "var(--accent)", t("rep.list"), (S.reports || []).length ? t("rep.n", { n: S.reports.length }) : t("rep.tileS"), (S.reports || []).length ? [String(S.reports.length), "warn"] : null)}
+          ${ui.tile("valider", "check", "var(--ok)", t("set.validate"), t("val.tileS", { n: C.validate.filter(([a]) => (S.validOk || {})[a]).length, tot: C.validate.length }))}
+          ${ui.tile("sources", "book", "var(--gold)", t("src.page"), t("src.tileS"))}
           ${ui.tile("backup", "save", "var(--ok)", t("bk.title"), AA.sync.linked() ? t("bk.driveOn") : t("prof.backupS"))}
         </div>
         ${weak.length ? `<div class="section-title"><h3>${t("prof.weak")}</h3></div><div class="row">${weak.map(w => `<a class="btn ghost sm" href="#/lesson/${w.m.id}">${u.esc(w.m.title)} · ${Math.round(w.a * 100)} %</a>`).join("")}</div>` : ""}
@@ -64,9 +67,10 @@
       const S = AA.S, today = u.today(), dq = G.todayQuests();
       let all = true;
       const dqh = dq.map(q => { const [v, n] = G.cond(q.test), done = v >= n, key = today + q.id, cl = S.claimed[key]; if (!done) all = false;
-        return `<div class="dq ${done ? "done" : ""}"><span class="ck">${done ? AA.icon("check") : ""}</span><span><b class="small">${u.esc(q.t)}</b>${ui.bar(v / n, "var(--gold)")}</span>${cl ? `<span class="chip ok">✓</span>` : done ? `<button class="btn gold sm" data-claim="${key}" data-xp="20">+20 XP</button>` : `<span class="mono xs muted">${Math.min(v, n)}/${n}</span>`}</div>`; }).join("");
+        if (!done) return `<button class="dq dq-go" data-go="${u.esc(G.questGo(q.test) || "daily")}"><span class="ck"></span><span><b class="small">${u.esc(q.t)}</b>${ui.bar(v / n, "var(--gold)")}<span class="xs muted mono">${Math.min(v, n)}/${n}</span></span><span class="dq-do">${t("home.doIt")} ${AA.icon("next")}</span></button>`;
+        return `<div class="dq done"><span class="ck">${AA.icon("check")}</span><span><b class="small">${u.esc(q.t)}</b>${ui.bar(1, "var(--gold)")}</span>${cl ? `<span class="chip ok">✓</span>` : `<button class="btn gold sm" data-claim="${key}" data-xp="20">+20 XP</button>`}</div>`; }).join("");
       const bk = today + "bonus";
-      el.innerHTML = `${ui.head(t("prof.quests"), "profile")}
+      el.innerHTML = `${ui.head(t("prof.quests"), "profile", AA.helpBtn("quests"))}${ui.intro("quests")}
         <section class="card"><div class="row" style="gap:var(--sp-3)"><span class="medal">${AA.icon("sun")}</span><div class="grow"><h3>${t("quests.daily")}</h3><p class="small muted" style="margin:0">${t("quests.dailyS")}</p></div></div>
           <div style="margin-top:var(--sp-3)">${dqh}</div>
           ${all ? (S.claimed[bk] ? `<p class="small muted">${t("quests.bonusDone")}</p>` : `<button class="btn block" data-claim="${bk}" data-xp="30" style="margin-top:var(--sp-3)">${t("quests.bonus")}</button>`) : ""}</section>
@@ -77,9 +81,12 @@
             <div style="margin-top:var(--sp-2)">${steps.map(({ st, k, done }) => { const key = c.id + k;
               if (c.real) return `<label class="dq ${done ? "done" : ""}" style="cursor:pointer"><span class="ck">${done ? AA.icon("check") : ""}</span><b class="small">${u.esc(st.t)}</b><span class="switch"><input type="checkbox" data-real="${key}" ${done ? "checked" : ""}><i></i></span></label>`;
               const [v, n] = G.cond(st.test);
+              const go = !done && G.questGo(st.test);
+              if (go) return `<button class="dq dq-go" data-go="${u.esc(go)}"><span class="ck"></span><span><b class="small">${u.esc(st.t)}</b>${n > 1 ? `<span class="xs muted mono"> ${Math.min(v, n)}/${n}</span>` : ""}</span><span class="dq-do"><span class="chip">${st.xp} XP</span>${AA.icon("next")}</span></button>`;
               return `<div class="dq ${done ? "done" : ""}"><span class="ck">${done ? AA.icon("check") : ""}</span><span><b class="small">${u.esc(st.t)}</b>${!done && n > 1 ? `<span class="xs muted mono"> ${Math.min(v, n)}/${n}</span>` : ""}</span>${S.claimed[key] ? `<span class="chip ok">✓</span>` : done ? `<button class="btn gold sm" data-claim="${key}" data-xp="${st.xp}">+${st.xp} XP</button>` : `<span class="chip">${st.xp} XP</span>`}</div>`; }).join("")}</div>
             ${c.real ? `<p class="xs muted" style="margin-top:8px">${t("quests.realNote")}</p>` : ""}</section>`; }).join("")}`;
       u.$$("[data-claim]", el).forEach(b => b.onclick = () => { S.claimed[b.dataset.claim] = 1; AA.store.save(); fx.sfx.badge(); fx.buzz([20, 30, 20]); G.addXp(+b.dataset.xp, b); fx.burstAt(b, 24, "rgba(255,200,87,.9)"); G.checkBadges(); setTimeout(AA.router.refresh, 450); });
+      u.$$("[data-go]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.goTo(b.dataset.go); });
       u.$$("[data-real]", el).forEach(cb => cb.onchange = () => { S.real[cb.dataset.real] = cb.checked ? today : 0; AA.store.save(); if (cb.checked) { fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 2, 50, "rgba(255,200,87,.9)"); fx.toast(t("quests.realT"), t("quests.realS"), "flag"); } AA.router.refresh(); });
     }
   });
@@ -135,8 +142,8 @@
           <div class="stack"><button class="btn block" id="dlapp">${AA.icon("install")} ${t("set.installBtn")}</button></div>
           <p class="small" id="dlmsg" role="status"></p>
           <p class="xs muted"><span class="chip ${navigator.onLine ? "ok" : "warn"}">${AA.icon(navigator.onLine ? "check" : "offline")} ${navigator.onLine ? t("set.online") : t("set.offline")}</span> ${t("set.offlineS")}</p></section>
-        <section class="card" style="margin-top:var(--sp-4)" id="valider"><h3>${t("set.validate")}</h3><p class="small muted">${t("set.validateS")}</p>
-          <div class="memo">${C.validate.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="small muted">${u.esc(b)}</span></div>`).join("")}</div></section>
+        <section class="card" style="margin-top:var(--sp-4)" id="valider"><h3>${t("set.validate")}</h3><p class="small muted">${t("val.whatShort")}</p>
+          <div class="row"><a class="btn ghost sm" href="#/valider">${AA.icon("check")} ${t("val.open", { n: C.validate.filter(([a]) => (S.validOk || {})[a]).length, tot: C.validate.length })}</a><a class="btn ghost sm" href="#/sources">${AA.icon("book")} ${t("src.page")}</a><a class="btn ghost sm" href="#/reports">${AA.icon("flag")} ${t("rep.list")}</a></div></section>
         <section class="card danger-zone" style="margin-top:var(--sp-4)"><h3>${AA.icon("info")} ${t("set.danger")}</h3><p class="small muted">${t("rs.zoneS")}</p><button class="btn ghost block danger" id="reset">${t("set.reset")}</button></section>
         <p class="center xs muted" style="margin-top:var(--sp-5)">${t("app.name")} · v${AA.VERSION}<br>${t("set.about")}</p>`;
       u.$$("[data-theme]", el).forEach(b => b.onclick = () => { p.theme = b.dataset.theme; AA.store.save(); ui.applyTheme(); fx.sfx.tap(); AA.router.refresh(); });

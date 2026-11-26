@@ -30,18 +30,22 @@
     const S = AA.S, G = AA.game, lv = G.levelOf(S.xp), st = G.streak(), dx = G.daysToExam();
     top.innerHTML = `<a class="brand" href="#/home" aria-label="${t("app.name")}">${AA.logo()}<b>Abysse<span>Academy</span></b></a>
       <span class="grow"></span>
-      ${dx != null && dx >= 0 ? `<span class="pill cd" title="${t("hud.exam")}">${AA.icon("calendar")}J−${dx}</span>` : ""}
-      <span class="pill fire" title="${t("hud.streak")}">${AA.icon("flame")}${st}</span>
-      <a class="pill xp" href="#/profile" title="${t("hud.level", { l: lv.l })}">${AA.icon("bolt")}${S.xp}</a>
+      ${dx != null && dx >= 0 ? `<button class="pill cd" data-hud="countdown" title="${t("hud.exam")}" aria-label="${t("hud.exam")} : J−${dx}">${AA.icon("calendar")}J−${dx}</button>` : ""}
+      <button class="pill fire" data-hud="streak" title="${t("hud.streak")}" aria-label="${t("hud.streak")} : ${st}">${AA.icon("flame")}${st}</button>
+      <button class="pill xp" data-hud="xp" title="${t("hud.level", { l: lv.l })}" aria-label="${S.xp} XP · ${t("hud.level", { l: lv.l })}">${AA.icon("bolt")}${S.xp}</button>
       <a class="iconbtn" href="#/search" aria-label="${t("search.title")}">${AA.icon("search")}</a>
       <a class="iconbtn" href="#/settings" aria-label="${t("nav.settings")}">${AA.icon("gear")}</a>`;
+    u.$$("[data-hud]", top).forEach(b => b.onclick = () => { AA.fx.sfx.tap(); AA.hudSheet(b.dataset.hud); });
     const dot = G.claimable(); const pt = u.$('[data-tab="profile"]');
     if (pt) { let d = u.$(".dot", pt); if (dot && !d) { d = document.createElement("i"); d.className = "dot"; pt.appendChild(d); } else if (!dot && d) d.remove(); }
   };
 
   /* ---------- Petits composants (renvoient du HTML) ---------- */
   ui.head = (title, backTo, extra) => `<div class="pagehead">${backTo ? `<a class="closebtn" href="#/${backTo}" aria-label="${t("nav.back")}">${AA.icon("back")}</a>` : ""}<h1 class="pagetitle">${title}</h1>${extra || ""}</div>`;
-  ui.tile = (id, icon, color, title, sub, badge) => `<button class="tile" data-t="${id}" style="--c:${color}"><span class="ic">${AA.icon(icon)}</span><b>${title}</b><span>${sub}</span>${badge ? `<span class="badge chip ${badge[1] || ""}">${badge[0]}</span>` : ""}</button>`;
+  /* Chaque tuile qui a une fiche d'aide reçoit un petit « ? » (content/fr/help.js). */
+  const TILE_HELP = { examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate" };
+  ui.tile = (id, icon, color, title, sub, badge) => { const hk = TILE_HELP[id], has = hk && AA.content.help && AA.content.help[hk];
+    return `<button class="tile" data-t="${id}" style="--c:${color}"><span class="ic">${AA.icon(icon)}</span><b>${title}</b><span>${sub}</span>${badge ? `<span class="badge chip ${badge[1] || ""}">${badge[0]}</span>` : ""}${has ? `<span class="helpbtn tile-help" role="button" tabindex="0" data-help="${hk}" aria-label="${t("help.what")}">?</span>` : ""}</button>`; };
   ui.bar = (p, color) => `<div class="bar"><i style="width:${Math.round(u.clamp(p, 0, 1) * 100)}%${color ? ";background:" + color : ""}"></i></div>`;
   ui.ring = (p, big, small, done) => {
     const r = 46, c = 2 * Math.PI * r, off = c * (1 - u.clamp(p, 0, 1));

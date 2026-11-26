@@ -10,7 +10,7 @@
     tab: "lab",
     render(el) {
       const S = AA.S, sc = C.scenarios.filter(s => S.scen[s.id] === 1).length;
-      el.innerHTML = `${ui.head(t("tab.lab"))}<p class="muted">${t("lab.intro")}</p>
+      el.innerHTML = `${ui.head(t("tab.lab"))}<p class="muted">${t("lab.intro")}</p>${ui.intro("sim")}
         <div class="tiles" style="margin-top:var(--sp-4)">
           ${ui.tile("sim", "dive", "var(--primary)", t("lab.sim"), t("lab.simS"), S.simOk ? [t("lab.simOk", { n: S.simOk }), "ok"] : null)}
           ${ui.tile("pc", "watch", "var(--ok)", t("mode.pc"), t("lab.pcS", { n: C.computer.length }), S.pcRuns ? [t("pc.best", { n: S.pcBest }), S.pcBest === 100 ? "ok" : ""] : null)}

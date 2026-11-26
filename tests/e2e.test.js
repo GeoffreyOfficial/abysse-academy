@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console.error("  ✗ " + m); } };
 const WIDTHS = [[280, 653], [390, 844], [884, 1104], [1440, 900], [3840, 2160]];
-const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base"];
+const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte"];
 
 async function newPage(b, w, h) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
@@ -80,6 +80,36 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(await p.evaluate(() => AA.S.profile.level === "e1" && AA.S.certs.rifap && AA.game.worldOpen("e1")), "changer de niveau déclaré (Initiateur)");
       const ex = await p.evaluate(() => { AA.S.profile.goal = "n3"; AA.quiz.exam(false); const c = AA.ctx; return c.world === "n3" && c.items.length >= 10; });
       ok(ex, "examen blanc du monde visé (N3)");
+      await ctx.close(); }
+
+    console.log("• Aide, quêtes, signalements (1.4)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
+      await p.click(".pill.fire"); await p.waitForTimeout(250);
+      ok(await p.$(".streak-cal"), "flamme cliquable : série expliquée sur 14 jours");
+      await p.keyboard.press("Escape"); await p.click(".pill.xp"); await p.waitForTimeout(250);
+      ok(await p.$(".help-sheet [data-hx]"), "éclair cliquable : XP et niveau expliqués");
+      await p.keyboard.press("Escape"); await p.click('[data-help="quests"]'); await p.waitForTimeout(250);
+      ok(await p.$(".help-sheet"), "bouton « ? » : fiche d’aide des quêtes");
+      await p.keyboard.press("Escape"); await p.waitForTimeout(150);
+      const go = await p.$(".dq-go[data-go]"); ok(!!go, "quête du jour cliquable");
+      if (go) { await go.click(); await p.waitForTimeout(400); ok(await p.evaluate(() => AA.router.name !== "home"), "la quête emmène au bon écran (" + await p.evaluate(() => AA.router.name) + ")"); }
+      await p.goto(URL + "#/train"); await p.waitForTimeout(250); await p.click('.tile[data-t="flash"] .tile-help'); await p.waitForTimeout(250);
+      ok(await p.evaluate(() => !!document.querySelector(".help-sheet") && AA.router.name === "train"), "« ? » sur une tuile : explique sans ouvrir l’écran");
+      await p.keyboard.press("Escape");
+      await p.goto(URL + "#/lesson/mariotte"); await p.waitForTimeout(400);
+      ok(await p.$("#exbox .ex-q") && await p.$("details.sources"), "cours : exemple tiré au hasard et sources");
+      const q1 = await p.textContent("#exbox .ex-q"); let changed = false;
+      for (let i = 0; i < 6 && !changed; i++) { await p.click("#exnew"); await p.waitForTimeout(80); changed = (await p.textContent("#exbox .ex-q")) !== q1; }
+      ok(changed, "« Un autre exemple » change les chiffres");
+      await p.click("#exshow"); await p.waitForTimeout(150); ok(await p.$(".ex-steps li"), "solution pas à pas de l’exemple");
+      await p.click('[data-rep="essentiel"]'); await p.waitForTimeout(200); await p.click('[data-rk="unclear"]'); await p.fill("#repn", "Test"); await p.click("#repok"); await p.waitForTimeout(200);
+      await p.goto(URL + "#/lesson/pression"); await p.waitForTimeout(300);
+      await p.click("#dive"); await p.waitForTimeout(300); await p.click(".choice >> nth=0"); await p.waitForTimeout(150); await p.click("#qrep"); await p.waitForTimeout(200); await p.click("#repok"); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => AA.S.reports.length === 2 && AA.S.reports[0].kind === "unclear" && AA.S.reports[0].file === "content/fr/n2.js" && AA.S.reports[1].type === "question"), "signalements enregistrés (cours et question), avec le fichier à corriger");
+      await p.goto(URL + "#/reports"); await p.waitForTimeout(250); ok((await p.$$(".rep-item")).length === 2 && await p.$("#repx"), "« Mes signalements » : liste et export");
+      await p.goto(URL + "#/valider"); await p.waitForTimeout(250); await p.click(".val-item .switch >> nth=0"); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => Object.keys(AA.S.validOk).length === 1), "« À valider » : point coché par le moniteur");
+      ok(await p.evaluate(() => { const m = AA.content.byId.mariotte; AA.quiz.module(m); return AA.ctx.items.some(it => it.q.gen); }), "quiz de thème : calculs aléatoires mêlés aux questions");
       await ctx.close(); }
 
     console.log("• Écrans et largeurs");
