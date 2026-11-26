@@ -2132,6 +2132,7 @@ html.reduce-motion .bt-arena *,html.reduce-motion .bt-intro *,html.reduce-motion
 .run-card{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:var(--sp-4);box-shadow:0 0 0 2px color-mix(in srgb,var(--primary) 45%,transparent)}
 .run-card .grow{display:grid;gap:4px;min-width:160px} .run-card .eyebrow{margin:0} .run-card .medal{width:44px;height:44px;flex:0 0 auto;background:var(--primary);color:var(--primary-ink,#04202c);box-shadow:none} .run-card .medal svg{width:22px;height:22px}
 .run-btns{display:flex;gap:8px;flex:1 1 auto;justify-content:flex-end}
+.qdk-row{justify-content:center;margin-top:4px} .bt-dk{justify-self:center;margin-top:8px}
 
 </style>
 </head>
@@ -2155,7 +2156,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.2.2";
+  AA.VERSION = "2.2.3";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -4817,7 +4818,8 @@ window.AA={BUNDLED:true};
         }).join("")}</div>
         ${!answered && !NOFB(c.mode) ? `<div class="qactions"><button class="chip ${c.doubt ? "warn" : ""}" id="doubt" aria-pressed="${c.doubt}">${AA.icon("doubt")}${t("quiz.doubt")}</button></div>
           ${AA.S.profile.gestures !== false && (AA.S.gestHint || 0) < 4 ? `<p class="xs muted gesture-hint">${AA.icon("hand")} ${t("gest.quizHint")}</p>` : ""}` : ""}
-        ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : t("quiz.bad")}</h4>
+        ${!answered && c.mode !== "duel" ? `<div class="qactions qdk-row"><button class="btn ghost sm qdk" id="qdk">${AA.icon("doubt")} ${t("quiz.dk")}</button></div>` : ""}
+        ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : c.picked === -1 ? t("quiz.dkT") : t("quiz.bad")}</h4>
           ${okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
           ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}
           ${okNow || !C.byId[q.m] ? "" : `<button class="btn exp-btn block" id="qexp">${AA.icon("play")} ${t("exp.btn")}<span class="xs">${t("exp.btnS")}</span></button>`}${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
@@ -4826,7 +4828,7 @@ window.AA={BUNDLED:true};
     u.$("#qclose").onclick = () => AA.ui.confirm(t("quiz.quitQ"), t("quiz.quitYes"), () => { clearInterval(c.timer); AA.router.go(c.back || "home"); }, c.answers.length === 0);
     const rv = u.$("#revcours"); if (rv) rv.onclick = () => Q.review(q.m);
     const rp = u.$("#qrep"); if (rp) rp.onclick = () => AA.report({ type: "question", q });
-    const qx = u.$("#qexp"); if (qx) qx.onclick = () => AA.explainMe(q, c.picked);
+    const qx = u.$("#qexp"); if (qx) qx.onclick = () => AA.explainMe(q, c.picked < 0 ? null : c.picked);
     if (AA.oral && AA.oral.quizHook && c.mode !== "duel") try { AA.oral.quizHook(q, answered, okNow); } catch (e) {}
     u.$$(".choice", el).forEach(b => {
       b.onclick = () => answer(c, +b.dataset.ci, b);
@@ -4836,6 +4838,7 @@ window.AA={BUNDLED:true};
       if (!NOFB(c.mode)) AA.gest.hold(b, () => { c.doubt = true; AA.S.gestHint = (AA.S.gestHint || 0) + 1; fx.toast(t("gest.doubtT"), t("gest.doubtS"), "doubt"); answer(c, +b.dataset.ci, b); });
     });
     const d = u.$("#doubt"); if (d) d.onclick = () => { c.doubt = !c.doubt; fx.sfx.tap(); draw(el, c); };
+    const dk = u.$("#qdk"); if (dk) dk.onclick = () => answer(c, -1, dk);
     const goNext = () => { if (c.timeUp || (c.mode === "boss" && c.bossHp <= 0)) return finish(c); c.idx++; c.picked = null; c.doubt = false; c.hit = false; AA.router.refresh(); };
     const nx = u.$("#nextq"); if (nx) { nx.focus({ preventScroll: true }); nx.onclick = goNext; AA.gest.swipe(u.$("#qc"), { left: goNext }); }
   }
@@ -4847,7 +4850,7 @@ window.AA={BUNDLED:true};
     if (c.mode === "boss") { c.hit = ok; if (ok) c.bossHp = Math.max(0, c.bossHp - 1); }
     if (c.mode !== "duel") {
       const prev = G.qPrev(q);
-      G.record(q, ok, c.doubt, ci);
+      G.record(q, ok, c.doubt, ci < 0 ? null : ci);
       const wasErr = !!S.errors[q.id];
       if (!String(q.id).startsWith("tab-")) { if (ok) delete S.errors[q.id]; else S.errors[q.id] = (S.errors[q.id] || 0) + 1; }
       if (ok) {
@@ -4861,7 +4864,7 @@ window.AA={BUNDLED:true};
       fx.sfx.ok(); fx.buzz(15); fx.burstAt(btn, 18, "rgba(61,220,151,.85)");
       if (c.combo > 1 && c.combo % 5 === 0 && !NOFB(c.mode)) fx.toast(t("toast.combo", { n: c.combo }), t("toast.comboS"), "bolt");
     } else {
-      c.combo = 0; if (c.mode !== "exam") { fx.sfx.bad(); fx.buzz([40, 40, 40]); }
+      c.combo = 0; if (c.mode !== "exam") { if (ci < 0) fx.sfx.flip(); else { fx.sfx.bad(); fx.buzz([40, 40, 40]); } }
       if (c.air != null) c.air = Math.max(0, c.air - (c.airLoss || 50));
       if (c.mode === "apnee") { c.time = Math.max(0, c.time - 5); fx.float("−5 s", btn, "var(--bad)"); }
     }
@@ -4875,7 +4878,7 @@ window.AA={BUNDLED:true};
       return;
     }
     AA.router.refresh();
-    const qc = u.$("#qc"); if (qc) qc.classList.add(ok ? "pop" : "shake");
+    const qc = u.$("#qc"); if (qc && ci >= 0) qc.classList.add(ok ? "pop" : "shake");
   }
 
   /* ----- Fin de session ----- */
@@ -4942,7 +4945,7 @@ window.AA={BUNDLED:true};
       <a class="btn ghost block" href="#/${c.mode === "module" ? "map/" + (m ? m.world : "") : c.back || "home"}">${t("result.continue")}</a></div></section>
       ${c.answers.length ? `<div class="section-title"><h3>${t("result.review")}</h3><span class="muted small">${t("result.reviewHint")}</span></div>
       <div class="review">${c.answers.filter(a => !a.card).map(a => `<div class="rv ${a.ok ? "ok" : ""}"><b>${u.esc(a.q.q)}</b>
-        <span class="small">${a.ok ? t("result.yours") + " " + u.esc(a.q.c[a.picked]) + " ✓" : t("result.yours") + " " + u.esc(a.q.c[a.picked]) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
+        <span class="small">${a.ok ? t("result.yours") + " " + u.esc(a.q.c[a.picked]) + " ✓" : (a.picked < 0 ? t("quiz.dkYours") : t("result.yours") + " " + u.esc(a.q.c[a.picked])) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
         <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<div class="row rv-acts"><a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>${C.qById[a.q.id] ? `<button class="btn ghost sm" data-expq="${a.q.id}" data-pk="${a.picked}">${AA.icon("play")} ${t("exp.btn")}</button>` : ""}</div>` : ""}</div>`).join("")}</div>` : ""}`;
     u.$("#again").onclick = () => Q.restart(c);
     u.$("#rclose").onclick = () => AA.router.go(c.back || "home");
@@ -8545,7 +8548,7 @@ window.AA={BUNDLED:true};
   const qPanel = () => {
     const q = B.qs[B.i], ord = B.order[B.i];
     return `<div class="bt-q" id="btQ"><p class="xs muted bt-qn">${C.byId[q.m] ? esc(C.byId[q.m].title) : ""} · ${B.i + 1}</p><h2 class="bt-qt">${esc(q.q)}</h2>
-      <div class="bt-ch">${ord.map((ci, k) => `<button class="choice bt-c" data-ci="${ci}"><span class="kbd">${k + 1}</span><span class="grow">${esc(q.c[ci])}</span></button>`).join("")}</div><div id="btFb" aria-live="polite"></div></div>`;
+      <div class="bt-ch">${ord.map((ci, k) => `<button class="choice bt-c" data-ci="${ci}"><span class="kbd">${k + 1}</span><span class="grow">${esc(q.c[ci])}</span></button>`).join("")}</div><button class="btn ghost sm bt-dk" id="btDk">${AA.icon("doubt")} ${t("quiz.dk")}</button><div id="btFb" aria-live="polite"></div></div>`;
   };
   const center = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
   const spawn = (A, cls, html, x, y, extra) => { const ar = A.getBoundingClientRect(), d = document.createElement("div"); d.className = cls; d.innerHTML = html || ""; d.style.left = (x - ar.left) + "px"; d.style.top = (y - ar.top) + "px"; Object.entries(extra || {}).forEach(([k, v]) => d.style.setProperty(k, v)); A.appendChild(d); setTimeout(() => d.remove(), 1600); return d; };
@@ -8554,9 +8557,10 @@ window.AA={BUNDLED:true};
   function answer(ci, btn) {
     if (!B || B.picked != null || B.done) return;
     const q = B.qs[B.i], ok = ci === q.a; B.picked = ci;
-    const prev = G.qPrev(q); G.record(q, ok, false, ci);
+    const prev = G.qPrev(q); G.record(q, ok, false, ci < 0 ? null : ci);
     if (!String(q.id).startsWith("tab-")) { if (ok) delete S().errors[q.id]; else S().errors[q.id] = (S().errors[q.id] || 0) + 1; }
     B.answers.push({ q, ok, picked: ci });
+    const dkb = u.$("#btDk"); if (dkb) dkb.remove();
     u.$$(".bt-c").forEach(b => { b.disabled = true; const c = +b.dataset.ci; if (c === q.a) b.classList.add("good"); else if (c === ci) b.classList.add("bad"); });
     const A = u.$("#btA"), boss = u.$("#btBoss"), me = u.$("#btMe"), fb = u.$("#btFb");
     if (ok) {
@@ -8577,7 +8581,7 @@ window.AA={BUNDLED:true};
         later(() => { spawn(A, "bt-wave", "", x0, y0, { "--dx": (x1 - x0) + "px", "--dy": (y1 - y0) + "px" }); }, 180);
         later(() => { shake(A); shake(me, "hurt"); const fl = u.$("#btFlash"); if (fl) shake(fl, "red"); hud(); if (B.lives <= 0) lose(); }, 560);
       } else if (B.lives <= 0) lose();
-      fb.innerHTML = `<p class="callout warn bt-fb"><b>${t("gm.miss")}</b> <span>${t("gm.answerWas", { a: esc(q.c[q.a]) })}</span>${q.e ? `<span class="small">${esc(q.e)}</span>` : ""}</p>`;
+      fb.innerHTML = `<p class="callout warn bt-fb"><b>${t(ci < 0 ? "gm.dk" : "gm.miss")}</b> <span>${t("gm.answerWas", { a: esc(q.c[q.a]) })}</span>${q.e ? `<span class="small">${esc(q.e)}</span>` : ""}</p>`;
     }
     hud();
     if (!B.done) {
@@ -8629,6 +8633,7 @@ window.AA={BUNDLED:true};
   }
   function bindQ() {
     u.$$(".bt-c").forEach(b => b.onclick = () => answer(+b.dataset.ci, b));
+    const dk = u.$("#btDk"); if (dk) dk.onclick = () => answer(-1, dk);
   }
   document.addEventListener("keydown", e => {
     if (!B || B.done || !u.$("#btA") || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || u.$(".sheet-wrap")) return;
@@ -14987,6 +14992,7 @@ Object.assign(AA.content.help, {
     "tour.step": "Visite {i} / {n}", "tour.skipAll": "Passer la visite", "tour.close": "Fermer", "run.quiz": "Ta série en cours", "run.eyebrow": "À reprendre", "run.where": "{i} / {n} questions faites. Tu reprends à la suivante.", "run.go": "Reprendre", "run.drop": "Abandonner",
     "run.dropQ": "Abandonner cette série ? Tes réponses déjà données restent comptées dans tes révisions.", "run.dropYes": "Abandonner",
     "run.backT": "On reprend à la question {i} / {n}", "run.backS": "Tes réponses précédentes sont gardées. Touche ici pour recommencer à zéro.",
+    "quiz.dk": "Je ne sais pas", "quiz.dkT": "Pas grave : voici la réponse", "quiz.dkYours": "Tu ne savais pas.", "gm.dk": "Pas grave, il riposte quand même !",
     "tour.why": "Pourquoi ?", "tour.tip": "Astuce :",
     "tour.goto": "Aller à l’étape {i}", "tour.prev": "Retour", "tour.next": "Suivant", "tour.start": "C’est parti", "tour.later": "Plus tard", "tour.go": "Commencer à apprendre",
     "tour.laterT": "Visite mise de côté", "tour.laterS": "Reprends-la quand tu veux : Profil › Visite guidée.",

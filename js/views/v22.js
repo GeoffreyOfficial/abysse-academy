@@ -85,7 +85,7 @@
   const qPanel = () => {
     const q = B.qs[B.i], ord = B.order[B.i];
     return `<div class="bt-q" id="btQ"><p class="xs muted bt-qn">${C.byId[q.m] ? esc(C.byId[q.m].title) : ""} · ${B.i + 1}</p><h2 class="bt-qt">${esc(q.q)}</h2>
-      <div class="bt-ch">${ord.map((ci, k) => `<button class="choice bt-c" data-ci="${ci}"><span class="kbd">${k + 1}</span><span class="grow">${esc(q.c[ci])}</span></button>`).join("")}</div><div id="btFb" aria-live="polite"></div></div>`;
+      <div class="bt-ch">${ord.map((ci, k) => `<button class="choice bt-c" data-ci="${ci}"><span class="kbd">${k + 1}</span><span class="grow">${esc(q.c[ci])}</span></button>`).join("")}</div><button class="btn ghost sm bt-dk" id="btDk">${AA.icon("doubt")} ${t("quiz.dk")}</button><div id="btFb" aria-live="polite"></div></div>`;
   };
   const center = el => { const r = el.getBoundingClientRect(); return [r.left + r.width / 2, r.top + r.height / 2]; };
   const spawn = (A, cls, html, x, y, extra) => { const ar = A.getBoundingClientRect(), d = document.createElement("div"); d.className = cls; d.innerHTML = html || ""; d.style.left = (x - ar.left) + "px"; d.style.top = (y - ar.top) + "px"; Object.entries(extra || {}).forEach(([k, v]) => d.style.setProperty(k, v)); A.appendChild(d); setTimeout(() => d.remove(), 1600); return d; };
@@ -94,9 +94,10 @@
   function answer(ci, btn) {
     if (!B || B.picked != null || B.done) return;
     const q = B.qs[B.i], ok = ci === q.a; B.picked = ci;
-    const prev = G.qPrev(q); G.record(q, ok, false, ci);
+    const prev = G.qPrev(q); G.record(q, ok, false, ci < 0 ? null : ci);
     if (!String(q.id).startsWith("tab-")) { if (ok) delete S().errors[q.id]; else S().errors[q.id] = (S().errors[q.id] || 0) + 1; }
     B.answers.push({ q, ok, picked: ci });
+    const dkb = u.$("#btDk"); if (dkb) dkb.remove();
     u.$$(".bt-c").forEach(b => { b.disabled = true; const c = +b.dataset.ci; if (c === q.a) b.classList.add("good"); else if (c === ci) b.classList.add("bad"); });
     const A = u.$("#btA"), boss = u.$("#btBoss"), me = u.$("#btMe"), fb = u.$("#btFb");
     if (ok) {
@@ -117,7 +118,7 @@
         later(() => { spawn(A, "bt-wave", "", x0, y0, { "--dx": (x1 - x0) + "px", "--dy": (y1 - y0) + "px" }); }, 180);
         later(() => { shake(A); shake(me, "hurt"); const fl = u.$("#btFlash"); if (fl) shake(fl, "red"); hud(); if (B.lives <= 0) lose(); }, 560);
       } else if (B.lives <= 0) lose();
-      fb.innerHTML = `<p class="callout warn bt-fb"><b>${t("gm.miss")}</b> <span>${t("gm.answerWas", { a: esc(q.c[q.a]) })}</span>${q.e ? `<span class="small">${esc(q.e)}</span>` : ""}</p>`;
+      fb.innerHTML = `<p class="callout warn bt-fb"><b>${t(ci < 0 ? "gm.dk" : "gm.miss")}</b> <span>${t("gm.answerWas", { a: esc(q.c[q.a]) })}</span>${q.e ? `<span class="small">${esc(q.e)}</span>` : ""}</p>`;
     }
     hud();
     if (!B.done) {
@@ -169,6 +170,7 @@
   }
   function bindQ() {
     u.$$(".bt-c").forEach(b => b.onclick = () => answer(+b.dataset.ci, b));
+    const dk = u.$("#btDk"); if (dk) dk.onclick = () => answer(-1, dk);
   }
   document.addEventListener("keydown", e => {
     if (!B || B.done || !u.$("#btA") || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || u.$(".sheet-wrap")) return;

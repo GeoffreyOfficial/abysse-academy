@@ -63,6 +63,7 @@
     "tour.step": "Visite {i} / {n}", "tour.skipAll": "Passer la visite", "tour.close": "Fermer", "run.quiz": "Ta série en cours", "run.eyebrow": "À reprendre", "run.where": "{i} / {n} questions faites. Tu reprends à la suivante.", "run.go": "Reprendre", "run.drop": "Abandonner",
     "run.dropQ": "Abandonner cette série ? Tes réponses déjà données restent comptées dans tes révisions.", "run.dropYes": "Abandonner",
     "run.backT": "On reprend à la question {i} / {n}", "run.backS": "Tes réponses précédentes sont gardées. Touche ici pour recommencer à zéro.",
+    "quiz.dk": "Je ne sais pas", "quiz.dkT": "Pas grave : voici la réponse", "quiz.dkYours": "Tu ne savais pas.", "gm.dk": "Pas grave, il riposte quand même !",
     "tour.why": "Pourquoi ?", "tour.tip": "Astuce :",
     "tour.goto": "Aller à l’étape {i}", "tour.prev": "Retour", "tour.next": "Suivant", "tour.start": "C’est parti", "tour.later": "Plus tard", "tour.go": "Commencer à apprendre",
     "tour.laterT": "Visite mise de côté", "tour.laterS": "Reprends-la quand tu veux : Profil › Visite guidée.",

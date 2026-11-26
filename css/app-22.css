@@ -366,3 +366,4 @@ html.reduce-motion .bt-arena *,html.reduce-motion .bt-intro *,html.reduce-motion
 .run-card{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:var(--sp-4);box-shadow:0 0 0 2px color-mix(in srgb,var(--primary) 45%,transparent)}
 .run-card .grow{display:grid;gap:4px;min-width:160px} .run-card .eyebrow{margin:0} .run-card .medal{width:44px;height:44px;flex:0 0 auto;background:var(--primary);color:var(--primary-ink,#04202c);box-shadow:none} .run-card .medal svg{width:22px;height:22px}
 .run-btns{display:flex;gap:8px;flex:1 1 auto;justify-content:flex-end}
+.qdk-row{justify-content:center;margin-top:4px} .bt-dk{justify-self:center;margin-top:8px}

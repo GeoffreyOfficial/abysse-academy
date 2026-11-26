@@ -237,7 +237,8 @@
         }).join("")}</div>
         ${!answered && !NOFB(c.mode) ? `<div class="qactions"><button class="chip ${c.doubt ? "warn" : ""}" id="doubt" aria-pressed="${c.doubt}">${AA.icon("doubt")}${t("quiz.doubt")}</button></div>
           ${AA.S.profile.gestures !== false && (AA.S.gestHint || 0) < 4 ? `<p class="xs muted gesture-hint">${AA.icon("hand")} ${t("gest.quizHint")}</p>` : ""}` : ""}
-        ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : t("quiz.bad")}</h4>
+        ${!answered && c.mode !== "duel" ? `<div class="qactions qdk-row"><button class="btn ghost sm qdk" id="qdk">${AA.icon("doubt")} ${t("quiz.dk")}</button></div>` : ""}
+        ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : c.picked === -1 ? t("quiz.dkT") : t("quiz.bad")}</h4>
           ${okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
           ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}
           ${okNow || !C.byId[q.m] ? "" : `<button class="btn exp-btn block" id="qexp">${AA.icon("play")} ${t("exp.btn")}<span class="xs">${t("exp.btnS")}</span></button>`}${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
@@ -246,7 +247,7 @@
     u.$("#qclose").onclick = () => AA.ui.confirm(t("quiz.quitQ"), t("quiz.quitYes"), () => { clearInterval(c.timer); AA.router.go(c.back || "home"); }, c.answers.length === 0);
     const rv = u.$("#revcours"); if (rv) rv.onclick = () => Q.review(q.m);
     const rp = u.$("#qrep"); if (rp) rp.onclick = () => AA.report({ type: "question", q });
-    const qx = u.$("#qexp"); if (qx) qx.onclick = () => AA.explainMe(q, c.picked);
+    const qx = u.$("#qexp"); if (qx) qx.onclick = () => AA.explainMe(q, c.picked < 0 ? null : c.picked);
     if (AA.oral && AA.oral.quizHook && c.mode !== "duel") try { AA.oral.quizHook(q, answered, okNow); } catch (e) {}
     u.$$(".choice", el).forEach(b => {
       b.onclick = () => answer(c, +b.dataset.ci, b);
@@ -256,6 +257,7 @@
       if (!NOFB(c.mode)) AA.gest.hold(b, () => { c.doubt = true; AA.S.gestHint = (AA.S.gestHint || 0) + 1; fx.toast(t("gest.doubtT"), t("gest.doubtS"), "doubt"); answer(c, +b.dataset.ci, b); });
     });
     const d = u.$("#doubt"); if (d) d.onclick = () => { c.doubt = !c.doubt; fx.sfx.tap(); draw(el, c); };
+    const dk = u.$("#qdk"); if (dk) dk.onclick = () => answer(c, -1, dk);
     const goNext = () => { if (c.timeUp || (c.mode === "boss" && c.bossHp <= 0)) return finish(c); c.idx++; c.picked = null; c.doubt = false; c.hit = false; AA.router.refresh(); };
     const nx = u.$("#nextq"); if (nx) { nx.focus({ preventScroll: true }); nx.onclick = goNext; AA.gest.swipe(u.$("#qc"), { left: goNext }); }
   }
@@ -267,7 +269,7 @@
     if (c.mode === "boss") { c.hit = ok; if (ok) c.bossHp = Math.max(0, c.bossHp - 1); }
     if (c.mode !== "duel") {
       const prev = G.qPrev(q);
-      G.record(q, ok, c.doubt, ci);
+      G.record(q, ok, c.doubt, ci < 0 ? null : ci);
       const wasErr = !!S.errors[q.id];
       if (!String(q.id).startsWith("tab-")) { if (ok) delete S.errors[q.id]; else S.errors[q.id] = (S.errors[q.id] || 0) + 1; }
       if (ok) {
@@ -281,7 +283,7 @@
       fx.sfx.ok(); fx.buzz(15); fx.burstAt(btn, 18, "rgba(61,220,151,.85)");
       if (c.combo > 1 && c.combo % 5 === 0 && !NOFB(c.mode)) fx.toast(t("toast.combo", { n: c.combo }), t("toast.comboS"), "bolt");
     } else {
-      c.combo = 0; if (c.mode !== "exam") { fx.sfx.bad(); fx.buzz([40, 40, 40]); }
+      c.combo = 0; if (c.mode !== "exam") { if (ci < 0) fx.sfx.flip(); else { fx.sfx.bad(); fx.buzz([40, 40, 40]); } }
       if (c.air != null) c.air = Math.max(0, c.air - (c.airLoss || 50));
       if (c.mode === "apnee") { c.time = Math.max(0, c.time - 5); fx.float("−5 s", btn, "var(--bad)"); }
     }
@@ -295,7 +297,7 @@
       return;
     }
     AA.router.refresh();
-    const qc = u.$("#qc"); if (qc) qc.classList.add(ok ? "pop" : "shake");
+    const qc = u.$("#qc"); if (qc && ci >= 0) qc.classList.add(ok ? "pop" : "shake");
   }
 
   /* ----- Fin de session ----- */
@@ -362,7 +364,7 @@
       <a class="btn ghost block" href="#/${c.mode === "module" ? "map/" + (m ? m.world : "") : c.back || "home"}">${t("result.continue")}</a></div></section>
       ${c.answers.length ? `<div class="section-title"><h3>${t("result.review")}</h3><span class="muted small">${t("result.reviewHint")}</span></div>
       <div class="review">${c.answers.filter(a => !a.card).map(a => `<div class="rv ${a.ok ? "ok" : ""}"><b>${u.esc(a.q.q)}</b>
-        <span class="small">${a.ok ? t("result.yours") + " " + u.esc(a.q.c[a.picked]) + " ✓" : t("result.yours") + " " + u.esc(a.q.c[a.picked]) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
+        <span class="small">${a.ok ? t("result.yours") + " " + u.esc(a.q.c[a.picked]) + " ✓" : (a.picked < 0 ? t("quiz.dkYours") : t("result.yours") + " " + u.esc(a.q.c[a.picked])) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
         <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<div class="row rv-acts"><a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>${C.qById[a.q.id] ? `<button class="btn ghost sm" data-expq="${a.q.id}" data-pk="${a.picked}">${AA.icon("play")} ${t("exp.btn")}</button>` : ""}</div>` : ""}</div>`).join("")}</div>` : ""}`;
     u.$("#again").onclick = () => Q.restart(c);
     u.$("#rclose").onclick = () => AA.router.go(c.back || "home");

@@ -250,6 +250,17 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
         ok(!(await R.p.$(".run-card")) && await R.p.evaluate(() => !AA.run.get()), "« Quitter » confirmé : la série est abandonnée");
         await R.p.evaluate(() => { const S = AA.S; S.days = [AA.u.today()]; AA.store.save(true); AA.ui.hud(); }); await R.p.click('#topbar [data-hud="streak"]'); await R.p.waitForTimeout(500);
         ok(await R.p.evaluate(() => { const i = document.querySelector(".fl-cal i.today"), s = i.querySelector("span"), a = i.getBoundingClientRect(), r = s.getBoundingClientRect(), f = i.querySelector("b").getBoundingClientRect(); return Math.abs((a.left + a.right) / 2 - (r.left + r.right) / 2) < 2 && f.right <= a.right + 1 && f.top >= a.top - 1; }), "série : numéro du jour centré, flamme dans la case");
+        await R.p.keyboard.press("Escape"); await R.p.waitForTimeout(200);
+        /* 2.2.3 : « Je ne sais pas » */
+        await R.p.evaluate(() => AA.quiz.start("module", AA.content.byId.pression.quiz.slice(0, 3), { module: "pression", title: "t", back: "home" })); await R.p.waitForTimeout(300);
+        await R.p.click("#qdk"); await R.p.waitForTimeout(300);
+        ok(await R.p.evaluate(() => { const q = AA.ctx.items[0].q; return AA.ctx.answers[0].picked === -1 && !AA.ctx.answers[0].ok && !!AA.S.errors[q.id] && !!document.querySelector(".choice.good") && !document.querySelector(".choice.wrong") && /Pas grave/.test(document.querySelector(".feedback").textContent); }), "quiz : « Je ne sais pas » montre la réponse et la garde à revoir");
+        for (let i = 0; i < 2; i++) { await R.p.click("#nextq"); await R.p.waitForTimeout(150); await R.p.click("#qdk"); await R.p.waitForTimeout(150); }
+        await R.p.click("#nextq"); await R.p.waitForTimeout(300);
+        ok(await R.p.evaluate(() => AA.ctx.done && !/undefined/.test(document.querySelector("#view").innerText) && /ne savais pas/.test(document.querySelector("#view").innerText)), "quiz : bilan lisible après des « Je ne sais pas »");
+        await R.p.goto(URL + "#/gardien/pression"); await R.p.waitForTimeout(300); await R.p.click("#btGo"); await R.p.waitForTimeout(400);
+        await R.p.click("#btDk"); await R.p.waitForTimeout(900);
+        ok(await R.p.evaluate(() => document.querySelectorAll("#btLives span.off").length === 1 && !!document.querySelector(".bt-c.good") && !document.querySelector("#btDk")), "combat : « Je ne sais pas » montre la réponse (une vie perdue)");
         await R.ctx.close(); }
       await ctx.close(); }
 
