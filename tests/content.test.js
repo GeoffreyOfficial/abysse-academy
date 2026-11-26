@@ -58,6 +58,14 @@ section("QCM sans indice (2.2.4)");
   ok(share <= 0.45, `la bonne réponse est la plus longue dans ${(share * 100).toFixed(0)} % des questions (maxi 45 %)`);
   ok(crushing.length <= C.questions.length * 0.03, `bonne réponse nettement plus longue que les autres dans ${crushing.length} questions : ${crushing.slice(0, 12).join(", ")}`);
   console.log(`  plus longue : ${(share * 100).toFixed(1)} %, nettement plus longue : ${crushing.length}`);
+  /* Aventures (2.2.5) : la bonne réaction ne doit être ni toujours la première, ni toujours la plus longue. */
+  let first = 0, sLong = 0, nodes = 0;
+  C.stories.forEach(s => Object.values(s.nodes).forEach(n => { if (!n.choices || n.choices.length < 2) return; nodes++;
+    const gi = n.choices.findIndex(c => c.ok); if (gi === 0) first++;
+    const L = n.choices.map(c => len(c.t)), o = Math.max(...L.filter((_, i) => i !== gi)); if (L[gi] > o * 1.15) sLong++;
+    n.choices.forEach((c, i) => { if (i !== gi) ok(!ABSURDE.test(c.t), `${s.id} : réaction absurde « ${c.t} »`); }); }));
+  ok(nodes === 0 || first / nodes <= 0.5, `aventures : la bonne réaction est la première dans ${first}/${nodes} scènes`);
+  ok(nodes === 0 || sLong / nodes <= 0.3, `aventures : la bonne réaction est nettement la plus longue dans ${sLong}/${nodes} scènes`);
 }
 
 section("Ordre des questions (progression)");

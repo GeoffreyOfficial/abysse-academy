@@ -1,5 +1,5 @@
 /* =====================================================================
-   Abysse Academy 2.2.2 · reprendre là où on s'était arrêté
+   Abysse Academy 2.2.2 (2.2.5) · reprendre là où on s'était arrêté
    Une série en cours (positionnement, examen blanc, quiz d'un cours,
    révisions…) est enregistrée sur l'appareil à chaque réponse. Si on
    quitte l'écran, ferme l'appli ou recharge la page :
@@ -67,7 +67,15 @@
   G.record = function () { const r = rec0.apply(this, arguments); try { if (AA.router.name === "quiz") setTimeout(() => RUN.save(AA.ctx), 0); } catch (e) {} return r; };
   /* La croix « Quitter » confirmée = abandon voulu. */
   const conf0 = AA.ui.confirm;
-  AA.ui.confirm = (msg, label, onOk, skip) => conf0(msg, label, msg === t("quiz.quitQ") ? () => { RUN._quit = true; if (AA.ctx && AA.ctx.mode) ls.del(keyOf(AA.ctx)); onOk(); } : onOk, skip);
+  /* 2.2.5 : la croix met la série de côté (reprise depuis l'accueil ou en
+     relançant le même positionnement) et ramène à l'accueil. On abandonne
+     vraiment avec « Abandonner » sur la carte de l'accueil. */
+  AA.ui.confirm = (msg, label, onOk, skip) => {
+    if (msg !== t("quiz.quitQ")) return conf0(msg, label, onOk, skip);
+    const c = AA.ctx, keep = ok(c) && !c.done && c.answers && c.answers.length > 0;
+    if (!keep) return conf0(msg, label, () => { RUN._quit = true; if (c && c.mode) ls.del(keyOf(c)); onOk(); }, skip);
+    return conf0(t("run.quitQ", { i: c.answers.length, n: c.items.length }), t("run.quitYes"), () => { RUN.save(c); RUN._quit = true; c.back = "home"; onOk(); }, skip);
+  };
   addEventListener("pagehide", () => { try { if (AA.router.name === "quiz") RUN.save(AA.ctx); } catch (e) {} });
   document.addEventListener("visibilitychange", () => { try { if (document.hidden && AA.router.name === "quiz") RUN.save(AA.ctx); } catch (e) {} });
 

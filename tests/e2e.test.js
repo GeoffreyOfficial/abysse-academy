@@ -246,8 +246,11 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
         await ans(1); await R.p.reload(); await ready(R.p); await R.p.goto(URL + "#/quiz"); await R.p.waitForTimeout(400);
         ok(await R.p.evaluate(() => AA.router.name === "quiz" && AA.ctx.answers.length === 4 && AA.ctx.idx === 4), "rechargement en pleine série : reprise directe, réponse donnée gardée");
         await R.p.click("#qclose"); await R.p.waitForTimeout(200); const yes = await R.p.$(".sheet-wrap.cf [data-ok]"); if (yes) await yes.click(); await R.p.waitForTimeout(400);
-        await R.p.goto(URL + "#/home"); await R.p.waitForTimeout(300);
-        ok(!(await R.p.$(".run-card")) && await R.p.evaluate(() => !AA.run.get()), "« Quitter » confirmé : la série est abandonnée");
+        ok(await R.p.evaluate(() => AA.router.name === "home") && /4 \/ /.test(await R.p.textContent(".run-card")), "2.2.5 : la croix met en pause, retour à l’accueil, série gardée");
+        await R.p.evaluate(() => AA.path.startPlacement("n2")); await R.p.waitForTimeout(400);
+        ok(await R.p.evaluate(() => AA.router.name === "quiz" && AA.ctx.answers.length === 4 && AA.ctx.idx === 4), "après la pause, le positionnement reprend à la question 5");
+        await R.p.goto(URL + "#/home"); await R.p.waitForTimeout(300); await R.p.click('[data-run="drop"]'); await R.p.waitForTimeout(200); const y2 = await R.p.$(".sheet-wrap.cf [data-ok]"); if (y2) await y2.click(); await R.p.waitForTimeout(400);
+        ok(!(await R.p.$(".run-card")) && await R.p.evaluate(() => !AA.run.get()), "« Abandonner » sur l’accueil : la série est supprimée");
         await R.p.evaluate(() => { const S = AA.S; S.days = [AA.u.today()]; AA.store.save(true); AA.ui.hud(); }); await R.p.click('#topbar [data-hud="streak"]'); await R.p.waitForTimeout(500);
         ok(await R.p.evaluate(() => { const i = document.querySelector(".fl-cal i.today"), s = i.querySelector("span"), a = i.getBoundingClientRect(), r = s.getBoundingClientRect(), f = i.querySelector("b").getBoundingClientRect(); return Math.abs((a.left + a.right) / 2 - (r.left + r.right) / 2) < 2 && f.right <= a.right + 1 && f.top >= a.top - 1; }), "série : numéro du jour centré, flamme dans la case");
         await R.p.keyboard.press("Escape"); await R.p.waitForTimeout(200);
@@ -319,7 +322,7 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       const hp0 = await p.evaluate(() => document.querySelectorAll("#btHp i:not(.off)").length);
       await p.evaluate(() => { const q = document.querySelector(".bt-qt").textContent, Q = AA.content.questions.find(x => x.q === q); [...document.querySelectorAll(".bt-c")].find(b => +b.dataset.ci === Q.a).click(); }); await p.waitForTimeout(700);
       ok(await p.evaluate(() => document.querySelectorAll("#btHp i:not(.off)").length) === hp0 - 1 && await p.$("#btNext"), "combat : bonne réponse = le boss perd un PV");
-      await p.click("#btNext"); await p.waitForTimeout(200);
+      await p.evaluate(() => document.querySelectorAll(".toast").forEach(x => x.remove())); await p.click("#btNext"); await p.waitForTimeout(200);
       await p.evaluate(() => { const q = document.querySelector(".bt-qt").textContent, Q = AA.content.questions.find(x => x.q === q); [...document.querySelectorAll(".bt-c")].find(b => +b.dataset.ci !== Q.a).click(); }); await p.waitForTimeout(800);
       ok(await p.evaluate(() => document.querySelectorAll("#btLives span.off").length) === 1 && await p.$(".bt-c.good"), "combat : erreur = une vie perdue et la bonne réponse montrée");
       await p.goto(URL + "#/gardien/pression"); await p.waitForTimeout(250); ok(await p.$("#btGo"), "gardien d’un cours lu prêt au combat");
