@@ -235,6 +235,22 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
         await R.p.waitForFunction(() => { const g = document.querySelector("#rsgo"); return g && !g.disabled; }, null, { timeout: 8000 }); await R.p.click("#rsgo"); await R.p.waitForTimeout(800);
         ok(await R.p.evaluate(() => AA.router.name === "welcome" && !AA.S.profile.onboarded && AA.S.xp === 0), "tout réinitialiser : retour à l’accueil du début (prénom, niveau, plongées, objectif)");
         await R.ctx.close(); }
+      /* 2.2.2 : reprendre une série là où on s'était arrêté */
+      { const R = await newPage(b, 390, 844); await R.p.goto(URL); await seed(R.p);
+        const ans = async n => { for (let i = 0; i < n; i++) { await R.p.click(".choice:not([disabled])"); await R.p.waitForTimeout(120); if (i < n - 1) { await R.p.click("#nextq"); await R.p.waitForTimeout(120); } } };
+        await R.p.evaluate(() => AA.path.startPlacement("n2")); await R.p.waitForTimeout(300); await ans(3);
+        await R.p.reload(); await ready(R.p); await R.p.goto(URL + "#/home"); await R.p.waitForTimeout(400);
+        ok(await R.p.$(".run-card") && /3 \/ /.test(await R.p.textContent(".run-card")), "série en cours : l’accueil propose « Reprendre » (3 réponses gardées)");
+        await R.p.evaluate(() => AA.path.startPlacement("n2")); await R.p.waitForTimeout(400);
+        ok(await R.p.evaluate(() => AA.router.name === "quiz" && AA.ctx.mode === "place" && AA.ctx.answers.length === 3 && AA.ctx.idx === 3), "positionnement relancé après fermeture : reprise à la question 4");
+        await ans(1); await R.p.reload(); await ready(R.p); await R.p.goto(URL + "#/quiz"); await R.p.waitForTimeout(400);
+        ok(await R.p.evaluate(() => AA.router.name === "quiz" && AA.ctx.answers.length === 4 && AA.ctx.idx === 4), "rechargement en pleine série : reprise directe, réponse donnée gardée");
+        await R.p.click("#qclose"); await R.p.waitForTimeout(200); const yes = await R.p.$(".sheet-wrap.cf [data-ok]"); if (yes) await yes.click(); await R.p.waitForTimeout(400);
+        await R.p.goto(URL + "#/home"); await R.p.waitForTimeout(300);
+        ok(!(await R.p.$(".run-card")) && await R.p.evaluate(() => !AA.run.get()), "« Quitter » confirmé : la série est abandonnée");
+        await R.p.evaluate(() => { const S = AA.S; S.days = [AA.u.today()]; AA.store.save(true); AA.ui.hud(); }); await R.p.click('#topbar [data-hud="streak"]'); await R.p.waitForTimeout(500);
+        ok(await R.p.evaluate(() => { const i = document.querySelector(".fl-cal i.today"), s = i.querySelector("span"), a = i.getBoundingClientRect(), r = s.getBoundingClientRect(), f = i.querySelector("b").getBoundingClientRect(); return Math.abs((a.left + a.right) / 2 - (r.left + r.right) / 2) < 2 && f.right <= a.right + 1 && f.top >= a.top - 1; }), "série : numéro du jour centré, flamme dans la case");
+        await R.ctx.close(); }
       await ctx.close(); }
 
     console.log("• Écrans et largeurs");

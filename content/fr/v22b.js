@@ -60,7 +60,10 @@
     "gx.tileS": "Quêtes, défis, événements, gardiens, boss, mini-jeux, aventures, aquarium",
     "gx.homeT": "Jeux du jour", "gx.homeS": "Quêtes {dq}/{dqn} · défis {wk}/{wkn}",
 
-    "tour.step": "Visite {i} / {n}", "tour.skipAll": "Passer la visite", "tour.close": "Fermer", "tour.why": "Pourquoi ?", "tour.tip": "Astuce :",
+    "tour.step": "Visite {i} / {n}", "tour.skipAll": "Passer la visite", "tour.close": "Fermer", "run.quiz": "Ta série en cours", "run.eyebrow": "À reprendre", "run.where": "{i} / {n} questions faites. Tu reprends à la suivante.", "run.go": "Reprendre", "run.drop": "Abandonner",
+    "run.dropQ": "Abandonner cette série ? Tes réponses déjà données restent comptées dans tes révisions.", "run.dropYes": "Abandonner",
+    "run.backT": "On reprend à la question {i} / {n}", "run.backS": "Tes réponses précédentes sont gardées. Touche ici pour recommencer à zéro.",
+    "tour.why": "Pourquoi ?", "tour.tip": "Astuce :",
     "tour.goto": "Aller à l’étape {i}", "tour.prev": "Retour", "tour.next": "Suivant", "tour.start": "C’est parti", "tour.later": "Plus tard", "tour.go": "Commencer à apprendre",
     "tour.laterT": "Visite mise de côté", "tour.laterS": "Reprends-la quand tu veux : Profil › Visite guidée.",
     "tour.tile": "Visite guidée", "tour.tileS": "Revoir à quoi sert chaque menu", "tour.tileResume": "Reprendre là où tu t’étais arrêté",

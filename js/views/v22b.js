@@ -47,7 +47,7 @@
     const cells = Array.from({ length: 35 }, (_, i) => {
       const d = u.addDays(i, start), fut = d > today, on = days.has(d), c = cur.has(d);
       const nx = u.addDays(1, d), chain = c && cur.has(nx) && i % 7 !== 6;
-      return `<i class="${on ? "on" : ""} ${c ? "cur" : ""} ${chain ? "chain" : ""} ${d === today ? "today" : ""} ${fut ? "fut" : ""}" style="--i:${i}" title="${d}">${+d.slice(8)}${c ? `<b>${AA.icon("flame")}</b>` : ""}</i>`;
+      return `<i class="${on ? "on" : ""} ${c ? "cur" : ""} ${chain ? "chain" : ""} ${d === today ? "today" : ""} ${fut ? "fut" : ""}" style="--i:${i}" title="${d}"><span>${+d.slice(8)}</span>${c ? `<b>${AA.icon("flame")}</b>` : ""}</i>`;
     }).join("");
     return `<div class="fl-cal" role="img" aria-label="${t("fl.calA", { n: st })}">${DN.map(x => `<span>${x}</span>`).join("")}${cells}</div>`;
   };
