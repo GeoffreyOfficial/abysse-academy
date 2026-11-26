@@ -151,11 +151,13 @@
   /* Réinitialisation complète : une copie de secours « avant réinitialisation »
      est gardée dans IndexedDB (récupérable dans Sauvegarde), puis on repart
      de zéro, accueil compris. Seuls le thème et la langue sont gardés. */
-  store.reset = async () => {
+  store.reset = async (mark) => {
     const keep = AA.S.profile;
     try { await store.snapshot("reset"); } catch (e) {}
     AA.S = FRESH();
     AA.S.profile = Object.assign(FRESH().profile, { theme: keep.theme, lang: keep.lang, textSize: keep.textSize, cvd: keep.cvd });
+    /* 2.2 : « tout recommencer, Drive compris » : ce marqueur gagne sur toute copie plus ancienne. */
+    if (mark) AA.S.resetAt = Date.now();
     store.save(true);
   };
   store.exportText = () => JSON.stringify(Object.assign({ app: "abysse-academy", version: AA.VERSION }, AA.S));
@@ -170,6 +172,9 @@
   /* Fusion de deux sauvegardes (deux téléphones utilisés tour à tour).
      Règle : pour chaque élément, on garde le plus avancé ; à égalité, le plus récent. */
   store.merge = (a, b) => {
+    /* Une réinitialisation « Drive compris » l'emporte sur les copies qui ne l'ont pas vue. */
+    const ra = a.resetAt || 0, rb = b.resetAt || 0;
+    if (ra !== rb) return migrate(u.clone(ra > rb ? a : b));
     const [o, n] = (a.savedAt || 0) >= (b.savedAt || 0) ? [b, a] : [a, b]; /* n = la plus récente */
     const r = u.clone(n), max = (x, y) => Math.max(x || 0, y || 0);
     ["simOk", "flashCount", "duels", "apnee", "bestCombo", "rescued", "five", "pcBest", "pcRuns"].forEach(k => (r[k] = max(o[k], n[k])));

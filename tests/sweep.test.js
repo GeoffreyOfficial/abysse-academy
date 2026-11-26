@@ -17,7 +17,7 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": TYPES[path.extname(f)] || "application/octet-stream" }); fs.createReadStream(f).pipe(res);
 });
 const FAST = process.argv[2] === "rapide";
-const SCREENS = ["home", "map/n2", "map/n4", "train", "flash", "lab", "sim", "pc", "scen", "scen/s1", "calc", "tables", "profile", "club", "settings", "cours", "cours/n3", "progres", "progres/n3", "moniteur", "search/palier", "glossary", "mistakes", "backup", "parcours", "cursus", "cursus/e2", "carnet", "examen", "examen/n3/quick", "fiches/n2", "brief", "brief/gp", "brief/auto", "succ", "succ/go", "reports", "sources", "valider"];
+const SCREENS = ["home", "map/n2", "map/n4", "train", "flash", "lab", "sim", "pc", "scen", "scen/s1", "calc", "tables", "profile", "club", "settings", "cours", "cours/n3", "progres", "progres/n3", "moniteur", "search/palier", "jeux", "jeux/n2", "aquarium", "quests", "story", "boss/n2", "boss/n1", "gardien/pression", "paires", "vraifaux", "glossary", "mistakes", "backup", "parcours", "cursus", "cursus/e2", "carnet", "examen", "examen/n3/quick", "fiches/n2", "brief", "brief/gp", "brief/auto", "succ", "succ/go", "reports", "sources", "valider"];
 const CASES = FAST ? [[280, 1.4], [390, 1], [1440, 1.25]] : [[280, 1], [280, 1.4], [360, 1.25], [390, 1.4], [600, 1.4], [884, 1.4], [1024, 1], [1440, 1.4], [3840, 1]];
 
 (async () => {
@@ -33,7 +33,7 @@ const CASES = FAST ? [[280, 1.4], [390, 1], [1440, 1.25]] : [[280, 1], [280, 1.4
       const lessons = await p.evaluate(() => AA.content.modules.map(m => m.id));
       const routes = SCREENS.concat(FAST && w > 300 ? [] : lessons.flatMap(id => [`lesson/${id}/essentiel`, `lesson/${id}/approfondir`, `lesson/${id}/memo`]));
       for (const r of routes) {
-        await p.evaluate(r => (location.hash = "#/" + r), r); await p.waitForTimeout(r.startsWith("map") ? 450 : 90); n++;
+        await p.evaluate(r => (location.hash = "#/" + r), r); await p.waitForTimeout(r.startsWith("map") ? 450 : 90); await p.waitForFunction(() => !document.querySelector(".view-enter"), null, { timeout: 1500 }).catch(() => {}); n++;
         const res = await p.evaluate(() => {
           const W = innerWidth, over = document.documentElement.scrollWidth - W, out = [];
           if (over > 1) document.querySelectorAll("#view *").forEach(e => { const rc = e.getBoundingClientRect(); if (rc.right > W + 1 && out.length < 2 && !e.closest(".tbl, .ttable, pre")) out.push(e.tagName.toLowerCase() + "." + [...e.classList].slice(0, 2).join(".") + "(+" + Math.round(rc.right - W) + ")"); });

@@ -21,7 +21,8 @@
       [t("rs.l.exams"), S.exams.length]
     ];
     let step = 1, timer = null;
-    const linked = AA.sync && AA.sync.linked();
+    const linked = AA.sync && AA.sync.linked(), canDrive = !!(AA.sync && AA.sync.possible() && AA.sync.clientId());
+    let wipe = !!linked;
     const body = () => {
       const dots = `<div class="rs-steps" aria-hidden="true">${[1, 2, 3].map(i => `<i class="${i <= step ? "on" : ""}"></i>`).join("")}</div>`;
       if (step === 1) return `${dots}<div class="rs-warn">${AA.icon("info")}<div><b>${t("rs.t1")}</b><p>${t("rs.s1")}</p></div></div>
@@ -30,7 +31,7 @@
         <button class="btn ghost block" data-no>${t("rs.keep")}</button>
         <button class="linkbtn danger" id="rsnext">${t("rs.continue")}</button>`;
       if (step === 2) return `${dots}<div class="rs-warn">${AA.icon("info")}<div><b>${t("rs.t2")}</b><p>${t("rs.s2")}</p></div></div>
-        ${linked ? `<p class="callout"><span class="eyebrow">Google Drive</span>${t("rs.drive")}</p>` : ""}
+        ${canDrive ? `<label class="rs-check rs-drive"><input type="checkbox" id="rsdrive" ${wipe ? "checked" : ""}> <span><b>${t("rs.driveWipe")}</b><span class="small muted" id="rsdrivS">${t(wipe ? "rs.driveWipeS" : linked ? "rs.driveKeep" : "rs.driveNotLinked")}</span></span></label>` : ""}
         <label class="rs-check"><input type="checkbox" id="rsok"> <span>${t("rs.understand")}</span></label>
         <button class="btn ghost block" data-no>${t("rs.keep")}</button>
         <button class="btn block danger" id="rsnext" disabled>${t("rs.continue")}</button>`;
@@ -50,6 +51,7 @@
         nx.onclick = () => { step = 2; fx.buzz(30); draw(); };
       } else if (step === 2) {
         u.$("#rsok", root).onchange = e => { nx.disabled = !e.target.checked; };
+        const dv = u.$("#rsdrive", root); if (dv) dv.onchange = () => { wipe = dv.checked; u.$("#rsdrivS", root).textContent = t(wipe ? "rs.driveWipeS" : linked ? "rs.driveKeep" : "rs.driveNotLinked"); };
         nx.onclick = () => { step = 3; fx.buzz([30, 40, 30]); draw(); };
       } else {
         const inp = u.$("#rsword", root), go = u.$("#rsgo", root);
@@ -65,10 +67,12 @@
         go.onclick = async () => {
           if (go.disabled || inp.value.trim().toUpperCase() !== WORD()) return;
           go.disabled = true; clearInterval(timer);
-          if (AA.sync && AA.sync.linked()) AA.sync.disconnect();
-          await AA.store.reset();
+          let driveOk = null;
+          if (wipe && canDrive) { go.textContent = t("rs.driveBusy"); driveOk = await AA.sync.wipe(() => AA.store.reset(true)); }
+          else { if (AA.sync && AA.sync.linked()) AA.sync.disconnect(); await AA.store.reset(); }
+          if (driveOk === false && AA.sync.linked()) AA.sync.disconnect();
           close(); AA.ctx = {}; AA.ui.applyTheme(); AA.a11y.apply(); AA.ui.hud();
-          fx.toast(t("rs.doneT"), t("rs.doneS"), "refresh");
+          fx.toast(t("rs.doneT"), t(driveOk ? "rs.doneDrive" : driveOk === false ? "rs.doneDriveFail" : "rs.doneS"), "refresh");
           AA.router.go("welcome", {}, true);
         };
       }

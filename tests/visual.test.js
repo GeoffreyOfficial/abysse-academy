@@ -26,7 +26,7 @@ const DEVICES = [
   ["320", 320, 568, 1], ["360", 360, 780, 1], ["390", 390, 844, 1], ["412", 412, 915, 1], ["412 texte+", 412, 915, 1.25],
   ["Fold fermé", 344, 882, 1], ["Fold ouvert", 884, 1104, 1], ["tablette", 820, 1180, 1], ["portable", 1366, 768, 1], ["PC", 1920, 1080, 1], ["4K", 3840, 2160, 1]
 ];
-const SCREENS = (process.env.SCREENS || "home,map/n2,map/e2,lesson/pression/essentiel,lesson/pression/approfondir,lesson/pression/memo,lesson/n4-guide/essentiel,train,flash,lab,sim,pc,scen,scen/s1,calc,tables,profile,club,settings,cours,cours/n3,progres,moniteur,search/palier,glossary,mistakes,backup,parcours,cursus,cursus/e2,carnet,examen,fiches/n2,brief,brief/gp,succ,succ/go,reports,sources,valider,QUIZ,EXAM,RESULT").split(",");
+const SCREENS = (process.env.SCREENS || "home,map/n2,map/e2,lesson/pression/essentiel,lesson/pression/approfondir,lesson/pression/memo,lesson/n4-guide/essentiel,train,flash,lab,sim,pc,scen,scen/s1,calc,tables,profile,club,settings,cours,cours/n3,progres,moniteur,search/palier,jeux/n2,aquarium,quests,story,boss/n2,gardien/pression,paires,vraifaux,glossary,mistakes,backup,parcours,cursus,cursus/e2,carnet,examen,fiches/n2,brief,brief/gp,succ,succ/go,reports,sources,valider,QUIZ,EXAM,RESULT").split(",");
 
 /* Analyse exécutée dans la page. */
 function inspect() {

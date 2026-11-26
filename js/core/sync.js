@@ -79,6 +79,10 @@
       try {
         if (!sy.tokenOk()) { if (!interactive && !st.linked) return false; await token(interactive); }
         const remote = await pull(), before = JSON.stringify([AA.S.xp, Object.keys(AA.S.stats).length, AA.S.savedAt]);
+        if (remote && (remote.resetAt || 0) > (AA.S.resetAt || 0)) {
+          try { await AA.store.snapshot("reset"); } catch (e) {}
+          if (AA.fx) AA.fx.toast(AA.t("rs.remoteT"), AA.t("rs.remoteS"), "refresh");
+        }
         if (remote) { AA.S = AA.store.merge(AA.S, remote); AA.S.profile.onboarded = true; AA.store.save(true, true); }
         await push();
         st.last = Date.now(); st.err = ""; ls.set(st);
@@ -93,6 +97,20 @@
     return busy;
   };
   sy.connect = () => sy.now(true);
+  /* Réinitialisation complète : jeton d'abord (fenêtre Google si besoin, pendant le geste
+     de l'utilisateur), puis remise à zéro locale (reset), puis la copie du Drive est
+     remplacée par le profil neuf et les doublons supprimés. Renvoie true si tout a réussi. */
+  sy.wipe = async reset => {
+    if (!sy.possible() || !sy.clientId()) { await reset(); return false; }
+    try { if (!sy.tokenOk()) await token(true); } catch (e) { await reset(); st.err = e.message || "?"; ls.set(st); emit(); return false; }
+    await reset();
+    try {
+      const r = await api(`${API}?q=${encodeURIComponent(`name='${FILE}' and trashed=false`)}&fields=files(id)`), j = await r.json(), ids = (j.files || []).map(f => f.id);
+      st.fileId = ids[0] || ""; ls.set(st);
+      for (const id of ids.slice(1)) { try { await api(`${API}/${id}`, { method: "DELETE" }); } catch (e) {} }
+      await push(); st.last = Date.now(); st.err = ""; ls.set(st); emit(); return true;
+    } catch (e) { st.err = e.message || "?"; ls.set(st); emit(); return false; }
+  };
   sy.disconnect = () => {
     try { if (st.token && window.google) google.accounts.oauth2.revoke(st.token, () => {}); } catch (e) {}
     st = { clientId: st.clientId }; ls.set(st); emit();

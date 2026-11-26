@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console.error("  ✗ " + m); } };
 const WIDTHS = [[280, 653], [390, 844], [884, 1104], [1440, 900], [3840, 2160]];
-const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "club", "settings", "cours", "cours/n3", "progres", "moniteur", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet", "examen", "examen/n3/quick", "fiches/n2", "fiches/e2/e2-evaluer", "brief", "brief/gp", "succ", "succ/go"];
+const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "club", "settings", "cours", "cours/n3", "progres", "moniteur", "search/palier", "jeux", "jeux/n2", "aquarium", "quests", "story", "boss/n2", "boss/n1", "gardien/pression", "paires", "vraifaux", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet", "examen", "examen/n3/quick", "fiches/n2", "fiches/e2/e2-evaluer", "brief", "brief/gp", "succ", "succ/go"];
 
 async function newPage(b, w, h) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
@@ -85,7 +85,7 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
     console.log("• Aide, quêtes, signalements (1.4)");
     { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
       await p.click(".pill.fire"); await p.waitForTimeout(250);
-      ok(await p.$(".streak-cal"), "flamme cliquable : série expliquée sur 14 jours");
+      ok(await p.$(".fl-cal"), "flamme cliquable : série expliquée sur un calendrier de 5 semaines");
       await p.keyboard.press("Escape"); await p.click(".pill.xp"); await p.waitForTimeout(250);
       ok(await p.$(".help-sheet [data-hx]"), "éclair cliquable : XP et niveau expliqués");
       await p.keyboard.press("Escape"); await p.click('[data-help="tuteur"]'); await p.waitForTimeout(250);
@@ -186,8 +186,24 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(await p.$(".su-case .su-svg"), "successives : cas illustré (profil des deux plongées)");
       for (let i = 0; i < 12 && !(await p.$(".result")); i++) { const a = await p.evaluate(() => AA.ctx.succ.steps[AA.ctx.succ.i].a); await p.click(`.opt[data-k="${a}"]`); await p.waitForTimeout(80); await p.click("#sun"); await p.waitForTimeout(100); }
       ok(await p.evaluate(() => AA.S.v19.succ === 1), "successives : cas résolu sans faute");
-      await p.goto(URL + "#/quests"); await p.waitForTimeout(300); ok(await p.evaluate(() => AA.router.name === "progres" && !document.querySelector(".wk-card")), "jeux retirés : quêtes et défis renvoient vers Progrès");
-      await p.goto(URL + "#/aquarium"); await p.waitForTimeout(300); ok(await p.evaluate(() => AA.router.name === "progres"), "jeux retirés : aquarium renvoie vers Progrès");
+      await p.goto(URL + "#/quests"); await p.waitForTimeout(300); ok(await p.evaluate(() => AA.router.name === "quests" && !!document.querySelector(".wk-full")), "jeux de retour : quêtes, défis de la semaine");
+      await p.goto(URL + "#/aquarium"); await p.waitForTimeout(300); ok(await p.evaluate(() => AA.router.name === "aquarium" && AA.content.creatures.length > 10), "jeux de retour : aquarium");
+      await p.goto(URL + "#/story"); await p.waitForTimeout(300); ok(await p.evaluate(() => AA.router.name === "story" && document.querySelectorAll(".story-card").length > 0), "jeux de retour : aventures");
+      await p.goto(URL + "#/jeux"); await p.waitForTimeout(300); ok(await p.$(".gx-day") && await p.$('a[href="#/aquarium"]') && await p.$('a[href="#/story"]'), "espace Jeux : quotidien, aventures et aquarium regroupés");
+      await p.goto(URL + "#/home"); await p.waitForTimeout(300); ok(await p.$(".gx-home") && !(await p.$(".wk-card")), "accueil calme : une seule petite carte Jeux");
+      await p.evaluate(() => AA.tour.start(0)); await p.waitForTimeout(300);
+      ok(await p.$(".tour .tour-card") && (await p.$$(".tour-dots button")).length === await p.evaluate(() => AA.tour.STEPS.length), "visite guidée : s’ouvre avec ses étapes");
+      await p.click('[data-tour="next"]'); await p.waitForTimeout(250); ok(await p.evaluate(() => AA.S.tour.step === 1 && !document.querySelector(".tour.free")), "visite : étape suivante, menu mis en lumière");
+      await p.click('[data-tour-go="6"]'); await p.waitForTimeout(250); ok(await p.evaluate(() => AA.S.tour.step === 6), "visite : saut direct à une étape");
+      await p.click('[data-tour="skip"]'); await p.waitForTimeout(250); ok(!(await p.$(".tour")) && await p.evaluate(() => AA.S.tour.skip === 1 && AA.S.tour.step === 6), "visite : passer toute la visite, étape gardée");
+      await p.goto(URL + "#/profile"); await p.waitForTimeout(300); await p.click('.tile[data-t="tour"]'); await p.waitForTimeout(800);
+      ok(await p.evaluate(() => !!document.querySelector(".tour") && document.querySelector(".tour-dots .on") === document.querySelectorAll(".tour-dots button")[6]), "visite : reprise depuis Profil à la bonne étape");
+      await p.keyboard.press("Escape"); await p.waitForTimeout(200); ok(!(await p.$(".tour")), "visite : Échap la ferme");
+      await p.evaluate(() => { const S = AA.S; S.days = []; for (let i = 8; i >= 0; i--) S.days.push(AA.u.addDays(-i)); S.flCel = 0; AA.store.save(true); AA.ui.hud(); document.querySelectorAll(".toasts,.toast").forEach(x => x.remove()); });
+      await p.click('#topbar [data-hud="streak"]'); await p.waitForTimeout(400);
+      ok(await p.evaluate(() => { const c = [...document.querySelectorAll(".fl-cal i")], tdy = c.findIndex(x => x.classList.contains("today")); return c.length === 35 && tdy >= 28 && c[tdy].classList.contains("cur") && c.filter(x => x.classList.contains("cur")).length === 9 && !!document.querySelector(".fl.fl-t3"); }), "série : calendrier lundi→dimanche, aujourd’hui en dernière semaine, flamme du palier");
+      await p.waitForTimeout(1300); ok(await p.$(".fl-cel") && await p.evaluate(() => AA.S.flCel === 7), "série : palier 7 jours célébré une fois");
+      await p.keyboard.press("Escape"); await p.waitForTimeout(300);
       await p.goto(URL + "#/club"); await p.waitForTimeout(250);
       const card = await p.evaluate(() => AA.v19.encode("AAC1", { id: "zz9", n: "Léa", x: 4200, l: 7, wk: AA.v19.isoWeek(), wx: 300, s: 4, e: 14.5, t: Date.now() }));
       await p.fill("#clin", "Voici ma carte : " + card + " à bientôt"); await p.click("#clgo"); await p.waitForTimeout(1200);
@@ -207,6 +223,10 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(await p.$("#clout .cl-vs") && await p.evaluate(() => AA.S.v19.duels.some(d => d.role === "a" && d.opp && d.opp.n === "Lou")), "duel à distance : la réponse donne le résultat chez le lanceur");
       const m = await p.evaluate(() => { const a = AA.S, b = JSON.parse(JSON.stringify(a)); b.savedAt = (a.savedAt || 0) + 5; b.v19.club.members.yy1 = { id: "yy1", n: "Max", x: 10, t: 1 }; b.v19.brief = 0; const r = AA.store.merge(a, b); return r.v19.club.members.zz9 && r.v19.club.members.yy1 && r.v19.brief === 1; });
       ok(m, "fusion de sauvegardes : club et compteurs 1.9 conservés");
+      const rz = await p.evaluate(() => { const old = JSON.parse(JSON.stringify(AA.S)); old.xp = 99999; old.savedAt = Date.now() + 9e6; const fresh = Object.assign(AA.store.FRESH(), { resetAt: Date.now(), savedAt: Date.now(), xp: 5 }); const a = AA.store.merge(old, fresh), b = AA.store.merge(fresh, old), c = AA.store.merge(AA.store.FRESH(), AA.store.FRESH()); return a.xp === 5 && b.xp === 5 && !!a.resetAt && !c.resetAt && !Object.keys((a.v19 && a.v19.club && a.v19.club.members) || {}).length; });
+      ok(rz, "réinitialisation « Drive compris » : l’ancienne progression ne revient pas par la synchro");
+      const rsd = await p.evaluate(() => { const s0 = AA.sync.possible, c0 = AA.sync.clientId; AA.sync.possible = () => true; AA.sync.clientId = () => "test"; AA.resetFlow(); document.querySelector("#rsnext").click(); const ok = !!document.querySelector("#rsdrive"); AA.sync.possible = s0; AA.sync.clientId = c0; document.querySelector(".sheet-wrap [data-no]").click(); return ok; });
+      ok(rsd, "réinitialiser : case « effacer aussi le Google Drive » proposée");
       await ctx.close(); }
 
     console.log("• Écrans et largeurs");
@@ -249,6 +269,32 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       await p.fill("#sq", ""); await p.waitForTimeout(200); ok(await p.$(".sr-browse .sr-tile"), "recherche : accueil avec raccourcis et idées");
       await p.goto(URL + "#/lesson/dalton"); await p.waitForTimeout(250);
       ok((await p.$$(".prose .gl")).length > 0, "mots du glossaire cliquables dans un cours");
+      /* 2.2 : onglet Carte, boss, gardiens, mini-jeux */
+      ok(await p.$('.tabbar [data-tab="map"]') && (await p.$$(".tabbar .tab")).length === 6, "onglet Carte à part (6 onglets)");
+      const bossIds = await p.evaluate(() => AA.content.worlds.filter(w => w.boss && !w.soon).map(w => w.id));
+      const bossBad = [];
+      for (const wid of bossIds) { await p.goto(URL + "#/boss/" + wid); await p.waitForTimeout(250); if (!(await p.evaluate(() => AA.router.name === "boss" && !!document.querySelector(".bt-intro")))) bossBad.push(wid); }
+      ok(bossIds.length >= 8 && !bossBad.length, `chaque boss s’ouvre (${bossIds.length}) ${bossBad.join(",")}`);
+      await p.evaluate(() => { AA.S.unlockAll = true; AA.store.save(true); });
+      const fightBad = [];
+      for (const wid of bossIds) { await p.goto(URL + "#/boss/" + wid); await p.waitForTimeout(200); const go = await p.$("#btGo"); if (!go) { fightBad.push(wid); continue; } await go.click(); await p.waitForTimeout(250); if (!(await p.$("#btA .bt-boss")) || !(await p.$(".bt-c"))) fightBad.push(wid); }
+      ok(!fightBad.length, "chaque boss se combat : arène, boss et questions " + fightBad.join(","));
+      await p.evaluate(() => { AA.S.unlockAll = false; AA.store.save(true); });
+      await p.goto(URL + "#/boss/n2"); await p.waitForTimeout(200); await p.click("#btGo"); await p.waitForTimeout(300);
+      const hp0 = await p.evaluate(() => document.querySelectorAll("#btHp i:not(.off)").length);
+      await p.evaluate(() => { const q = document.querySelector(".bt-qt").textContent, Q = AA.content.questions.find(x => x.q === q); [...document.querySelectorAll(".bt-c")].find(b => +b.dataset.ci === Q.a).click(); }); await p.waitForTimeout(700);
+      ok(await p.evaluate(() => document.querySelectorAll("#btHp i:not(.off)").length) === hp0 - 1 && await p.$("#btNext"), "combat : bonne réponse = le boss perd un PV");
+      await p.click("#btNext"); await p.waitForTimeout(200);
+      await p.evaluate(() => { const q = document.querySelector(".bt-qt").textContent, Q = AA.content.questions.find(x => x.q === q); [...document.querySelectorAll(".bt-c")].find(b => +b.dataset.ci !== Q.a).click(); }); await p.waitForTimeout(800);
+      ok(await p.evaluate(() => document.querySelectorAll("#btLives span.off").length) === 1 && await p.$(".bt-c.good"), "combat : erreur = une vie perdue et la bonne réponse montrée");
+      await p.goto(URL + "#/gardien/pression"); await p.waitForTimeout(250); ok(await p.$("#btGo"), "gardien d’un cours lu prêt au combat");
+      await p.goto(URL + "#/jeux/n2"); await p.waitForTimeout(250); ok((await p.$$(".gm-g")).length === 11 && await p.$(".gm-final"), "jeux : gardiens et boss final du niveau");
+      await p.goto(URL + "#/paires"); await p.waitForTimeout(250); ok((await p.$$(".pg-card")).length === 12, "Paires : 12 cartes");
+      await p.goto(URL + "#/vraifaux"); await p.waitForTimeout(250); await p.click("#vfGo"); await p.waitForTimeout(250); ok(await p.$("#vfCard") && await p.$("[data-v='1']"), "Vrai ou faux : partie lancée");
+      await p.goto(URL + "#/map/n2"); await p.waitForTimeout(300); await p.goto(URL + "#/lesson/pression"); await p.waitForTimeout(250);
+      ok(/#\/map\/n2/.test(await p.getAttribute(".pagehead a.closebtn", "href")), "cours ouvert depuis la carte : retour vers la carte");
+      await p.goto(URL + "#/cours/n2"); await p.waitForTimeout(250); await p.goto(URL + "#/lesson/pression"); await p.waitForTimeout(250);
+      ok(/#\/cours\/n2/.test(await p.getAttribute(".pagehead a.closebtn", "href")), "cours ouvert depuis Cours : retour vers la liste");
       /* Correction détaillée : méthode pas à pas + revoir le cours sans quitter */
       await p.evaluate(() => AA.quiz.start("gen", [AA.game.gen("prof")], { title: "t", back: "home" })); await p.waitForTimeout(300);
       const wrongCi = await p.evaluate(() => { const q = AA.ctx.items[0].q; return (q.a + 1) % q.c.length; });

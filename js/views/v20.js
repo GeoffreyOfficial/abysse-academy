@@ -310,7 +310,7 @@
   const gen0 = G.gen;
   G.gen = key => { if (key) return gen0(key); return G.genKeys().some(k => G.inPlay(C.generators[k].m)) ? gen0() : null; };
   G.nextModule = () => T.nextToRead(G.goalWorld()) || C.modules.find(m => !T.isRead(m.id)) || C.inWorld(G.goalWorld())[0] || C.modules[0];
-  G.claimable = () => 0;
+  G.claimable0 = G.claimable; G.claimable = () => 0;
   AA.stars = () => "";
 
   const FREE = new Set(["place", "pc"]);
@@ -347,9 +347,9 @@
   };
 
   /* Jeux retirés (choix de Geoffrey) : trophées associés masqués, écrans redirigés. */
-  const HIDE_K = new Set(["aqua", "story", "boss", "bossAny", "chapter"]), HIDE_F = new Set(["weeks", "events"]);
+  /* 2.2 : aquarium, aventures, quêtes, défis et événements reviennent (espace Jeux) ; seuls les anciens trophées de boss restent masqués (remplacés par ceux de 2.2). */
+  const HIDE_K = new Set(["boss", "bossAny"]), HIDE_F = new Set();
   T.badgeHidden = b => !b.test || HIDE_K.has(b.test.k) || (b.test.k === "v19" && HIDE_F.has(b.test.f));
-  ["aquarium", "story", "boss", "quests"].forEach(v => AA.view(v, { tab: "progres", guard: () => false, fallback: "progres", render() {} }));
 
   /* Migration 2.0 : cours réussis (≥ 1 étoile) = lus ; historique → notions. */
   /* Barème XP 2.0 : pas de rattrapage massif. Les notions déjà acquises et les cours
@@ -364,7 +364,7 @@
   };
   T.migrate = () => {
     const s = S();
-    C.badges = C.badges.filter(b => !T.badgeHidden(b)); C.creatures = [];
+    C.badges = C.badges.filter(b => !T.badgeHidden(b));
     if (s.v20) { T.migrateXp(); return; }
     C.modules.forEach(m => { if (G.stars(m.id) >= 1 && !T.explicitRead(m.id)) s.read[m.id] = Object.assign({}, s.read[m.id], { e: (s.read[m.id] || {}).a || u.today(), mig: 1 }); });
     s.nstat = s.nstat || {};
