@@ -247,6 +247,7 @@
     const rv = u.$("#revcours"); if (rv) rv.onclick = () => Q.review(q.m);
     const rp = u.$("#qrep"); if (rp) rp.onclick = () => AA.report({ type: "question", q });
     const qx = u.$("#qexp"); if (qx) qx.onclick = () => AA.explainMe(q, c.picked);
+    if (AA.oral && AA.oral.quizHook && c.mode !== "duel") try { AA.oral.quizHook(q, answered, okNow); } catch (e) {}
     u.$$(".choice", el).forEach(b => {
       b.onclick = () => answer(c, +b.dataset.ci, b);
       if (answered) return;
@@ -307,11 +308,12 @@
     if (c.mode === "pc" && !c.pcSaved) { c.pcSaved = true; S.pcBest = Math.max(S.pcBest || 0, pct); S.pcRuns = (S.pcRuns || 0) + 1; AA.store.save(); }
     if (c.mode === "exam") {
       const score = Math.round(good / n * 20 * 2) / 2;
-      if (!c.saved) { S.exams.push({ date: u.today(), score, full: !!c.full }); c.saved = true; AA.store.save(); G.checkBadges(); }
+      const by = {}; c.answers.forEach(a => { const k = a.q.calc || a.q.gen ? "calc" : a.q.m; by[k] = by[k] || [0, 0]; by[k][1]++; if (a.ok) by[k][0]++; });
+      c.items.forEach(it => { if (!c.answers.some(a => a.q === it.q)) { const k = it.q.calc || it.q.gen ? "calc" : it.q.m; by[k] = by[k] || [0, 0]; by[k][1]++; } });
+      if (!c.saved) { S.exams.push({ date: u.today(), score, full: !!c.full, world: c.world || "n2", by }); c.saved = true; AA.store.save(); G.checkBadges(); }
       head = `<p class="eyebrow">${t(c.full ? "exam.fullLabel" : "exam.quickLabel")}</p><div class="big">${u.num(score, 1)}<span class="muted" style="font-size:.4em"> / 20</span></div>`;
       sub = t(score >= 15 ? "exam.good" : score >= 10 ? "exam.mid" : "exam.low") + (c.answers.length < n ? " " + t("exam.unanswered", { n: n - c.answers.length }) : "");
-      const by = {}; c.answers.forEach(a => { const k = a.q.calc ? "calc" : a.q.m; by[k] = by[k] || [0, 0]; by[k][1]++; if (a.ok) by[k][0]++; });
-      extra = `<div class="tbl"><table><tr><th>${t("exam.part")}</th><th>${t("exam.success")}</th></tr>${C.inWorld(c.world || "n2").filter(m => by[m.id]).map(m => `<tr><td><a href="#/lesson/${m.id}">${u.esc(m.title)}</a></td><td class="mono">${by[m.id][0]} / ${by[m.id][1]}</td></tr>`).join("")}${by.calc ? `<tr><td><b>${t("exam.calcs")}</b></td><td class="mono">${by.calc[0]} / ${by.calc[1]}</td></tr>` : ""}</table></div>`;
+      extra = AA.examReport ? AA.examReport(c, by, score) : `<div class="tbl"><table><tr><th>${t("exam.part")}</th><th>${t("exam.success")}</th></tr>${C.inWorld(c.world || "n2").filter(m => by[m.id]).map(m => `<tr><td><a href="#/lesson/${m.id}">${u.esc(m.title)}</a></td><td class="mono">${by[m.id][0]} / ${by[m.id][1]}</td></tr>`).join("")}${by.calc ? `<tr><td><b>${t("exam.calcs")}</b></td><td class="mono">${by.calc[0]} / ${by.calc[1]}</td></tr>` : ""}</table></div>`;
     } else if (c.mode === "apnee") {
       const rec = good > S.apnee;
       if (!c.saved) { if (rec) S.apnee = good; const dc = G.dayc(); dc.apnee = Math.max(dc.apnee || 0, good); c.saved = true; AA.store.save(); G.checkBadges(); }
@@ -358,7 +360,7 @@
       ${c.answers.length ? `<div class="section-title"><h3>${t("result.review")}</h3><span class="muted small">${t("result.reviewHint")}</span></div>
       <div class="review">${c.answers.filter(a => !a.card).map(a => `<div class="rv ${a.ok ? "ok" : ""}"><b>${u.esc(a.q.q)}</b>
         <span class="small">${a.ok ? t("result.yours") + " " + u.esc(a.q.c[a.picked]) + " ✓" : t("result.yours") + " " + u.esc(a.q.c[a.picked]) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
-        <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>` : ""}</div>`).join("")}</div>` : ""}`;
+        <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<div class="row rv-acts"><a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>${C.qById[a.q.id] ? `<button class="btn ghost sm" data-expq="${a.q.id}" data-pk="${a.picked}">${AA.icon("play")} ${t("exp.btn")}</button>` : ""}</div>` : ""}</div>`).join("")}</div>` : ""}`;
     u.$("#again").onclick = () => Q.restart(c);
     u.$("#rclose").onclick = () => AA.router.go(c.back || "home");
   }

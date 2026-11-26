@@ -214,7 +214,7 @@
       const tail = `${AA.sourcesHtml(m)}<div class="row lesson-tools">${AA.reportBtn(`data-rep="${tab}"`)}</div>`;
       if (tab === "essentiel") body = `${toc(m.essentiel)}${m.diagram && C.diagrams[m.diagram] ? C.diagrams[m.diagram]() : ""}<div class="prose">${m.essentiel}</div>${exampleCard(m)}${readBtn("e", read.e)}${tail}`;
       else if (tab === "approfondir") body = m.approfondir ? `<p class="callout"><span class="eyebrow">${t("lesson.deepIntro")}</span>${t("lesson.deepIntroS")}</p>${toc(m.approfondir)}<div class="prose">${m.approfondir}</div>${exampleCard(m)}${readBtn("a", read.a)}${tail}` : AA.ui.empty("layers", t("lesson.noDeepT"), t("lesson.noDeepS"));
-      else if (tab === "memo") body = m.memo.length ? `<div class="memo">${m.memo.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="muted">${u.esc(b)}</span></div>`).join("")}</div>
+      else if (tab === "memo") body = m.memo.length ? `<div class="memo">${m.memo.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="muted">${u.esc(b)}</span></div>`).join("")}</div><div class="row fic-link"><a class="btn ghost sm" href="#/fiches/${m.world}/${m.id}">${AA.icon("download")} ${t("fic.printOne")}</a><a class="btn ghost sm" href="#/fiches/${m.world}">${t("fic.printWorld")}</a></div>
           <p class="small muted" style="margin-top:var(--sp-4)">${t("lesson.memoHint")}</p><a class="btn ghost block" href="#/flash/${m.id}">${AA.icon("cards")} ${t("lesson.memoCards")}</a>` : AA.ui.empty("bulb", t("lesson.noMemoT"), "");
       else body = `<p class="muted">${t("lesson.coachIntro")}</p>
           ${m.moniteur.length ? `<div class="stack">${m.moniteur.map((q, k) => `<div class="coachq"><span>${u.esc(q)}</span><button class="btn ghost sm" data-addq="${k}">${AA.icon("plus")} ${t("lesson.add")}</button></div>`).join("")}</div>` : ""}
@@ -231,7 +231,7 @@
             ${acc != null ? `<span class="chip">${AA.icon("target")} ${Math.round(acc * 100)} %</span>` : ""}
             ${note.ok ? `<span class="chip gold">${AA.icon("check")} ${t("lesson.coachOk")}</span>` : ""}
             ${G.isStale(m.id) ? `<span class="chip warn">${AA.icon("refresh")} ${t("map.stale")}</span>` : ""}
-            <span class="grow"></span>${tab !== "moniteur" ? AA.a11y.button(".lesson-body", t("a11y.listenLesson")) : ""}
+            <span class="grow"></span>${tab !== "moniteur" ? (AA.oral ? AA.oral.btn() : AA.a11y.button(".lesson-body", t("a11y.listenLesson"))) : ""}
           </div>
         </header>
         ${!ok ? `<div class="callout trap"><span class="eyebrow">${t("map.locked")}</span>${u.esc(G.lockReason(m))} ${t("lesson.lockedRead")}</div>` : ""}

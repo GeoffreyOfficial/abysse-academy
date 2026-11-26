@@ -42,6 +42,7 @@
           ${ui.tile("reports", "flag", "var(--accent)", t("rep.list"), (S.reports || []).length ? t("rep.n", { n: S.reports.length }) : t("rep.tileS"), (S.reports || []).length ? [String(S.reports.length), "warn"] : null)}
           ${ui.tile("valider", "check", "var(--ok)", t("set.validate"), t("val.tileS", { n: C.validate.filter(([a]) => (S.validOk || {})[a]).length, tot: C.validate.length }))}
           ${ui.tile("carnet", "teach", "var(--world-e1)", t("instr.view"), t("instr.tileS", { n: C.modules.filter(m => (S.instr || {})[m.id]).length, all: C.modules.length }))}
+          ${ui.tile("fiches", "download", "var(--world-n4)", t("fic.title"), t("fic.tileS"))}
           ${ui.tile("sources", "book", "var(--gold)", t("src.page"), t("src.tileS"))}
           ${ui.tile("backup", "save", "var(--ok)", t("bk.title"), AA.sync.linked() ? t("bk.driveOn") : t("prof.backupS"))}
         </div>
@@ -137,7 +138,7 @@
           <div class="cvd-demo" aria-hidden="true"><span class="chip ok">${AA.icon("check")} ${t("set.cvdOk")}</span><span class="chip bad">${AA.icon("x")} ${t("set.cvdBad")}</span></div>
           ${sw("mot", p.motion !== false, t("set.motion"), t("set.motionS"))}${sw("scn", p.scene !== false, t("set.scene"), t("set.sceneS"))}${sw("gst", p.gestures !== false, t("set.gestures"), t("set.gesturesS"))}
           ${AA.a11y.canSpeak ? `<div class="field" style="margin-top:var(--sp-3)"><label>${t("set.voice")}</label><div class="seg">${[[.8, "slow"], [1, "normal"], [1.2, "fast"]].map(([r, k]) => `<button data-vr="${r}" aria-pressed="${(p.voiceRate || 1) === r}">${t("set.voice." + k)}</button>`).join("")}</div>
-            <div class="row" style="margin-top:8px"><button class="btn ghost sm" id="vtest">${AA.icon("sound")} ${t("set.voiceTest")}</button></div></div>` : `<p class="small muted">${t("set.noVoice")}</p>`}</section>
+            ${sw("autord", !!p.autoRead, t("oral.auto"), t("oral.autoS"))}<div class="row" style="margin-top:8px"><button class="btn ghost sm" id="vtest">${AA.icon("sound")} ${t("set.voiceTest")}</button></div></div>` : `<p class="small muted">${t("set.noVoice")}</p>`}</section>
         <section class="card" style="margin-top:var(--sp-4)"><h3>${t("set.comfort")}</h3>
           ${sw("snd", p.sound, t("set.sound"), t("set.soundS"))}${sw("hap", p.haptics, t("set.haptics"), t("set.hapticsS"))}${sw("unl", S.unlockAll, t("set.unlock"), t("set.unlockS"))}</section>
         <a class="card linkcard" href="#/backup" style="margin-top:var(--sp-4)"><span class="medal">${AA.icon("save")}</span><span class="grow"><b>${t("bk.title")}</b><span class="small muted">${t("set.backupS")}</span></span>${AA.icon("next")}</a>
@@ -155,6 +156,7 @@
       u.$("#exd").onchange = e => { p.examDate = e.target.value; AA.store.save(); ui.hud(); };
       u.$$("[data-goal]", el).forEach(b => b.onclick = () => { p.goal = b.dataset.goal; AA.store.save(); AA.router.refresh(); });
       u.$$("[data-daily]", el).forEach(b => b.onclick = () => { p.dailyGoal = +b.dataset.daily; AA.store.save(); AA.router.refresh(); });
+      const ar = u.$("#autord"); if (ar) ar.onchange = e => { p.autoRead = e.target.checked; AA.store.save(); if (p.autoRead) A.speak(t("oral.autoOn")); };
       u.$("#snd").onchange = e => { p.sound = e.target.checked; AA.store.save(); if (p.sound) fx.sfx.ok(); };
       u.$("#hap").onchange = e => { p.haptics = e.target.checked; AA.store.save(); fx.buzz(30); };
       u.$("#unl").onchange = e => { S.unlockAll = e.target.checked; AA.store.save(); };

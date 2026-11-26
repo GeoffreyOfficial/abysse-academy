@@ -144,3 +144,9 @@ Object.assign(AA.content.help, {
   net: { t: "Hors ligne et sauvegarde", ic: "shield",
     html: `<p>Ta progression est enregistrée <b>sur l’appareil</b> à chaque réponse, et une copie de secours est faite chaque jour. Sans réseau, l’appli continue de fonctionner normalement.</p>` }
 });
+
+/* 1.8 */
+Object.assign(AA.content.help, {
+  fiches: { t: "Les fiches à imprimer", ic: "download", go: "fiches", goL: "Ouvrir les fiches",
+    html: `<p>Toutes les notions « À retenir » d’un niveau sur quelques pages : formules, points clés, pièges et, si tu veux, les schémas.</p><p><b>Imprimer</b> ouvre l’impression : choisis « Enregistrer en PDF » pour garder un PDF. <b>Télécharger</b> garde un fichier que tu peux ouvrir et imprimer plus tard, même sans l’appli.</p>` }
+});

@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console.error("  ✗ " + m); } };
 const WIDTHS = [[280, 653], [390, 844], [884, 1104], [1440, 900], [3840, 2160]];
-const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet"];
+const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet", "examen", "examen/n3/quick", "fiches/n2", "fiches/e2/e2-evaluer"];
 
 async function newPage(b, w, h) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
@@ -145,6 +145,25 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(await p.evaluate(() => Object.keys(AA.S.instr).length === 1), "carnet : thème validé par un moniteur");
       const mid = await p.evaluate(() => Object.keys(AA.S.instr)[0]); await p.goto(URL + "#/lesson/" + mid + "/essentiel"); await p.waitForTimeout(300);
       ok(/Validé/.test(await p.textContent(".pagehead")), "cours : coche « Validé » visible");
+      await ctx.close(); }
+
+    console.log("• Examens, fiches, lecture (1.8)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
+      await p.goto(URL + "#/examen/n2/quick"); await p.waitForTimeout(300);
+      ok(await p.$('.ex-fmt.on[data-ef="quick"]') && await p.$(".ex-spec .ex-dl"), "examen : choix du format, barème et déroulement");
+      await p.click('[data-ew="n3"]'); await p.waitForTimeout(150); ok(/Niveau 3|N3/.test(await p.textContent(".ex-spec h3")), "examen : choix du niveau");
+      await p.click("#exgo"); await p.waitForTimeout(300); ok(await p.$(".qcard"), "examen N3 : l’épreuve démarre");
+      for (let i = 0; i < 30 && !(await p.$(".ex-report")); i++) { const c = await p.$(".choice:not([disabled])"); if (c) await c.click(); await p.waitForTimeout(60); const nx = await p.$("#nextq"); if (nx) await nx.click(); await p.waitForTimeout(60); }
+      ok(await p.$(".ex-report .ex-th"), "examen : note par thème et thèmes à retravailler");
+      ok(await p.evaluate(() => { const e = AA.S.exams[AA.S.exams.length - 1]; return e && e.world === "n3" && e.by && Object.keys(e.by).length >= 3; }), "examen : résultat enregistré par niveau et par thème");
+      await p.goto(URL + "#/fiches/n2"); await p.waitForTimeout(300);
+      ok((await p.$$(".fic-preview .fiche")).length >= 11 && await p.$(".fic-preview .f-memo dt"), "fiches : toutes les fiches du niveau");
+      const [dl] = await Promise.all([p.waitForEvent("download", { timeout: 5000 }).catch(() => null), p.click("#fdl")]);
+      ok(dl && /abysse-fiches-n2\.html/.test(dl.suggestedFilename()), "fiches : fichier à télécharger");
+      await p.goto(URL + "#/lesson/pression/memo"); await p.waitForTimeout(300); ok(await p.$('.fic-link a[href="#/fiches/n2/pression"]'), "cours : imprimer la fiche du thème");
+      const canSpeak = await p.evaluate(() => AA.a11y.canSpeak);
+      if (canSpeak) { await p.click("[data-oral]"); await p.waitForTimeout(300); ok(await p.$(".oral-bar"), "lecture du cours : lecteur affiché"); await p.click("#orStop"); }
+      else ok(true, "lecture du cours : synthèse vocale absente ici (bouton masqué)");
       await ctx.close(); }
 
     console.log("• Écrans et largeurs");

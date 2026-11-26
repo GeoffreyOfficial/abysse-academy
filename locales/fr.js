@@ -520,3 +520,21 @@ AA.i18n.add("fr", {
   "instr.share": "Partager", "instr.dl": "Télécharger", "instr.copied": "Carnet copié", "instr.notYet": "pas encore validé", "instr.edit": "Modifier", "instr.validate": "Valider",
   "instr.note2": "Ce carnet t’aide à suivre ta formation. Il ne remplace pas le livret officiel de ta fédération."
 });
+
+AA.i18n.add("fr", {
+  "exm.title": "Examens blancs", "exm.intro": "Choisis ton niveau et le format. L’examen ressemble à l’écrit : QCM et calculs, chronométré, sans correction pendant l’épreuve.",
+  "exm.level": "Niveau", "exm.fmtS": "{n} questions dont {c} calculs · {m} min",
+  "exm.q": "Questions", "exm.qV": "{n} QCM, dont {c} calculs aux chiffres nouveaux", "exm.time": "Durée", "exm.scale": "Barème", "exm.scaleV": "1 point par bonne réponse, ramené sur 20 (au demi-point).",
+  "exm.pass": "Seuil indicatif", "exm.passV": "10/20 (hypothèse : le seuil réel dépend de ton club et de ta commission).", "exm.rules": "Déroulement", "exm.rulesV": "Pas de correction pendant l’épreuve, tu peux passer une question. Correction complète à la fin.",
+  "exm.split": "Répartition : chaque thème du niveau est interrogé", "exm.start": "Commencer · {m} min", "exm.hyp": "Format proche de l’écrit des clubs, à faire valider par ton moniteur.",
+  "exm.hist": "Ma progression", "exm.noHist": "Pas encore d’examen pour ce niveau.", "exm.last": "Dernière note : {s}/20 le {d}.", "exm.weak": "À retravailler",
+  "exm.reread": "Revoir", "exm.train": "S’entraîner", "exm.noWeak": "Aucun thème sous 60 % : continue comme ça.",
+  "exm.passOk": "Seuil indicatif atteint", "exm.passNo": "Sous le seuil indicatif de 10/20", "exm.delta": "{d} depuis le précédent", "exm.byTheme": "Note par thème", "exm.histBtn": "Ma progression à l’examen",
+  "fic.title": "Fiches à imprimer", "fic.tileS": "À retenir, formules et pièges, en PDF", "fic.intro": "L’essentiel de chaque thème sur papier : formules, points clés et pièges. Idéal à relire avant l’examen.",
+  "fic.print": "Imprimer ou PDF", "fic.dl": "Télécharger", "fic.withDiag": "avec les schémas", "fic.howPdf": "Pour un PDF : « Imprimer », puis choisis « Enregistrer en PDF » comme imprimante.",
+  "fic.oneT": "Fiche · {m}", "fic.worldT": "Fiches · {w}", "fic.foot": "Fiche de révision Abysse Academy. Les valeurs réglementaires et les tables sont à faire valider par ton moniteur.",
+  "fic.dlT": "Fiche téléchargée", "fic.dlS": "Ouvre-la dans ton navigateur pour l’imprimer.", "fic.printOne": "Imprimer cette fiche", "fic.printWorld": "Toutes les fiches du niveau",
+  "oral.title": "Lecture du cours", "oral.listen": "Écouter", "oral.prev": "Paragraphe précédent", "oral.next": "Paragraphe suivant", "oral.play": "Lecture ou pause", "oral.stop": "Arrêter la lecture",
+  "oral.noT": "Lecture vocale indisponible", "oral.auto": "Lire les questions à voix haute", "oral.autoS": "Chaque question et ses réponses sont lues, puis la correction.", "oral.autoOn": "Les questions seront lues à voix haute.",
+  "oral.ok": "Bonne réponse.", "oral.bad": "Pas tout à fait. La bonne réponse était :"
+});

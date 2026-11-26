@@ -1405,6 +1405,59 @@ svg[viewBox="0 0 24 24"]{max-width:6rem;max-height:6rem}
 
 .srs-card p svg{width:18px;height:18px;vertical-align:-4px;color:var(--ok)} .srs-card .row h3{flex:1}
 
+/* =====================================================================
+   1.8 · examens blancs, fiches imprimables, lecteur vocal
+   ===================================================================== */
+.ex-worlds{display:flex;flex-wrap:wrap;gap:6px;margin:var(--sp-2) 0 var(--sp-3)}
+.ex-w{cursor:pointer;border-color:var(--wc)} .ex-w.on{background:color-mix(in srgb,var(--wc) 25%,var(--surface));color:var(--ink);box-shadow:0 0 0 1px var(--wc)}
+.ex-fmts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ex-fmt{display:grid;gap:4px;text-align:left;cursor:pointer;color:var(--ink);font:inherit;padding:var(--sp-3) var(--sp-4)} .ex-fmt.on{box-shadow:0 0 0 2px var(--primary);background:color-mix(in srgb,var(--primary) 12%,var(--surface))}
+.ex-grid{display:grid;gap:var(--sp-4);margin-top:var(--sp-4)} .ex-grid h3{margin:0 0 var(--sp-2)}
+.ex-spec{border-top:4px solid var(--wc)}
+.ex-dl{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:6px 14px;margin:0 0 var(--sp-3)} .ex-dl dt{font:700 var(--fs-xs) var(--font-mono);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding-top:2px} .ex-dl dd{margin:0}
+.ex-split{display:flex;flex-wrap:wrap;gap:6px} .ex-split .chip{font-size:var(--fs-xs)}
+.ex-hist{display:flex;gap:6px;align-items:flex-end;height:8rem;margin-top:var(--sp-3)}
+.ex-hist>div{flex:1;display:grid;grid-template-rows:1fr auto auto;height:100%;text-align:center;min-width:0;max-width:3.2rem}
+.ex-hist i{align-self:end;display:block;border-radius:6px 6px 2px 2px;background:var(--accent)} .ex-hist i.ok{background:var(--ok)}
+.ex-hist b{font-size:var(--fs-xs)} .ex-hist span{font-size:.65rem;color:var(--muted)}
+.ex-weak{display:grid;gap:6px} .ex-weak .row{gap:6px;flex-wrap:wrap;align-items:center;padding:6px 0;border-top:1px solid var(--line-soft)} .ex-weak .grow{min-width:8rem}
+.ex-report{display:grid;gap:var(--sp-3);text-align:left;margin-top:var(--sp-3)}
+.ex-themes{display:grid;gap:6px}
+.ex-th{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:8px 10px;border-radius:var(--r-md);background:var(--surface-2);color:var(--ink);text-decoration:none}
+.ex-th .ex-bar{grid-column:1/-1}
+.ex-bar{height:6px;border-radius:3px;background:var(--surface-3);overflow:hidden} .ex-bar i{display:block;height:100%;border-radius:3px;background:var(--bad)} .ex-bar i.mid{background:var(--gold)} .ex-bar i.ok{background:var(--ok)}
+.rv-acts{gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
+@media (min-width:1024px){.ex-grid{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:start}.ex-themes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:360px){.ex-fmts{grid-template-columns:1fr}.ex-dl{grid-template-columns:1fr}}
+.fic-tools{gap:8px;flex-wrap:wrap;align-items:center;margin:var(--sp-2) 0}
+.fic-diag{cursor:pointer;gap:6px;display:inline-flex;align-items:center}
+.fic-link{gap:8px;flex-wrap:wrap;margin-top:var(--sp-3)}
+.fic-preview{background:#fff;color:#111;padding:var(--sp-4);margin-top:var(--sp-3);overflow:hidden}
+.fic-preview .f-top{border-bottom:2px solid #0b7f86;margin-bottom:12px}.fic-preview h1{font-size:1.3rem;color:#111;margin:0 0 6px}
+.fic-preview .fiche{border:1px solid #ccd;border-radius:10px;padding:12px 14px;margin:0 0 12px}.fic-preview .fiche h2{font-size:1.05rem;margin:2px 0;color:#111}.fic-preview .fiche header p{margin:0;color:#555;font-size:.85rem}
+.fic-preview .f-w{font:700 .7rem var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:#0b7f86}
+.fic-preview .f-formulas{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.fic-preview code{font:600 .85rem var(--font-mono);background:#eef6f7;border:1px solid #bfdfe2;border-radius:6px;padding:2px 8px;color:#111}
+.fic-preview .f-memo{display:grid;gap:6px 18px;margin:8px 0 0}.fic-preview dt{font-weight:700}.fic-preview dd{margin:0;color:#333}
+.fic-preview .f-traps{color:#7a2a00;font-size:.88rem}.fic-preview .f-traps p{margin:4px 0}
+.fic-preview .f-diag{max-width:34rem}.fic-preview .diagram{background:#f4f7f9;border-color:#dde}
+@media (min-width:640px){.fic-preview .f-memo{grid-template-columns:1fr 1fr}}
+.print-frame{position:fixed;width:0;height:0;border:0;left:-9999px;top:0}
+.oral-btn svg{width:16px;height:16px}
+.oral-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:60;display:flex;align-items:center;gap:6px;width:min(560px,calc(100vw - 20px));padding:8px 10px;border-radius:var(--r-lg);border:1px solid var(--line);box-shadow:0 12px 40px rgba(0,0,0,.35);animation:introIn .3s var(--ease)}
+.oral-bar .grow{display:grid;min-width:0} .oral-bar b{font-size:var(--fs-sm)} .or-ic{color:var(--primary);display:grid} .or-ic svg{width:20px;height:20px}
+.oral-bar .iconbtn{width:2.4rem;height:2.4rem} .oral-bar .or-main{background:var(--primary);color:var(--on-primary,#04121f)}
+.oral-bar #orRate{cursor:pointer;font-family:var(--font-mono)}
+@media (min-width:1024px){.oral-bar{bottom:20px}}
+.oral-item{cursor:pointer} .oral-on{background:color-mix(in srgb,var(--primary) 16%,transparent);border-radius:8px;box-shadow:0 0 0 6px color-mix(in srgb,var(--primary) 16%,transparent);transition:background .3s}
+
+.ex-grid>*,.ex-fmts>*{min-width:0} .ex-split .chip,.ex-w{white-space:normal;overflow-wrap:anywhere} .ex-fmt b{overflow-wrap:anywhere}
+
+/* Aperçu des fiches : couleurs « papier » pour les schémas */
+.fic-preview .diagram .d-text{fill:#444}.fic-preview .diagram .d-strong{fill:#111}.fic-preview .diagram figcaption{color:#555}
+.fic-preview .diagram .d-soft{fill:#e3e9ee}.fic-preview .diagram .d-surf{fill:#fff}.fic-preview .diagram .s-line{stroke:#c5ccd3}
+.fic-preview .diagram .t-pri{fill:#0b7f86}.fic-preview .diagram .t-gold{fill:#9a6f00}.fic-preview .diagram .t-acc{fill:#c4502c}.fic-preview .diagram .t-ok{fill:#22844b}.fic-preview .diagram .t-bad{fill:#b33}
+.fic-preview .diagram .d-pri{fill:#2bb3b3}
+
 </style>
 </head>
 <body>
@@ -1427,7 +1480,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "1.7.0";
+  AA.VERSION = "1.8.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -3085,7 +3138,7 @@ window.AA={BUNDLED:true};
   /* ---------- Petits composants (renvoient du HTML) ---------- */
   ui.head = (title, backTo, extra) => `<div class="pagehead">${backTo ? `<a class="closebtn" href="#/${backTo}" aria-label="${t("nav.back")}">${AA.icon("back")}</a>` : ""}<h1 class="pagetitle">${title}</h1>${extra || ""}</div>`;
   /* Chaque tuile qui a une fiche d'aide reçoit un petit « ? » (content/fr/help.js). */
-  const TILE_HELP = { srs: "srs", carnet: "carnet", examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate", cursus: "cursus" };
+  const TILE_HELP = { fiches: "fiches", srs: "srs", carnet: "carnet", examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate", cursus: "cursus" };
   ui.tile = (id, icon, color, title, sub, badge) => { const hk = TILE_HELP[id], has = hk && AA.content.help && AA.content.help[hk];
     return `<button class="tile" data-t="${id}" style="--c:${color}"><span class="ic">${AA.icon(icon)}</span><b>${title}</b><span>${sub}</span>${badge ? `<span class="badge chip ${badge[1] || ""}">${badge[0]}</span>` : ""}${has ? `<span class="helpbtn tile-help" role="button" tabindex="0" data-help="${hk}" aria-label="${t("help.what")}">?</span>` : ""}</button>`; };
   ui.bar = (p, color) => `<div class="bar"><i style="width:${Math.round(u.clamp(p, 0, 1) * 100)}%${color ? ";background:" + color : ""}"></i></div>`;
@@ -3713,7 +3766,7 @@ window.AA={BUNDLED:true};
       const tail = `${AA.sourcesHtml(m)}<div class="row lesson-tools">${AA.reportBtn(`data-rep="${tab}"`)}</div>`;
       if (tab === "essentiel") body = `${toc(m.essentiel)}${m.diagram && C.diagrams[m.diagram] ? C.diagrams[m.diagram]() : ""}<div class="prose">${m.essentiel}</div>${exampleCard(m)}${readBtn("e", read.e)}${tail}`;
       else if (tab === "approfondir") body = m.approfondir ? `<p class="callout"><span class="eyebrow">${t("lesson.deepIntro")}</span>${t("lesson.deepIntroS")}</p>${toc(m.approfondir)}<div class="prose">${m.approfondir}</div>${exampleCard(m)}${readBtn("a", read.a)}${tail}` : AA.ui.empty("layers", t("lesson.noDeepT"), t("lesson.noDeepS"));
-      else if (tab === "memo") body = m.memo.length ? `<div class="memo">${m.memo.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="muted">${u.esc(b)}</span></div>`).join("")}</div>
+      else if (tab === "memo") body = m.memo.length ? `<div class="memo">${m.memo.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="muted">${u.esc(b)}</span></div>`).join("")}</div><div class="row fic-link"><a class="btn ghost sm" href="#/fiches/${m.world}/${m.id}">${AA.icon("download")} ${t("fic.printOne")}</a><a class="btn ghost sm" href="#/fiches/${m.world}">${t("fic.printWorld")}</a></div>
           <p class="small muted" style="margin-top:var(--sp-4)">${t("lesson.memoHint")}</p><a class="btn ghost block" href="#/flash/${m.id}">${AA.icon("cards")} ${t("lesson.memoCards")}</a>` : AA.ui.empty("bulb", t("lesson.noMemoT"), "");
       else body = `<p class="muted">${t("lesson.coachIntro")}</p>
           ${m.moniteur.length ? `<div class="stack">${m.moniteur.map((q, k) => `<div class="coachq"><span>${u.esc(q)}</span><button class="btn ghost sm" data-addq="${k}">${AA.icon("plus")} ${t("lesson.add")}</button></div>`).join("")}</div>` : ""}
@@ -3730,7 +3783,7 @@ window.AA={BUNDLED:true};
             ${acc != null ? `<span class="chip">${AA.icon("target")} ${Math.round(acc * 100)} %</span>` : ""}
             ${note.ok ? `<span class="chip gold">${AA.icon("check")} ${t("lesson.coachOk")}</span>` : ""}
             ${G.isStale(m.id) ? `<span class="chip warn">${AA.icon("refresh")} ${t("map.stale")}</span>` : ""}
-            <span class="grow"></span>${tab !== "moniteur" ? AA.a11y.button(".lesson-body", t("a11y.listenLesson")) : ""}
+            <span class="grow"></span>${tab !== "moniteur" ? (AA.oral ? AA.oral.btn() : AA.a11y.button(".lesson-body", t("a11y.listenLesson"))) : ""}
           </div>
         </header>
         ${!ok ? `<div class="callout trap"><span class="eyebrow">${t("map.locked")}</span>${u.esc(G.lockReason(m))} ${t("lesson.lockedRead")}</div>` : ""}
@@ -4022,6 +4075,7 @@ window.AA={BUNDLED:true};
     const rv = u.$("#revcours"); if (rv) rv.onclick = () => Q.review(q.m);
     const rp = u.$("#qrep"); if (rp) rp.onclick = () => AA.report({ type: "question", q });
     const qx = u.$("#qexp"); if (qx) qx.onclick = () => AA.explainMe(q, c.picked);
+    if (AA.oral && AA.oral.quizHook && c.mode !== "duel") try { AA.oral.quizHook(q, answered, okNow); } catch (e) {}
     u.$$(".choice", el).forEach(b => {
       b.onclick = () => answer(c, +b.dataset.ci, b);
       if (answered) return;
@@ -4082,11 +4136,12 @@ window.AA={BUNDLED:true};
     if (c.mode === "pc" && !c.pcSaved) { c.pcSaved = true; S.pcBest = Math.max(S.pcBest || 0, pct); S.pcRuns = (S.pcRuns || 0) + 1; AA.store.save(); }
     if (c.mode === "exam") {
       const score = Math.round(good / n * 20 * 2) / 2;
-      if (!c.saved) { S.exams.push({ date: u.today(), score, full: !!c.full }); c.saved = true; AA.store.save(); G.checkBadges(); }
+      const by = {}; c.answers.forEach(a => { const k = a.q.calc || a.q.gen ? "calc" : a.q.m; by[k] = by[k] || [0, 0]; by[k][1]++; if (a.ok) by[k][0]++; });
+      c.items.forEach(it => { if (!c.answers.some(a => a.q === it.q)) { const k = it.q.calc || it.q.gen ? "calc" : it.q.m; by[k] = by[k] || [0, 0]; by[k][1]++; } });
+      if (!c.saved) { S.exams.push({ date: u.today(), score, full: !!c.full, world: c.world || "n2", by }); c.saved = true; AA.store.save(); G.checkBadges(); }
       head = `<p class="eyebrow">${t(c.full ? "exam.fullLabel" : "exam.quickLabel")}</p><div class="big">${u.num(score, 1)}<span class="muted" style="font-size:.4em"> / 20</span></div>`;
       sub = t(score >= 15 ? "exam.good" : score >= 10 ? "exam.mid" : "exam.low") + (c.answers.length < n ? " " + t("exam.unanswered", { n: n - c.answers.length }) : "");
-      const by = {}; c.answers.forEach(a => { const k = a.q.calc ? "calc" : a.q.m; by[k] = by[k] || [0, 0]; by[k][1]++; if (a.ok) by[k][0]++; });
-      extra = `<div class="tbl"><table><tr><th>${t("exam.part")}</th><th>${t("exam.success")}</th></tr>${C.inWorld(c.world || "n2").filter(m => by[m.id]).map(m => `<tr><td><a href="#/lesson/${m.id}">${u.esc(m.title)}</a></td><td class="mono">${by[m.id][0]} / ${by[m.id][1]}</td></tr>`).join("")}${by.calc ? `<tr><td><b>${t("exam.calcs")}</b></td><td class="mono">${by.calc[0]} / ${by.calc[1]}</td></tr>` : ""}</table></div>`;
+      extra = AA.examReport ? AA.examReport(c, by, score) : `<div class="tbl"><table><tr><th>${t("exam.part")}</th><th>${t("exam.success")}</th></tr>${C.inWorld(c.world || "n2").filter(m => by[m.id]).map(m => `<tr><td><a href="#/lesson/${m.id}">${u.esc(m.title)}</a></td><td class="mono">${by[m.id][0]} / ${by[m.id][1]}</td></tr>`).join("")}${by.calc ? `<tr><td><b>${t("exam.calcs")}</b></td><td class="mono">${by.calc[0]} / ${by.calc[1]}</td></tr>` : ""}</table></div>`;
     } else if (c.mode === "apnee") {
       const rec = good > S.apnee;
       if (!c.saved) { if (rec) S.apnee = good; const dc = G.dayc(); dc.apnee = Math.max(dc.apnee || 0, good); c.saved = true; AA.store.save(); G.checkBadges(); }
@@ -4133,7 +4188,7 @@ window.AA={BUNDLED:true};
       ${c.answers.length ? `<div class="section-title"><h3>${t("result.review")}</h3><span class="muted small">${t("result.reviewHint")}</span></div>
       <div class="review">${c.answers.filter(a => !a.card).map(a => `<div class="rv ${a.ok ? "ok" : ""}"><b>${u.esc(a.q.q)}</b>
         <span class="small">${a.ok ? t("result.yours") + " " + u.esc(a.q.c[a.picked]) + " ✓" : t("result.yours") + " " + u.esc(a.q.c[a.picked]) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
-        <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>` : ""}</div>`).join("")}</div>` : ""}`;
+        <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<div class="row rv-acts"><a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>${C.qById[a.q.id] ? `<button class="btn ghost sm" data-expq="${a.q.id}" data-pk="${a.picked}">${AA.icon("play")} ${t("exp.btn")}</button>` : ""}</div>` : ""}</div>`).join("")}</div>` : ""}`;
     u.$("#again").onclick = () => Q.restart(c);
     u.$("#rclose").onclick = () => AA.router.go(c.back || "home");
   }
@@ -4242,7 +4297,7 @@ window.AA={BUNDLED:true};
           doubt: () => { const qs = Object.keys(AA.S.doubt).map(id => C.qById[id]).filter(Boolean); qs.length ? AA.quiz.start("errors", u.shuffle(qs).slice(0, 10), { title: t("mode.doubt"), back: "train" }) : fx.toast(t("train.noDoubtT"), t("train.noDoubtS"), "doubt"); },
           calcs: () => AA.quiz.calcs(null, 10, t("mode.calcs")),
           five: AA.quiz.five, story: () => AA.router.go("story"), mistakes: () => AA.router.go("mistakes"),
-          boss: () => { const w = C.worlds.find(x => x.boss && G.bossOpen(x.id) && !(AA.S.boss[x.id] || {}).won) || C.worlds.find(x => x.boss && G.worldOpen(x)) || C.worlds[0]; AA.router.go("boss/" + w.id); }, examfull: () => AA.quiz.exam(true), examquick: () => AA.quiz.exam(false), apnee: AA.quiz.apnee, duel: () => AA.router.go("club")
+          boss: () => { const w = C.worlds.find(x => x.boss && G.bossOpen(x.id) && !(AA.S.boss[x.id] || {}).won) || C.worlds.find(x => x.boss && G.worldOpen(x)) || C.worlds[0]; AA.router.go("boss/" + w.id); }, examfull: () => AA.router.go("examen/" + AA.quiz.examWorld() + "/full"), examquick: () => AA.router.go("examen/" + AA.quiz.examWorld() + "/quick"), apnee: AA.quiz.apnee, duel: () => AA.router.go("club")
         })[b.dataset.t]();
       });
     }
@@ -4617,6 +4672,7 @@ window.AA={BUNDLED:true};
           ${ui.tile("reports", "flag", "var(--accent)", t("rep.list"), (S.reports || []).length ? t("rep.n", { n: S.reports.length }) : t("rep.tileS"), (S.reports || []).length ? [String(S.reports.length), "warn"] : null)}
           ${ui.tile("valider", "check", "var(--ok)", t("set.validate"), t("val.tileS", { n: C.validate.filter(([a]) => (S.validOk || {})[a]).length, tot: C.validate.length }))}
           ${ui.tile("carnet", "teach", "var(--world-e1)", t("instr.view"), t("instr.tileS", { n: C.modules.filter(m => (S.instr || {})[m.id]).length, all: C.modules.length }))}
+          ${ui.tile("fiches", "download", "var(--world-n4)", t("fic.title"), t("fic.tileS"))}
           ${ui.tile("sources", "book", "var(--gold)", t("src.page"), t("src.tileS"))}
           ${ui.tile("backup", "save", "var(--ok)", t("bk.title"), AA.sync.linked() ? t("bk.driveOn") : t("prof.backupS"))}
         </div>
@@ -4712,7 +4768,7 @@ window.AA={BUNDLED:true};
           <div class="cvd-demo" aria-hidden="true"><span class="chip ok">${AA.icon("check")} ${t("set.cvdOk")}</span><span class="chip bad">${AA.icon("x")} ${t("set.cvdBad")}</span></div>
           ${sw("mot", p.motion !== false, t("set.motion"), t("set.motionS"))}${sw("scn", p.scene !== false, t("set.scene"), t("set.sceneS"))}${sw("gst", p.gestures !== false, t("set.gestures"), t("set.gesturesS"))}
           ${AA.a11y.canSpeak ? `<div class="field" style="margin-top:var(--sp-3)"><label>${t("set.voice")}</label><div class="seg">${[[.8, "slow"], [1, "normal"], [1.2, "fast"]].map(([r, k]) => `<button data-vr="${r}" aria-pressed="${(p.voiceRate || 1) === r}">${t("set.voice." + k)}</button>`).join("")}</div>
-            <div class="row" style="margin-top:8px"><button class="btn ghost sm" id="vtest">${AA.icon("sound")} ${t("set.voiceTest")}</button></div></div>` : `<p class="small muted">${t("set.noVoice")}</p>`}</section>
+            ${sw("autord", !!p.autoRead, t("oral.auto"), t("oral.autoS"))}<div class="row" style="margin-top:8px"><button class="btn ghost sm" id="vtest">${AA.icon("sound")} ${t("set.voiceTest")}</button></div></div>` : `<p class="small muted">${t("set.noVoice")}</p>`}</section>
         <section class="card" style="margin-top:var(--sp-4)"><h3>${t("set.comfort")}</h3>
           ${sw("snd", p.sound, t("set.sound"), t("set.soundS"))}${sw("hap", p.haptics, t("set.haptics"), t("set.hapticsS"))}${sw("unl", S.unlockAll, t("set.unlock"), t("set.unlockS"))}</section>
         <a class="card linkcard" href="#/backup" style="margin-top:var(--sp-4)"><span class="medal">${AA.icon("save")}</span><span class="grow"><b>${t("bk.title")}</b><span class="small muted">${t("set.backupS")}</span></span>${AA.icon("next")}</a>
@@ -4730,6 +4786,7 @@ window.AA={BUNDLED:true};
       u.$("#exd").onchange = e => { p.examDate = e.target.value; AA.store.save(); ui.hud(); };
       u.$$("[data-goal]", el).forEach(b => b.onclick = () => { p.goal = b.dataset.goal; AA.store.save(); AA.router.refresh(); });
       u.$$("[data-daily]", el).forEach(b => b.onclick = () => { p.dailyGoal = +b.dataset.daily; AA.store.save(); AA.router.refresh(); });
+      const ar = u.$("#autord"); if (ar) ar.onchange = e => { p.autoRead = e.target.checked; AA.store.save(); if (p.autoRead) A.speak(t("oral.autoOn")); };
       u.$("#snd").onchange = e => { p.sound = e.target.checked; AA.store.save(); if (p.sound) fx.sfx.ok(); };
       u.$("#hap").onchange = e => { p.haptics = e.target.checked; AA.store.save(); fx.buzz(30); };
       u.$("#unl").onchange = e => { S.unlockAll = e.target.checked; AA.store.save(); };
@@ -5987,6 +6044,159 @@ window.AA={BUNDLED:true};
   });
 })();
 
+/* js/views/v18.js */
+/* =====================================================================
+   Abysse Academy 1.8
+   - Examens blancs par niveau : choix du niveau et du format, barème,
+     répartition par thème, note par thème, progression, correction.
+   - Fiches « à retenir » imprimables (impression ou fichier à garder).
+   - Mode oral : lecteur du cours (paragraphe surligné, vitesse, pause)
+     et lecture automatique des questions.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, ui = AA.ui, fx = AA.fx, Q = AA.quiz;
+  const S = () => AA.S;
+
+  /* ---------- Examens blancs par niveau ---------- */
+  const FMT = { full: { n: 40, calc: 10, min: 45 }, quick: { n: 20, calc: 4, min: 20 } };
+  const examWorlds = () => C.worlds.filter(w => !w.soon && C.inWorld(w.id).length >= 2);
+  const examsOf = wid => (S().exams || []).filter(e => (e.world || "n2") === wid);
+  const sparkBars = list => list.length ? `<div class="ex-hist">${list.slice(-10).map(e => `<div title="${u.esc(e.date)}"><i style="height:${Math.max(6, e.score / 20 * 100)}%" class="${e.score >= 10 ? "ok" : ""}"></i><b>${u.num(e.score, 1)}</b><span>${e.full ? "C" : "R"}</span></div>`).join("")}</div>` : `<p class="small muted">${t("exm.noHist")}</p>`;
+  AA.view("examen", {
+    tab: "train", depth: 30,
+    render(el, [wid0, f0]) {
+      let wid = C.worldById[wid0] && C.inWorld(wid0).length >= 2 ? wid0 : Q.examWorld(), fmt = f0 === "quick" ? "quick" : "full";
+      const draw = () => {
+        const w = C.worldById[wid], F = FMT[fmt], mods = C.inWorld(wid), per = fmt === "full" ? 2 : 1, hist = examsOf(wid), last = hist[hist.length - 1];
+        const gens = G.genKeys().filter(k => C.byId[C.generators[k].m] && C.byId[C.generators[k].m].world === wid).length;
+        el.innerHTML = `${ui.head(t("exm.title"), "train")}<p class="muted">${t("exm.intro")}</p>
+          <p class="eyebrow" style="margin-top:var(--sp-4)">${t("exm.level")}</p>
+          <div class="ex-worlds">${examWorlds().map(x => `<button class="chip ex-w ${x.id === wid ? "on" : ""}" data-ew="${x.id}" style="--wc:var(${x.color})" aria-pressed="${x.id === wid}">${u.esc(x.short)}</button>`).join("")}</div>
+          <div class="ex-fmts">${["full", "quick"].map(k => `<button class="card ex-fmt ${k === fmt ? "on" : ""}" data-ef="${k}" aria-pressed="${k === fmt}"><b>${t(k === "full" ? "mode.examFull" : "mode.examQuick")}</b>
+            <span class="small">${t("exm.fmtS", { n: FMT[k].n, c: FMT[k].calc, m: FMT[k].min })}</span></button>`).join("")}</div>
+          <div class="ex-grid"><section class="card ex-spec" style="--wc:var(${w.color})"><h3>${u.esc(w.title)}</h3>
+            <dl class="ex-dl"><dt>${t("exm.q")}</dt><dd>${t("exm.qV", { n: F.n, c: gens ? F.calc : 0 })}</dd><dt>${t("exm.time")}</dt><dd>${F.min} min</dd>
+              <dt>${t("exm.scale")}</dt><dd>${t("exm.scaleV")}</dd><dt>${t("exm.pass")}</dt><dd>${t("exm.passV")}</dd>
+              <dt>${t("exm.rules")}</dt><dd>${t("exm.rulesV")}</dd></dl>
+            <p class="eyebrow">${t("exm.split")}</p><div class="ex-split">${mods.map(m => `<span class="chip">${u.esc(m.title)} · ${per}+</span>`).join("")}${gens ? `<span class="chip gold">${t("exam.calcs")} · ${F.calc}</span>` : ""}</div>
+            <button class="btn block" id="exgo" style="margin-top:var(--sp-4)">${AA.icon("play")} ${t("exm.start", { m: F.min })}</button>
+            <p class="xs muted" style="margin:8px 0 0">${t("exm.hyp")}</p></section>
+          <section class="card"><h3>${t("exm.hist")}</h3>${last ? `<p class="small">${t("exm.last", { s: u.num(last.score, 1), d: u.fmtDate ? u.fmtDate(last.date) : last.date })}</p>` : ""}${sparkBars(hist)}
+            ${last && last.by ? `<p class="eyebrow" style="margin-top:var(--sp-3)">${t("exm.weak")}</p>${weakList(last.by, wid)}` : ""}</section></div>`;
+        u.$$("[data-ew]", el).forEach(b => b.onclick = () => { wid = b.dataset.ew; fx.sfx.tap(); draw(); });
+        u.$$("[data-ef]", el).forEach(b => b.onclick = () => { fmt = b.dataset.ef; fx.sfx.tap(); draw(); });
+        u.$("#exgo", el).onclick = () => Q.exam(fmt === "full", wid);
+      };
+      draw();
+    }
+  });
+  const weakList = (by, wid) => { const rows = C.inWorld(wid).filter(m => by[m.id]).map(m => [m, by[m.id][0] / by[m.id][1]]).filter(x => x[1] < .6).sort((a, b) => a[1] - b[1]);
+    return rows.length ? `<div class="ex-weak">${rows.map(([m, p]) => `<div class="row"><span class="grow"><b>${u.esc(m.title)}</b> <span class="xs muted">${Math.round(p * 100)} %</span></span><a class="btn ghost sm" href="#/lesson/${m.id}">${AA.icon("book")} ${t("exm.reread")}</a><button class="btn sm" data-mq="${m.id}">${AA.icon("play")} ${t("exm.train")}</button></div>`).join("")}</div>` : `<p class="small">${AA.icon("check")} ${t("exm.noWeak")}</p>`; };
+  /* Rapport détaillé en fin d'examen (appelé par quiz.js). */
+  AA.examReport = (c, by, score) => {
+    const wid = c.world || "n2", hist = examsOf(wid), prev = hist.length > 1 ? hist[hist.length - 2] : null;
+    const rows = C.inWorld(wid).filter(m => by[m.id]).map(m => [m, by[m.id]]).sort((a, b) => a[1][0] / a[1][1] - b[1][0] / b[1][1]);
+    const bar = (k, n) => { const p = n ? k / n : 0; return `<div class="ex-bar"><i style="width:${Math.round(p * 100)}%" class="${p >= .8 ? "ok" : p >= .5 ? "mid" : "low"}"></i></div>`; };
+    return `<div class="ex-report">
+      <div class="row" style="justify-content:center;gap:8px;flex-wrap:wrap"><span class="chip ${score >= 10 ? "ok" : "warn"}">${t(score >= 10 ? "exm.passOk" : "exm.passNo")}</span>${prev ? `<span class="chip">${t("exm.delta", { d: (score - prev.score >= 0 ? "+" : "") + u.num(score - prev.score, 1) })}</span>` : ""}</div>
+      <p class="eyebrow">${t("exm.byTheme")}</p>
+      <div class="ex-themes">${rows.map(([m, [k, n]]) => `<a class="ex-th" href="#/lesson/${m.id}"><span class="grow"><b>${u.esc(m.title)}</b></span><span class="mono small">${k}/${n}</span>${bar(k, n)}</a>`).join("")}
+        ${by.calc ? `<div class="ex-th"><span class="grow"><b>${t("exam.calcs")}</b></span><span class="mono small">${by.calc[0]}/${by.calc[1]}</span>${bar(by.calc[0], by.calc[1])}</div>` : ""}</div>
+      <p class="eyebrow">${t("exm.weak")}</p>${weakList(by, wid)}
+      <a class="btn ghost block" href="#/examen/${wid}">${AA.icon("chart")} ${t("exm.histBtn")}</a></div>`;
+  };
+  document.addEventListener("click", e => {
+    const mq = e.target.closest("[data-mq]"); if (mq) { e.preventDefault(); const m = C.byId[mq.dataset.mq]; if (m) Q.module(m); return; }
+    const xq = e.target.closest("[data-expq]"); if (xq) { e.preventDefault(); const q = C.qById[xq.dataset.expq]; if (q && AA.explainMe) AA.explainMe(q, +xq.dataset.pk); }
+  });
+
+  /* ---------- Fiches imprimables ---------- */
+  const textOf = h => { const d = document.createElement("div"); d.innerHTML = h || ""; return d; };
+  const ficheData = m => { const d = textOf((m.essentiel || "") + (m.approfondir || ""));
+    return { formulas: Array.from(d.querySelectorAll(".formula")).map(x => x.textContent.trim()).filter(Boolean).slice(0, 4),
+      traps: Array.from(d.querySelectorAll(".callout.trap")).map(x => { const c = x.cloneNode(true); c.querySelectorAll(".eyebrow").forEach(e => e.remove()); return c.textContent.replace(/\s+/g, " ").trim(); }).filter(Boolean).slice(0, 2) }; };
+  const ficheHtml = (mods, withDiag) => mods.map(m => { const f = ficheData(m), w = C.worldById[m.world];
+    return `<section class="fiche"><header><span class="f-w">${u.esc(w.short)} · ${u.esc(m.depth)}</span><h2>${u.esc(m.title)}</h2><p>${u.esc(m.sub || "")}</p></header>
+      ${f.formulas.length ? `<div class="f-formulas">${f.formulas.map(x => `<code>${u.esc(x)}</code>`).join("")}</div>` : ""}
+      ${withDiag && m.diagram && C.diagrams[m.diagram] ? `<div class="f-diag">${C.diagrams[m.diagram]()}</div>` : ""}
+      <dl class="f-memo">${m.memo.map(([a, b]) => `<div><dt>${u.esc(a)}</dt><dd>${u.esc(b)}</dd></div>`).join("")}</dl>
+      ${f.traps.length ? `<div class="f-traps">${f.traps.map(x => `<p><b>⚠</b> ${u.esc(x)}</p>`).join("")}</div>` : ""}</section>`; }).join("");
+  const PRINT_CSS = `*{box-sizing:border-box}body{font:11pt/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#111;background:#fff;margin:0;padding:14mm}
+    h1{font-size:18pt;margin:0 0 2mm}.f-top{display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid #0b7f86;margin-bottom:6mm;padding-bottom:2mm}.f-top span{color:#555;font-size:9pt}
+    .fiche{break-inside:avoid;page-break-inside:avoid;border:1px solid #ccd;border-radius:3mm;padding:4mm 5mm;margin:0 0 5mm}.fiche header h2{font-size:13pt;margin:1mm 0}.fiche header p{margin:0;color:#555;font-size:9.5pt}.f-w{font:700 8pt monospace;letter-spacing:.05em;text-transform:uppercase;color:#0b7f86}
+    .f-formulas{display:flex;flex-wrap:wrap;gap:2mm;margin:3mm 0}.f-formulas code{font:600 10pt monospace;background:#eef6f7;border:1px solid #bfdfe2;border-radius:2mm;padding:1mm 2.5mm}
+    .f-memo{display:grid;grid-template-columns:1fr 1fr;gap:2mm 6mm;margin:3mm 0 0}.f-memo div{break-inside:avoid}.f-memo dt{font-weight:700}.f-memo dd{margin:0;color:#333}
+    .f-traps{margin-top:3mm;font-size:9.5pt;color:#7a2a00}.f-traps p{margin:1mm 0}.f-diag{max-width:120mm;margin:2mm 0}.f-diag svg{width:100%;height:auto}.f-diag figcaption{font-size:8.5pt;color:#555}
+    .d-pri{fill:#0b8a8a}.d-acc{fill:#e0603a}.d-gold{fill:#d39b00}.d-ok{fill:#2e9a5a}.d-bad{fill:#c43a3a}.d-soft{fill:#e6ecef}.d-surf{fill:#fff}.s-pri{stroke:#0b8a8a}.s-acc{stroke:#e0603a}.s-gold{stroke:#d39b00}.s-ok{stroke:#2e9a5a}.s-bad{stroke:#c43a3a}.s-line{stroke:#bbb}.s-muted{stroke:#888}
+    .d-text{fill:#444;font:11px monospace}.d-strong{fill:#111;font:700 12px monospace}.t-pri,.t-acc,.t-gold,.t-ok,.t-bad,.t-num,.t-on{font:700 12px monospace}.t-pri{fill:#0b8a8a}.t-acc{fill:#e0603a}.t-gold{fill:#a77a00}.t-ok{fill:#2e9a5a}.t-bad{fill:#c43a3a}.t-num{fill:#fff}.t-on{fill:#111}.an-move{display:none}
+    .f-foot{margin-top:6mm;font-size:8.5pt;color:#666;border-top:1px solid #ccc;padding-top:2mm}@page{margin:10mm}@media print{body{padding:0}}`;
+  const ficheDoc = (mods, title, withDiag) => `<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${u.esc(title)}</title><style>${PRINT_CSS}</style></head><body>
+    <div class="f-top"><h1>${u.esc(title)}</h1><span>Abysse Academy · ${u.today()}${S().profile.name ? " · " + u.esc(S().profile.name) : ""}</span></div>${ficheHtml(mods, withDiag)}
+    <p class="f-foot">${t("fic.foot")}</p></body></html>`;
+  AA.view("fiches", {
+    tab: "profile", depth: 4,
+    render(el, [wid0, mid]) {
+      let wid = C.worldById[wid0] ? wid0 : G.goalWorld(), one = C.byId[mid] ? mid : "", diag = true;
+      const draw = () => {
+        const w = C.worldById[wid], mods = one ? [C.byId[one]] : C.inWorld(wid), title = one ? t("fic.oneT", { m: C.byId[one].title }) : t("fic.worldT", { w: w.title });
+        el.innerHTML = `${ui.head(t("fic.title"), "profile")}<p class="muted">${t("fic.intro")}</p>
+          <div class="ex-worlds">${C.worlds.filter(x => !x.soon && C.inWorld(x.id).length).map(x => `<button class="chip ex-w ${x.id === wid && !one ? "on" : ""}" data-fw="${x.id}" style="--wc:var(${x.color})">${u.esc(x.short)}</button>`).join("")}</div>
+          <div class="row fic-tools"><button class="btn" id="fprint">${AA.icon("download")} ${t("fic.print")}</button><button class="btn ghost" id="fdl">${AA.icon("save")} ${t("fic.dl")}</button>
+            <label class="chip fic-diag"><input type="checkbox" id="fdiag" ${diag ? "checked" : ""}> ${t("fic.withDiag")}</label></div>
+          <p class="xs muted">${t("fic.howPdf")}</p>
+          <div class="fic-preview card"><div class="f-top"><h1>${u.esc(title)}</h1></div>${ficheHtml(mods, diag)}</div>`;
+        u.$$("[data-fw]", el).forEach(b => b.onclick = () => { wid = b.dataset.fw; one = ""; draw(); });
+        u.$("#fdiag", el).onchange = e => { diag = e.target.checked; draw(); };
+        const doc = () => ficheDoc(mods, title, diag), fname = "abysse-fiches-" + (one || wid) + ".html";
+        const dl = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([doc()], { type: "text/html" })); a.download = fname; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 3000); fx.toast(t("fic.dlT"), t("fic.dlS"), "save"); };
+        u.$("#fdl", el).onclick = dl;
+        u.$("#fprint", el).onclick = () => {
+          try { const f = document.createElement("iframe"); f.className = "print-frame"; f.setAttribute("aria-hidden", "true"); document.body.appendChild(f);
+            f.srcdoc = doc(); f.onload = () => { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) { dl(); } setTimeout(() => f.remove(), 60000); };
+          } catch (e) { dl(); } };
+      };
+      draw();
+    }
+  });
+
+  /* ---------- Mode oral ---------- */
+  const A = AA.a11y; AA.oral = {};
+  let items = [], idx = 0, playing = false, bar = null;
+  const RATES = [.8, 1, 1.2, 1.4];
+  const clean = el => { const c = el.cloneNode(true); c.querySelectorAll("svg,button,.eyebrow:empty,figure").forEach(x => x.remove()); return (A.textOf ? A.textOf(c) : c.textContent).replace(/\s+/g, " ").trim(); };
+  const collect = root => Array.from(root.querySelectorAll(".prose > h3, .prose > p, .prose > ul > li, .prose > ol > li, .prose > .callout, .prose > .tbl, .memo > div, .lesson-body > .callout, .ex-steps li, .diagram figcaption")).filter(x => clean(x).length > 2);
+  const mark = () => { items.forEach((x, k) => x.classList.toggle("oral-on", k === idx && playing)); const x = items[idx]; if (x && playing) x.scrollIntoView({ block: "center", behavior: A.reduced && A.reduced() ? "auto" : "smooth" }); };
+  const ui2 = () => { if (!bar) return; bar.querySelector("#orPlay").innerHTML = AA.icon(playing ? "pause" : "play"); bar.querySelector("#orPos").textContent = `${Math.min(idx + 1, items.length)} / ${items.length}`; bar.querySelector("#orRate").textContent = "×" + String(S().profile.voiceRate || 1).replace(".", ","); };
+  const speakCur = () => { if (!playing || !items[idx]) { if (idx >= items.length) AA.oral.stop(); return; } mark(); ui2(); const k = idx; A.speak(clean(items[idx]), () => { if (playing && idx === k) { idx++; speakCur(); } }); };
+  AA.oral.stop = () => { playing = false; A.stop(); items.forEach(x => x.classList.remove("oral-on")); if (bar) { bar.remove(); bar = null; } };
+  AA.oral.start = root => {
+    if (!A.canSpeak || !root) { fx.toast(t("oral.noT"), t("set.noVoice"), "sound"); return; }
+    AA.oral.stop(); items = collect(root); if (!items.length) return; idx = 0; playing = true;
+    bar = document.createElement("div"); bar.className = "oral-bar glass"; bar.setAttribute("role", "region"); bar.setAttribute("aria-label", t("oral.title"));
+    bar.innerHTML = `<span class="or-ic">${AA.icon("sound")}</span><span class="grow"><b>${t("oral.title")}</b><span class="xs muted" id="orPos"></span></span>
+      <button class="iconbtn" id="orPrev" aria-label="${t("oral.prev")}">${AA.icon("back")}</button><button class="iconbtn or-main" id="orPlay" aria-label="${t("oral.play")}"></button><button class="iconbtn" id="orNext" aria-label="${t("oral.next")}">${AA.icon("next")}</button>
+      <button class="chip" id="orRate" aria-label="${t("set.voice")}"></button><button class="iconbtn" id="orStop" aria-label="${t("oral.stop")}">${AA.icon("close")}</button>`;
+    document.body.appendChild(bar);
+    bar.querySelector("#orPlay").onclick = () => { playing = !playing; if (playing) speakCur(); else { A.stop(); mark(); ui2(); } };
+    bar.querySelector("#orPrev").onclick = () => { idx = Math.max(0, idx - 1); A.stop(); playing = true; speakCur(); };
+    bar.querySelector("#orNext").onclick = () => { idx = Math.min(items.length - 1, idx + 1); A.stop(); playing = true; speakCur(); };
+    bar.querySelector("#orRate").onclick = () => { const r = S().profile.voiceRate || 1, k = RATES.indexOf(r); S().profile.voiceRate = RATES[(k + 1) % RATES.length]; AA.store.save(false, true); ui2(); if (playing) { A.stop(); playing = true; speakCur(); } };
+    bar.querySelector("#orStop").onclick = AA.oral.stop;
+    items.forEach((x, k) => { x.classList.add("oral-item"); x.onclick = e => { if (e.target.closest("a,button")) return; idx = k; A.stop(); playing = true; speakCur(); }; });
+    speakCur();
+  };
+  AA.oral.btn = () => A.canSpeak ? `<button class="btn ghost sm oral-btn" data-oral>${AA.icon("sound")} ${t("oral.listen")}</button>` : "";
+  document.addEventListener("click", e => { if (e.target.closest("[data-oral]")) { e.preventDefault(); AA.oral.start(document.querySelector(".lesson-body")); } });
+  addEventListener("hashchange", () => AA.oral.stop());
+  /* Questions lues automatiquement (réglage). */
+  AA.oral.quizHook = (q, answered, okNow) => {
+    if (!S().profile.autoRead || !A.canSpeak) return;
+    if (!answered) { const r = document.querySelector("#qc .qread"); if (r) A.speak(r.textContent); }
+    else A.speak((okNow ? t("oral.ok") : t("oral.bad") + " " + q.c[q.a] + ". ") + " " + (q.e || ""));
+  };
+})();
+
 /* locales/fr.js */
 /* =====================================================================
    Abysse Academy · textes de l'interface en français
@@ -6509,6 +6719,24 @@ AA.i18n.add("fr", {
   "instr.intro": "Les thèmes que ton moniteur a validés avec toi, avec son nom et la date.", "instr.count": "{n}/{all} thèmes validés",
   "instr.share": "Partager", "instr.dl": "Télécharger", "instr.copied": "Carnet copié", "instr.notYet": "pas encore validé", "instr.edit": "Modifier", "instr.validate": "Valider",
   "instr.note2": "Ce carnet t’aide à suivre ta formation. Il ne remplace pas le livret officiel de ta fédération."
+});
+
+AA.i18n.add("fr", {
+  "exm.title": "Examens blancs", "exm.intro": "Choisis ton niveau et le format. L’examen ressemble à l’écrit : QCM et calculs, chronométré, sans correction pendant l’épreuve.",
+  "exm.level": "Niveau", "exm.fmtS": "{n} questions dont {c} calculs · {m} min",
+  "exm.q": "Questions", "exm.qV": "{n} QCM, dont {c} calculs aux chiffres nouveaux", "exm.time": "Durée", "exm.scale": "Barème", "exm.scaleV": "1 point par bonne réponse, ramené sur 20 (au demi-point).",
+  "exm.pass": "Seuil indicatif", "exm.passV": "10/20 (hypothèse : le seuil réel dépend de ton club et de ta commission).", "exm.rules": "Déroulement", "exm.rulesV": "Pas de correction pendant l’épreuve, tu peux passer une question. Correction complète à la fin.",
+  "exm.split": "Répartition : chaque thème du niveau est interrogé", "exm.start": "Commencer · {m} min", "exm.hyp": "Format proche de l’écrit des clubs, à faire valider par ton moniteur.",
+  "exm.hist": "Ma progression", "exm.noHist": "Pas encore d’examen pour ce niveau.", "exm.last": "Dernière note : {s}/20 le {d}.", "exm.weak": "À retravailler",
+  "exm.reread": "Revoir", "exm.train": "S’entraîner", "exm.noWeak": "Aucun thème sous 60 % : continue comme ça.",
+  "exm.passOk": "Seuil indicatif atteint", "exm.passNo": "Sous le seuil indicatif de 10/20", "exm.delta": "{d} depuis le précédent", "exm.byTheme": "Note par thème", "exm.histBtn": "Ma progression à l’examen",
+  "fic.title": "Fiches à imprimer", "fic.tileS": "À retenir, formules et pièges, en PDF", "fic.intro": "L’essentiel de chaque thème sur papier : formules, points clés et pièges. Idéal à relire avant l’examen.",
+  "fic.print": "Imprimer ou PDF", "fic.dl": "Télécharger", "fic.withDiag": "avec les schémas", "fic.howPdf": "Pour un PDF : « Imprimer », puis choisis « Enregistrer en PDF » comme imprimante.",
+  "fic.oneT": "Fiche · {m}", "fic.worldT": "Fiches · {w}", "fic.foot": "Fiche de révision Abysse Academy. Les valeurs réglementaires et les tables sont à faire valider par ton moniteur.",
+  "fic.dlT": "Fiche téléchargée", "fic.dlS": "Ouvre-la dans ton navigateur pour l’imprimer.", "fic.printOne": "Imprimer cette fiche", "fic.printWorld": "Toutes les fiches du niveau",
+  "oral.title": "Lecture du cours", "oral.listen": "Écouter", "oral.prev": "Paragraphe précédent", "oral.next": "Paragraphe suivant", "oral.play": "Lecture ou pause", "oral.stop": "Arrêter la lecture",
+  "oral.noT": "Lecture vocale indisponible", "oral.auto": "Lire les questions à voix haute", "oral.autoS": "Chaque question et ses réponses sont lues, puis la correction.", "oral.autoOn": "Les questions seront lues à voix haute.",
+  "oral.ok": "Bonne réponse.", "oral.bad": "Pas tout à fait. La bonne réponse était :"
 });
 
 /* content/fr/worlds.js */
@@ -9472,6 +9700,12 @@ Object.assign(AA.content.help, {
     html: `<p>Quand ton moniteur a vu avec toi un thème (en cours, en piscine ou en mer), il peut le <b>valider</b> : son nom, la date et une remarque.</p><p>Le thème porte alors une coche dans la carte et dans le cours. Tu peux partager ou télécharger ton carnet pour le montrer au club.</p><p class="small">Le carnet est une aide pour suivre ta formation : il ne remplace pas le livret officiel de ta fédération.</p>` },
   net: { t: "Hors ligne et sauvegarde", ic: "shield",
     html: `<p>Ta progression est enregistrée <b>sur l’appareil</b> à chaque réponse, et une copie de secours est faite chaque jour. Sans réseau, l’appli continue de fonctionner normalement.</p>` }
+});
+
+/* 1.8 */
+Object.assign(AA.content.help, {
+  fiches: { t: "Les fiches à imprimer", ic: "download", go: "fiches", goL: "Ouvrir les fiches",
+    html: `<p>Toutes les notions « À retenir » d’un niveau sur quelques pages : formules, points clés, pièges et, si tu veux, les schémas.</p><p><b>Imprimer</b> ouvre l’impression : choisis « Enregistrer en PDF » pour garder un PDF. <b>Télécharger</b> garde un fichier que tu peux ouvrir et imprimer plus tard, même sans l’appli.</p>` }
 });
 
 /* content/fr/lessons-plus.js */

@@ -45,7 +45,7 @@
           doubt: () => { const qs = Object.keys(AA.S.doubt).map(id => C.qById[id]).filter(Boolean); qs.length ? AA.quiz.start("errors", u.shuffle(qs).slice(0, 10), { title: t("mode.doubt"), back: "train" }) : fx.toast(t("train.noDoubtT"), t("train.noDoubtS"), "doubt"); },
           calcs: () => AA.quiz.calcs(null, 10, t("mode.calcs")),
           five: AA.quiz.five, story: () => AA.router.go("story"), mistakes: () => AA.router.go("mistakes"),
-          boss: () => { const w = C.worlds.find(x => x.boss && G.bossOpen(x.id) && !(AA.S.boss[x.id] || {}).won) || C.worlds.find(x => x.boss && G.worldOpen(x)) || C.worlds[0]; AA.router.go("boss/" + w.id); }, examfull: () => AA.quiz.exam(true), examquick: () => AA.quiz.exam(false), apnee: AA.quiz.apnee, duel: () => AA.router.go("club")
+          boss: () => { const w = C.worlds.find(x => x.boss && G.bossOpen(x.id) && !(AA.S.boss[x.id] || {}).won) || C.worlds.find(x => x.boss && G.worldOpen(x)) || C.worlds[0]; AA.router.go("boss/" + w.id); }, examfull: () => AA.router.go("examen/" + AA.quiz.examWorld() + "/full"), examquick: () => AA.router.go("examen/" + AA.quiz.examWorld() + "/quick"), apnee: AA.quiz.apnee, duel: () => AA.router.go("club")
         })[b.dataset.t]();
       });
     }
