@@ -376,7 +376,7 @@ AA.i18n.add("fr", {
 
 AA.i18n.add("fr", {
   /* 1.3 · niveaux */
-  "lv.none": "Pas encore de niveau", "lv.bapteme": "Baptême fait", "lv.n1": "Niveau 1 (PE12)", "lv.n2": "Niveau 2 (PA20 / PE40)", "lv.n3": "Niveau 3 (PA60)",
+  "lv.none": "Pas encore de niveau", "lv.bapteme": "Baptême fait", "lv.n1": "Niveau 1 (PE20)", "lv.n2": "Niveau 2 (PA20 / PE40)", "lv.n3": "Niveau 3 (PA60)",
   "lv.n4": "N4 · Guide de palanquée", "lv.e1": "Initiateur (E1)", "lv.e2": "E2 ou plus",
   "lv.s.none": "Je découvre la plongée : on commence par le début.", "lv.s.bapteme": "J’ai fait un baptême ou quelques plongées d’essai.",
   "lv.s.n1": "Plongeur encadré jusqu’à 20 m (FFESSM, ANMP, CMAS 1*…).", "lv.s.n2": "Autonome à 20 m, encadré à 40 m.",
@@ -472,3 +472,9 @@ AA.i18n.add("fr", {
 });
 
 AA.i18n.add("fr", { "map.list": "Les thèmes du monde", "lesson.inWorld": "les thèmes" });
+
+AA.i18n.add("fr", {
+  "cur.st1": "Découvrir", "cur.st2": "Débuter", "cur.st3": "Autonome 20 m", "cur.st4": "Autonome 60 m", "cur.st5": "Guider", "cur.st6": "Moniteur",
+  "cur.pathT": "Le chemin des niveaux", "cur.pathH": "De gauche à droite : chaque étape demande la précédente. Touche un niveau pour sa fiche.",
+  "cur.chartT": "Jusqu’où chaque niveau peut descendre", "cur.noPa": "pas d’autonomie", "cur.youLv": "Ton niveau", "cur.after": "après {lv}"
+});

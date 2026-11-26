@@ -115,7 +115,8 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
     console.log("• Cursus (1.5)");
     { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
       await p.goto(URL + "#/cursus/n3"); await p.waitForTimeout(400);
-      ok((await p.$$(".cur-card")).length >= 9 && await p.$("#cur-n3[open]") && await p.$(".dchart"), "cursus : tous les niveaux, schéma des profondeurs, niveau ouvert");
+      ok((await p.$$(".cur-node")).length >= 9 && await p.$('.cur-node.on[data-id="n3"]') && await p.$(".dchart .dc-bar") && /Niveau 3/.test(await p.textContent(".cur-detail h2")), "cursus : tous les niveaux, schéma des profondeurs, fiche du niveau choisi");
+      await p.click('.cur-node[data-id="e1"]'); await p.waitForTimeout(150); ok(/Initiateur/.test(await p.textContent(".cur-detail h2")), "cursus : toucher un niveau ouvre sa fiche");
       ok(await p.evaluate(() => /ISO/.test(document.querySelector("#view").textContent) && /CMAS/.test(document.querySelector("#view").textContent)), "cursus : équivalences ANMP, CMAS, ISO");
       await p.goto(URL + "#/map/n3"); await p.waitForTimeout(500); ok(await p.$(".lvbadge"), "carte : « pour qui · quel examen » sur le monde");
       await p.goto(URL + "#/lesson/n3-gaz"); await p.waitForTimeout(300); ok(await p.$(".lvchip"), "cours : étiquette du niveau");

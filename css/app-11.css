@@ -723,3 +723,95 @@ details.sources ul,.src-list{padding-left:1.1em;margin:.3em 0} details.sources l
 .dchart figcaption{text-align:center}
 @media (min-width:3400px){:root{--maxw:min(2700px, calc(100vw - var(--rail) - 80px))}}
 @media (min-width:1800px){.map-layout{grid-template-columns:minmax(20rem,28rem) minmax(0,1fr)}}
+
+/* =====================================================================
+   1.5.1 · Cursus refait : schéma de parcours aligné, fiche à côté,
+   profondeurs lisibles. Les anciennes classes .cur-card restent inutilisées.
+   ===================================================================== */
+.section-title h3 svg{width:1.15em;height:1.15em;vertical-align:-.18em}
+.cur-intro{max-width:72ch;margin-top:var(--sp-2)}
+.cur-you{gap:8px;flex-wrap:wrap;margin:var(--sp-3) 0}
+.cur-layout{display:grid;gap:var(--sp-4);margin-top:var(--sp-4);grid-template-areas:"trk" "side" "chart";grid-template-columns:minmax(0,1fr)}
+.trk-card{grid-area:trk;padding:var(--sp-4);container-type:inline-size;min-width:0}
+.cur-side{grid-area:side;min-width:0}
+.cur-layout .dchart{grid-area:chart;margin:0}
+.dc-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px;margin-bottom:var(--sp-3)}
+.dc-head h3{font-size:var(--fs-lg);margin:0}
+/* Le parcours : une ligne par filière, une colonne par étape */
+.trk{display:grid;gap:10px}
+.trk-row{display:grid;grid-template-columns:8.5rem repeat(6,minmax(0,1fr));gap:10px;align-items:center;position:relative}
+.trk-row.head{align-items:end}
+.trk-step{font:700 var(--fs-xs) var(--font-mono);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);text-align:center;padding-bottom:4px;border-bottom:1px solid var(--line-soft)}
+.trk-lab{display:flex;align-items:center;gap:8px;font-size:var(--fs-sm);grid-column:1;min-width:0}
+.trk-lab svg{width:1.25rem;height:1.25rem;color:var(--primary);flex:0 0 auto}
+.trk-line{grid-row:1;height:3px;border-radius:2px;align-self:center;margin-inline:calc(100% / (var(--n) * 2));background:linear-gradient(90deg,var(--line-soft),var(--primary));opacity:.7;pointer-events:none}
+.cur-node{grid-row:1;position:relative;z-index:1;display:grid;gap:2px;align-content:center;text-align:center;min-height:4.6rem;padding:8px 6px;border-radius:var(--r-md);
+  background:var(--surface-2);border:1px solid var(--line-soft);border-top:4px solid var(--wc);color:var(--ink);cursor:pointer;font:inherit;transition:transform .15s,box-shadow .15s,background .15s}
+.cur-node b{font-size:var(--fs-sm);line-height:1.2;overflow-wrap:anywhere}
+.cur-node .xs{color:var(--ink-2);line-height:1.2}
+.cur-node .cn-st{font:700 .66rem var(--font-mono);text-transform:uppercase;letter-spacing:.05em;font-style:normal;color:var(--ok)}
+.cur-node.goal .cn-st{color:var(--gold)}
+.cur-node.got{background:color-mix(in srgb,var(--ok) 10%,var(--surface-2))}
+.cur-node.goal{box-shadow:0 0 0 2px color-mix(in srgb,var(--gold) 55%,transparent)}
+.cur-node:hover{transform:translateY(-2px)}
+.cur-node.on{background:color-mix(in srgb,var(--wc) 22%,var(--surface));box-shadow:0 0 0 2px var(--wc),0 10px 26px rgba(0,0,0,.25)}
+.cur-node:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+@container (max-width:760px){
+  .trk-row.head{display:none}
+  .trk-row{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch;padding:10px 0;border-top:1px solid var(--line-soft)}
+  .trk-row:nth-child(2){border-top:0;padding-top:0}
+  .trk-lab{flex:1 0 100%}
+  .trk-line{display:none}
+  .cur-node{flex:1 1 7.5rem;min-height:3.8rem}
+}
+/* La fiche du niveau choisi */
+.cur-detail{padding:var(--sp-4);border-top:4px solid var(--wc)}
+.cur-detail h2{font-size:var(--fs-xl);margin:2px 0 8px}
+.cur-detail .eyebrow{margin:0;color:var(--wc)}
+.cd-chips{gap:6px;flex-wrap:wrap}
+.cur-detail .cur-dl{padding:0;margin-top:var(--sp-2)}
+.cd-acts{gap:8px;flex-wrap:wrap;margin-top:var(--sp-3)}
+/* Profondeurs */
+.dchart{padding:var(--sp-4)}
+.dc-leg{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-sm);color:var(--ink-2)}
+.dc-leg i{display:inline-block;width:18px;height:8px;border-radius:4px;background:var(--primary);margin-left:8px}
+.dc-leg i.pe{opacity:.4}
+.dc-rows{display:grid;gap:10px}
+.dc-row{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:12px;align-items:center}
+.dc-lv{font-size:var(--fs-sm);text-align:right;min-width:0;overflow-wrap:anywhere}
+.dc-track{position:relative;display:grid;gap:4px;padding:2px 0;margin-right:1.6rem}
+.dc-track .tk{position:absolute;top:-4px;bottom:-4px;width:1px;background:var(--line-soft)}
+.dc-bar{position:relative;height:1.15rem;border-radius:999px;background:var(--wc);min-width:2.6rem;display:flex;align-items:center;justify-content:flex-end;animation:barIn .7s ease-out both}
+.dc-bar.pe{background:color-mix(in srgb,var(--wc) 40%,transparent)}
+.dc-bar span{font:700 var(--fs-xs) var(--font-mono);padding:0 8px;color:var(--ink);white-space:nowrap}
+.dc-bar.pa span{color:#04121f}
+.dc-none{height:1.15rem;line-height:1.15rem;font-style:italic}
+.dc-row.axis{margin-top:2px}
+.dc-axis{position:relative;height:1.2rem;margin-right:1.6rem}
+.dc-axis span{position:absolute;transform:translateX(-50%);font:600 var(--fs-xs) var(--font-mono);color:var(--muted);white-space:nowrap}
+@keyframes barIn{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+.reduce-motion .dc-bar{animation:none}
+@media (max-width:560px){.dc-axis .minor{display:none}.dc-row{grid-template-columns:4rem minmax(0,1fr);gap:8px}}
+.cur-eq{margin-top:var(--sp-4);padding:var(--sp-4)}
+.cur-eq .tbl{margin:0}
+@media (min-width:1200px){
+  .cur-layout{grid-template-columns:minmax(0,1fr) minmax(20rem,25rem);grid-template-areas:"trk side" "chart side";align-items:start}
+  .cur-side{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;scrollbar-width:thin}
+}
+@media (min-width:1800px){.cur-layout{grid-template-columns:minmax(0,1fr) minmax(24rem,30rem)}}
+.trk-row:not(.head){grid-auto-rows:minmax(5.2rem,auto)}
+.trk-row:not(.head) .cur-node{height:100%}
+@container (max-width:760px){.trk-row:not(.head) .cur-node{height:auto}}
+
+/* 1.5.1 · badges des tuiles à droite (plus sur l'icône), profil en colonnes sur PC */
+.tile .badge{left:auto;right:12px;top:12px;max-width:calc(100% - 4.5rem);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tile:has(.tile-help) .badge{right:2.6rem}
+.pm-world{min-width:0;break-inside:avoid}
+@media (min-width:1024px){
+  .pm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(24rem,1fr));gap:0 var(--sp-6);align-items:start}
+  .pm-grid .pm-world{padding-bottom:var(--sp-2)}
+}
+/* 1.5.1 · boutons du parcours sur une ligne, sans texte cassé */
+.pw-acts{display:flex;flex-wrap:wrap}
+.pw-acts .btn{width:auto;flex:1 1 auto;justify-content:center}
+@media (min-width:1024px){.pw-acts .btn{white-space:nowrap;font-size:var(--fs-sm)}}
