@@ -6,7 +6,7 @@
    ===================================================================== */
 AA.i18n.add("fr", {
   "app.name": "Abysse Academy",
-  "ranks": ["Têtard", "Palmeur", "Bulleur", "Explorateur", "Stabilisé", "Maître des paliers", "Chasseur d’azote", "Grand bleu", "Futur initiateur", "Légende des abysses"],
+  "ranks": ["Têtard", "Palmeur", "Bulleur", "Explorateur", "Stabilisé", "Navigateur", "Maître des paliers", "Chasseur d’azote", "Grand bleu", "Guide de palanquée", "Futur initiateur", "Légende des abysses"],
 
   /* Navigation */
   "nav.label": "Navigation principale", "nav.back": "Retour", "nav.settings": "Réglages",
@@ -214,7 +214,7 @@ AA.i18n.add("fr", {
   "set.about": "Contenus écrits pour t’aider à apprendre. Ils ne remplacent ni ton moniteur ni les textes officiels.",
 
   /* Notifications */
-  "toast.level": "Niveau {l} !", "toast.rank": "Nouveau rang : {rank}", "toast.badge": "Trophée : {name}",
+  "toast.level": "Niveau {l} !", "toast.rank": "Rang : {rank}", "toast.newRank": "Nouveau rang : {rank} !", "toast.badge": "Trophée : {name}",
   "toast.combo": "Combo ×{n} !", "toast.comboS": "Bonus d’XP à chaque bonne réponse",
   "pwa.updateT": "Nouvelle version", "pwa.updateS": "Touche ici pour la charger."
 });
@@ -320,7 +320,7 @@ AA.i18n.add("fr", {
   "ava.hair": "Coiffure", "ava.hairs": ["Court", "Long", "Chignon", "Ras"], "ava.hairC": "Couleur des cheveux", "ava.skin": "Peau", "ava.suit": "Combinaison",
   "ava.creatureS": "Les créatures de ton aquarium ({n} sur {tot}). Les autres se débloquent en jouant.", "ava.noCreature": "Ton aquarium est encore vide. Termine un premier thème pour accueillir ta première créature.",
   "ava.evo": "Évolutions", "ava.lvl": "Niveau {l}",
-  "ava.stages": ["Masque sur le front", "Masque et tuba", "Bloc et détendeur", "Cagoule et phare", "Aura des abysses"],
+  "ava.stages": ["Masque sur le front", "Masque et tuba", "Combinaison", "Bloc et détendeur", "Gilet stabilisateur", "Cagoule", "Phare frontal", "Liseré d’or", "Aura des abysses", "Couronne des abysses"],
   "ava.now": "Évolution {s}/{n} : {name}", "ava.nextAt": "prochaine au niveau {l} ({name})", "ava.evolved": "Ton avatar évolue : {name} !",
   "pc.intro": "Un écran d’ordinateur, une situation. À toi de lire les chiffres et de choisir la bonne décision, comme sous l’eau.",
   "pc.demo": "Exemple d’écran. Les vrais écrans varient selon les marques : regarde la notice du tien.",

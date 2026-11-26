@@ -13,11 +13,20 @@
   G.STALE_DAYS = 10;
 
   /* ---------- Niveaux ---------- */
+  /* Barème 2.0 : passer du niveau l au niveau l+1 demande 100 + 40(l−1) + 1,5(l−1)² XP
+     (arrondi à 10). Niveau 10 ≈ 2 640 XP, 20 ≈ 11 900, 30 ≈ 30 700, 40 ≈ 62 000,
+     50 ≈ 109 000 (rang maximal « Légende des abysses »). Les niveaux continuent au-delà.
+     Calibré par simulation : voir tests/xp-sim.js. */
+  G.MAX_RANK_LEVEL = 50;
+  G.RANKS_AT = [1, 3, 6, 10, 14, 18, 23, 28, 33, 38, 44, 50];
+  G.needFor = l => Math.round((100 + 40 * (l - 1) + 1.5 * (l - 1) * (l - 1)) / 10) * 10;
+  G.xpFor = L => { let x = 0; for (let l = 1; l < L; l++) x += G.needFor(l); return x; };
+  G.rankIdx = l => { let i = 0; G.RANKS_AT.forEach((min, k) => { if (l >= min) i = k; }); return i; };
   G.levelOf = xp => {
-    let l = 1, need = 100, base = 0;
-    while (xp >= base + need) { base += need; l++; need = 100 + (l - 1) * 50; }
-    const ranks = AA.i18n.raw("ranks") || [];
-    return { l, into: xp - base, need, rank: ranks[Math.min(l - 1, ranks.length - 1)] || "" };
+    let l = 1, need = G.needFor(1), base = 0;
+    while (xp >= base + need) { base += need; l++; need = G.needFor(l); }
+    const ranks = AA.i18n.raw("ranks") || [], ri = G.rankIdx(l);
+    return { l, into: xp - base, need, rank: ranks[Math.min(ri, ranks.length - 1)] || "", nextRank: G.RANKS_AT[ri + 1] || null };
   };
   G.starsFor = p => (p >= 100 ? 3 : p >= 80 ? 2 : p >= 50 ? 1 : 0);
   G.stars = id => { const r = S().themes[id]; return r ? G.starsFor(r.best) : 0; };
@@ -104,6 +113,21 @@
   G.daysToExam = () => { const e = S().profile.examDate; return e ? u.daysBetween(u.today(), e) : null; };
 
   /* ---------- XP ---------- */
+  /* ---------- Barème des réponses (2.0) : l'XP suit l'apprentissage réel ----------
+     1re bonne réponse à une question : 10 · révision espacée (≥ 3 jours) : 7
+     revue 1 à 2 jours après : 4 · même question le même jour : 1 · examen blanc : 5
+     calculs générés : 6 (les 15 premiers du jour), puis 1 · série de 5 bonnes : +2. */
+  G.qPrev = q => { const s = S(), st = s.stats[q.id]; return { ok: st ? st.ok : 0, last: s.last[q.id] || "", known: !!C.qById[q.id] }; };
+  G.answerXp = (q, prev, c) => {
+    if (c && c.mode === "exam") return 5;
+    let x;
+    if (!prev.known) { const dc = G.dayc(); dc.cx = (dc.cx || 0) + 1; x = dc.cx <= 15 ? 6 : 1; }
+    else if (!prev.ok) x = 10;
+    else { const d = prev.last ? u.daysBetween(prev.last, u.today()) : 99; x = d >= 3 ? 7 : d >= 1 ? 4 : 1; }
+    return x + (c && c.combo >= 5 && x > 1 ? 2 : 0);
+  };
+  /* Carte mémoire : 3 XP si elle était à revoir aujourd'hui, 1 sinon. */
+  G.cardXp = card => { const st = G.cardState(card); return !st.due || st.due <= u.today() ? 3 : 1; };
   G.addXp = (n, el) => {
     if (!n) return;
     const before = G.levelOf(S().xp).l;
@@ -113,7 +137,8 @@
     if (after.l > before) {
       AA.fx.sfx.up(); AA.fx.buzz([30, 60, 30]);
       const evo = AA.avatar && AA.avatar.stage(after.l) > AA.avatar.stage(before);
-      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.avatar.formName(AA.avatar.get(), after.l) }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
+      const newRank = G.rankIdx(after.l) > G.rankIdx(before);
+      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.avatar.formName(AA.avatar.get(), after.l) }) : newRank ? AA.t("toast.newRank", { rank: after.rank }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
       AA.fx.burst(innerWidth / 2, innerHeight * .6, 40, "rgba(255,200,87,.9)");
     }
     AA.ui && AA.ui.hud();

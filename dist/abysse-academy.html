@@ -1523,9 +1523,172 @@ h1,h2,h3,.pagetitle{overflow-wrap:break-word}
 .prose .gl{white-space:normal;overflow-wrap:anywhere;text-align:inherit}
 @media (max-width:420px){h1,h2,h3,h4,.pagetitle{overflow-wrap:anywhere}}
 .qtag{flex-wrap:wrap;max-width:100%}
-#view .chip{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+#view .chip{max-width:100%}
+#view .cur-you .chip{white-space:normal;overflow-wrap:anywhere}
 /* Barre du haut sur très petit écran : le logo seul, pour laisser la place aux compteurs. */
-@media (max-width:340px){#topbar .brand>b{display:none}}
+/* Barre du haut sur téléphone : le logo seul (le nom prenait la place des compteurs et passait dessous). */
+@media (max-width:519px){#topbar .brand>b{display:none}}
+
+/* =====================================================================
+   1.9.2 · revue visuelle : plus aucun chevauchement
+   ===================================================================== */
+/* En-tête des cours : la pastille du niveau passe à la ligne au lieu d'écraser « N2 · 1/11 ». */
+.lesson-wrap .pagehead,.pagehead:has(.lvchip){flex-wrap:wrap;row-gap:6px}
+.pagehead:has(.lvchip) .eyebrow.grow{white-space:nowrap;min-width:max-content}
+.pagehead .lvchip{white-space:nowrap}
+/* Tuiles : la pastille (XP, « à revoir ») sous l'icône quand la tuile est étroite, jamais dessus. */
+.tile{container-type:inline-size}
+@container (max-width:15rem){.tile .badge{position:static;justify-self:start;max-width:100%;order:3}}
+@media (max-width:519px){.pagehead .lvchip{order:9;flex:1 1 100%;white-space:normal;justify-content:flex-start} .hide-xs{display:none}}
+
+/* css/app-20.css */
+/* =====================================================================
+   Abysse Academy 2.0 · tuteur, cours lus, parcours, progrès
+   ===================================================================== */
+/* Prochaine étape */
+.tu-next{margin-top:var(--sp-5);position:relative;overflow:hidden;border-color:color-mix(in srgb,var(--wc,var(--primary)) 45%,var(--line));background:linear-gradient(160deg,color-mix(in srgb,var(--wc,var(--primary)) 16%,var(--surface)),var(--surface) 70%)}
+.tu-next .eyebrow{margin:0;color:var(--wc,var(--primary))}
+.tu-next-main{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-4);align-items:center;margin:var(--sp-3) 0 var(--sp-4)}
+.tu-next-main .orb{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--wc,var(--primary));color:var(--primary-ink);box-shadow:0 0 0 6px color-mix(in srgb,var(--wc,var(--primary)) 20%,transparent)}
+.tu-next-main .orb svg{width:26px;height:26px}
+.tu-next-t{font:700 var(--fs-xl)/1.2 var(--font-display);margin:0 0 4px;overflow-wrap:anywhere}
+.tu-next-main p{margin:0}
+.tu-then{gap:var(--sp-2)}
+.tu-act{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:var(--sp-3);align-items:center;text-align:left;width:100%;padding:var(--sp-3) var(--sp-4);color:inherit;font:inherit;cursor:pointer}
+.tu-act .medal{width:40px;height:40px;background:var(--surface-2);color:var(--primary);box-shadow:none}
+.tu-act .medal svg{width:20px;height:20px}
+.tu-act b{display:block;overflow-wrap:anywhere}
+.tu-act .small{display:block}
+.tu-act:hover{border-color:var(--primary)}
+.tu-today{margin-top:var(--sp-4);display:grid;gap:var(--sp-3)}
+.tu-today p{margin:4px 0 0}
+.tu-mig{margin-top:var(--sp-4)}
+/* Où tu en es */
+.tu-where{margin-top:var(--sp-5)}
+.col-side .tu-where{margin-top:var(--sp-5)}
+.tu-where h3,.tu-where h2{margin:var(--sp-2) 0 var(--sp-3)}
+.tu-where .eyebrow{margin:0}
+.tu-bars{display:grid;gap:var(--sp-3)}
+.tu-bars>div{display:grid;gap:4px}
+.tu-gaps{display:grid;gap:var(--sp-3)}
+.tu-gaprow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--sp-3);align-items:center}
+.tu-gaprow .grow{display:grid;gap:3px;min-width:0}
+.tu-gaprow b{overflow-wrap:anywhere}
+/* Parcours (écran Cours) */
+.tu-wstrip{margin-top:var(--sp-4)}
+.tu-path{list-style:none;padding:0;margin:var(--sp-4) 0 0;display:grid;gap:var(--sp-2);position:relative}
+.tu-path::before{content:"";position:absolute;left:21px;top:14px;bottom:14px;width:2px;background:var(--line);border-radius:2px}
+.tu-step{position:relative}
+.tu-step-a{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:var(--sp-3);align-items:center;padding:var(--sp-3);border-radius:var(--r-lg);border:1px solid var(--line-soft);background:var(--surface);color:inherit;text-decoration:none}
+.tu-step-a:hover{border-color:var(--primary)}
+.tu-num{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);border:2px solid var(--line);font:700 var(--fs-md) var(--font-display);color:var(--muted);position:relative;z-index:1}
+.tu-num svg{width:20px;height:20px}
+.tu-step-b{display:grid;gap:4px;min-width:0}
+.tu-step-b b{overflow-wrap:anywhere}
+.tu-step-c{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.tu-step.here .tu-step-a{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.tu-step.here .tu-num{border-color:var(--primary);color:var(--primary)}
+.tu-step.st-ok .tu-num,.tu-step.st-cert .tu-num{background:var(--ok-soft);border-color:var(--ok);color:var(--ok)}
+.tu-step.st-master .tu-num{background:var(--gold-soft);border-color:var(--gold);color:var(--gold)}
+.tu-step.st-gap .tu-num,.tu-step.st-review .tu-num{border-color:var(--accent);color:var(--accent)}
+.tu-step.st-quiz .tu-num,.tu-step.st-learning .tu-num{border-color:var(--primary);color:var(--primary)}
+.tu-step.exam .tu-step-a{border-style:dashed}
+.tu-st{white-space:nowrap}
+.tu-stbtn{background:none;border:0;padding:0;cursor:pointer;font:inherit}
+.tu-stbtn .chip{pointer-events:none}
+.info .tu-st{margin-top:4px;font-size:var(--fs-xs)}
+.ml-row .tu-st{font-size:var(--fs-xs);justify-self:start;margin-top:3px}
+.ml-row .grow{display:grid;min-width:0}
+.tu-pre{margin-top:var(--sp-4)}
+.tu-cert{margin:var(--sp-3) 0 0}
+@media (min-width:1100px){
+  .tu-path{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-3)}
+  .tu-path::before{display:none}
+  .tu-step-a{height:100%}
+  .tu-step.exam{grid-column:1/-1}
+}
+/* Cours lu */
+.tu-read{margin-top:var(--sp-5);border-color:var(--primary);background:color-mix(in srgb,var(--primary) 10%,var(--surface))}
+.tu-read .btn .chip{margin-left:6px}
+.tu-read.done{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 8%,var(--surface))}
+.tu-read-h{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-3);align-items:center;margin-bottom:var(--sp-3)}
+.tu-read-h .medal{width:40px;height:40px;background:var(--ok);color:var(--bg);box-shadow:none}
+.tu-read-h .medal svg{width:20px;height:20px}
+/* Notions */
+.tu-notcard{margin-top:var(--sp-4)}
+.tu-notcard .eyebrow{margin:0}
+.tu-notions{display:grid;gap:var(--sp-3)}
+.tu-nrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--sp-3);align-items:center}
+.tu-nrow .grow{display:grid;gap:4px;min-width:0}
+.tu-nrow .grow>.small{overflow-wrap:anywhere}
+.tu-nrow .chip.xs{justify-self:start}
+.tu-nbtn{display:flex;gap:4px}
+.tu-mods{display:grid;gap:var(--sp-3);margin-top:var(--sp-3)}
+.tu-mod-h{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:var(--sp-3)}
+.tu-mod-h a{color:inherit;min-width:0;overflow-wrap:anywhere}
+@media (min-width:900px){.tu-mods{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1500px){.tu-mods{grid-template-columns:repeat(3,minmax(0,1fr))}}
+/* Entraîner */
+.tu-quizlist{display:flex;flex-wrap:wrap;gap:8px}
+.tu-qchip{cursor:pointer;white-space:normal;text-align:left}
+/* Panneaux */
+.tu-sheet{display:grid;gap:var(--sp-3);justify-items:start}
+.tu-sheet .medal{width:48px;height:48px}
+.tu-sheet h3{margin:0}
+.tu-sheet p{margin:0}
+.tu-sheet .btn{justify-self:stretch}
+.tu-steps{margin:0;padding-left:1.2em;display:grid;gap:var(--sp-2);width:100%}
+.tu-res{margin-top:var(--sp-3);display:grid;gap:var(--sp-2);text-align:left}
+.tu-res p{margin:0}
+.tu-exnote{margin:var(--sp-2) 0 var(--sp-3)}
+/* Illustrations 2.0 : signes, matériel, faune */
+.tu-art{max-width:100%}
+.sg-grid,.fa-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--sp-3)}
+.sg-card,.fa-card{display:grid;gap:4px;justify-items:center;text-align:center;padding:var(--sp-3);border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line-soft)}
+.diagram .sg-card svg,.diagram .fa-card svg{min-width:0;width:100%;max-width:130px;height:auto;overflow:visible}
+.sg-card b,.fa-card b{font-size:var(--fs-sm)}
+.sg-how{font-size:var(--fs-xs);color:var(--muted)}
+.sg-ans{font-size:var(--fs-xs);color:var(--primary)}
+.fa-card .fa-art{width:100%;max-width:140px;height:auto}
+.fa-card span{font-size:var(--fs-xs);color:var(--muted)}
+.fa-card .chip{font-style:normal}
+.sg-grid g,.tu-art g{transform-box:view-box}
+.sg-wob{transform-origin:60px 105px;animation:sgWob 1.1s ease-in-out infinite alternate}
+.sg-up{animation:sgUp 1.6s ease-in-out infinite}
+.sg-pulse{transform-origin:60px 60px;animation:sgPulse 1.8s ease-in-out infinite}
+.sg-slide{animation:sgSlide 1s ease-in-out infinite alternate}
+.sg-a{animation:sgA 1.4s steps(1) infinite}
+.sg-b{animation:sgA 1.4s steps(1) infinite reverse;opacity:0}
+.sg-push{animation:sgPush 1.2s ease-in-out infinite alternate}
+.sg-tap{animation:sgTap .5s ease-in-out infinite alternate}
+.sg-wave{animation:sgSlide 2.4s ease-in-out infinite alternate}
+@keyframes sgWob{from{transform:rotate(-16deg)}to{transform:rotate(16deg)}}
+@keyframes sgUp{0%,100%{transform:translateY(8px)}50%{transform:translateY(-6px)}}
+@keyframes sgPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes sgSlide{from{transform:translateX(-14px)}to{transform:translateX(10px)}}
+@keyframes sgA{0%{opacity:1}50%{opacity:0}}
+@keyframes sgPush{from{transform:translateY(-4px)}to{transform:translateY(4px)}}
+@keyframes sgTap{from{transform:translateX(0)}to{transform:translateX(-6px)}}
+.eq-flow{animation:eqFlow 1.2s linear infinite}
+@keyframes eqFlow{to{stroke-dashoffset:-30}}
+.eq-gneedle{transform-origin:130px 130px;animation:eqNeedle 7s ease-in-out infinite}
+@keyframes eqNeedle{0%,8%{transform:rotate(40deg)}70%,88%{transform:rotate(-82deg)}100%{transform:rotate(40deg)}}
+.eq-gt{font:700 13px var(--font-mono);fill:#16232e}
+.eq-vest{transform-origin:240px 150px;animation:sgPulse 3s ease-in-out infinite}
+.fa-leaf{transform-origin:center bottom;animation:faLeaf 3s ease-in-out infinite alternate}
+@keyframes faLeaf{from{transform:skewX(-4deg)}to{transform:skewX(4deg)}}
+html.reduce-motion .tu-art *{animation:none!important}
+html.reduce-motion .sg-b{opacity:0}
+@media (max-width:360px){
+  .tu-step-a{grid-template-columns:36px minmax(0,1fr);padding:var(--sp-2)}
+  .tu-step-a>svg{display:none}
+  .tu-num{width:36px;height:36px}
+  .tu-path::before{left:17px}
+  .tu-next-main{grid-template-columns:minmax(0,1fr)}
+  .tu-next-main .orb{display:none}
+}
+.tu-won .row{flex-wrap:wrap;gap:6px}
+.tu-xptab{width:100%;border-collapse:collapse;font-size:var(--fs-sm)}.tu-xptab th,.tu-xptab td{padding:4px 6px;border-bottom:1px solid var(--line-soft);text-align:left;vertical-align:top}.tu-xptab td:last-child,.tu-xptab th:last-child{text-align:right;white-space:nowrap;font-family:var(--font-mono)}
 
 </style>
 </head>
@@ -1549,7 +1712,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "1.9.1";
+  AA.VERSION = "2.0.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -2102,23 +2265,27 @@ window.AA={BUNDLED:true};
    Abysse Academy · avatar qui évolue avec le niveau
    AA.avatar.svg(avatar, niveau, cls) renvoie le dessin (SVG, viewBox 100).
    avatar = { kind: "diver" | "creature" | "letter", skin, hair, hairC, suit, id }
-   Évolutions (niveaux 1, 3, 5, 7, 9) : le plongeur s'équipe peu à peu,
-   le cadre passe de l'eau claire au bronze, à l'argent, à l'or puis aux
-   abysses. Les compagnons (content/fr/companions.js) évoluent en 5 formes
-   avec chacune son nom, sa taille et ses couleurs, jusqu'à la forme légendaire.
+   Évolutions 2.0 : 10 paliers (niveaux 1, 3, 6, 10, 15, 20, 26, 32, 40, 50).
+   Le plongeur s'équipe pièce par pièce (masque, tuba, combinaison, bloc,
+   gilet, cagoule, phare, liseré d'or, aura, couronne) ; le cadre passe de
+   l'eau claire au bronze, à l'argent, à l'or puis aux abysses. Les
+   compagnons ont 5 formes, chacune en deux paliers (le second marqué ★).
    ===================================================================== */
 (function () {
   "use strict";
   const AA = window.AA, u = AA.u;
   const A = (AA.avatar = {});
 
-  A.STAGES = [1, 3, 5, 7, 9];
+  A.STAGES = [1, 3, 6, 10, 15, 20, 26, 32, 40, 50];
+  /* Forme dessinée (0 à 4) pour chaque palier. */
+  const FORM = [0, 0, 1, 1, 2, 2, 3, 3, 4, 4];
+  A.form = st => FORM[Math.min(st, FORM.length - 1)];
   A.SKINS = ["#F6D7BE", "#E6B48C", "#C08457", "#8A5634", "#5A3622"];
   A.HAIRC = ["#2A1C14", "#6E4423", "#C99A3E", "#B4492A", "#DCD8CF"];
   A.SUITS = ["#1E7FA8", "#16384F", "#D9472B", "#2E9E6A", "#7A4FD1", "#E59A12"];
   A.HAIRS = 4; /* court, long, chignon, ras */
-  const RING = ["#5CC8D8", "#C27D42", "#C9D4DB", "#F2C14E", ""];
-  const WATER = [["#8FE3EE", "#1C8DB0"], ["#6FCFE3", "#15739A"], ["#4DAFD0", "#0E5578"], ["#2E86B0", "#0A3352"], ["#1D4F80", "#070F2A"]];
+  const RING = ["#5CC8D8", "#7FD9C4", "#C27D42", "#DB9A55", "#C9D4DB", "#EEF3F6", "#F2C14E", "#FFD970", "", ""];
+  const WATER = [["#8FE3EE", "#1C8DB0"], ["#7FD9EA", "#1880A5"], ["#6FCFE3", "#15739A"], ["#5EBFDA", "#11648A"], ["#4DAFD0", "#0E5578"], ["#3D9AC0", "#0C4465"], ["#2E86B0", "#0A3352"], ["#2669A0", "#08223E"], ["#1D4F80", "#070F2A"], ["#2A2F78", "#05081E"]];
 
   A.stage = l => { let s = 0; A.STAGES.forEach((min, i) => { if (l >= min) s = i; }); return s; };
   A.next = l => A.STAGES.find(min => min > l) || null;
@@ -2137,12 +2304,12 @@ window.AA={BUNDLED:true};
     else if (av.kind === "letter") inner = letter(av);
     else inner = diver(av, st);
     const bub = [[24, 30, 2.2], [30, 20, 1.4], [76, 26, 1.8]].slice(0, 1 + st % 3).map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1"/>`).join("");
-    const glow = st >= 4 ? `<circle cx="50" cy="50" r="48" fill="none" stroke="url(#${k}a)" stroke-width="2" opacity=".55" class="ava-glow"/>${[[12, 22], [88, 30], [16, 80], [86, 78]].map(([x, y]) => `<path d="M${x} ${y - 4}l1.2 2.8 2.8 1.2-2.8 1.2-1.2 2.8-1.2-2.8-2.8-1.2 2.8-1.2z" fill="#FFE08A"/>`).join("")}` : "";
-    const stars = st ? `<g transform="translate(50 93)">${Array.from({ length: st }, (_, i) => `<path transform="translate(${(i - (st - 1) / 2) * 9} 0)" d="M0 -4l1.2 2.6 2.8.3-2.1 1.9.6 2.8L0 2.2l-2.5 1.4.6-2.8-2.1-1.9 2.8-.3z" fill="${st >= 3 ? "#F2C14E" : "#fff"}" stroke="#0A2233" stroke-width=".6"/>`).join("")}</g>` : "";
-    return `<svg class="ava ava-s${st} ${cls || ""}" viewBox="0 0 100 100" aria-hidden="true">${defs}
+    const glow = st >= 8 ? `<circle cx="50" cy="50" r="48" fill="none" stroke="url(#${k}a)" stroke-width="2" opacity=".55" class="ava-glow"/>${[[12, 22], [88, 30], [16, 80], [86, 78]].map(([x, y]) => `<path d="M${x} ${y - 4}l1.2 2.8 2.8 1.2-2.8 1.2-1.2 2.8-1.2-2.8-2.8-1.2 2.8-1.2z" fill="#FFE08A"/>`).join("")}` : "";
+    const ns = Math.ceil(st / 2), stars = ns ? `<g transform="translate(50 93)">${Array.from({ length: ns }, (_, i) => `<path transform="translate(${(i - (ns - 1) / 2) * 9} 0)" d="M0 -4l1.2 2.6 2.8.3-2.1 1.9.6 2.8L0 2.2l-2.5 1.4.6-2.8-2.1-1.9 2.8-.3z" fill="${st >= 6 ? "#F2C14E" : "#fff"}" stroke="#0A2233" stroke-width=".6"/>`).join("")}</g>` : "";
+    return `<svg class="ava ava-s${A.form(st)} ava-t${st} ${cls || ""}" viewBox="0 0 100 100" aria-hidden="true">${defs}
       <circle cx="50" cy="50" r="45" fill="url(#${k}w)"/>
       <g clip-path="url(#${k}c)">${bub}${inner}</g>
-      <circle cx="50" cy="50" r="45.5" fill="none" stroke="${RING[st] || `url(#${k}a)`}" stroke-width="${3 + st * .6}"/>${glow}${stars}</svg>`;
+      <circle cx="50" cy="50" r="45.5" fill="none" stroke="${RING[st] || `url(#${k}a)`}" stroke-width="${3 + st * .3}"/>${glow}${stars}</svg>`;
   };
 
   function letter(av) {
@@ -2157,9 +2324,9 @@ window.AA={BUNDLED:true};
   /* Ancien choix (créature de l'aquarium) : on prend le compagnon de même forme. */
   A.comp = id => { const L = A.comps(); let f = L.find(c => c.id === id); if (!f) { const cr = (AA.content.creatures || []).find(c => c.id === id); f = cr && L.find(c => c.shape === cr.shape); } return f || L[0]; };
   A.colorsAt = (f, st) => st === 0 ? f.c.map(x => mix(x, "#FFFFFF", .45)) : st === 1 ? f.c.map(x => mix(x, "#FFFFFF", .18)) : st === 2 ? f.c : st === 3 ? f.c.map((x, i) => mix(x, f.L[i], .45)) : f.L;
-  A.formName = (av, l) => { const st = A.stage(l); if (av.kind === "creature") { const f = A.comp(av.id); return f ? f.n[st] : ""; } return AA.i18n.raw("ava.stages")[st]; };
-  function creature(av, st) {
-    const f = A.comp(av.id); if (!f) return "";
+  A.formName = (av, l) => { const st = A.stage(l); if (av.kind === "creature") { const f = A.comp(av.id); return f ? f.n[A.form(st)] + (st % 2 ? " ★" : "") : ""; } const L = AA.i18n.raw("ava.stages") || []; return L[Math.min(st, L.length - 1)] || ""; };
+  function creature(av, st0) {
+    const f = A.comp(av.id); if (!f) return ""; const st = A.form(st0);
     const s = [.42, .52, .62, .7, .78][st], cols = A.colorsAt(f, st), svg = AA.creature(f.shape, cols).replace(/^<svg[^>]*>|<\/svg>$/g, "");
     const top = 52 - 40 * s, gid = "cg" + (++uid);
     let o = `<path d="M6 92q44-14 88 0v10H6z" fill="#E9D7A8" opacity=".5"/>`;
@@ -2168,6 +2335,7 @@ window.AA={BUNDLED:true};
     o += `<g transform="translate(${50 - 60 * s} ${52 - 40 * s}) scale(${s})">${svg}</g>`;
     if (st >= 2) o += `<path d="M${50 - 6} ${top + 2}l3 -5 3 5 3 -5 3 5" fill="none" stroke="${st >= 3 ? "#F2C14E" : "rgba(255,255,255,.7)"}" stroke-width="1.6" stroke-linejoin="round" opacity="${st >= 4 ? 0 : .9}"/>`;
     if (st >= 4) o += `<path d="M40 ${top - 1}l3-9 4 6 3-8 3 8 4-6 3 9z" fill="#F2C14E" stroke="#8E5A00" stroke-width=".8"/><circle cx="50" cy="${top - 9}" r="1.6" fill="#FFF3C4"/>`;
+    if (st0 % 2) o += `<circle cx="50" cy="52" r="${34 + st * 2}" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="1" stroke-dasharray="2 4"/>`;
     return o;
   }
   /* Grande scène d'évolution (une fois par nouvelle forme), comme dans les jeux. */
@@ -2188,7 +2356,7 @@ window.AA={BUNDLED:true};
 
   function diver(av, st) {
     const skin = A.SKINS[av.skin] || A.SKINS[1], hc = A.HAIRC[av.hairC] || A.HAIRC[0], suit = A.SUITS[av.suit] || A.SUITS[0];
-    const hood = st >= 3, mask = st >= 1, reg = st >= 2;
+    const hood = st >= 5, mask = st >= 1, reg = st >= 3, lamp = st >= 6;
     let o = "";
     /* bouteille derrière l'épaule */
     if (reg) o += `<rect x="16" y="52" width="14" height="44" rx="7" fill="#F0B73A"/><rect x="20" y="46" width="6" height="8" rx="2" fill="#7A8A94"/><path d="M23 47h-6" stroke="#7A8A94" stroke-width="3" stroke-linecap="round"/>`;
@@ -2196,8 +2364,11 @@ window.AA={BUNDLED:true};
     if (!hood && av.hair === 1) o += `<path d="M33 44c-2 16 0 26 4 32h26c4-6 6-16 4-32z" fill="${hc}"/>`;
     /* corps */
     o += `<path d="M14 104c0-24 16-36 36-36s36 12 36 36z" fill="${suit}"/><path d="M40 70l10 14 10-14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="3"/>`;
-    if (st >= 4) o += `<path d="M22 86c10-6 18-8 28-8s18 2 28 8" fill="none" stroke="#F2C14E" stroke-width="2.5"/>`;
+    if (st >= 2) o += `<path d="M20 92c9-5 19-7 30-7s21 2 30 7" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2.5"/>`;
+    if (st >= 7) o += `<path d="M22 86c10-6 18-8 28-8s18 2 28 8" fill="none" stroke="#F2C14E" stroke-width="2.5"/>`;
     if (reg) o += `<path d="M30 72l8 28M70 72l-8 28" stroke="#111B22" stroke-width="5" stroke-linecap="round"/><rect x="64" y="84" width="10" height="7" rx="2" fill="#111B22"/>`;
+    /* gilet : épaulières et inflateur */
+    if (st >= 4) o += `<path d="M27 74q6-6 13-4l-3 9q-6-1-10 2z" fill="#E86A2C"/><path d="M73 74q-6-6-13-4l3 9q6-1 10 2z" fill="#E86A2C"/><path d="M33 76c-7 5-9 13-7 24" fill="none" stroke="#2B3A44" stroke-width="3"/><rect x="22.5" y="97" width="7" height="6" rx="2" fill="#2B3A44"/>`;
     o += `<rect x="44" y="58" width="12" height="12" rx="4" fill="${skin}"/>`;
     /* cagoule */
     if (hood) o += `<ellipse cx="50" cy="45" rx="19" ry="21" fill="#15232E"/>`;
@@ -2221,7 +2392,8 @@ window.AA={BUNDLED:true};
     else if (mask) o += `<path d="M47 57c2 2 5 2 7 0" fill="none" stroke="#7A3B2E" stroke-width="1.8" stroke-linecap="round"/><path d="M54 57h6c2 0 3-1 3-3V22" fill="none" stroke="#1B2A33" stroke-width="3" stroke-linecap="round"/><rect x="60.5" y="17" width="5" height="7" rx="2" fill="#FF7A3A"/>`;
     else o += `<path d="M45 56c3 3 7 3 10 0" fill="none" stroke="#7A3B2E" stroke-width="2" stroke-linecap="round"/><circle cx="40" cy="52" r="2.4" fill="#FF9A8A" opacity=".45"/><circle cx="60" cy="52" r="2.4" fill="#FF9A8A" opacity=".45"/>`;
     /* phare frontal */
-    if (hood) o += `<path d="M58 28l30-12v20z" fill="rgba(255,240,170,.28)"/><rect x="52" y="24" width="10" height="7" rx="2.5" fill="#E8EEF2" stroke="#0B1620" stroke-width="1.4"/>`;
+    if (lamp) o += `<path d="M58 28l30-12v20z" fill="rgba(255,240,170,.28)"/><rect x="52" y="24" width="10" height="7" rx="2.5" fill="#E8EEF2" stroke="#0B1620" stroke-width="1.4"/>`;
+    if (st >= 9) o += `<path d="M39 21l2.5-8 4 5 4.5-7 4.5 7 4-5 2.5 8z" fill="#F2C14E" stroke="#8E5A00" stroke-width=".8"/>`;
     return o;
   }
 
@@ -2719,11 +2891,20 @@ window.AA={BUNDLED:true};
   G.STALE_DAYS = 10;
 
   /* ---------- Niveaux ---------- */
+  /* Barème 2.0 : passer du niveau l au niveau l+1 demande 100 + 40(l−1) + 1,5(l−1)² XP
+     (arrondi à 10). Niveau 10 ≈ 2 640 XP, 20 ≈ 11 900, 30 ≈ 30 700, 40 ≈ 62 000,
+     50 ≈ 109 000 (rang maximal « Légende des abysses »). Les niveaux continuent au-delà.
+     Calibré par simulation : voir tests/xp-sim.js. */
+  G.MAX_RANK_LEVEL = 50;
+  G.RANKS_AT = [1, 3, 6, 10, 14, 18, 23, 28, 33, 38, 44, 50];
+  G.needFor = l => Math.round((100 + 40 * (l - 1) + 1.5 * (l - 1) * (l - 1)) / 10) * 10;
+  G.xpFor = L => { let x = 0; for (let l = 1; l < L; l++) x += G.needFor(l); return x; };
+  G.rankIdx = l => { let i = 0; G.RANKS_AT.forEach((min, k) => { if (l >= min) i = k; }); return i; };
   G.levelOf = xp => {
-    let l = 1, need = 100, base = 0;
-    while (xp >= base + need) { base += need; l++; need = 100 + (l - 1) * 50; }
-    const ranks = AA.i18n.raw("ranks") || [];
-    return { l, into: xp - base, need, rank: ranks[Math.min(l - 1, ranks.length - 1)] || "" };
+    let l = 1, need = G.needFor(1), base = 0;
+    while (xp >= base + need) { base += need; l++; need = G.needFor(l); }
+    const ranks = AA.i18n.raw("ranks") || [], ri = G.rankIdx(l);
+    return { l, into: xp - base, need, rank: ranks[Math.min(ri, ranks.length - 1)] || "", nextRank: G.RANKS_AT[ri + 1] || null };
   };
   G.starsFor = p => (p >= 100 ? 3 : p >= 80 ? 2 : p >= 50 ? 1 : 0);
   G.stars = id => { const r = S().themes[id]; return r ? G.starsFor(r.best) : 0; };
@@ -2810,6 +2991,21 @@ window.AA={BUNDLED:true};
   G.daysToExam = () => { const e = S().profile.examDate; return e ? u.daysBetween(u.today(), e) : null; };
 
   /* ---------- XP ---------- */
+  /* ---------- Barème des réponses (2.0) : l'XP suit l'apprentissage réel ----------
+     1re bonne réponse à une question : 10 · révision espacée (≥ 3 jours) : 7
+     revue 1 à 2 jours après : 4 · même question le même jour : 1 · examen blanc : 5
+     calculs générés : 6 (les 15 premiers du jour), puis 1 · série de 5 bonnes : +2. */
+  G.qPrev = q => { const s = S(), st = s.stats[q.id]; return { ok: st ? st.ok : 0, last: s.last[q.id] || "", known: !!C.qById[q.id] }; };
+  G.answerXp = (q, prev, c) => {
+    if (c && c.mode === "exam") return 5;
+    let x;
+    if (!prev.known) { const dc = G.dayc(); dc.cx = (dc.cx || 0) + 1; x = dc.cx <= 15 ? 6 : 1; }
+    else if (!prev.ok) x = 10;
+    else { const d = prev.last ? u.daysBetween(prev.last, u.today()) : 99; x = d >= 3 ? 7 : d >= 1 ? 4 : 1; }
+    return x + (c && c.combo >= 5 && x > 1 ? 2 : 0);
+  };
+  /* Carte mémoire : 3 XP si elle était à revoir aujourd'hui, 1 sinon. */
+  G.cardXp = card => { const st = G.cardState(card); return !st.due || st.due <= u.today() ? 3 : 1; };
   G.addXp = (n, el) => {
     if (!n) return;
     const before = G.levelOf(S().xp).l;
@@ -2819,7 +3015,8 @@ window.AA={BUNDLED:true};
     if (after.l > before) {
       AA.fx.sfx.up(); AA.fx.buzz([30, 60, 30]);
       const evo = AA.avatar && AA.avatar.stage(after.l) > AA.avatar.stage(before);
-      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.avatar.formName(AA.avatar.get(), after.l) }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
+      const newRank = G.rankIdx(after.l) > G.rankIdx(before);
+      AA.fx.toast(AA.t("toast.level", { l: after.l }), evo ? AA.t("ava.evolved", { name: AA.avatar.formName(AA.avatar.get(), after.l) }) : newRank ? AA.t("toast.newRank", { rank: after.rank }) : AA.t("toast.rank", { rank: after.rank }), "trophy");
       AA.fx.burst(innerWidth / 2, innerHeight * .6, 40, "rgba(255,200,87,.9)");
     }
     AA.ui && AA.ui.hud();
@@ -3187,7 +3384,7 @@ window.AA={BUNDLED:true};
     document.body.classList.toggle("immersive", !!v.immersive);
     if (!tab.dataset.built) {
       tab.dataset.built = 1;
-      tab.innerHTML = `<nav aria-label="${t("nav.label")}">${TABS.map(([id, ic]) => `<button class="tab" data-tab="${id}">${AA.icon(ic)}<span>${t("tab." + id)}</span></button>`).join("")}</nav>`;
+      tab.innerHTML = `<nav aria-label="${t("nav.label")}">${(ui.TABS || TABS).map(([id, ic]) => `<button class="tab" data-tab="${id}">${AA.icon(ic)}<span>${t("tab." + id)}</span></button>`).join("")}</nav>`;
       u.on(tab, "click", "[data-tab]", (e, b) => { AA.fx.sfx.tap(); AA.router.go(b.dataset.tab === "home" ? "home" : b.dataset.tab); });
     }
     u.$$(".tab", tab).forEach(b => { if (b.dataset.tab === v.tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });
@@ -3853,7 +4050,7 @@ window.AA={BUNDLED:true};
           <label class="setting"><span class="grow"><b>${t("lesson.validated")}</b><span>${note.ok ? t("lesson.validatedOn", { d: note.ok }) : t("lesson.validatedS")}</span></span><span class="switch"><input type="checkbox" id="valid" ${note.ok ? "checked" : ""}><i></i></span></label>`;
 
       el.innerHTML = `
-        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.levelBadge(m.world, true)}${AA.instrChip ? AA.instrChip(m.id) : ""}${AA.stars(st)}</div>
+        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.stars(st)}${AA.levelBadge(m.world, true)}</div>
         <header class="lesson-hero" style="--wc:var(${w.color})">
           <div class="row" style="gap:var(--sp-4);flex-wrap:nowrap"><span class="ic">${AA.icon(m.icon)}</span><div class="grow"><p class="eyebrow" style="color:var(--wc)">${u.esc(m.depth)}</p><h1 style="font-size:var(--fs-2xl)">${u.esc(m.title)}</h1><p class="muted" style="margin:4px 0 0">${u.esc(m.sub)}</p></div></div>
           <div class="row" style="margin-top:var(--sp-4)">
@@ -4103,9 +4300,9 @@ window.AA={BUNDLED:true};
     u.$("#fc").onclick = () => { if (!c.flipped) flip(); };
     const sh = u.$("#show"); if (sh) { sh.onclick = flip; sh.focus({ preventScroll: true }); }
     const rate = ok => {
-      const card = C.cards.find(x => x.id === q.cid); if (card) G.rateCard(card, ok);
+      const card = C.cards.find(x => x.id === q.cid), cx = card ? G.cardXp(card) : 1; if (card) G.rateCard(card, ok);
       c.answers.push({ q, picked: ok ? 0 : 1, ok, card: true });
-      if (ok) { c.xp += 3; G.addXp(3); fx.sfx.ok(); fx.buzz(10); } else fx.sfx.bad();
+      if (ok) { c.xp += cx; G.addXp(cx); fx.sfx.ok(); fx.buzz(10); } else fx.sfx.bad();
       AA.store.save(); G.checkBadges();
       c.flipped = false; if (c.timeUp || c.idx + 1 >= c.items.length) return finish(c); c.idx++; AA.router.refresh();
     };
@@ -4173,12 +4370,13 @@ window.AA={BUNDLED:true};
     c.answers.push({ q, picked: ci, ok, player: c.turn, doubt: c.doubt });
     if (c.mode === "boss") { c.hit = ok; if (ok) c.bossHp = Math.max(0, c.bossHp - 1); }
     if (c.mode !== "duel") {
+      const prev = G.qPrev(q);
       G.record(q, ok, c.doubt, ci);
       const wasErr = !!S.errors[q.id];
       if (!String(q.id).startsWith("tab-")) { if (ok) delete S.errors[q.id]; else S.errors[q.id] = (S.errors[q.id] || 0) + 1; }
       if (ok) {
         c.combo++; c.maxCombo = Math.max(c.maxCombo, c.combo); S.bestCombo = Math.max(S.bestCombo, c.combo);
-        let gain = 10 + (c.mode === "exam" ? 0 : Math.min(c.combo - 1, 5) * 2);
+        let gain = G.answerXp(q, prev, c);
         if (c.mode === "errors" && wasErr) { gain += 5; S.rescued++; }
         c.xp += gain; G.addXp(gain, btn);
       }
@@ -4242,11 +4440,12 @@ window.AA={BUNDLED:true};
           r.best = Math.max(r.best, pct); r.tries++; S.themes[c.module] = r;
           const now = G.starsFor(r.best);
           if (now > old) { const b = (now - old) * 25; c.xp += b; G.addXp(b); c.newStars = now; }
-          if (!air0) { c.xp += 20; G.addXp(20); }
+          /* Série terminée avec au moins 60 % : bonus une fois par cours et par jour (pas de farm). */
+          if (!air0 && pct >= 60) { S.modDay = S.modDay || {}; if (S.modDay[c.module] !== u.today()) { S.modDay[c.module] = u.today(); c.xp += 15; G.addXp(15); } }
         }
         if (c.mode === "stale" && pct >= 50) { S.keepDone = true; S.keepDay = u.today(); }
         if (c.mode === "daily") { if (S.daily[u.today()] == null) { c.xp += 30; G.addXp(30); } S.daily[u.today()] = pct; }
-        if (c.mode === "five" && c.answers.length >= 4) { S.five = (S.five || 0) + 1; const dc = G.dayc(); dc.five = (dc.five || 0) + 1; c.xp += 15; G.addXp(15); }
+        if (c.mode === "five" && c.answers.length >= 4) { S.five = (S.five || 0) + 1; const dc = G.dayc(); dc.five = (dc.five || 0) + 1; if (dc.five === 1) { c.xp += 15; G.addXp(15); } }
         AA.store.save(); G.checkBadges();
       }
       head = `<p class="eyebrow">${air0 ? t("result.air0") : t("result.done", { title: c.title || "" })}</p>
@@ -4410,8 +4609,8 @@ window.AA={BUNDLED:true};
       u.$("#fc").onclick = () => { if (!c.flipped) flip(); };
       const sh = u.$("#show"); if (sh) sh.onclick = flip;
       const rate = ok => {
-        G.rateCard(card, ok); if (!ok) c.deck.push(card); c.i++; c.flipped = false; if (ok) c.done++;
-        AA.store.save(); if (ok) G.addXp(3); G.checkBadges(); AA.router.refresh();
+        const cx = G.cardXp(card); G.rateCard(card, ok); if (!ok) c.deck.push(card); c.i++; c.flipped = false; if (ok) c.done++;
+        AA.store.save(); if (ok) G.addXp(cx); G.checkBadges(); AA.router.refresh();
       };
       const y = u.$("#yes"); if (y) { y.onclick = () => { fx.sfx.ok(); fx.buzz(10); rate(true); }; u.$("#no").onclick = () => { fx.sfx.bad(); rate(false); }; }
     }
@@ -4558,7 +4757,7 @@ window.AA={BUNDLED:true};
     render(el) {
       const s = AA.ctx.sim || (AA.ctx.sim = fresh());
       if (s.autoPause == null) s.autoPause = true;
-      el.innerHTML = `${ui.head(t("lab.sim"), "lab", `<button class="btn ghost sm" id="shelp" aria-expanded="false">${AA.icon("info")} ${t("sim.howBtn")}</button>`)}
+      el.innerHTML = `${ui.head(t("lab.sim"), "lab", `<button class="btn ghost sm" id="shelp" aria-expanded="false" aria-label="${t("sim.howBtn")}">${AA.icon("info")}<span class="hide-xs"> ${t("sim.howBtn")}</span></button>`)}
         <div class="sim-how card" id="showto" hidden><ol>${AA.i18n.raw("sim.how").map(x => `<li>${x}</li>`).join("")}</ol><p class="xs muted" style="margin:0">${t("sim.intro")}</p></div>
         <div class="sim">
           <div class="stack">
@@ -4666,7 +4865,7 @@ window.AA={BUNDLED:true};
       }
       function finish() {
         const clean = s.alerts.size === 0 && s.maxRatio <= 2;
-        if (clean && !s.saved) { s.saved = true; AA.S.simOk++; G.addXp(30); AA.store.save(); G.checkBadges(); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 2, 40, "rgba(61,220,151,.9)"); }
+        if (clean && !s.saved) { s.saved = true; AA.S.simOk++; if (AA.S.simDay !== AA.u.today()) { AA.S.simDay = AA.u.today(); G.addXp(30); } AA.store.save(); G.checkBadges(); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 2, 40, "rgba(61,220,151,.9)"); }
         const names = AA.i18n.raw("sim.alertNames");
         const r = u.$("#simres"); if (r) r.innerHTML = `<div class="feedback ${clean ? "ok" : "bad"}" style="margin-top:var(--sp-4)"><h4>${clean ? t("sim.clean") : t("sim.alerts")}</h4><p>${t("sim.summary", { d: u.num(s.max, 1), t: Math.round(s.t), a: Math.round(s.air) })}${s.alerts.size ? " " + t("sim.alertList", { l: [...s.alerts].map(a => names[a]).join(", ") }) : ""}</p>${clean ? "" : `<p class="small">${t("sim.tip")}</p>`}<button class="btn block" id="sagain" style="margin-top:var(--sp-3)">${AA.icon("refresh")} ${t("sim.reset")}</button></div>`;
         const ag = u.$("#sagain"); if (ag) ag.onclick = () => { AA.ctx.sim = fresh(); AA.router.refresh(); };
@@ -5769,9 +5968,9 @@ window.AA={BUNDLED:true};
     const S = AA.S, lv = G.levelOf(S.xp), st = G.streak();
     if (kind === "xp") {
       const close = ui.sheet(`<div class="help-sheet stack"><div class="help-ic gold">${AA.icon("bolt")}</div><h3>${t("hud.xpT", { xp: S.xp })}</h3>
-        <p>${t("hud.xpLvl", { l: lv.l, rank: u.esc(lv.rank) })}</p>${ui.bar(lv.into / lv.need, "var(--gold)")}<p class="small muted">${t("prof.toNext", { n: lv.need - lv.into })}</p>
+        <p>${t("hud.xpLvl", { l: lv.l, rank: u.esc(lv.rank) })}</p>${ui.bar(lv.into / lv.need, "var(--gold)")}<p class="small muted">${t("prof.toNext", { n: lv.need - lv.into })}${lv.nextRank ? " · " + t("hud.nextRank", { l: lv.nextRank }) : ""}</p>
         <div class="prose">${C.help.xp.html}</div><button class="btn block" data-hx="daily">${AA.icon("play")} ${t("hud.earn")}</button><a class="btn ghost block" href="#/profile">${t("hud.seeProfile")}</a></div>`, t("help.what"));
-      u.$("[data-hx]").onclick = () => { close(); AA.goTo("daily"); };
+      u.$("[data-hx]").onclick = () => { close(); AA.tutor ? AA.tutor.session() : AA.goTo("daily"); };
     } else if (kind === "streak") {
       const days = new Set(S.days || []), cells = Array.from({ length: 14 }, (_, i) => u.addDays(i - 13));
       const doneToday = days.has(u.today());
@@ -5779,7 +5978,7 @@ window.AA={BUNDLED:true};
         <p>${doneToday ? t("hud.streakOk") : t("hud.streakTodo")}</p>
         <div class="streak-cal" aria-label="${t("hud.last14")}">${cells.map(d => `<i class="${days.has(d) ? "on" : ""} ${d === u.today() ? "today" : ""}" title="${d}"></i>`).join("")}</div><p class="xs muted center">${t("hud.last14")}</p>
         <div class="prose">${C.help.streak.html}</div>${doneToday ? "" : `<button class="btn block" data-hx>${AA.icon("play")} ${t("hud.keep")}</button>`}</div>`, t("help.what"));
-      const b = u.$("[data-hx]"); if (b) b.onclick = () => { close(); AA.goTo("five"); };
+      const b = u.$("[data-hx]"); if (b) b.onclick = () => { close(); AA.tutor ? AA.tutor.session() : AA.goTo("five"); };
     } else AA.help(kind);
   };
 
@@ -6842,6 +7041,635 @@ window.AA={BUNDLED:true};
   setTimeout(() => { try { if (AA.S) V.resetTotals(); } catch (e) {} }, 0);
 })();
 
+/* js/views/v20.js */
+/* =====================================================================
+   Abysse Academy 2.0 · le tuteur
+   - « Cours lu » obligatoire : un quiz ne porte que sur des cours lus.
+   - Maîtrise par notion (sous-parties d'un cours), lacunes, vérification.
+   - Prochaine meilleure étape, plan d'étude vers l'examen blanc.
+   - Navigation : Accueil · Cours · Entraîner · Progrès · Profil.
+   - Moniteur facultatif (Profil › Club et moniteur). Jeux allégés.
+   Rien n'est effacé dans la sauvegarde : les anciens écrans renvoient
+   simplement ailleurs.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, fx = AA.fx, ui = AA.ui, Q = AA.quiz;
+  const S = () => AA.S;
+  const T = (AA.tutor = {});
+  const norm = s => String(s || "").replace(/<[^>]+>/g, " ").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  const esc = u.esc;
+
+  /* ---------- Cours lus ---------- */
+  T.explicitRead = mid => !!(S().read[mid] || {}).e;
+  T.isRead = mid => {
+    const m = C.byId[mid]; if (!m) return true;
+    const s = S(); if (s.unlockAll || T.explicitRead(mid) || (s.placed || {})[mid]) return true;
+    return !!(AA.path && AA.path.certified(m.world));
+  };
+  T.markRead = (mid, el) => {
+    const s = S(), first = !(s.read[mid] || {}).x;
+    s.read[mid] = Object.assign({}, s.read[mid], { e: u.today(), ts: Date.now(), x: 1 });
+    G.dayc().read++; G.markDay(); AA.store.save();
+    if (first) G.addXp(T.XP.read, el);
+    fx.sfx.ok(); G.checkBadges();
+  };
+  T.unmarkRead = mid => { const r = Object.assign({}, S().read[mid]); delete r.e; S().read[mid] = r; AA.store.save(); };
+  /* Une question est jouable si son cours est lu (cartes, calculs compris). */
+  T.qOk = q => { if (!q) return false; const mid = q.m; return !mid || !C.byId[mid] || T.isRead(mid); };
+
+  /* ---------- Notions ---------- */
+  const cache = { list: {}, q: {} };
+  const STOP = new Set("avec dans pour plus moins entre leur leurs cette celui celle comme quand alors aussi faire sont etre avoir toute toutes votre notre quelle quelles quels mais donc sans chez plongee plongeur plongeurs toujours jamais".split(" "));
+  const words = s => new Set(norm(s).split(/[^a-z0-9]+/).filter(w => w.length >= 5 && !STOP.has(w)));
+  T.notions = mid => {
+    if (cache.list[mid]) return cache.list[mid];
+    const m = C.byId[mid]; if (!m) return [];
+    let list = [];
+    const cur = (C.notions || {})[mid];
+    if (cur) list = cur.map(([id, title, kw, hl]) => ({ id: mid + ":" + id, mid, t: title, re: new RegExp(kw, "g"), hl }));
+    else (m.memo || []).forEach(([a, b], i) => {
+      const k = norm(a), same = list.find(n => norm(n.t) === k);
+      if (same) words(b).forEach(w => same.w.add(w)); else list.push({ id: mid + ":m" + i, mid, t: a, w: words(a + " " + b), hl: a });
+    });
+    list.push({ id: mid + ":gen", mid, t: t("tu.general"), gen: true, hl: "" });
+    cache.list[mid] = list; return list;
+  };
+  T.notion = nid => { const mid = String(nid).split(":")[0]; return T.notions(mid).find(n => n.id === nid) || null; };
+  T.notionOf = q => {
+    if (!q || !q.m || !C.byId[q.m]) return null;
+    const key = q.gen ? "gen:" + q.gen : q.id;
+    if (cache.q[key]) return cache.q[key];
+    const list = T.notions(q.m), txt = norm(q.q + " " + (q.c ? q.c[q.a] : "") + " " + (q.e || "")), tw = txt.split(/[^a-z0-9]+/);
+    let best = null, bs = 0;
+    list.forEach(n => {
+      if (n.gen) return;
+      const s = n.re ? (txt.match(n.re) || []).length : tw.filter(w => n.w.has(w)).length;
+      if (s > bs) { bs = s; best = n; }
+    });
+    const id = (best || list[list.length - 1]).id; cache.q[key] = id; return id;
+  };
+  T.qsOf = nid => C.questions.filter(q => T.notionOf(q) === nid);
+  T.tabOf = n => {
+    const m = C.byId[n.mid]; if (!n.hl) return "essentiel";
+    const h = norm(n.hl).split(/\s+/).filter(x => x.length > 2), has = s => h.some(x => norm(s).includes(x));
+    return has(m.essentiel) ? "essentiel" : m.approfondir && has(m.approfondir) ? "approfondir" : m.memo.length ? "memo" : "essentiel";
+  };
+  T.openNotion = nid => { const n = T.notion(nid); if (!n) return; fx.sfx.tap(); AA.router.go("lesson/" + n.mid + "/" + T.tabOf(n), { hl: n.hl || null }); };
+
+  /* ---------- Maîtrise ---------- */
+  T.note = (q, ok) => {
+    const nid = T.notionOf(q); if (!nid) return;
+    const s = S(); s.nstat = s.nstat || {};
+    const r = s.nstat[nid] || { h: "", n: 0, ok: 0, d: "" };
+    r.h = (r.h + (ok ? 1 : 0)).slice(-10); r.n++; if (ok) r.ok++; r.d = u.today(); s.nstat[nid] = r;
+  };
+  T.stat = nid => (S().nstat || {})[nid] || null;
+  /* Réponses récentes pondérées (la dernière compte le plus), petit a priori à 50 %,
+     baisse douce après 10 jours sans réviser. */
+  T.mastery = nid => {
+    const r = T.stat(nid); if (!r || !r.n) return null;
+    let w = 1, sw = .6, sx = .3;
+    for (let i = r.h.length - 1; i >= 0; i--) { sx += w * +r.h[i]; sw += w; w *= .75; }
+    let m = sx / sw;
+    const days = r.d ? u.daysBetween(r.d, u.today()) : 0;
+    if (days > 10) m *= 1 - Math.min(.25, (days - 10) / 120);
+    return m;
+  };
+  T.isGap = nid => { const r = T.stat(nid); if (!r || r.n < 2) return false; return /00$/.test(r.h) || (r.n >= 3 && T.mastery(nid) < .45); };
+  T.nState = nid => {
+    const m = T.mastery(nid); if (m == null) return "new";
+    if (T.isGap(nid)) return "gap";
+    if (m >= .85 && T.stat(nid).n >= 4) return "master";
+    return m >= .65 ? "ok" : m >= .45 ? "mid" : "weak";
+  };
+  T.modInfo = mid => {
+    const ns = T.notions(mid).filter(n => T.stat(n.id) || T.qsOf(n.id).length);
+    const ms = ns.map(n => T.mastery(n.id)), seen = ms.filter(x => x != null);
+    return { ns, seen: seen.length, tot: ns.length, mastery: ns.length ? seen.reduce((a, b) => a + b, 0) / ns.length : 0, gaps: ns.filter(n => T.isGap(n.id)) };
+  };
+  T.state = mid => {
+    const m = C.byId[mid]; if (!m) return "toread";
+    if (!T.isRead(mid)) return "toread";
+    const I = T.modInfo(mid);
+    if (!I.seen && !S().themes[mid]) return AA.path.certified(m.world) && !T.explicitRead(mid) ? "cert" : "quiz";
+    if (I.gaps.length) return "gap";
+    if (G.isStale(mid)) return "review";
+    if (I.mastery >= .85 && I.seen === I.tot) return "master";
+    return I.mastery >= .65 ? "ok" : "learning";
+  };
+  const ST_IC = { toread: "book", quiz: "play", gap: "buoy", review: "refresh", learning: "chart", ok: "check", master: "trophy", cert: "check" };
+  const ST_CL = { toread: "", quiz: "pri", gap: "warn", review: "warn", learning: "pri", ok: "ok", master: "gold", cert: "ok" };
+  T.chip = mid => { const st = T.state(mid); return `<span class="chip tu-st st-${st} ${ST_CL[st]}">${AA.icon(ST_IC[st])} ${t("tu.st." + st)}</span>`; };
+  const N_CL = { new: "", weak: "warn", mid: "pri", ok: "ok", master: "gold", gap: "warn" };
+  const nChip = nid => { const st = T.nState(nid); return `<span class="chip xs ${N_CL[st]}">${t("tu.n." + st)}</span>`; };
+  const pct = x => Math.round((x || 0) * 100);
+  const barCol = x => x >= .85 ? "var(--gold)" : x >= .65 ? "var(--ok)" : x >= .45 ? "var(--primary)" : "var(--accent)";
+
+  /* ---------- Parcours ---------- */
+  T.prereqs = mid => {
+    if (C.prereq && C.prereq[mid]) return C.prereq[mid].filter(x => C.byId[x]);
+    const m = C.byId[mid]; if (!m) return [];
+    const l = C.inWorld(m.world), i = l.indexOf(m); return i > 0 ? [l[i - 1].id] : [];
+  };
+  T.nextToRead = wid => { const l = C.inWorld(wid).filter(m => !T.isRead(m.id)); return l.find(m => T.prereqs(m.id).every(T.isRead)) || l[0] || null; };
+  T.worldInfo = wid => {
+    const l = C.inWorld(wid); let seen = 0, tot = 0, ms = 0;
+    l.forEach(m => { const I = T.modInfo(m.id); seen += I.seen; tot += I.tot; ms += I.mastery * I.tot; });
+    return { l, read: l.filter(m => T.isRead(m.id)).length, n: l.length, seen, tot, mastery: tot ? ms / tot : 0 };
+  };
+  const activeMod = mid => { const m = C.byId[mid]; return !!m && T.isRead(mid) && (!AA.path || AA.path.active(m.world)); };
+  T.gaps = () => {
+    const chk = S().gapChk || {}, goal = G.goalWorld();
+    return Object.keys(S().nstat || {}).filter(nid => T.isGap(nid) && activeMod(nid.split(":")[0]) && T.notion(nid))
+      .map(nid => ({ id: nid, n: T.notion(nid), m: T.mastery(nid), wait: !!chk[nid] && chk[nid] > u.today() }))
+      .sort((a, b) => ((C.byId[b.n.mid].world === goal) - (C.byId[a.n.mid].world === goal)) || a.m - b.m);
+  };
+  T.checksDue = () => Object.entries(S().gapChk || {}).filter(([nid, d]) => d <= u.today() && T.notion(nid)).map(([nid]) => nid);
+  T.weakNotions = () => Object.keys(S().nstat || {}).filter(nid => activeMod(nid.split(":")[0]) && T.notion(nid) && ["weak", "mid"].includes(T.nState(nid)))
+    .sort((a, b) => T.mastery(a) - T.mastery(b));
+  const readMin = m => Math.max(1, Math.round(((m.essentiel || "") + (m.approfondir || "")).replace(/<[^>]+>/g, " ").split(/\s+/).length / 200));
+
+  /* Prochaines étapes, de la plus utile à la moins urgente. */
+  T.actions = () => {
+    const s = S(), out = [], wid = G.goalWorld(), W = C.worldById[wid];
+    const goalFirst = (a, b) => ((s.read[b.id] || {}).ts || 0) - ((s.read[a.id] || {}).ts || 0) || (C.byId[b.id].world === wid) - (C.byId[a.id].world === wid);
+    const untested = C.modules.filter(m => T.explicitRead(m.id) && !s.themes[m.id] && !T.modInfo(m.id).seen && AA.path.active(m.world)).sort(goalFirst);
+    if (untested[0]) { const m = untested[0]; out.push({ k: "quiz", ic: "play", t: t("tu.a.quiz", { t: m.title }), s: t("tu.a.quizS"), run: () => Q.module(m) }); }
+    T.checksDue().slice(0, 1).forEach(nid => { const n = T.notion(nid); out.push({ k: "check", ic: "target", t: t("tu.a.check", { n: n.t }), s: t("tu.a.checkS"), run: () => T.drill(nid, true) }); });
+    T.gaps().filter(g => !g.wait).slice(0, 2).forEach(g => out.push({ k: "gap", ic: "buoy", t: t("tu.a.gap", { n: g.n.t }), s: t("tu.a.gapS", { t: C.byId[g.n.mid].title }), run: () => T.fixGap(g.id) }));
+    const due = G.qDue ? G.qDue().length : 0;
+    if (due >= 6) out.push({ k: "srs", ic: "brain", t: t("tu.a.srs"), s: t("tu.a.srsS", { n: due }), run: () => Q.srs() });
+    const nx = T.nextToRead(wid);
+    if (nx) { const l = C.inWorld(wid); out.push({ k: "read", ic: "book", t: t("tu.a.read", { t: nx.title }), s: t("tu.a.readS", { i: l.indexOf(nx) + 1, tot: l.length, w: W.short, m: readMin(nx) }), run: () => AA.router.go("lesson/" + nx.id) }); }
+    else {
+      const recent = (s.exams || []).some(e => (e.world || "n2") === wid && e.date && e.date >= u.addDays(-6));
+      if (!recent) out.push({ k: "exam", ic: "exam", t: t("tu.a.exam", { w: W.short }), s: t("tu.a.examS"), run: () => AA.router.go("examen/" + wid) });
+    }
+    T.weakNotions().slice(0, 1).forEach(nid => { const n = T.notion(nid); out.push({ k: "weak", ic: "target", t: t("tu.a.weak", { n: n.t }), s: t("tu.a.weakS", { t: C.byId[n.mid].title }), run: () => T.drill(nid) }); });
+    if (C.modules.some(m => activeMod(m.id))) out.push({ k: "session", ic: "compass", t: t("tu.a.session"), s: t("tu.a.sessionS"), run: () => T.session() });
+    return out;
+  };
+  T.planText = wid => {
+    const WI = T.worldInfo(wid), r = WI.n - WI.read, dx = G.daysToExam();
+    if (dx != null && dx > 0) { if (!r) return t("tu.planDateDone", { d: dx }); const weeks = Math.max(1, Math.floor(dx / 7) - 1); return t("tu.planDate", { d: dx, r, w: Math.ceil(r / weeks) }); }
+    return r ? t("tu.planNoDate", { r }) : t("tu.planNoDateDone");
+  };
+
+  /* ---------- Séances ---------- */
+  T.drill = (nid, check) => {
+    const n = T.notion(nid); if (!n) return;
+    if (!T.isRead(n.mid)) return T.needRead(n.mid);
+    const s = S(), rank = q => (s.errors[q.id] || s.seen[q.id] === 0 ? 0 : s.seen[q.id] === undefined ? 1 : 2) + Math.random() * .9;
+    let qs = T.qsOf(nid).sort((a, b) => rank(a) - rank(b)).slice(0, 5);
+    const gk = G.genKeys(n.mid).filter(k => { const g = G.gen(k); return g && T.notionOf(g) === nid; });
+    if (qs.length < 5) T.notions(n.mid).filter(x => x.id !== nid).sort((a, b) => (T.mastery(a.id) ?? .5) - (T.mastery(b.id) ?? .5))
+      .forEach(x => T.qsOf(x.id).sort((a, b) => rank(a) - rank(b)).forEach(q => { if (qs.length < 5 && !qs.includes(q)) qs.push(q); }));
+    const calc = gk.length ? [G.gen(u.pick(gk))].filter(Boolean) : [];
+    Q.start("drill", u.shuffle(qs).concat(calc), { notion: nid, check: !!check, title: t("tu.drill", { n: n.t }), back: "home" });
+  };
+  T.session = () => {
+    const s = S(), used = new Set(), pick = [];
+    const add = q => { if (q && !used.has(q.id) && G.inPlay(q.m)) { used.add(q.id); pick.push(q); } };
+    T.gaps().slice(0, 2).forEach(g => u.shuffle(T.qsOf(g.id)).slice(0, 2).forEach(add));
+    (G.qDue ? G.qDue() : []).slice(0, 5).forEach(add);
+    C.modules.filter(m => T.explicitRead(m.id)).sort((a, b) => s.read[b.id].e.localeCompare(s.read[a.id].e)).slice(0, 2)
+      .forEach(m => u.shuffle(m.quiz.filter(q => s.seen[q.id] === undefined)).slice(0, 2).forEach(add));
+    T.weakNotions().slice(0, 3).forEach(nid => add(u.pick(T.qsOf(nid))));
+    /* Rappels des niveaux précédents : les questions lues il y a le plus longtemps. */
+    const goal = G.goalWorld();
+    C.questions.filter(q => G.inPlay(q.m) && C.byId[q.m].world !== goal && q.lvl !== 2).sort((a, b) => (s.last[a.id] || "").localeCompare(s.last[b.id] || "") || Math.random() - .5).slice(0, 2).forEach(add);
+    const pool = C.questions.filter(q => G.inPlay(q.m));
+    u.shuffle(pool.filter(q => s.seen[q.id] === undefined)).forEach(q => { if (pick.length < 10) add(q); });
+    u.shuffle(pool).forEach(q => { if (pick.length < 10) add(q); });
+    const calcs = [G.gen()].filter(Boolean);
+    Q.start("tutor", u.shuffle(pick.slice(0, 11)).concat(calcs), { title: t("tu.session"), back: "home" });
+  };
+  /* Conditions des trophées 2.0. */
+  const cond0 = G.cond;
+  G.cond = c => {
+    const s = S(), nw = Object.values(s.nwon || {});
+    switch (c.k) {
+      case "tuReadW": { const ms = C.inWorld(c.w); return [ms.filter(m => T.explicitRead(m.id)).length, ms.length || 1]; }
+      case "tuReadN": return [C.modules.filter(m => T.explicitRead(m.id)).length, c.n === "all" ? C.modules.length : c.n];
+      case "tuExam": return [(s.examOk || {})[c.w] ? 1 : 0, 1];
+      case "tuNotion": return [nw.filter(v => v >= 1).length, c.n];
+      case "tuMaster": return [nw.filter(v => v >= 2).length, c.n];
+      case "tuGap": return [s.gapFixed || 0, c.n];
+      case "tuEclair": return [s.eclairOk || 0, c.n];
+      case "tuSess": return [s.tuSess || 0, c.n];
+      default: return cond0(c);
+    }
+  };
+  /* Barème XP 2.0 des actions d'apprentissage (les réponses sont dans game.js). */
+  T.XP = { read: 25, eclair: 15, notion: 15, master: 25, gap: 30, session: 20, examPass: 150, examDay: 30 };
+  /* Défi éclair : 3 questions juste après la lecture, pour ancrer. */
+  T.eclair = mid => {
+    const m = C.byId[mid]; if (!m) return; const s = S();
+    const qs = u.shuffle(m.quiz.filter(q => q.lvl !== 2)).sort((a, b) => (s.seen[a.id] === undefined ? 0 : 1) - (s.seen[b.id] === undefined ? 0 : 1)).slice(0, 3);
+    if (!qs.length) return;
+    Q.start("eclair", qs, { title: t("tu.eclairTitle", { t: m.title }), back: "lesson/" + mid });
+  };
+  T.offerEclair = m => {
+    fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight * .4, 30, "rgba(61,220,151,.85)");
+    ui.sheet(`<div class="tu-sheet"><span class="medal">${AA.icon("check")}</span><h3>${t("tu.readToast")} · +5 XP</h3><p>${t("tu.eclairS", { t: esc(m.title) })}</p>
+      <button class="btn block" data-tueclair="${m.id}">${AA.icon("bolt")} ${t("tu.eclairBtn")}</button><button class="btn ghost block" data-no>${t("tu.later")}</button></div>`, m.title);
+  };
+  T.fixGap = nid => {
+    const n = T.notion(nid); if (!n) return; fx.sfx.flip();
+    ui.sheet(`<div class="tu-sheet"><span class="medal">${AA.icon("buoy")}</span><h3>${t("tu.gapT", { n: esc(n.t) })}</h3><p class="small muted">${t("tu.gapS", { t: esc(C.byId[n.mid].title) })}</p>
+      <ol class="tu-steps"><li><button class="btn ghost block" data-tunotion="${n.id}">${AA.icon("book")} ${t("tu.gap1")}</button></li>
+      <li><button class="btn block" data-tudrill="${n.id}">${AA.icon("play")} ${t("tu.gap2")}</button></li>
+      <li class="small muted">${AA.icon("calendar")} ${t("tu.gap3")}</li></ol></div>`, n.t);
+  };
+  T.needRead = mid => {
+    const m = C.byId[mid]; if (!m) return; fx.sfx.bad();
+    ui.sheet(`<div class="tu-sheet"><span class="medal">${AA.icon("lock")}</span><h3>${t("tu.needT")}</h3><p>${t("tu.needS", { t: esc(m.title) })}</p>
+      <a class="btn block" href="#/lesson/${m.id}">${AA.icon("book")} ${t("tu.needBtn", { t: esc(m.title) })}</a></div>`, t("tu.needT"));
+  };
+  T.needAny = wid => {
+    const m = T.nextToRead(wid || G.goalWorld()) || C.modules[0]; fx.sfx.bad();
+    ui.sheet(`<div class="tu-sheet"><span class="medal">${AA.icon("book")}</span><h3>${t("tu.noneT")}</h3><p>${t("tu.noneS")}</p>
+      <a class="btn block" href="#/lesson/${m.id}">${AA.icon("book")} ${t("tu.needBtn", { t: esc(m.title) })}</a></div>`, t("tu.noneT"));
+  };
+  /* Bilan du tuteur à la fin de chaque série : lacunes repérées, vérification. */
+  T.resultExtra = c => {
+    const s = S(); let out = "";
+    if (c.mode === "drill" && c.notion) {
+      const n = T.notion(c.notion), good = c.answers.filter(a => a.ok).length, p = good / Math.max(1, c.answers.length);
+      if (!c._tu) {
+        c._tu = true; s.gapChk = s.gapChk || {};
+        if (c.check && p >= .8) { delete s.gapChk[c.notion]; c._msg = t("tu.resChk", { n: n.t }); s.gapFixed = (s.gapFixed || 0) + 1; c.xp += T.XP.gap; G.addXp(T.XP.gap); }
+        else if (c.check) { s.gapChk[c.notion] = u.addDays(1); c._msg = t("tu.resChkNo", { n: n.t }); }
+        else s.gapChk[c.notion] = u.addDays(2);
+        AA.store.save(true);
+      }
+      if (c._msg) out += `<p class="callout ${c.check && p >= .8 ? "ok" : ""}">${esc(c._msg)}</p>`;
+    }
+    if (c.mode === "eclair") {
+      const good = c.answers.filter(a => a.ok).length, all = good === c.answers.length && good > 0;
+      if (!c._tu) { c._tu = true; if (all) { c.xp += T.XP.eclair; G.addXp(T.XP.eclair); s.eclairOk = (s.eclairOk || 0) + 1; } }
+      out += `<p class="callout ${all ? "ok" : ""}">${all ? t("tu.eclairOk") : t("tu.eclairNo")}</p>`;
+    }
+    if (c.mode === "tutor" && !c._tu) {
+      c._tu = true; s.tuSess = (s.tuSess || 0) + 1;
+      if (c.answers.length >= 8 && s.tuDay !== u.today()) { s.tuDay = u.today(); c.xp += T.XP.session; G.addXp(T.XP.session); }
+    }
+    if (c.mode === "exam" && !c._tu) {
+      c._tu = true; const ex = s.exams[s.exams.length - 1], w = c.world || "n2"; s.examOk = s.examOk || {};
+      if (ex && ex.score >= 15 && c.full && !s.examOk[w]) { s.examOk[w] = u.today(); c.xp += T.XP.examPass; G.addXp(T.XP.examPass); out += `<p class="callout ok">${t("tu.examPassXp", { n: T.XP.examPass })}</p>`; }
+      else if (c.answers.length >= Math.min(20, c.items.length) && s.examDay !== u.today()) { s.examDay = u.today(); c.xp += T.XP.examDay; G.addXp(T.XP.examDay); }
+      AA.store.save(); G.checkBadges();
+    }
+    /* Notions gagnées pendant la série : la progression se voit tout de suite. */
+    const won = Object.keys(c._ns0 || {}).filter(nid => !["ok", "master"].includes(c._ns0[nid]) && ["ok", "master"].includes(T.nState(nid)));
+    if (won.length) out += `<section class="card soft tu-res tu-won"><p class="eyebrow">${AA.icon("sparkle")} ${t("tu.wonT", { n: won.length })}</p><div class="row">${won.slice(0, 6).map(nid => `<span class="chip gold">${AA.icon("check")} ${esc(T.notion(nid).t)}</span>`).join("")}</div></section>`;
+    const ids = [...new Set(c.answers.filter(a => !a.ok && !a.card).map(a => T.notionOf(a.q)).filter(Boolean))].filter(nid => T.isGap(nid) && nid !== c.notion);
+    if (ids.length) out += `<section class="card soft tu-res"><p class="eyebrow">${t("tu.resGapsT")}</p><p class="small muted">${t("tu.resGapsS")}</p>
+      ${ids.slice(0, 4).map(nid => { const n = T.notion(nid); return `<div class="row between tu-gaprow"><span class="grow"><b class="small">${esc(n.t)}</b><span class="xs muted"> · ${esc(C.byId[n.mid].title)}</span></span><button class="btn sm" data-tufix="${nid}">${t("tu.fix")}</button></div>`; }).join("")}</section>`;
+    return out;
+  };
+
+  /* ---------- Branchements dans le moteur existant ---------- */
+  const rec = G.record;
+  G.record = (q, ok, doubt, picked) => {
+    const nid = T.notionOf(q), st0 = nid ? T.nState(nid) : "";
+    rec(q, ok, doubt, picked);
+    try { T.note(q, ok && !doubt); if (nid) T.notionXp(nid, st0); T.dailyXp(); } catch (e) {}
+  };
+  /* XP d'apprentissage : notion acquise (+15) puis maîtrisée (+25), une seule fois chacune. */
+  T.notionXp = (nid, st0) => {
+    const s = S(), now = T.nState(nid); s.nwon = s.nwon || {};
+    const lvl = now === "master" ? 2 : now === "ok" ? 1 : 0, had = s.nwon[nid] || 0;
+    if (lvl > had) { s.nwon[nid] = lvl; const x = (lvl >= 1 && had < 1 ? T.XP.notion : 0) + (lvl >= 2 ? T.XP.master : 0); if (x) G.addXp(x); }
+  };
+  /* Bonus du jour : 10 réponses dans la journée = +10 XP (+20 dès 7 jours de série, +30 dès 30). */
+  T.dailyXp = () => {
+    const dc = G.dayc(); if (dc.ans < 10 || dc.bonus) return;
+    dc.bonus = 1; const st = G.streak(); G.addXp(st >= 30 ? 30 : st >= 7 ? 20 : 10);
+  };
+  G.unlocked = m => { if (typeof m === "string") m = C.byId[m]; return !!m; };
+  G.worldOpen = w => { if (typeof w === "string") w = C.worldById[w]; return !!w && !w.soon; };
+  G.inPlay = m => { if (typeof m === "string") m = C.byId[m]; return !!m && (!AA.path || AA.path.active(m.world)) && T.isRead(m.id); };
+  const gen0 = G.gen;
+  G.gen = key => { if (key) return gen0(key); return G.genKeys().some(k => G.inPlay(C.generators[k].m)) ? gen0() : null; };
+  G.nextModule = () => T.nextToRead(G.goalWorld()) || C.modules.find(m => !T.isRead(m.id)) || C.inWorld(G.goalWorld())[0] || C.modules[0];
+  G.claimable = () => 0;
+  AA.stars = () => "";
+
+  const FREE = new Set(["place", "pc"]);
+  const start0 = Q.start;
+  Q.start = (mode, qs, opts) => {
+    opts = opts || {};
+    if (mode === "module" && opts.module && !T.isRead(opts.module)) return T.needRead(opts.module);
+    if (mode === "gen" && /^lesson\//.test(opts.back || "")) { const mid = opts.back.split("/")[1]; if (!T.isRead(mid)) return T.needRead(mid); }
+    if (!FREE.has(mode)) { qs = (qs || []).filter(q => q && T.qOk(q)); if (!qs.length) return T.needAny(opts.world); }
+    const ns0 = {}; qs.forEach(q => { const nid = T.notionOf(q); if (nid) ns0[nid] = T.nState(nid); }); opts._ns0 = ns0;
+    const prev = opts.onResult;
+    opts.onResult = (c, good, n) => (prev ? prev(c, good, n) || "" : "") + T.resultExtra(c, good, n);
+    return start0(mode, qs, opts);
+  };
+  const restart0 = Q.restart;
+  Q.restart = c => c && c.mode === "drill" ? T.drill(c.notion, c.check) : c && c.mode === "tutor" ? T.session() : restart0(c);
+  Q.calcs = (mid, n, title) => {
+    const keys = G.genKeys(mid).filter(k => T.isRead(C.generators[k].m));
+    if (!keys.length) return mid ? T.needRead(mid) : T.needAny();
+    Q.start("gen", Array.from({ length: n || 6 }, () => G.gen(u.pick(keys))), { title: title || t("quiz.calcs"), air: mid ? 200 : null, back: mid ? "lesson/" + mid : "train" });
+  };
+  /* Examen blanc : toujours ouvert, mais seulement sur les cours lus. */
+  Q.exam = (full, wid) => {
+    wid = wid || Q.examWorld();
+    const mods = C.inWorld(wid).filter(m => T.isRead(m.id)), pick = [], w = C.worldById[wid];
+    if (!mods.length) return T.needAny(wid);
+    mods.forEach(m => pick.push(...u.shuffle(m.quiz.filter(q => q.lvl !== 2)).slice(0, full ? 2 : 1)));
+    const all = C.questions.filter(q => q.world === wid && T.qOk(q) && !pick.includes(q));
+    const n = full ? 40 : 20, nc = full ? 10 : 4;
+    const rest = u.shuffle(all).slice(0, Math.max(0, n - nc - pick.length));
+    const wg = G.genKeys().filter(k => C.byId[C.generators[k].m] && C.byId[C.generators[k].m].world === wid && T.isRead(C.generators[k].m));
+    const calcs = wg.length ? Array.from({ length: nc }, () => G.gen(u.pick(wg))).filter(Boolean) : [];
+    Q.start("exam", u.shuffle(pick.slice(0, n - calcs.length).concat(rest, calcs)), { full, world: wid, timeLeft: (full ? 45 : 20) * 60, title: t(full ? "mode.examFull" : "mode.examQuick") + (w && wid !== "n2" ? " · " + w.short : ""), back: "train" });
+  };
+
+  /* Jeux retirés (choix de Geoffrey) : trophées associés masqués, écrans redirigés. */
+  const HIDE_K = new Set(["aqua", "story", "boss", "bossAny", "chapter"]), HIDE_F = new Set(["weeks", "events"]);
+  T.badgeHidden = b => !b.test || HIDE_K.has(b.test.k) || (b.test.k === "v19" && HIDE_F.has(b.test.f));
+  ["aquarium", "story", "boss", "quests"].forEach(v => AA.view(v, { tab: "progres", guard: () => false, fallback: "progres", render() {} }));
+
+  /* Migration 2.0 : cours réussis (≥ 1 étoile) = lus ; historique → notions. */
+  /* Barème XP 2.0 : pas de rattrapage massif. Les notions déjà acquises et les cours
+     déjà lus sont notés comme « déjà récompensés » ; la scène d'évolution repart du palier actuel. */
+  T.migrateXp = () => {
+    const s = S(); if (s.v20xp) return;
+    s.nwon = s.nwon || {};
+    Object.keys(s.nstat || {}).forEach(nid => { const st = T.nState(nid); if (st === "master") s.nwon[nid] = 2; else if (st === "ok") s.nwon[nid] = 1; });
+    Object.keys(s.read || {}).forEach(k => { if (s.read[k] && s.read[k].e) s.read[k].x = 1; });
+    if (AA.avatar) s.evoSeen = AA.avatar.stage(G.levelOf(s.xp).l);
+    s.v20xp = 1;
+  };
+  T.migrate = () => {
+    const s = S();
+    C.badges = C.badges.filter(b => !T.badgeHidden(b)); C.creatures = [];
+    if (s.v20) { T.migrateXp(); return; }
+    C.modules.forEach(m => { if (G.stars(m.id) >= 1 && !T.explicitRead(m.id)) s.read[m.id] = Object.assign({}, s.read[m.id], { e: (s.read[m.id] || {}).a || u.today(), mig: 1 }); });
+    s.nstat = s.nstat || {};
+    if (!Object.keys(s.nstat).length) {
+      Object.keys(s.stats || {}).filter(id => C.qById[id] && !id.startsWith("pc-")).sort((a, b) => (s.last[a] || "").localeCompare(s.last[b] || "")).forEach(id => {
+        const q = C.qById[id], st = s.stats[id], nid = T.notionOf(q); if (!nid || !st || !st.n) return;
+        const r = s.nstat[nid] || { h: "", n: 0, ok: 0, d: "" };
+        r.h = (r.h + (s.seen[id] === 1 ? 1 : 0)).slice(-10); r.n += st.n; r.ok += st.ok; if ((s.last[id] || "") > r.d) r.d = s.last[id] || r.d; s.nstat[nid] = r;
+      });
+    }
+    s.v20 = 1; s.v20note = Object.keys(s.themes || {}).length > 0; T.migrateXp();
+    AA.store.save(true);
+  };
+  const rstart = AA.router.start;
+  AA.router.start = () => { try { T.migrate(); } catch (e) { console.error(e); } rstart(); };
+  if (AA.store.onSave) { /* rien : la migration est idempotente (drapeau v20) */ }
+
+  /* ---------- Navigation ---------- */
+  ui.TABS = [["home", "home"], ["cours", "book"], ["train", "train"], ["progres", "chart"], ["profile", "user"]];
+  const V = AA.views;
+  const setTab = (tab, list) => list.forEach(n => { if (V[n]) V[n].tab = tab; });
+  setTab("cours", ["map", "lesson"]);
+  setTab("train", ["lab", "pc", "scen", "tables", "sim", "calc", "brief", "succ", "examen", "flash", "mistakes"]);
+  setTab("profile", ["carnet", "valider", "cursus", "club", "fiches", "parcours", "reports", "sources", "backup", "settings"]);
+
+  /* Clics délégués (fonctionnent dans les panneaux aussi). */
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-turead],[data-tuunread],[data-tuquiz],[data-tunotion],[data-tudrill],[data-tufix],[data-tuact],[data-tusession],[data-tumig],[data-tueclair]");
+    if (!b) return;
+    const d = b.dataset;
+    if (d.turead) { const m = C.byId[d.turead]; T.markRead(d.turead, b); AA.router.refresh(); T.offerEclair(m); }
+    else if (d.tueclair) { fx.sfx.tap(); document.querySelectorAll(".sheet-wrap").forEach(x => x._close && x._close()); T.eclair(d.tueclair); }
+    else if (d.tuunread) ui.confirm(t("tu.unreadQ"), t("tu.unreadOk"), () => { T.unmarkRead(d.tuunread); AA.router.refresh(); });
+    else if (d.tuquiz) { fx.sfx.tap(); Q.module(C.byId[d.tuquiz]); }
+    else if (d.tunotion) T.openNotion(d.tunotion);
+    else if (d.tudrill) { fx.sfx.tap(); T.drill(d.tudrill); }
+    else if (d.tufix) T.fixGap(d.tufix);
+    else if (d.tuact != null && T._acts && T._acts[+d.tuact]) { fx.sfx.tap(); T._acts[+d.tuact].run(); }
+    else if (d.tusession != null) { fx.sfx.tap(); T.session(); }
+    else if (d.tumig != null) { S().v20note = false; AA.store.save(); const c = b.closest(".tu-mig"); if (c) c.remove(); }
+  });
+
+  /* ---------- Accueil : le tuteur ---------- */
+  const bars = WI => `<div class="tu-bars">
+      <div><span class="small">${t("tu.readN", { n: WI.read, tot: WI.n })}</span>${ui.bar(WI.read / Math.max(1, WI.n), "var(--primary)")}</div>
+      <div><span class="small">${t("tu.notionsN", { n: WI.seen, tot: WI.tot })}</span>${ui.bar(WI.seen / Math.max(1, WI.tot), "var(--world-n3)")}</div>
+      <div><span class="small">${t("tu.masteryN", { p: pct(WI.mastery) })}</span>${ui.bar(WI.mastery, barCol(WI.mastery))}</div></div>`;
+  const gapRows = list => list.map(g => `<div class="tu-gaprow"><span class="grow"><b class="small">${esc(g.n.t)}</b><span class="xs muted">${esc(C.byId[g.n.mid].title)} · ${pct(g.m)} %</span>${ui.bar(g.m, "var(--accent)")}</span><button class="btn sm" data-tufix="${g.id}">${t("tu.fix")}</button></div>`).join("");
+  AA.view("home", {
+    tab: "home", depth: 0,
+    render(el) {
+      const s = S(), P = s.profile, wid = G.goalWorld(), W = C.worldById[wid], WI = T.worldInfo(wid);
+      const hr = new Date().getHours(), hello = t(hr < 5 ? "home.night" : hr < 18 ? "home.hello" : "home.evening", { name: esc(P.name || t("home.diver")) });
+      const dx = G.daysToExam(), st = G.streak(), line = dx != null && dx >= 0 ? t("home.examIn", { n: dx }) : st ? t("home.streak", { n: st }) : t("home.first");
+      const acts = (T._acts = T.actions()), a0 = acts[0], rest = acts.slice(1, 4), gaps = T.gaps().slice(0, 3), anyRead = C.modules.some(m => activeMod(m.id));
+      el.innerHTML = `
+        <header class="hello has-ava"><a class="ava-link" href="#/profile" aria-label="${t("tab.profile")}">${AA.avatar.mine("md")}</a><div><h1>${hello}</h1><p>${line}</p></div></header>
+        ${AA.pathView && AA.pathView.homeCard ? AA.pathView.homeCard() : ""}
+        ${s.v20note ? `<div class="callout tu-mig"><span class="eyebrow">${t("tu.migT")}</span>${t("tu.migS")} <button class="linkbtn small" data-tumig>${t("tu.ok")}</button></div>` : ""}
+        <div class="home-grid"><div class="col-main">
+        ${a0 ? `<section class="card tu-next" style="--wc:var(${W.color})"><div class="row between"><p class="eyebrow">${t("tu.next")}</p>${AA.helpBtn("tuteur")}</div>
+          <div class="tu-next-main"><span class="orb">${AA.icon(a0.ic)}</span><div class="grow"><h2 class="tu-next-t">${esc(a0.t)}</h2><p class="small muted">${esc(a0.s)}</p></div></div>
+          <button class="btn block" data-tuact="0">${AA.icon("play")} ${t("tu.a.go")}</button></section>` : ""}
+        ${rest.length ? `<div class="section-title"><h3>${t("tu.then")}</h3></div><div class="stack tu-then">${rest.map((a, i) => `<button class="card tu-act" data-tuact="${i + 1}"><span class="medal">${AA.icon(a.ic)}</span><span class="grow"><b>${esc(a.t)}</b><span class="small muted">${esc(a.s)}</span></span>${AA.icon("next")}</button>`).join("")}</div>` : ""}
+        ${anyRead ? `<section class="card tu-today"><div><b>${t("tu.todayT")}</b><p class="small muted">${t("tu.todayS")}</p></div><button class="btn ghost block" data-tusession>${AA.icon("compass")} ${t("tu.todayBtn")}</button></section>` : ""}
+        </div><aside class="col-side">
+        <section class="card tu-where" style="--wc:var(${W.color})"><div class="row between"><p class="eyebrow">${t("tu.where")}</p>${AA.helpBtn("maitrise")}</div>
+          <h3>${t("tu.goal", { w: esc(W.short) })}</h3>${bars(WI)}
+          <p class="small" style="margin:var(--sp-3) 0">${T.planText(wid)}</p>
+          <div class="row">${!P.examDate ? `<a class="btn ghost sm" href="#/settings">${AA.icon("calendar")} ${t("tu.setDate")}</a>` : ""}<a class="btn ghost sm" href="#/cours/${wid}">${AA.icon("book")} ${t("tu.seeAll")}</a></div></section>
+        <div class="section-title"><h3>${t("tu.gapsT")}</h3>${AA.helpBtn("maitrise")}</div>
+        <section class="card tu-gaps">${gaps.length ? gapRows(gaps) : `<p class="small muted" style="margin:0">${t("tu.gapsNone")}</p>`}</section>
+        </aside></div>`;
+      if (AA.pathView && AA.pathView.wireHome) AA.pathView.wireHome();
+      AA.avatar.checkEvolution();
+    }
+  });
+
+  /* ---------- Cours : le parcours dans l'ordre ---------- */
+  const worldChips = (cur, attr) => `<div class="wstrip tu-wstrip" role="tablist">${C.worlds.filter(x => !x.soon && C.inWorld(x.id).length).map(x => { const WI = T.worldInfo(x.id);
+    return `<button role="tab" class="wchip m-${AA.path.mode(x.id)}" data-${attr}="${x.id}" aria-pressed="${x.id === cur}" aria-selected="${x.id === cur}" style="--wc:var(${x.color})"><span class="wring" style="--p:${WI.read / Math.max(1, WI.n)}">${AA.icon(x.icon)}</span><b>${esc(x.short)}</b><span class="xs">${AA.path.certified(x.id) ? "✓ " + t("map.got") : WI.read + "/" + WI.n}</span></button>`; }).join("")}</div>`;
+  const centerChip = () => { const ws = u.$(".tu-wstrip [aria-pressed=true]"); if (ws) { const st = ws.parentElement; st.scrollLeft = ws.offsetLeft - (st.clientWidth - ws.offsetWidth) / 2; } };
+  AA.view("cours", {
+    tab: "cours", depth: 8,
+    render(el, [wid0]) {
+      const wid = C.worldById[wid0] && !C.worldById[wid0].soon && C.inWorld(wid0).length ? wid0 : G.goalWorld(), W = C.worldById[wid], l = C.inWorld(wid), WI = T.worldInfo(wid), nx = T.nextToRead(wid);
+      el.innerHTML = `${ui.head(t("tu.coursT"), null, `<a class="btn ghost sm" href="#/map/${wid}">${AA.icon("map")} ${t("tu.mapView")}</a>`)}
+        <p class="muted">${t("tu.coursS")} ${AA.helpBtn("maitrise")}</p>
+        ${worldChips(wid, "cw")}
+        <section class="card tu-where" style="--wc:var(${W.color});margin-top:var(--sp-4)"><h2 class="h3">${esc(W.title)}</h2><p class="small muted" style="margin:4px 0 var(--sp-3)">${esc(W.sub)}</p>${bars(WI)}
+          ${AA.path.certified(wid) ? `<p class="xs muted" style="margin:var(--sp-3) 0 0">${t("tu.certNote")}</p>` : `<p class="small" style="margin:var(--sp-3) 0 0">${T.planText(wid)}</p>`}</section>
+        <ol class="tu-path">${l.map((m, i) => { const st = T.state(m.id), pre = T.prereqs(m.id).filter(x => !T.isRead(x)), I = T.modInfo(m.id);
+          return `<li class="tu-step st-${st} ${nx && nx.id === m.id ? "here" : ""}"><a class="tu-step-a" href="#/lesson/${m.id}"><span class="tu-num">${i + 1}</span>
+            <span class="grow tu-step-b"><b>${esc(m.title)}</b><span class="xs muted">${esc(m.sub)}</span><span class="tu-step-c">${T.chip(m.id)}${T.isRead(m.id) && I.seen ? `<span class="xs muted">${t("tu.masteryN", { p: pct(I.mastery) })}</span>` : ""}</span>
+            ${pre.length ? `<span class="xs muted">${t("tu.prereqT")} : ${pre.map(x => esc(C.byId[x].title)).join(", ")}</span>` : ""}
+            ${T.isRead(m.id) && I.seen ? ui.bar(I.mastery, barCol(I.mastery)) : ""}</span>${AA.icon("next")}</a></li>`; }).join("")}
+          <li class="tu-step exam ${!nx ? "here" : ""}"><a class="tu-step-a" href="#/examen/${wid}"><span class="tu-num">${AA.icon("exam")}</span><span class="grow tu-step-b"><b>${t("tu.examStep", { w: esc(W.short) })}</b><span class="xs muted">${nx ? t("tu.examStepS", { n: l.length }) : t("tu.examStepOk")}</span></span>${AA.icon("next")}</a></li></ol>`;
+      u.$$("[data-cw]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.router.go("cours/" + b.dataset.cw, undefined, true); });
+      requestAnimationFrame(centerChip);
+    }
+  });
+
+  /* ---------- Progrès : notion par notion ---------- */
+  AA.view("progres", {
+    tab: "progres", depth: 6,
+    render(el, [wid0]) {
+      const s = S(), wid = C.worldById[wid0] && C.inWorld(wid0).length ? wid0 : G.goalWorld(), W = C.worldById[wid], WI = T.worldInfo(wid), gaps = T.gaps();
+      const tot = Object.values(s.stats).reduce((a, v) => [a[0] + v.n, a[1] + v.ok], [0, 0]), got = C.badges.filter(b => s.badges[b.id]).length;
+      el.innerHTML = `${ui.head(t("tu.progT"), null, AA.helpBtn("maitrise"))}<p class="muted">${t("tu.progS")}</p>
+        <div class="stats" style="margin-top:var(--sp-4)"><div class="stat"><b>${s.xp}</b><span>XP</span></div><div class="stat"><b>${G.streak()}</b><span>${t("prof.streak")}</span></div>
+          <div class="stat"><b>${tot[0] ? pct(tot[1] / tot[0]) + " %" : "—"}</b><span>${t("prof.acc", { n: tot[0] })}</span></div><div class="stat"><b>${s.exams.length ? u.num(Math.max(...s.exams.map(e => e.score)), 1) : "—"}</b><span>${t("prof.bestExam")}</span></div></div>
+        <div class="section-title"><h3>${t("tu.gapsT")}</h3></div>
+        <section class="card tu-gaps">${gaps.length ? gapRows(gaps.slice(0, 8)) : `<p class="small muted" style="margin:0">${t("tu.gapsNone")}</p>`}</section>
+        <div class="section-title"><h3>${t("tu.byCourse")}</h3></div>
+        ${worldChips(wid, "pw")}
+        <section class="card tu-where" style="--wc:var(${W.color});margin-top:var(--sp-3)"><h3>${esc(W.title)}</h3>${bars(WI)}</section>
+        <div class="tu-mods">${WI.l.map(m => { const I = T.modInfo(m.id), r = T.isRead(m.id);
+          return `<section class="card tu-mod"><div class="tu-mod-h"><a href="#/lesson/${m.id}"><b>${esc(m.title)}</b></a>${T.chip(m.id)}</div>
+            ${r ? `<div class="tu-notions">${I.ns.map(n => { const mm = T.mastery(n.id), has = T.qsOf(n.id).length;
+              return `<div class="tu-nrow"><span class="grow"><span class="small">${esc(n.t)}</span> ${nChip(n.id)}${ui.bar(mm || 0, barCol(mm || 0))}</span>
+                <span class="tu-nbtn"><button class="iconbtn" data-tunotion="${n.id}" aria-label="${t("tu.reread")} : ${esc(n.t)}">${AA.icon("book")}</button>${has ? `<button class="iconbtn" data-tudrill="${n.id}" aria-label="${t("tu.train")} : ${esc(n.t)}">${AA.icon("play")}</button>` : ""}</span></div>`; }).join("")}</div>`
+              : `<a class="btn ghost sm" href="#/lesson/${m.id}">${AA.icon("book")} ${t("tu.needBtn", { t: esc(m.title) })}</a>`}</section>`; }).join("")}</div>
+        <div class="section-title"><h3>${t("tu.examsT")}</h3><a class="small" href="#/examen/${wid}">${t("exm.histBtn")}</a></div><section class="card">${AA.profile.spark()}</section>
+        <details class="card tu-troph" style="margin-top:var(--sp-5)"><summary><b>${t("tu.trophies")}</b> <span class="muted small">${got} / ${C.badges.length}</span></summary>
+        <div class="trophies" style="margin-top:var(--sp-3)">${C.badges.map(b => `<div class="trophy ${s.badges[b.id] ? "" : "off"}"><div class="medal">${AA.icon(b.icon)}</div><b>${esc(b.name)}</b><span>${esc(b.desc)}</span></div>`).join("")}</div></details>`;
+      u.$$("[data-pw]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.router.go("progres/" + b.dataset.pw, undefined, true); });
+      requestAnimationFrame(centerChip);
+    }
+  });
+
+  /* ---------- Entraîner ---------- */
+  AA.view("train", {
+    tab: "train",
+    render(el) {
+      const s = S(), nErr = Object.keys(s.errors).filter(id => !C.qById[id] || G.inPlay(C.qById[id].m)).length, due = G.cardsDue().length, dq = G.qDue ? G.qDue().length : 0;
+      const doubts = Object.keys(s.doubt).filter(id => C.qById[id] && G.inPlay(C.qById[id].m)).length, best = s.exams.length ? Math.max(...s.exams.map(e => e.score)) : null;
+      const wid = G.goalWorld(), read = C.modules.filter(m => activeMod(m.id)), goalRead = read.filter(m => m.world === wid), other = read.filter(m => m.world !== wid);
+      const lab = document.createElement("div"); try { V.lab.render(lab, []); } catch (e) {}
+      const labTiles = (u.$(".tiles", lab) || { innerHTML: "" }).innerHTML;
+      el.innerHTML = `${ui.head(t("tab.train"))}<p class="muted">${t("tu.trainS")}</p>
+        ${read.length ? "" : `<div class="callout"><span class="eyebrow">${t("tu.noneT")}</span>${t("tu.noneRead")} <a href="#/lesson/${(T.nextToRead(wid) || C.modules[0]).id}">${t("tu.needBtn", { t: esc((T.nextToRead(wid) || C.modules[0]).title) })}</a></div>`}
+        <div class="section-title"><h3>${t("tu.smart")}</h3>${AA.helpBtn("tuteur")}</div>
+        <div class="tiles">
+          ${ui.tile("tutor", "compass", "var(--primary)", t("tu.session"), t("tu.a.sessionS"))}
+          ${ui.tile("srs", "brain", "var(--world-n3)", t("mode.srs"), t("train.srsS"), dq ? [t("srs.dueN", { n: dq }), "pri"] : null)}
+          ${ui.tile("flash", "cards", "var(--primary)", t("mode.flash"), t("train.flashS"), due ? [t("home.due", { n: due }), "pri"] : null)}
+          ${ui.tile("errors", "buoy", "var(--accent)", t("mode.errors"), t("train.errorsS"), nErr ? [String(nErr), "warn"] : null)}
+          ${ui.tile("doubt", "doubt", "var(--world-e2)", t("mode.doubt"), t("train.doubtS"), doubts ? [String(doubts), "pri"] : null)}
+          ${ui.tile("calcs", "calc", "var(--gold)", t("mode.calcs"), t("train.calcsS"))}
+        </div>
+        <div class="section-title"><h3>${t("tu.byCourseT")}</h3></div><p class="small muted" style="margin-top:0">${t("tu.byCourseS")}</p>
+        <div class="tu-quizlist">${goalRead.concat(other).map(m => `<button class="chip tu-qchip" data-tuquiz="${m.id}">${AA.icon("play")} ${esc(m.title)}</button>`).join("") || `<span class="small muted">${t("tu.noneRead")}</span>`}</div>
+        <div class="section-title"><h3>${t("tu.epreuves")}</h3></div>
+        <div class="tiles">
+          ${ui.tile("examfull", "exam", "var(--accent)", t("mode.examFull"), t("train.examFullS") + " · " + esc(C.worldById[Q.examWorld()].short), best != null ? [t("home.best", { s: u.num(best, 1) }), "gold"] : null)}
+          ${ui.tile("examquick", "exam", "var(--accent)", t("mode.examQuick"), t("train.examQuickS") + " · " + esc(C.worldById[Q.examWorld()].short))}
+          ${ui.tile("five", "timer", "var(--primary)", t("mode.five"), t("train.fiveS"))}
+          ${ui.tile("apnee", "timer", "var(--gold)", t("mode.apnee"), t("train.apneeS"), s.apnee ? [t("train.record", { n: s.apnee }), "gold"] : null)}
+          ${ui.tile("duel", "users", "var(--primary)", t("mode.duel"), t("train.duelS"))}
+          ${ui.tile("mistakes", "brain", "var(--accent)", t("mist.short"), t("train.mistS"))}
+        </div>
+        <div class="section-title"><h3>${t("tu.ateliers")}</h3></div>
+        <div class="tiles">${labTiles}</div>`;
+      u.on(el, "click", ".tile", (e, b) => {
+        fx.sfx.tap();
+        const k = b.dataset.t, acts = {
+          tutor: T.session, srs: () => Q.srs(), flash: () => AA.router.go("flash"), errors: Q.errors, calcs: () => Q.calcs(null, 10, t("mode.calcs")),
+          doubt: () => { const qs = Object.keys(S().doubt).map(id => C.qById[id]).filter(Boolean); qs.length ? Q.start("errors", u.shuffle(qs).slice(0, 10), { title: t("mode.doubt"), back: "train" }) : fx.toast(t("train.noDoubtT"), t("train.noDoubtS"), "doubt"); },
+          examfull: () => AA.router.go("examen/" + Q.examWorld() + "/full"), examquick: () => AA.router.go("examen/" + Q.examWorld() + "/quick"),
+          five: Q.five, apnee: Q.apnee, duel: () => AA.router.go("club"), mistakes: () => AA.router.go("mistakes")
+        };
+        (acts[k] || (() => AA.router.go(k)))();
+      });
+    }
+  });
+  V.lab.render0 = V.lab.render0 || V.lab.render;
+  AA.view("lab", { tab: "train", render() {}, guard: () => false, fallback: "train", render0: V.lab.render0 });
+  V.lab.render = V.lab.render0; /* gardé pour fabriquer les tuiles « Ateliers » */
+
+  /* ---------- Club et moniteur (facultatif) ---------- */
+  AA.view("moniteur", {
+    tab: "profile", depth: 4,
+    render(el) {
+      const s = S(), on = !!s.profile.club;
+      el.innerHTML = `${ui.head(t("tu.clubT"), "profile")}<p class="muted">${t("tu.clubIntro")}</p>
+        <label class="setting card" style="margin-top:var(--sp-4)"><span class="grow"><b>${t("tu.clubOn")}</b><span>${t("tu.clubOnS")}</span></span><span class="switch"><input type="checkbox" id="tuclub" ${on ? "checked" : ""}><i></i></span></label>
+        <div class="tiles" style="margin-top:var(--sp-4)">
+          ${ui.tile("carnet", "teach", "var(--world-e1)", t("instr.view"), t("instr.tileS", { n: C.modules.filter(m => (s.instr || {})[m.id]).length, all: C.modules.length }))}
+          ${ui.tile("valider", "check", "var(--ok)", t("set.validate"), t("val.tileS", { n: C.validate.filter(([a]) => (s.validOk || {})[a]).length, tot: C.validate.length }))}
+          ${ui.tile("cursus", "layers", "var(--world-n3)", t("cur.title"), t("cur.tileS"))}
+        </div>`;
+      u.$("#tuclub").onchange = e => { s.profile.club = e.target.checked; AA.store.save(); fx.sfx.tap(); };
+      u.on(el, "click", ".tile", (e, b) => AA.router.go(b.dataset.t));
+    }
+  });
+
+  /* ---------- Retouches d'écrans existants ---------- */
+  const wrap = (name, fn) => { const v = V[name]; if (!v) return; const r = v.render; v.render = (el, args) => { r(el, args); try { fn(el, args || []); } catch (e) { console.error(e); } }; };
+
+  /* Profil : jeux et outils moniteur sortis, une seule tuile « Club et moniteur ». */
+  wrap("profile", el => {
+    u.$$('.tile[data-t="quests"],.tile[data-t="aquarium"],.tile[data-t="valider"],.tile[data-t="carnet"],.tile[data-t="cursus"]', el).forEach(x => x.remove());
+    const tiles = u.$(".tiles", el); if (tiles) tiles.insertAdjacentHTML("beforeend", ui.tile("moniteur", "teach", "var(--world-e1)", t("tu.clubT"), t("tu.clubS")));
+    const pm = u.$(".pm-grid", el); if (pm) { const h = pm.previousElementSibling; if (h && h.classList.contains("section-title")) h.remove(); pm.remove(); }
+    const tr = u.$(".trophies", el); if (tr) { const h = tr.previousElementSibling; if (h && h.classList.contains("section-title")) h.remove(); tr.remove(); }
+  });
+  /* Réglages : plus de rappel « à faire valider » ; sources et signalements restent. */
+  wrap("settings", el => { const v = u.$("#valider", el); if (!v) return; const a = u.$('a[href="#/valider"]', v); if (a) a.remove(); const p = u.$("p", v); if (p) p.remove(); const h = u.$("h3", v); if (h) h.textContent = t("src.page") + " · " + t("rep.list"); });
+  /* Ordinateur, scénarios, cursus : encadré « à valider » retiré. */
+  ["pc", "scen", "cursus"].forEach(n => wrap(n, el => u.$$(".callout", el).forEach(c => { const e = u.$(".eyebrow", c); if (e && e.textContent.trim() === t("common.validate")) c.remove(); })));
+  /* Examen : ce qui n'est pas lu. */
+  wrap("examen", el => {
+    const obs = () => { const sp = u.$(".ex-spec", el); if (!sp || u.$(".tu-exnote", sp)) return; const b = u.$("[data-ew].on", el), wid = b ? b.dataset.ew : Q.examWorld();
+      const left = C.inWorld(wid).filter(m => !T.isRead(m.id)).length; const h = u.$("h3", sp);
+      if (h) h.insertAdjacentHTML("afterend", `<p class="callout ${left ? "" : "ok"} tu-exnote small">${left ? t("tu.exUnread", { n: left }) : t("tu.exAll")}</p>`); };
+    obs(); new MutationObserver(obs).observe(el, { childList: true });
+  });
+  /* Carte : statut du cours sous chaque thème. */
+  wrap("map", el => {
+    u.$$(".spot", el).forEach(sp => { const b = u.$(".node[data-id]", sp), info = u.$(".info", sp); if (b && info) info.insertAdjacentHTML("beforeend", T.chip(b.dataset.id)); });
+    u.$$(".ml-row[href^='#/lesson/']", el).forEach(a => { const g = u.$(".grow", a); if (g) g.insertAdjacentHTML("beforeend", T.chip(a.getAttribute("href").split("/")[2])); });
+  });
+
+  /* Cours : statut, prérequis, « J'ai lu ce cours », notions, notes personnelles. */
+  T.readCard = mid => { const r = (S().read[mid] || {}).e;
+    return r ? `<section class="card tu-read done" id="tuRead"><div class="tu-read-h"><span class="medal">${AA.icon("check")}</span><div class="grow"><b>${t("tu.readDone", { d: esc(u.fmtDate(r)) })}</b><p class="small muted" style="margin:2px 0 0">${t("tu.readDoneS")}</p></div></div>
+        <div class="row"><button class="btn sm" data-tuquiz="${mid}">${AA.icon("play")} ${t("tu.train")}</button><button class="linkbtn small" data-tuunread="${mid}">${t("tu.unread")}</button></div></section>`
+      : `<section class="card tu-read" id="tuRead"><b class="h4">${t("tu.readT")}</b><p class="small muted" style="margin:4px 0 var(--sp-3)">${t("tu.readS")}</p><button class="btn block" data-turead="${mid}">${AA.icon("check")} ${t("tu.readBtn")} <span class="chip gold">+5 XP</span></button></section>`; };
+  wrap("lesson", (el, [id, tab0]) => {
+    const m = C.byId[id]; if (!m) return;
+    const s = S(), isR = T.isRead(id), club = !!s.profile.club, tab = u.$(".lesson-tabs [aria-pressed=true]", el), cur = tab ? tab.dataset.tab : tab0;
+    const hero = u.$(".lesson-hero", el), first = hero && u.$(".row .chip", hero);
+    if (first) first.outerHTML = `<button class="chip tu-stbtn" data-help="maitrise">${T.chip(id)}</button>`;
+    if (!club && hero) u.$$(".chip.gold", hero).forEach(c => { if (c.textContent.includes(t("lesson.coachOk"))) c.remove(); });
+    const pre = T.prereqs(id).filter(x => !T.isRead(x));
+    if (hero && pre.length) hero.insertAdjacentHTML("afterend", `<div class="callout tu-pre"><span class="eyebrow">${t("tu.prereqT")}</span>${t("tu.prereqS")} ${pre.map(x => `<a href="#/lesson/${x}">${esc(C.byId[x].title)}</a>`).join(", ")}</div>`);
+    if (hero && AA.path.certified(m.world) && !T.explicitRead(id)) hero.insertAdjacentHTML("afterend", `<p class="xs muted tu-cert">${t("tu.certNote")}</p>`);
+    const rd = u.$(".readdone", el);
+    if (rd && cur === "essentiel") rd.outerHTML = T.readCard(id);
+    if (cur === "moniteur") {
+      if (!club) { u.$$(".coachq", el).forEach(x => { const st = x.parentElement; x.remove(); if (st && !st.children.length) st.remove(); }); const v = u.$("#valid", el); if (v) { const lab = v.closest("label"); if (lab) lab.remove(); } }
+      else { const st = u.$(".coachq", el); if (st) st.parentElement.insertAdjacentHTML("beforebegin", `<p class="eyebrow">${t("tu.coachIdeas")}</p>`); }
+    }
+    const dive = u.$("#dive", el), cb = u.$("#calc", el);
+    if (!isR && dive) {
+      dive.innerHTML = `${AA.icon("lock")} ${t("tu.quizLocked")}`; dive.disabled = false; dive.classList.add("ghost");
+      dive.onclick = () => { fx.sfx.tap(); const r = u.$("#tuRead"); if (r) r.scrollIntoView({ behavior: AA.a11y.reduced() ? "auto" : "smooth", block: "center" }); else AA.router.go("lesson/" + id + "/essentiel", { toRead: 1 }); };
+      if (cb) cb.remove();
+    }
+    u.$$(".lesson-side .ml-row[href^='#/lesson/']", el).forEach(a => { const g = u.$(".grow", a); if (g) g.insertAdjacentHTML("beforeend", T.chip(a.getAttribute("href").split("/")[2])); });
+    const body = u.$(".lesson-body", el);
+    if (body && isR) {
+      const I = T.modInfo(id);
+      body.insertAdjacentHTML("afterend", `<section class="card tu-notcard"><div class="row between"><p class="eyebrow">${t("tu.notions")}</p>${AA.helpBtn("maitrise")}</div><p class="xs muted" style="margin:0 0 var(--sp-3)">${t("tu.notionsS")}</p>
+        <div class="tu-notions">${I.ns.map(n => { const mm = T.mastery(n.id), has = T.qsOf(n.id).length;
+          return `<div class="tu-nrow"><span class="grow"><span class="small">${esc(n.t)}</span> ${nChip(n.id)}${ui.bar(mm || 0, barCol(mm || 0))}</span><span class="tu-nbtn"><button class="iconbtn" data-tunotion="${n.id}" aria-label="${t("tu.reread")} : ${esc(n.t)}">${AA.icon("book")}</button>${has ? `<button class="iconbtn" data-tudrill="${n.id}" aria-label="${t("tu.train")} : ${esc(n.t)}">${AA.icon("play")}</button>` : ""}</span></div>`; }).join("")}</div></section>`);
+    }
+    if (AA.ctx.toRead) { AA.ctx.toRead = 0; setTimeout(() => { const r = u.$("#tuRead"); if (r) r.scrollIntoView({ block: "center" }); }, 150); }
+  });
+})();
+
 /* locales/fr.js */
 /* =====================================================================
    Abysse Academy · textes de l'interface en français
@@ -6851,7 +7679,7 @@ window.AA={BUNDLED:true};
    ===================================================================== */
 AA.i18n.add("fr", {
   "app.name": "Abysse Academy",
-  "ranks": ["Têtard", "Palmeur", "Bulleur", "Explorateur", "Stabilisé", "Maître des paliers", "Chasseur d’azote", "Grand bleu", "Futur initiateur", "Légende des abysses"],
+  "ranks": ["Têtard", "Palmeur", "Bulleur", "Explorateur", "Stabilisé", "Navigateur", "Maître des paliers", "Chasseur d’azote", "Grand bleu", "Guide de palanquée", "Futur initiateur", "Légende des abysses"],
 
   /* Navigation */
   "nav.label": "Navigation principale", "nav.back": "Retour", "nav.settings": "Réglages",
@@ -7059,7 +7887,7 @@ AA.i18n.add("fr", {
   "set.about": "Contenus écrits pour t’aider à apprendre. Ils ne remplacent ni ton moniteur ni les textes officiels.",
 
   /* Notifications */
-  "toast.level": "Niveau {l} !", "toast.rank": "Nouveau rang : {rank}", "toast.badge": "Trophée : {name}",
+  "toast.level": "Niveau {l} !", "toast.rank": "Rang : {rank}", "toast.newRank": "Nouveau rang : {rank} !", "toast.badge": "Trophée : {name}",
   "toast.combo": "Combo ×{n} !", "toast.comboS": "Bonus d’XP à chaque bonne réponse",
   "pwa.updateT": "Nouvelle version", "pwa.updateS": "Touche ici pour la charger."
 });
@@ -7165,7 +7993,7 @@ AA.i18n.add("fr", {
   "ava.hair": "Coiffure", "ava.hairs": ["Court", "Long", "Chignon", "Ras"], "ava.hairC": "Couleur des cheveux", "ava.skin": "Peau", "ava.suit": "Combinaison",
   "ava.creatureS": "Les créatures de ton aquarium ({n} sur {tot}). Les autres se débloquent en jouant.", "ava.noCreature": "Ton aquarium est encore vide. Termine un premier thème pour accueillir ta première créature.",
   "ava.evo": "Évolutions", "ava.lvl": "Niveau {l}",
-  "ava.stages": ["Masque sur le front", "Masque et tuba", "Bloc et détendeur", "Cagoule et phare", "Aura des abysses"],
+  "ava.stages": ["Masque sur le front", "Masque et tuba", "Combinaison", "Bloc et détendeur", "Gilet stabilisateur", "Cagoule", "Phare frontal", "Liseré d’or", "Aura des abysses", "Couronne des abysses"],
   "ava.now": "Évolution {s}/{n} : {name}", "ava.nextAt": "prochaine au niveau {l} ({name})", "ava.evolved": "Ton avatar évolue : {name} !",
   "pc.intro": "Un écran d’ordinateur, une situation. À toi de lire les chiffres et de choisir la bonne décision, comme sous l’eau.",
   "pc.demo": "Exemple d’écran. Les vrais écrans varient selon les marques : regarde la notice du tien.",
@@ -9811,9 +10639,9 @@ AA.content.addBadges([
   { id: "perfect", icon: "star", name: "Sans faute", desc: "100 % sur un thème", test: { k: "perfect" } },
   { id: "combo5", icon: "bolt", name: "Combo ×5", desc: "5 bonnes réponses d’affilée", test: { k: "combo", n: 5 } },
   { id: "combo10", icon: "bolt", name: "Combo ×10", desc: "10 bonnes réponses d’affilée", test: { k: "combo", n: 10 } },
-  { id: "half", icon: "profile", name: "Mi-profondeur", desc: "1 étoile sur 5 thèmes N2", test: { k: "worldStars", w: "n2", n: 5 } },
-  { id: "bottom", icon: "fish", name: "Touché le fond", desc: "1 étoile sur tous les thèmes N2", test: { k: "worldStars", w: "n2", n: "all" } },
-  { id: "gold", icon: "star", name: "Abysse dorée", desc: "3 étoiles sur tout le N2", test: { k: "worldStars", w: "n2", min: 3, n: "all" } },
+  { id: "half", icon: "profile", name: "Mi-profondeur", desc: "5 cours N2 réussis à 50 % ou plus", test: { k: "worldStars", w: "n2", n: 5 } },
+  { id: "bottom", icon: "fish", name: "Touché le fond", desc: "Tous les cours N2 réussis à 50 % ou plus", test: { k: "worldStars", w: "n2", n: "all" } },
+  { id: "gold", icon: "star", name: "Abysse dorée", desc: "Tous les cours N2 réussis à 100 %", test: { k: "worldStars", w: "n2", min: 3, n: "all" } },
   { id: "exam", icon: "exam", name: "Prêt pour l’écrit", desc: "15/20 à un examen blanc", test: { k: "exam", min: 15 } },
   { id: "examfull", icon: "timer", name: "Épreuve complète", desc: "Finir un examen complet", test: { k: "exam", full: true } },
   { id: "apnee", icon: "timer", name: "Apnéiste", desc: "8 bonnes réponses au défi apnée", test: { k: "apnee", n: 8 } },
@@ -9825,9 +10653,9 @@ AA.content.addBadges([
   { id: "sim", icon: "dive", name: "Plongée propre", desc: "Simulateur : plongée sans alerte", test: { k: "sim" } },
   { id: "table", icon: "table", name: "Ma table", desc: "Saisir 5 lignes de ta table", test: { k: "table", n: 5 } },
   { id: "duel", icon: "users", name: "Duelliste", desc: "Jouer un duel", test: { k: "duel" } },
-  { id: "pa20", icon: "users", name: "Autonome", desc: "2 étoiles sur Plonger autonome (PA20)", test: { k: "stars", m: "pa20", n: 2 } },
-  { id: "rifap", icon: "cross", name: "Secouriste", desc: "1 étoile sur tous les récifs RIFAP", test: { k: "worldStars", w: "rifap", n: "all" } },
-  { id: "e2", icon: "flag", name: "Cap sur E1", desc: "1 étoile sur une île initiateur", test: { k: "worldStars", w: "e1", n: 1 } },
+  { id: "pa20", icon: "users", name: "Autonome", desc: "Cours « Plonger autonome (PA20) » réussi à 80 %", test: { k: "stars", m: "pa20", n: 2 } },
+  { id: "rifap", icon: "cross", name: "Secouriste", desc: "Tous les cours RIFAP réussis à 50 % ou plus", test: { k: "worldStars", w: "rifap", n: "all" } },
+  { id: "e2", icon: "flag", name: "Cap sur E1", desc: "Un premier cours E1 réussi à 50 % ou plus", test: { k: "worldStars", w: "e1", n: 1 } },
   { id: "keep", icon: "refresh", name: "Rien n’est perdu", desc: "Réviser un thème « À réviser »", test: { k: "keep" } },
   { id: "validated", icon: "check", name: "Validé par le moniteur", desc: "3 cours validés avec ton moniteur", test: { k: "validated", n: 3 } },
   { id: "quest1", icon: "flag", name: "Chapitre N2 terminé", desc: "Finir la quête N2 · PA20", test: { k: "chapter", id: "q1" } },
@@ -11715,6 +12543,489 @@ Object.assign(AA.content.help, {
     club: { t: "Le club : duels et classement", ic: "users", go: "club", goL: "Ouvrir le club",
       html: `<p><b>Duel sur place</b> : à deux sur le même téléphone. <b>Duel à distance</b> : tu joues 10 questions, puis tu envoies le code (ou le lien) à un ami. Il joue les mêmes questions et te renvoie son code de réponse.</p><p><b>Classement du club</b> : chacun partage sa carte de score. Rien ne passe par un serveur : tout reste sur les téléphones.</p>` }
   });
+})();
+
+/* content/fr/v20.js */
+/* =====================================================================
+   Abysse Academy 2.0 · structure pédagogique
+   - Prérequis entre cours (ordre logique vers l'examen blanc).
+   - Notions de chaque cours N2 (les questions y sont rattachées par
+     mots-clés, sur le texte sans accents). Les autres cours tirent leurs
+     notions de « À retenir ».
+   - Textes d'interface de la refonte.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, C = AA.content;
+
+  /* Prérequis : à lire avant (conseillé). Sans entrée : le cours précédent du niveau. */
+  C.prereq = Object.assign(C.prereq || {}, {
+    pression: [], mariotte: ["pression"], archimede: ["pression"], dalton: ["pression", "mariotte"],
+    physio: ["pression"], accidents: ["mariotte", "physio"], deco: ["dalton", "accidents"],
+    materiel: ["mariotte"], regles: [], pa20: ["deco", "regles", "materiel"], environnement: [],
+    "nx-base": ["dalton"], "n3-gaz": ["dalton"], "n3-deco": ["deco"], "r-o2": ["r-alerte"]
+  });
+
+  /* Notions : [id, titre, mots-clés (regex sans accents), mot à surligner dans le cours] */
+  C.notions = Object.assign(C.notions || {}, {
+    pression: [
+      ["unites", "Unités et pression atmosphérique", "atmospher|altitude|pascal|hpa|unite|1,013|1013|millibar|niveau de la mer|montagne|lac", "atmosphérique"],
+      ["hydro", "Pression hydrostatique", "hydrostat|colonne|eau douce|eau de mer|tous les 10|par 10 m|chaque 10|poids de l.eau|densite", "hydrostatique"],
+      ["abs", "Pression absolue et relative", "absolue|relative|manometre|profondimetre|totale|a \\d+ m", "absolue"],
+      ["rapport", "Rapport de pression et zone sensible", "rapport|double|triple|zone|premiers metres|variation|proche de la surface|0 et 10", "rapport"]
+    ],
+    mariotte: [
+      ["loi", "La loi P × V = constante", "mariotte|p ?[x×*] ?v|volume|compress|dilat|ballon|gonfl|poumon", "Mariotte"],
+      ["conso", "Consommation au fond", "consomm|l/min|litres? par minute|respire|essouffl|effort|froid", "consommation"],
+      ["autonomie", "Autonomie, réserve et volume disponible", "autonomie|reserve|bloc de|bar restant|disponible|duree|combien de (temps|minutes)|tiendr", "autonomie"],
+      ["temp", "Température et gonflage", "temperat|chaud|soleil|charles|gonflage|\\d+ ?°|refroidi", "température"]
+    ],
+    archimede: [
+      ["poussee", "Poussée et poids apparent", "poussee|poids apparent|flott|coule|densite|volume deplace|positi|negati|neutre", "poussée"],
+      ["ballast", "Poumon-ballast et gilet", "poumon|gilet|inspir|expir|stabilis|equilibr", "poumon"],
+      ["lestage", "Lestage et fin de plongée", "lest|plomb|fin de plongee|bloc (vide|se vide)|eau douce|combinaison|neoprene|ecrase", "lestage"],
+      ["relevage", "Parachute et relevage", "parachute|relevage|soulev|remonter (un|une|l.)|objet|ancre", "parachute"]
+    ],
+    dalton: [
+      ["pp", "Pressions partielles (Dalton)", "partielle|dalton|pp ?o|ppn|ppo|pourcentage|%|fraction|composition|79|21", "partielle"],
+      ["seuils", "Seuils et toxicités", "narcose|ivresse|toxic|hyperox|hypox|seuil|1,6|0,17|1,4|5,6|essai|paul bert|lorrain", "toxicité"],
+      ["henry", "Dissolution des gaz (Henry)", "henry|dissol|saturat|sursatur|desatur|tissu|periode|soda|gazeuse|bulle|liquide", "Henry"]
+    ],
+    physio: [
+      ["resp", "Respiration et commande", "respir|alveol|co2|ventil|essouffl|bulbe|diaphragm|trachee|bronch|poumon|volume courant|capacite vitale", "Respiration"],
+      ["circ", "Circulation", "coeur|sang|circul|artere|veine|foramen|ventricul|oreillette|capillaire|hemoglobine|globule", "Circulation"],
+      ["oreille", "Oreille et équilibrage", "oreille|tympan|trompe|eustache|valsalva|equilibr|vertige|sinus|cochlee|vestibul", "Oreille"]
+    ],
+    accidents: [
+      ["baro", "Barotraumatismes (oreilles, sinus, masque)", "barotrau|oreille|sinus|placage|dent|tympan|masque", "barotraumatisme"],
+      ["surp", "Surpression pulmonaire", "surpression|bloqu|expir|retenir sa respiration|remontee rapide|poumon", "surpression"],
+      ["add", "Accident de décompression (ADD)", "\\badd\\b|accident de decompression|bulle|facteur|fatigue|deshydrat|effort|yoyo|fourmill|paralys", "ADD"],
+      ["autres", "Narcose, essoufflement, froid, noyade", "narcose|essouffl|froid|hypotherm|co2|noyade|ivresse|malaise", "essoufflement"],
+      ["cat", "Conduite à tenir et alerte", "conduite|oxygene|o2|alerte|secours|aspirine|eau plate|cross|\\b15\\b|112|196|evacu|caisson", "oxygène"]
+    ],
+    deco: [
+      ["vocab", "Vocabulaire et lecture des tables", "profondeur|duree|palier|majoration|groupe|gps|table|lecture|valeur absente|immediatement superieur", "palier"],
+      ["vitesse", "Vitesses de remontée", "vitesse|m/min|remont|entre paliers|dtr", "vitesse"],
+      ["succ", "Plongées successives et consécutives", "successive|consecutive|deux plongees|intervalle|azote residuel|seconde plongee|deuxieme plongee", "successive"],
+      ["ordi", "Ordinateur de plongée", "ordinateur|ordi\\b|algorithme|mode|alarme", "Ordinateur"],
+      ["avion", "Altitude et avion", "altitude|avion|montagne|col\\b|vol", "avion"]
+    ],
+    materiel: [
+      ["bloc", "Le bloc", "bloc|robinet|requalif|epreuve|tiv|inspection|gravure|acier|alu|bouteille|ogive", "bloc"],
+      ["detendeur", "Le détendeur", "detendeur|etage|givr|octopus|membrane|piston|debit|embout|surpresseur|clapet", "détendeur"],
+      ["gilet", "Gilet et instruments", "gilet|direct system|inflateur|purge|manometre|profondimetre|compas|instrument|ordinateur|lampe|parachute", "gilet"],
+      ["entretien", "Entretien et vérifications", "entretien|rinc|verif|avant de plonger|joint|grais|stock|seche", "Entretien"]
+    ],
+    regles: [
+      ["cadre", "Code du sport et espaces", "code du sport|espace|0.?6|6.?20|20.?40|medical|certificat|licence|assurance|arrete|federation", "espace"],
+      ["n2", "Aptitudes du N2 (PA20, PE40)", "pa ?20|pe ?40|pa ?40|pe ?60|aptitude|autonom|encadr|n2 peut|prerog", "PE40"],
+      ["roles", "Rôles : DP, guide de palanquée", "directeur|\\bdp\\b|guide|\\bgp\\b|serre|chef de palanquee|responsable", "directeur"],
+      ["secours", "Matériel de secours et surface", "secours|oxygene|trousse|surface|pavillon|bateau|vhf|fiche|telephone|eau douce", "secours"]
+    ],
+    pa20: [
+      ["avant", "Préparer la plongée", "prepar|avant|briefing|parametre|binome|plan|planifi|choisir|meteo", "briefing"],
+      ["air", "Gérer l'air à deux ou trois", "air|reserve|manometre|\\bbar\\b|mi-pression|retour|consomm|50 bar|tiers", "réserve"],
+      ["perte", "Perte de palanquée et orientation", "perte|perdu|separe|orient|compas|1 minute|une minute|rejoindre|cap", "perte"],
+      ["apres", "Fin de plongée et parachute", "apres|parachute|palier|fin de plongee|surface|debrief|carnet|remontee", "parachute"]
+    ],
+    environnement: [
+      ["milieu", "Le milieu : marées, courants, sens", "maree|douzieme|etale|courant|vent|lumiere|couleur|son\\b|visib|thermocline|absorb|rouge", "marée"],
+      ["faune", "Faune et flore", "posidonie|merou|rascasse|vive|meduse|oursin|gorgone|corail|espece|poisson|murene|herbier|dorade|poulpe", "posidonie"],
+      ["gestes", "Les bons gestes", "palm|touch|nourri|ancre|mouillage|respect|proteg|dechet|stabilis|ramasser|charte", "gestes"]
+    ]
+  });
+
+  /* Questions ajoutées (2.0) sur les notions N2 trop peu couvertes. Ajout en fin de liste uniquement. */
+  /* Barème XP 2.0 expliqué (bouton « ? » et compteur d'XP). */
+  C.help.xp = Object.assign({}, C.help.xp, { html: `<p>L’XP récompense ce que tu <b>apprends</b>, pas le nombre de clics : refaire dix fois le même quiz le même jour ne rapporte presque rien.</p>
+    <table class="tu-xptab"><tr><th>Action</th><th>XP</th></tr>
+    <tr><td>Cours lu (la 1re fois)</td><td>25</td></tr>
+    <tr><td>Bonne réponse à une question jamais réussie</td><td>10</td></tr>
+    <tr><td>Bonne réponse en révision espacée (3 jours ou plus après)</td><td>7</td></tr>
+    <tr><td>Révision 1 à 2 jours après / le même jour</td><td>4 / 1</td></tr>
+    <tr><td>Calcul généré (15 premiers du jour, puis 1)</td><td>6</td></tr>
+    <tr><td>Série de 5 bonnes réponses</td><td>+2 par réponse</td></tr>
+    <tr><td>Défi éclair sans faute</td><td>15</td></tr>
+    <tr><td>Notion acquise / maîtrisée (une fois chacune)</td><td>15 / 25</td></tr>
+    <tr><td>Lacune comblée (vérification réussie)</td><td>30</td></tr>
+    <tr><td>Séance du tuteur (1 par jour)</td><td>20</td></tr>
+    <tr><td>Paliers de score d’un cours : 50 %, 80 %, 100 %</td><td>25 chacun</td></tr>
+    <tr><td>Série d’un cours réussie à 60 % (1 par cours et par jour)</td><td>15</td></tr>
+    <tr><td>10 réponses dans la journée (série de jours : ×2 dès 7 jours, ×3 dès 30)</td><td>10 / 20 / 30</td></tr>
+    <tr><td>Examen blanc terminé (1 par jour) / réussi à 15/20 (1re fois par niveau)</td><td>30 / 150</td></tr></table>
+    <p><b>Niveaux.</b> Chaque niveau demande un peu plus que le précédent. À 20 minutes par jour : niveau 5 la 1re semaine, 10 en deux semaines, 20 vers six semaines, 30 vers quatre mois. Le rang maximal, <b>Légende des abysses</b>, arrive au niveau 50, après environ un an et demi d’entretien régulier de tout le parcours jusqu’à E2 (un an à 40 minutes par jour). Les niveaux continuent ensuite.</p>
+    <p><b>Avatar.</b> 10 évolutions (niveaux 1, 3, 6, 10, 15, 20, 26, 32, 40 et 50) et 12 rangs.</p>` });
+  AA.i18n.add("fr", { "hud.nextRank": "nouveau rang au niveau {l}", "tu.examPassXp": "Examen blanc réussi : +{n} XP et un trophée pour ce niveau !" });
+  /* Trophées 2.0 : répartis sur tout le parcours, de la découverte à E2. */
+  C.badges.push(
+    { id: "tu-read-decouverte", icon: "book", name: "Bibliothèque Découverte", desc: "Lire tous les cours Découverte", test: { k: "tuReadW", w: "decouverte" } },
+    { id: "tu-exam-decouverte", icon: "exam", name: "Baptême réussi", desc: "Réussir l’examen blanc complet Découverte (15/20 ou plus)", test: { k: "tuExam", w: "decouverte" } },
+    { id: "tu-read-n1", icon: "book", name: "Bibliothèque N1", desc: "Lire tous les cours N1", test: { k: "tuReadW", w: "n1" } },
+    { id: "tu-exam-n1", icon: "exam", name: "Plongeur encadré", desc: "Réussir l’examen blanc complet N1 (15/20 ou plus)", test: { k: "tuExam", w: "n1" } },
+    { id: "tu-read-n2", icon: "book", name: "Bibliothèque N2", desc: "Lire tous les cours N2", test: { k: "tuReadW", w: "n2" } },
+    { id: "tu-exam-n2", icon: "exam", name: "Autonome à 20 m", desc: "Réussir l’examen blanc complet N2 (15/20 ou plus)", test: { k: "tuExam", w: "n2" } },
+    { id: "tu-read-rifap", icon: "book", name: "Bibliothèque RIFAP", desc: "Lire tous les cours RIFAP", test: { k: "tuReadW", w: "rifap" } },
+    { id: "tu-exam-rifap", icon: "exam", name: "Secouriste formé", desc: "Réussir l’examen blanc complet RIFAP (15/20 ou plus)", test: { k: "tuExam", w: "rifap" } },
+    { id: "tu-read-nitrox", icon: "book", name: "Bibliothèque Nitrox", desc: "Lire tous les cours Nitrox", test: { k: "tuReadW", w: "nitrox" } },
+    { id: "tu-exam-nitrox", icon: "exam", name: "Air enrichi", desc: "Réussir l’examen blanc complet Nitrox (15/20 ou plus)", test: { k: "tuExam", w: "nitrox" } },
+    { id: "tu-read-n3", icon: "book", name: "Bibliothèque N3", desc: "Lire tous les cours N3", test: { k: "tuReadW", w: "n3" } },
+    { id: "tu-exam-n3", icon: "exam", name: "Autonome à 60 m", desc: "Réussir l’examen blanc complet N3 (15/20 ou plus)", test: { k: "tuExam", w: "n3" } },
+    { id: "tu-read-e1", icon: "book", name: "Bibliothèque E1", desc: "Lire tous les cours E1", test: { k: "tuReadW", w: "e1" } },
+    { id: "tu-exam-e1", icon: "exam", name: "Initiateur en herbe", desc: "Réussir l’examen blanc complet E1 (15/20 ou plus)", test: { k: "tuExam", w: "e1" } },
+    { id: "tu-read-n4", icon: "book", name: "Bibliothèque N4", desc: "Lire tous les cours N4", test: { k: "tuReadW", w: "n4" } },
+    { id: "tu-exam-n4", icon: "exam", name: "Guide de palanquée", desc: "Réussir l’examen blanc complet N4 (15/20 ou plus)", test: { k: "tuExam", w: "n4" } },
+    { id: "tu-read-e2", icon: "book", name: "Bibliothèque E2", desc: "Lire tous les cours E2", test: { k: "tuReadW", w: "e2" } },
+    { id: "tu-exam-e2", icon: "exam", name: "Moniteur en vue", desc: "Réussir l’examen blanc complet E2 (15/20 ou plus)", test: { k: "tuExam", w: "e2" } },
+    { id: "tu-read1", icon: "book", name: "Première lecture", desc: "Marquer un premier cours comme lu", test: { k: "tuReadN", n: 1 } },
+    { id: "tu-read25", icon: "book", name: "Grand lecteur", desc: "25 cours lus", test: { k: "tuReadN", n: 25 } },
+    { id: "tu-readall", icon: "book", name: "Encyclopédie vivante", desc: "Tous les cours lus, de la découverte à E2", test: { k: "tuReadN", n: "all" } },
+    { id: "tu-not1", icon: "bulb", name: "Déclic", desc: "Première notion acquise", test: { k: "tuNotion", n: 1 } },
+    { id: "tu-not10", icon: "bulb", name: "Ça rentre", desc: "10 notions acquises", test: { k: "tuNotion", n: 10 } },
+    { id: "tu-not40", icon: "bulb", name: "Tête bien faite", desc: "40 notions acquises", test: { k: "tuNotion", n: 40 } },
+    { id: "tu-not100", icon: "brain", name: "Savoir solide", desc: "100 notions acquises", test: { k: "tuNotion", n: 100 } },
+    { id: "tu-mas10", icon: "star", name: "Maîtrise", desc: "10 notions maîtrisées", test: { k: "tuMaster", n: 10 } },
+    { id: "tu-mas50", icon: "star", name: "Expertise", desc: "50 notions maîtrisées", test: { k: "tuMaster", n: 50 } },
+    { id: "tu-mas100", icon: "star", name: "Encyclopédiste", desc: "100 notions maîtrisées", test: { k: "tuMaster", n: 100 } },
+    { id: "tu-gap1", icon: "target", name: "Lacune comblée", desc: "Réussir une vérification après une lacune", test: { k: "tuGap", n: 1 } },
+    { id: "tu-gap10", icon: "target", name: "Rien ne m’échappe", desc: "10 lacunes comblées", test: { k: "tuGap", n: 10 } },
+    { id: "tu-ecl1", icon: "bolt", name: "Éclair", desc: "Un défi éclair sans faute", test: { k: "tuEclair", n: 1 } },
+    { id: "tu-ecl10", icon: "bolt", name: "Orage de savoir", desc: "10 défis éclair sans faute", test: { k: "tuEclair", n: 10 } },
+    { id: "tu-ses5", icon: "compass", name: "Bon élève", desc: "5 séances du tuteur", test: { k: "tuSess", n: 5 } },
+    { id: "tu-ses30", icon: "compass", name: "Fidèle au tuteur", desc: "30 séances du tuteur", test: { k: "tuSess", n: 30 } },
+    { id: "tu-ses100", icon: "compass", name: "Inséparables", desc: "100 séances du tuteur", test: { k: "tuSess", n: 100 } },
+    { id: "tu-ans500", icon: "check", name: "500 réponses", desc: "Répondre à 500 questions", test: { k: "answers", n: 500 } },
+    { id: "tu-ans2000", icon: "check", name: "2 000 réponses", desc: "Répondre à 2 000 questions", test: { k: "answers", n: 2000 } },
+    { id: "tu-ans5000", icon: "check", name: "5 000 réponses", desc: "Répondre à 5 000 questions", test: { k: "answers", n: 5000 } },
+    { id: "tu-str60", icon: "flame", name: "Deux mois de bulles", desc: "60 jours d’affilée", test: { k: "streak", n: 60 } },
+    { id: "tu-str100", icon: "flame", name: "Centenaire", desc: "100 jours d’affilée", test: { k: "streak", n: 100 } },
+    { id: "tu-str365", icon: "flame", name: "Une année sous l’eau", desc: "365 jours d’affilée", test: { k: "streak", n: 365 } },
+    { id: "tu-lv10", icon: "trophy", name: "Niveau 10", desc: "Atteindre le niveau 10", test: { k: "level", n: 10 } },
+    { id: "tu-lv20", icon: "trophy", name: "Niveau 20", desc: "Atteindre le niveau 20", test: { k: "level", n: 20 } },
+    { id: "tu-lv30", icon: "trophy", name: "Niveau 30", desc: "Atteindre le niveau 30", test: { k: "level", n: 30 } },
+    { id: "tu-lv40", icon: "trophy", name: "Niveau 40", desc: "Atteindre le niveau 40", test: { k: "level", n: 40 } },
+    { id: "tu-lv50", icon: "trophy", name: "Légende des abysses", desc: "Atteindre le niveau 50", test: { k: "level", n: 50 } }
+  );
+  C.addQuestions("pression", [
+    { q: "Entre la surface et 10 m, la pression absolue passe de 1 à 2 bar. Quel est le rapport de pression ?", c: ["2 : elle double", "1,5", "10", "1 : elle ne change pas"], a: 0, e: "2 bar / 1 bar = 2 : la pression double entre 0 et 10 m. C’est le plus grand rapport de toute la plongée." },
+    { q: "Pourquoi dit-on que la zone des 10 premiers mètres est la plus « sensible » ?", c: ["Le rapport de pression y est le plus grand : les volumes d’air y varient le plus vite", "L’eau y est plus froide", "La pression y est la plus forte", "La visibilité y est moins bonne"], a: 0, e: "De 0 à 10 m le rapport de pression vaut 2, de 30 à 40 m seulement 1,25. Oreilles, masque, gilet et poumons y subissent les plus fortes variations : vigilance à la descente comme à la remontée." },
+    { q: "Entre 30 m et 40 m, quel est le rapport de pression absolue ?", c: ["5/4 = 1,25", "2", "4/3 ≈ 1,33", "10"], a: 0, e: "À 30 m : 4 bar ; à 40 m : 5 bar. Le rapport vaut 5 / 4 = 1,25, bien moins qu’entre 0 et 10 m (× 2)." }
+  ]);
+  C.addQuestions("mariotte", [
+    { q: "Bloc de 12 L gonflé à 200 bar, réserve à 50 bar. Quel volume d’air est disponible avant la réserve ?", c: ["1 800 L", "2 400 L", "600 L", "150 L"], a: 0, e: "(200 − 50) × 12 = 1 800 L d’air détendu disponibles avant d’atteindre la réserve." },
+    { q: "Avec 1 800 L disponibles et une consommation de 60 L/min au fond, quelle autonomie environ ?", c: ["30 min", "60 min", "18 min", "45 min"], a: 0, e: "1 800 / 60 = 30 minutes au fond, sans compter la remontée ni les paliers : on garde toujours de la marge." },
+    { q: "Un bloc plein reste au soleil et chauffe. Que fait sa pression ?", c: ["Elle augmente", "Elle baisse", "Elle ne change pas", "Elle devient nulle"], a: 0, e: "À volume constant, la pression d’un gaz augmente avec la température : on ne laisse pas un bloc plein au soleil." }
+  ]);
+  C.addQuestions("archimede", [
+    { q: "Stabilisé près du fond, tu inspires profondément. Que se passe-t-il ?", c: ["Tu remontes légèrement : ton volume augmente", "Tu descends", "Rien ne change", "Ton gilet se vide"], a: 0, e: "C’est le poumon-ballast : en inspirant, ton volume augmente, donc la poussée aussi. On affine sa stabilisation avec la respiration." },
+    { q: "Pourquoi gonfler son gilet par petites touches ?", c: ["Pour ajuster finement sa flottabilité sans partir vers la surface", "Pour économiser l’air du bloc", "Parce que le direct system est fragile", "Pour se réchauffer"], a: 0, e: "Trop d’air dans le gilet fait remonter, et cet air se dilate en remontant : on ajuste peu à la fois, on attend, puis on corrige." }
+  ]);
+  C.addQuestions("deco", [
+    { q: "Qu’appelle-t-on une plongée successive ?", c: ["Une plongée faite alors qu’il reste de l’azote de la plongée précédente", "Deux plongées dans la même semaine", "Une plongée avec deux blocs", "Une plongée à trois plongeurs"], a: 0, e: "Après une plongée, l’azote résiduel met des heures à s’éliminer. Une seconde plongée dans ce délai est une plongée successive : elle doit en tenir compte." },
+    { q: "Pour une plongée successive, que fait ton ordinateur ?", c: ["Il tient compte de l’azote qui reste de la plongée précédente", "Il remet tout à zéro", "Il double la durée des paliers", "Rien : chaque plongée est indépendante"], a: 0, e: "L’ordinateur garde en mémoire la saturation de tes tissus : la seconde plongée part avec un « reste » d’azote, d’où des durées sans palier plus courtes." },
+    { q: "Deux plongées séparées par un intervalle très court sont traitées comme…", c: ["Une seule plongée (plongées consécutives)", "Deux plongées indépendantes", "Une plongée sans palier", "Une plongée profonde"], a: 0, e: "Quand l’intervalle est très court, on considère une seule plongée : durées additionnées, profondeur la plus grande. Le seuil exact dépend de la méthode, vu en cours." },
+    { q: "Pourquoi éviter de prendre l’avion juste après une plongée ?", c: ["La pression baisse en cabine : l’azote restant peut former des bulles", "L’avion fait monter la température", "Les oreilles ne le supportent pas", "C’est interdit par la loi"], a: 0, e: "En vol, la cabine est à une pression plus faible qu’au sol : c’est comme une remontée de plus. On respecte un délai après la plongée." },
+    { q: "Plonger dans un lac de montagne demande…", c: ["Une méthode adaptée à l’altitude : la pression en surface y est plus faible", "Rien de particulier", "Seulement moins de lest", "De ne faire aucun palier"], a: 0, e: "En altitude la pression atmosphérique est plus faible : les tables et réglages prévus pour la mer ne s’appliquent pas tels quels." }
+  ]);
+  C.addQuestions("materiel", [
+    { q: "Après la plongée en mer, que fais-tu de ton détendeur ?", c: ["Je le rince à l’eau douce, capuchon de protection en place", "Je le range mouillé dans le sac", "Je le démonte moi-même", "Je le graisse à l’huile"], a: 0, e: "Rinçage à l’eau douce, capuchon de protection bien en place pour que l’eau n’entre pas, puis séchage à l’ombre : c’est l’entretien de base." },
+    { q: "Juste avant de t’équiper, quelles vérifications fais-tu ?", c: ["Pression au manomètre, air qui passe bien, gilet qui gonfle et purge", "La couleur du bloc", "Rien, le club s’en charge", "Je vide un peu d’air du bloc"], a: 0, e: "Vérifications avant de plonger : pression suffisante, respiration normale sur les deux détendeurs, gilet qui gonfle et se purge. Puis vérification croisée avec ton binôme." },
+    { q: "Comment stocker un bloc entre deux sorties ?", c: ["Calé, à l’abri du soleil et de la chaleur", "Couché au soleil", "Dans une voiture fermée en été", "N’importe où"], a: 0, e: "On le stocke à l’abri de la chaleur (la pression monte avec la température), calé pour ne pas tomber, et on le rince après la mer." }
+  ]);
+  C.addQuestions("regles", [
+    { q: "Sur un site de plongée, quel matériel de secours doit être disponible ?", c: ["De l’oxygène, une trousse de secours et un moyen d’alerter", "Seulement une trousse", "Rien si le club est sérieux", "Un bloc de rechange"], a: 0, e: "Le site dispose d’oxygène, d’une trousse de premiers secours et d’un moyen d’appeler les secours (téléphone, VHF en mer). Repère où ils sont dès ton arrivée." }
+  ]);
+  C.addQuestions("pa20", [
+    { q: "Sous l’eau, tu ne vois plus ton binôme. Que fais-tu (principe courant) ?", c: ["Tour d’horizon et recherche brève, une minute environ, puis je remonte", "Je continue la plongée seul", "Je descends le chercher plus bas", "J’attends au fond jusqu’à la réserve"], a: 0, e: "Principe courant en cas de perte de palanquée : tour d’horizon, recherche brève, puis remontée. Chacun l’applique de son côté pour se retrouver en surface." },
+    { q: "Comment garder le cap pour revenir au bateau ?", c: ["En suivant un cap au compas et des repères sur le fond", "Au hasard", "En suivant les bulles des autres", "En remontant pour regarder"], a: 0, e: "Le compas et les repères naturels (roches, tombant, sable) permettent de s’orienter et de revenir au point de départ." }
+  ]);
+  C.addQuestions("environnement", [
+    { q: "Pourquoi rester stable au-dessus du fond ?", c: ["Pour ne pas abîmer la vie fixée avec ses palmes", "Pour consommer plus", "Pour voir moins de poissons", "Ce n’est pas important"], a: 0, e: "Un coup de palme ou un genou posé détruit en un instant des organismes fragiles. On se stabilise avant d’approcher." },
+    { q: "Peut-on nourrir les poissons pendant la plongée ?", c: ["Non : ça modifie leur comportement", "Oui, avec du pain", "Oui, si le guide le fait", "Seulement les mérous"], a: 0, e: "Nourrir la faune la rend dépendante et parfois agressive. On observe sans toucher ni nourrir." }
+  ]);
+
+  /* Aide (boutons « ? ») */
+  C.help = C.help || {};
+  Object.assign(C.help, {
+    maitrise: { t: "Statuts et maîtrise", ic: "target", go: "progres", goL: "Voir mes progrès",
+      html: `<p>Chaque cours passe par ces <b>statuts</b> :</p>
+        <ul><li><b>À lire</b> : pas encore lu. Son quiz est fermé.</li>
+        <li><b>Lu · quiz à faire</b> : tu l’as marqué lu, teste-toi dessus.</li>
+        <li><b>Lu · en cours</b> : tu as commencé à répondre, la maîtrise monte.</li>
+        <li><b>Acquis</b> : maîtrise d’au moins 65 %.</li>
+        <li><b>Maîtrisé</b> : au moins 85 % et toutes ses notions travaillées.</li>
+        <li><b>Lacune à combler</b> : au moins une notion ratée plusieurs fois.</li>
+        <li><b>À réviser</b> : pas revu depuis longtemps.</li></ul>
+        <p>La <b>maîtrise</b> se calcule <b>notion par notion</b> (les sous-parties d’un cours) à partir de tes réponses : les plus récentes comptent le plus, et elle baisse doucement si tu ne révises pas.</p>
+        <p>Une <b>notion</b> est <i>fragile</i> sous 45 %, <i>en cours</i> jusqu’à 65 %, <i>acquise</i> au-dessus, <i>maîtrisée</i> à partir de 85 % avec au moins 4 réponses. Deux erreurs de suite sur une notion = <b>lacune</b>.</p>
+        <p>Les anciennes étoiles sont remplacées par ces statuts.</p>` },
+    tuteur: { t: "Le tuteur", ic: "compass", go: "home", goL: "Voir ma prochaine étape",
+      html: `<p>Le tuteur choisit ta <b>prochaine étape</b>, dans cet ordre :</p>
+        <ol><li>tester un cours que tu viens de lire ;</li><li>vérifier une lacune travaillée il y a 2 jours ;</li><li>combler une lacune (relire le passage, puis 5 questions ciblées) ;</li><li>faire tes révisions espacées du jour ;</li><li>lire le cours suivant de ton parcours ;</li><li>passer l’examen blanc quand tout est lu.</li></ol>
+        <p>Toutes les questions viennent des <b>cours que tu as lus</b>. Rien ne dépend d’un moniteur : l’appli est faite pour apprendre seul.</p>` }
+  });
+
+  AA.i18n.add("fr", {
+    /* Navigation */
+    "tab.cours": "Cours", "tab.progres": "Progrès", "tu.ok": "Compris",
+    /* Textes revus (moniteur plus discret) */
+    "lesson.tab.moniteur": "Mes notes",
+    "lesson.coachIntro": "Tes notes personnelles sur ce cours : questions, astuces, ce que tu veux retenir.",
+    "common.validate": "Hypothèse",
+    "exm.hyp": "Format proche de l’écrit des clubs (QCM et calculs). C’est une hypothèse : le format exact peut varier selon les centres.",
+    /* Statuts d'un cours */
+    "tu.st.toread": "À lire", "tu.st.quiz": "Lu · quiz à faire", "tu.st.gap": "Lacune à combler", "tu.st.review": "À réviser",
+    "tu.st.learning": "Lu · en cours", "tu.st.ok": "Acquis", "tu.st.master": "Maîtrisé", "tu.st.cert": "Niveau obtenu",
+    /* Notions */
+    "tu.n.new": "Pas encore vue", "tu.n.weak": "Fragile", "tu.n.mid": "En cours", "tu.n.ok": "Acquise", "tu.n.master": "Maîtrisée", "tu.n.gap": "Lacune",
+    "tu.general": "Vue d’ensemble",
+    /* Cours lu */
+    "tu.readT": "Tu as fini ce cours ?",
+    "tu.readS": "Marque-le comme lu : son quiz s’ouvre et ses questions entrent dans tes révisions.",
+    "tu.readBtn": "J’ai lu ce cours",
+    "tu.readDone": "Cours lu le {d}",
+    "tu.readDoneS": "Son quiz est ouvert et ses questions reviennent dans tes révisions.",
+    "tu.unread": "Remettre en « à lire »",
+    "tu.unreadQ": "Remettre ce cours en « à lire » ? Ses questions sortiront de tes révisions jusqu’à ce que tu le relises.",
+    "tu.unreadOk": "Remettre à lire",
+    "tu.readToast": "Cours lu", "tu.readToastS": "Le quiz de « {t} » est ouvert.",
+    "tu.quizLocked": "Quiz après lecture",
+    "tu.goRead": "Aller à la fin du cours",
+    "tu.needT": "Lis d’abord ce cours",
+    "tu.needS": "Le quiz de « {t} » s’ouvre quand tu as lu le cours et appuyé sur « J’ai lu ce cours », en bas de l’Essentiel. Tu ne tombes ainsi jamais sur une question que tu n’as pas apprise.",
+    "tu.needBtn": "Lire « {t} »",
+    "tu.noneT": "Aucun cours lu pour l’instant",
+    "tu.noneS": "Les révisions et les quiz mélangés ne portent que sur les cours que tu as lus. Commence par lire un cours.",
+    "tu.prereqT": "À lire avant, c’est conseillé",
+    "tu.prereqS": "Ce cours s’appuie sur :",
+    "tu.certNote": "Niveau obtenu : ces cours sont considérés comme acquis. Tu peux les relire quand tu veux.",
+    "tu.notions": "Notions de ce cours",
+    "tu.notionsS": "Ta maîtrise de chaque notion, d’après tes réponses.",
+    "tu.reread": "Relire",
+    "tu.train": "S’entraîner",
+    /* Accueil */
+    "tu.where": "Où tu en es",
+    "tu.goal": "Objectif {w}",
+    "tu.readN": "{n}/{tot} cours lus",
+    "tu.notionsN": "{n}/{tot} notions vues",
+    "tu.masteryN": "Maîtrise {p} %",
+    "tu.next": "Ta prochaine étape",
+    "tu.then": "Ensuite",
+    "tu.planT": "Ton plan vers l’examen",
+    "tu.planDate": "Examen dans {d} jours. Il te reste {r} cours à lire : environ {w} par semaine, puis la dernière semaine pour l’examen blanc et les révisions.",
+    "tu.planDateDone": "Examen dans {d} jours. Tous les cours sont lus : passe un examen blanc chaque semaine et comble tes lacunes.",
+    "tu.planNoDate": "Il te reste {r} cours à lire. Donne ta date d’examen dans les réglages pour avoir un rythme conseillé.",
+    "tu.planNoDateDone": "Tous les cours sont lus. Passe l’examen blanc, puis travaille tes notions fragiles.",
+    "tu.setDate": "Indiquer ma date d’examen",
+    "tu.ready": "Prêt pour l’examen blanc",
+    "tu.notReady": "Examen blanc conseillé quand tout est lu",
+    "tu.seeAll": "Tout le parcours",
+    "tu.gapsT": "Tes lacunes",
+    "tu.gapsNone": "Aucune lacune détectée pour l’instant. Le tuteur les repère dès que tu te trompes plusieurs fois sur une même notion.",
+    "tu.fix": "Combler",
+    "tu.eclairTitle": "Défi éclair · {t}", "tu.eclairS": "Trois questions tout de suite sur « {t} » pour ancrer ce que tu viens de lire. Sans faute : +10 XP.",
+    "tu.eclairBtn": "Défi éclair (3 questions)", "tu.later": "Plus tard",
+    "tu.eclairOk": "Défi éclair réussi sans faute : +10 XP. C’est ancré !", "tu.eclairNo": "Pas de souci : les questions ratées reviendront dans tes prochaines révisions.",
+    "tu.wonT": "{n} notion(s) désormais acquise(s) grâce à cette série",
+    "tu.todayT": "Envie de réviser librement ?",
+    "tu.todayS": "Questions des cours lus, choisies pour toi : lacunes, révisions espacées, notions fragiles et un calcul.",
+    "tu.todayBtn": "Lancer la séance du tuteur",
+    /* Actions du tuteur */
+    "tu.a.quiz": "Teste-toi sur « {t} »", "tu.a.quizS": "Tu viens de lire ce cours : un quiz court pour ancrer.",
+    "tu.a.check": "Vérifier : {n}", "tu.a.checkS": "Lacune travaillée il y a quelques jours, on vérifie qu’elle est comblée.",
+    "tu.a.gap": "Combler une lacune : {n}", "tu.a.gapS": "Cours « {t} ». Relis le passage, puis 5 questions ciblées.",
+    "tu.a.srs": "Révisions du jour", "tu.a.srsS": "{n} questions de cours lus reviennent aujourd’hui.",
+    "tu.a.read": "Lire « {t} »", "tu.a.readS": "Cours {i}/{tot} de ton parcours {w}. Environ {m} min.",
+    "tu.a.exam": "Passer l’examen blanc {w}", "tu.a.examS": "Tous les cours sont lus : mets-toi en condition d’examen.",
+    "tu.a.weak": "Renforcer : {n}", "tu.a.weakS": "Notion encore fragile dans « {t} ».",
+    "tu.a.session": "Séance du tuteur", "tu.a.sessionS": "Un mélange adapté de tes cours lus.",
+    "tu.a.go": "C’est parti",
+    /* Lacunes */
+    "tu.gapT": "Lacune : {n}",
+    "tu.gapS": "Tu t’es trompé plusieurs fois sur cette notion du cours « {t} ». Le plan : relire le passage, faire 5 questions ciblées, puis on revérifie dans 2 jours.",
+    "tu.gap1": "Relire le passage du cours",
+    "tu.gap2": "5 questions ciblées",
+    "tu.gap3": "Vérification automatique dans 2 jours",
+    "tu.drill": "Notion : {n}",
+    "tu.resGapsT": "Notions à retravailler",
+    "tu.resGapsS": "Le tuteur a noté ces notions. Tu les retrouveras sur l’accueil.",
+    "tu.resChk": "Vérification réussie : la lacune « {n} » est comblée.",
+    "tu.resChkNo": "Pas encore tout à fait : on revérifie « {n} » demain.",
+    "tu.notionQ": "Notion : {n}",
+    "tu.session": "Séance du tuteur",
+    /* Écran Cours */
+    "tu.coursT": "Cours",
+    "tu.coursS": "Lis les cours dans l’ordre, marque-les lus, puis entraîne-toi dessus. Chaque cours ouvre son quiz une fois lu.",
+    "tu.mapView": "Vue carte",
+    "tu.listView": "Liste",
+    "tu.examStep": "Examen blanc {w}",
+    "tu.examStepS": "Conseillé quand les {n} cours sont lus.",
+    "tu.examStepOk": "Tous les cours sont lus : à toi de jouer.",
+    "tu.legend": "Statuts",
+    /* Écran Progrès */
+    "tu.progT": "Progrès",
+    "tu.progS": "Ce que tu maîtrises, notion par notion, et ce qu’il reste à travailler.",
+    "tu.byCourse": "Par cours",
+    "tu.examsT": "Examens blancs",
+    "tu.trophies": "Trophées",
+    "tu.stats": "Statistiques",
+    "tu.answers": "réponses",
+    /* S'entraîner */
+    "tu.trainS": "Tout ce qui t’entraîne porte sur les cours que tu as lus.",
+    "tu.smart": "Révisions intelligentes",
+    "tu.byCourseT": "Quiz par cours",
+    "tu.byCourseS": "Les cours lus. Les autres s’ouvrent après lecture.",
+    "tu.ateliers": "Ateliers",
+    "tu.epreuves": "Épreuves",
+    "tu.noneRead": "Lis un premier cours pour débloquer l’entraînement.",
+    /* Examen */
+    "tu.exUnread": "{n} cours de ce niveau ne sont pas encore lus : l’examen ne contient que les questions de tes cours lus. Conseil : lis tout avant ton examen blanc.",
+    "tu.exAll": "Tous les cours de ce niveau sont lus : examen complet.",
+    /* Club et moniteur */
+    "tu.clubT": "Club et moniteur",
+    "tu.clubS": "Facultatif. Pour ceux qui suivent une formation en club.",
+    "tu.clubOn": "Je suis une formation en club",
+    "tu.clubOnS": "Affiche dans chaque cours la validation par ton moniteur et des idées de questions à lui poser.",
+    "tu.clubIntro": "L’appli est faite pour apprendre en autonomie. Si tu suis une formation en club, ces outils t’aident à faire le lien avec ton moniteur.",
+    "tu.notesIntro": "Tes notes personnelles sur ce cours : questions, astuces, ce que tu veux retenir.",
+    "tu.coachIdeas": "Idées de questions à poser à ton moniteur",
+    "tu.migT": "Nouveau : les cours lus",
+    "tu.migS": "Les quiz et révisions ne portent plus que sur les cours lus. Les cours que tu avais déjà réussis sont comptés comme lus."
+  });
+})();
+
+/* content/fr/v20-art.js */
+/* =====================================================================
+   Abysse Academy 2.0 · illustrations animées
+   - Signes de plongée animés (cours N1 « Signes et communication »).
+   - Le détendeur et ses flexibles, octopus en jaune (cours Matériel).
+   - Le gilet stabilisateur, le manomètre et la réserve.
+   - Faune et flore de Méditerranée (cours Environnement).
+   Les animations s'arrêtent si l'utilisateur réduit les animations.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, C = AA.content;
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  const SK = "#F2C7A0", SL = "#8A5A3C", SUIT = "#1F3242";
+
+  /* ---------- Main stylisée (boîte 100 × 110, poignet en bas) ---------- */
+  const finger = (i, up) => { const x = 28 + i * 11, y = up ? 12 + [6, 0, 3, 10][i] : 42; return `<rect x="${x}" y="${y}" width="10" height="${up ? 52 - y + 8 : 16}" rx="5" fill="${SK}" stroke="${SL}" stroke-width="1.6"/>`; };
+  const palm = `<rect x="26" y="48" width="46" height="42" rx="12" fill="${SK}" stroke="${SL}" stroke-width="1.6"/>`;
+  const sleeve = `<rect x="32" y="86" width="34" height="22" rx="4" fill="${SUIT}"/>`;
+  const thumbSide = `<rect x="8" y="52" width="26" height="10" rx="5" fill="${SK}" stroke="${SL}" stroke-width="1.6" transform="rotate(-28 30 57)"/>`;
+  const thumbUp = `<rect x="15" y="16" width="11" height="44" rx="5.5" fill="${SK}" stroke="${SL}" stroke-width="1.6"/>`;
+  const thumbAcross = `<rect x="24" y="56" width="34" height="10" rx="5" fill="${SK}" stroke="${SL}" stroke-width="1.6"/>`;
+  const flat = () => sleeve + [0, 1, 2, 3].map(i => finger(i, true)).join("") + palm + thumbSide;
+  const fist = thumb => sleeve + palm + [0, 1, 2, 3].map(i => finger(i, false)).join("") + (thumb === "up" ? thumbUp : thumbAcross);
+  const okHand = () => sleeve + [1, 2, 3].map(i => finger(i, true)).join("") + palm +
+    `<circle cx="24" cy="40" r="11" fill="none" stroke="${SL}" stroke-width="10"/><circle cx="24" cy="40" r="11" fill="none" stroke="${SK}" stroke-width="7"/>`;
+  const head = (cx, cy) => `<circle cx="${cx}" cy="${cy}" r="17" fill="${SUIT}"/><rect x="${cx - 13}" y="${cy - 8}" width="26" height="12" rx="5" fill="#9fd8e8" stroke="#0d1b26" stroke-width="2"/>`;
+  const sign = (svg, name, meaning, answer) => `<div class="sg-card"><svg viewBox="0 0 120 120" role="img" aria-label="${esc(name)} : ${esc(meaning)}">${svg}</svg>
+    <b>${esc(meaning)}</b><span class="sg-how">${esc(name)}</span><span class="sg-ans">→ ${esc(answer)}</span></div>`;
+  const at = (x, y, s, inner, cls) => `<g transform="translate(${x} ${y}) scale(${s})"><g class="${cls || ""}">${inner}</g></g>`;
+
+  C.addDiagrams({
+    "signes-anim": () => `<figure class="diagram tu-art sg-grid-fig"><div class="sg-grid">
+      ${sign(at(10, 5, 1, okHand(), "sg-pulse"), "Pouce et index en rond", "« Ça va »", "Même signe")}
+      ${sign(at(10, 5, 1, flat(), "sg-wob"), "Main à plat qui oscille", "« Ça ne va pas »", "On montre où (oreille, masque…)")}
+      ${sign(at(10, 5, 1, fist("up"), "sg-up"), "Pouce vers le haut", "« On remonte »", "Même signe, on remonte ensemble")}
+      ${sign(`<g transform="rotate(180 60 60)">${at(10, 5, 1, fist("up"), "sg-up")}</g>`, "Pouce vers le bas", "« On descend »", "Signe « ça va »")}
+      ${sign(`${head(60, 26)}<rect x="50" y="42" width="20" height="14" fill="${SK}"/><path d="M22 120c0-30 18-62 38-62s38 32 38 62z" fill="${SUIT}"/>
+        <g class="sg-slide"><g transform="translate(96 40) rotate(90) scale(.42)">${flat()}</g></g>`, "Main tranchant sur la gorge", "« Je n’ai plus d’air »", "Donner son détendeur de secours")}
+      ${sign(`<g class="sg-a">${at(10, 5, 1, fist("across"))}</g><g class="sg-b">${at(10, 5, 1, flat())}</g>`, "Poing qui s’ouvre et se ferme devant la poitrine", "« Je suis sur la réserve »", "On remonte")}
+      ${sign(`<g class="sg-push"><g transform="translate(6 100) rotate(-90) scale(.9)">${flat()}</g></g><path d="M0 112h120" stroke="var(--line)" stroke-dasharray="4 4"/>`, "Main à plat, paume vers le bas", "« Stop, on reste ici »", "Signe « ça va »")}
+      ${sign(`<path d="M18 120c0-34 18-70 42-70s42 36 42 70z" fill="${SUIT}"/>${head(60, 30)}<g class="sg-tap"><g transform="translate(46 62) scale(.4)">${fist("across")}</g></g>`, "Poing tapé sur la poitrine", "« Je suis essoufflé »", "On s’arrête, on aide")}
+      ${sign(`<path class="sg-wave" d="M0 84q15-8 30 0t30 0 30 0 30 0V120H0z" fill="var(--primary)" opacity=".35"/>${head(60, 66)}
+        <path d="M44 70C30 40 50 22 60 46" stroke="${SUIT}" stroke-width="9" fill="none" stroke-linecap="round"/><path d="M76 70C90 40 70 22 60 46" stroke="${SUIT}" stroke-width="9" fill="none" stroke-linecap="round"/><circle cx="60" cy="44" r="5" fill="${SK}"/>`, "En surface : bras en rond au-dessus de la tête", "« Ça va » (en surface)", "Le bateau te voit")}
+      </div><figcaption>Les signes de base, animés. Un signe se fait lentement, devant le masque de l’autre, et appelle toujours une réponse. Attention : sous l’eau, le pouce levé veut dire « on remonte », pas « ça va ».</figcaption></figure>`,
+
+    "eq-detendeur": () => {
+      const items = [
+        [44, "#16232e", "Deuxième étage", "Celui que tu respires : il donne l’air à la pression ambiante.", "reg"],
+        [114, "#F2C230", "Octopus (jaune)", "Détendeur de secours : tu le donnes à ton équipier en panne d’air.", "reg"],
+        [184, "#16232e", "Direct system", "Gonfle le gilet (moyenne pression).", "inf"],
+        [254, "#16232e", "Manomètre", "Indique l’air qui reste dans le bloc (haute pression).", "gauge"]
+      ];
+      const draw = (k, y, col) => k === "reg" ? `<circle cx="292" cy="${y}" r="17" fill="${col}" stroke="#0b141b" stroke-width="2"/><rect x="270" y="${y - 6}" width="12" height="12" rx="3" fill="#33444f"/><circle cx="296" cy="${y}" r="7" fill="none" stroke="${col === "#F2C230" ? "#7a5c00" : "#4c6070"}" stroke-width="2"/>`
+        : k === "inf" ? `<rect x="276" y="${y - 12}" width="30" height="24" rx="6" fill="${col}" stroke="#4c6070" stroke-width="2"/><circle cx="286" cy="${y}" r="4" class="d-pri"/><circle cx="298" cy="${y}" r="4" class="d-acc"/>`
+        : `<circle cx="292" cy="${y}" r="18" fill="#f4f7f9" stroke="#16232e" stroke-width="4"/><path d="M292 ${y}l-9 -9" stroke="#c4302b" stroke-width="3" stroke-linecap="round" class="eq-needle"/><path d="M279 ${y + 9}a16 16 0 0 1 -3 -6" stroke="#c4302b" stroke-width="3" fill="none"/>`;
+      const hose = (y, col, i) => `<path d="M104 46C180 46 190 ${y} 270 ${y}" fill="none" stroke="${col === "#F2C230" ? "#d9a800" : "#2b3a46"}" stroke-width="${i === 3 ? 4 : 6}" stroke-linecap="round"/>
+        <path class="eq-flow" style="animation-delay:-${i * .4}s" d="M104 46C180 46 190 ${y} 270 ${y}" fill="none" stroke="var(--primary)" stroke-width="2" stroke-dasharray="3 12" stroke-linecap="round"/>`;
+      return `<figure class="diagram tu-art"><svg viewBox="0 0 620 300" role="img" aria-label="Le détendeur : premier étage sur le bloc et quatre flexibles">
+        <rect x="40" y="70" width="64" height="216" rx="30" class="d-soft" stroke="var(--line)" stroke-width="2"/><text x="72" y="190" class="d-strong" text-anchor="middle">Bloc</text><text x="72" y="208" class="d-text" text-anchor="middle">200 bar</text>
+        <rect x="62" y="50" width="20" height="22" rx="3" fill="#8a96a0"/><circle cx="72" cy="56" r="9" fill="none" stroke="#c4302b" stroke-width="4"/>
+        <rect x="56" y="28" width="48" height="30" rx="8" fill="#b8c2ca" stroke="#5d6b75" stroke-width="2"/><text x="80" y="18" class="d-strong" text-anchor="middle">1er étage</text>
+        ${items.map(([y, col], i) => hose(y, col, i)).join("")}
+        ${items.map(([y, col, t, s, k]) => `${draw(k, y, col)}<text x="322" y="${y - 4}" class="d-strong">${esc(t)}</text>${wrapText(322, y + 13, s, 30)}`).join("")}
+      </svg><figcaption>Le premier étage, vissé sur le robinet du bloc, fait baisser la pression ; quatre flexibles en partent. L’octopus est jaune pour qu’on le trouve tout de suite : c’est celui que tu donnes à ton équipier.</figcaption></figure>`;
+    },
+
+    "eq-gilet": () => `<figure class="diagram tu-art"><svg viewBox="0 0 700 320" role="img" aria-label="Le gilet stabilisateur et ses commandes"><g transform="translate(110 0)">
+      <g class="eq-vest"><path d="M190 40c20-20 70-20 90 0l14 40c10 30 12 80 6 140-2 30-20 50-60 52-40-2-58-22-60-52-6-60-4-110 6-140z" fill="#21485e" stroke="#0f2a38" stroke-width="3"/>
+        <path d="M206 60c10-12 48-12 58 0l8 28c6 30 6 80 2 120-2 22-16 34-39 35-23-1-37-13-39-35-4-40-4-90 2-120z" fill="#2b5d78"/></g>
+      <rect x="196" y="150" width="34" height="34" rx="6" fill="#16232e"/><rect x="240" y="150" width="34" height="34" rx="6" fill="#16232e"/>
+      <rect x="200" y="196" width="70" height="10" rx="4" fill="#0f2a38"/>
+      <path d="M200 52c-30 10-40 40-36 80" fill="none" stroke="#16232e" stroke-width="7" stroke-linecap="round"/><rect x="152" y="128" width="26" height="34" rx="6" fill="#16232e"/><circle cx="160" cy="140" r="4" class="d-pri"/><circle cx="170" cy="152" r="4" class="d-acc"/>
+      <circle cx="274" cy="50" r="7" class="d-acc"/><circle cx="246" cy="254" r="7" class="d-acc"/></g>
+      <g class="t-lab">
+        <path d="M262 145H160" class="s-line" stroke-width="1.5"/><text x="8" y="128" class="d-strong">Direct system</text><text x="8" y="144" class="d-text">bleu : gonfler</text><text x="8" y="158" class="d-text">rouge : purger</text>
+        <path d="M391 50H440" class="s-line" stroke-width="1.5"/><text x="446" y="46" class="d-strong">Purge rapide (haute)</text><text x="446" y="62" class="d-text">on tire : l’air sort en haut</text>
+        <path d="M363 254H440" class="s-line" stroke-width="1.5"/><text x="446" y="250" class="d-strong">Purge basse</text><text x="446" y="266" class="d-text">tête en bas : vider le gilet</text>
+        <path d="M384 168H440" class="s-line" stroke-width="1.5"/><text x="446" y="164" class="d-strong">Poches à lest largables</text><text x="446" y="180" class="d-text">se lâchent d’une main</text>
+        <path d="M380 201H440" class="s-line" stroke-width="1.5"/><text x="446" y="212" class="d-strong">Sangle ventrale</text>
+        <path d="M316 80H190" class="s-line" stroke-width="1.5"/><text x="8" y="76" class="d-strong">Sangles d’épaules</text><text x="8" y="92" class="d-text">bloc fixé dans le dos</text>
+      </g></svg><figcaption>Le gilet stabilisateur : on le gonfle par petites touches avec le direct system, on le vide par une purge placée au point le plus haut. Les poches à lest se lâchent d’une main en cas de besoin.</figcaption></figure>`,
+
+    "eq-manometre": () => {
+      const P = (v, r) => { const a = (-120 + 240 * v / 300) * Math.PI / 180; return [(130 + r * Math.sin(a)).toFixed(1), (130 - r * Math.cos(a)).toFixed(1)]; };
+      const arc = (v0, v1, r) => { const [x0, y0] = P(v0, r), [x1, y1] = P(v1, r); return `M${x0} ${y0}A${r} ${r} 0 ${v1 - v0 > 150 ? 1 : 0} 1 ${x1} ${y1}`; };
+      const ticks = [0, 50, 100, 150, 200, 250, 300].map(v => { const [a, b] = P(v, 92), [c, d] = P(v, 80), [tx, ty] = P(v, 66); return `<path d="M${a} ${b}L${c} ${d}" stroke="#16232e" stroke-width="3"/><text x="${tx}" y="${(+ty + 5).toFixed(1)}" class="eq-gt" text-anchor="middle">${v}</text>`; }).join("");
+      return `<figure class="diagram tu-art"><svg viewBox="0 0 560 270" role="img" aria-label="Manomètre : de 200 bar à la réserve">
+        <circle cx="130" cy="130" r="112" fill="#16232e"/><circle cx="130" cy="130" r="100" fill="#f4f7f9"/>
+        <path d="${arc(0, 50, 92)}" stroke="#d6402b" stroke-width="12" fill="none"/><path d="${arc(50, 100, 92)}" stroke="#f2b632" stroke-width="12" fill="none"/>
+        ${ticks}<text x="130" y="190" class="eq-gt" text-anchor="middle">bar</text>
+        <g class="eq-gneedle"><path d="M130 130L130 46" stroke="#16232e" stroke-width="5" stroke-linecap="round"/></g><circle cx="130" cy="130" r="9" fill="#16232e"/>
+        <text x="270" y="60" class="d-strong">Au départ : bloc plein</text><text x="270" y="78" class="d-text">souvent 200 bar ou plus</text>
+        <text x="270" y="122" class="d-strong t-gold">Zone jaune</text><text x="270" y="140" class="d-text">on prévoit le retour, on prévient</text>
+        <text x="270" y="184" class="d-strong t-acc">Zone rouge : la réserve</text><text x="270" y="202" class="d-text">souvent 50 bar : signe « réserve »,</text><text x="270" y="218" class="d-text">on remonte en gardant cette marge</text>
+      </svg><figcaption>Regarde ton manomètre souvent et annonce ta pression à ton guide. Les seuils exacts (retour, réserve) se fixent au briefing.</figcaption></figure>`;
+    },
+
+    "faune-med": () => {
+      const sp = [
+        ["grouper", ["#6B4E32", "#E8D8B0", "#4E3622"], "Mérou brun", "Protégé. Curieux, il vit plus de 50 ans.", "Protégé"],
+        ["scorpion", ["#B7472A", "#6E2A1A", "#D9785C"], "Rascasse", "Camouflée sur la roche : épines venimeuses.", "Ne pas toucher"],
+        ["octopus", ["#C0704E", "#8E4630", "#C0704E"], "Poulpe", "Change de couleur en un instant, trois cœurs.", ""],
+        ["moray", ["#6B4A2E", "#F0D27A", "#4A3220"], "Murène", "Ouvre la bouche pour respirer. Doigts loin de son trou.", "Peut mordre"],
+        ["jelly", ["#D58FD0", "#F2B8EE", "#FFE2FB"], "Pélagie", "Méduse fréquente certains étés.", "Urticante"],
+        ["ray", ["#B89A6A", "#3A2A1A", "#8C7450"], "Raie torpille", "Posée sur le sable, elle peut envoyer une décharge.", "Électrique"],
+        ["seahorse", ["#D9A441", "#9C6B1E", "#F2D38A"], "Hippocampe", "Le mâle porte les œufs. Accroché aux herbiers.", "Fragile"],
+        ["wrasse", ["#2FA37A", "#3A6FD8", "#F07A3A"], "Girelle paon", "Très colorée, elle dort enfouie dans le sable.", ""]
+      ];
+      const art = (s, c) => AA.creature ? AA.creature(s, c, "fa-art") : "";
+      const posi = `<svg class="creature fa-art" viewBox="0 0 120 80" aria-hidden="true">${[20, 34, 48, 62, 76, 90].map((x, i) => `<path class="fa-leaf" style="animation-delay:-${i * .4}s" d="M${x} 80c0-30 ${i % 2 ? 6 : -6}-50 ${i % 2 ? 10 : -4}-70" stroke="#3f8f4a" stroke-width="7" fill="none" stroke-linecap="round"/>`).join("")}<path d="M10 80h100" stroke="#6b5a3a" stroke-width="6"/></svg>`;
+      return `<figure class="diagram tu-art"><div class="fa-grid">
+        <div class="fa-card">${posi}<b>Posidonie</b><span>Plante à fleurs (pas une algue) : herbier qui abrite la vie et protège les plages.</span><em class="chip xs warn">Protégée : pas d’ancre</em></div>
+        ${sp.map(([s, c, n, f, tag]) => `<div class="fa-card">${art(s, c)}<b>${esc(n)}</b><span>${esc(f)}</span>${tag ? `<em class="chip xs ${/Protégé|Fragile/.test(tag) ? "ok" : "warn"}">${esc(tag)}</em>` : ""}</div>`).join("")}
+      </div><figcaption>Quelques rencontres en Méditerranée. On regarde, on ne touche pas, on ne nourrit pas : on reste stable au-dessus du fond.</figcaption></figure>`;
+    }
+  });
+  /* Texte sur plusieurs lignes dans un SVG. */
+  function wrapText(x, y, s, n) {
+    const L = []; let cur = ""; String(s).split(" ").forEach(w => { if ((cur + " " + w).trim().length > n && cur) { L.push(cur.trim()); cur = w; } else cur += " " + w; }); if (cur.trim()) L.push(cur.trim());
+    return `<text x="${x}" y="${y}" class="d-text">${L.map((l, i) => `<tspan x="${x}" dy="${i ? 15 : 0}">${esc(l)}</tspan>`).join("")}</text>`;
+  }
+
+  /* Rattachement aux cours (à la fin de l'Essentiel). */
+  const add = (id, title, d) => C.extend(id, { essentiel: `<h3>${title}</h3><div data-diagram="${d}"></div>` });
+  add("n1-signes", "Les signes, en mouvement", "signes-anim");
+  add("d-materiel", "Le détendeur et ses flexibles", "eq-detendeur");
+  add("materiel", "Le détendeur et ses flexibles", "eq-detendeur");
+  add("materiel", "Le gilet stabilisateur", "eq-gilet");
+  add("materiel", "Lire son manomètre", "eq-manometre");
+  add("pa20", "Surveiller son air", "eq-manometre");
+  add("n1-milieu", "Qui vas-tu croiser ?", "faune-med");
+  add("environnement", "Faune et flore en images", "faune-med");
 })();
 
 /* js/app.js */

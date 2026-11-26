@@ -92,9 +92,9 @@
     const S = AA.S, lv = G.levelOf(S.xp), st = G.streak();
     if (kind === "xp") {
       const close = ui.sheet(`<div class="help-sheet stack"><div class="help-ic gold">${AA.icon("bolt")}</div><h3>${t("hud.xpT", { xp: S.xp })}</h3>
-        <p>${t("hud.xpLvl", { l: lv.l, rank: u.esc(lv.rank) })}</p>${ui.bar(lv.into / lv.need, "var(--gold)")}<p class="small muted">${t("prof.toNext", { n: lv.need - lv.into })}</p>
+        <p>${t("hud.xpLvl", { l: lv.l, rank: u.esc(lv.rank) })}</p>${ui.bar(lv.into / lv.need, "var(--gold)")}<p class="small muted">${t("prof.toNext", { n: lv.need - lv.into })}${lv.nextRank ? " · " + t("hud.nextRank", { l: lv.nextRank }) : ""}</p>
         <div class="prose">${C.help.xp.html}</div><button class="btn block" data-hx="daily">${AA.icon("play")} ${t("hud.earn")}</button><a class="btn ghost block" href="#/profile">${t("hud.seeProfile")}</a></div>`, t("help.what"));
-      u.$("[data-hx]").onclick = () => { close(); AA.goTo("daily"); };
+      u.$("[data-hx]").onclick = () => { close(); AA.tutor ? AA.tutor.session() : AA.goTo("daily"); };
     } else if (kind === "streak") {
       const days = new Set(S.days || []), cells = Array.from({ length: 14 }, (_, i) => u.addDays(i - 13));
       const doneToday = days.has(u.today());
@@ -102,7 +102,7 @@
         <p>${doneToday ? t("hud.streakOk") : t("hud.streakTodo")}</p>
         <div class="streak-cal" aria-label="${t("hud.last14")}">${cells.map(d => `<i class="${days.has(d) ? "on" : ""} ${d === u.today() ? "today" : ""}" title="${d}"></i>`).join("")}</div><p class="xs muted center">${t("hud.last14")}</p>
         <div class="prose">${C.help.streak.html}</div>${doneToday ? "" : `<button class="btn block" data-hx>${AA.icon("play")} ${t("hud.keep")}</button>`}</div>`, t("help.what"));
-      const b = u.$("[data-hx]"); if (b) b.onclick = () => { close(); AA.goTo("five"); };
+      const b = u.$("[data-hx]"); if (b) b.onclick = () => { close(); AA.tutor ? AA.tutor.session() : AA.goTo("five"); };
     } else AA.help(kind);
   };
 

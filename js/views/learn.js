@@ -222,7 +222,7 @@
           <label class="setting"><span class="grow"><b>${t("lesson.validated")}</b><span>${note.ok ? t("lesson.validatedOn", { d: note.ok }) : t("lesson.validatedS")}</span></span><span class="switch"><input type="checkbox" id="valid" ${note.ok ? "checked" : ""}><i></i></span></label>`;
 
       el.innerHTML = `
-        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.levelBadge(m.world, true)}${AA.instrChip ? AA.instrChip(m.id) : ""}${AA.stars(st)}</div>
+        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.stars(st)}${AA.levelBadge(m.world, true)}</div>
         <header class="lesson-hero" style="--wc:var(${w.color})">
           <div class="row" style="gap:var(--sp-4);flex-wrap:nowrap"><span class="ic">${AA.icon(m.icon)}</span><div class="grow"><p class="eyebrow" style="color:var(--wc)">${u.esc(m.depth)}</p><h1 style="font-size:var(--fs-2xl)">${u.esc(m.title)}</h1><p class="muted" style="margin:4px 0 0">${u.esc(m.sub)}</p></div></div>
           <div class="row" style="margin-top:var(--sp-4)">

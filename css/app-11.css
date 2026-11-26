@@ -1012,6 +1012,20 @@ h1,h2,h3,.pagetitle{overflow-wrap:break-word}
 .prose .gl{white-space:normal;overflow-wrap:anywhere;text-align:inherit}
 @media (max-width:420px){h1,h2,h3,h4,.pagetitle{overflow-wrap:anywhere}}
 .qtag{flex-wrap:wrap;max-width:100%}
-#view .chip{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+#view .chip{max-width:100%}
+#view .cur-you .chip{white-space:normal;overflow-wrap:anywhere}
 /* Barre du haut sur très petit écran : le logo seul, pour laisser la place aux compteurs. */
-@media (max-width:340px){#topbar .brand>b{display:none}}
+/* Barre du haut sur téléphone : le logo seul (le nom prenait la place des compteurs et passait dessous). */
+@media (max-width:519px){#topbar .brand>b{display:none}}
+
+/* =====================================================================
+   1.9.2 · revue visuelle : plus aucun chevauchement
+   ===================================================================== */
+/* En-tête des cours : la pastille du niveau passe à la ligne au lieu d'écraser « N2 · 1/11 ». */
+.lesson-wrap .pagehead,.pagehead:has(.lvchip){flex-wrap:wrap;row-gap:6px}
+.pagehead:has(.lvchip) .eyebrow.grow{white-space:nowrap;min-width:max-content}
+.pagehead .lvchip{white-space:nowrap}
+/* Tuiles : la pastille (XP, « à revoir ») sous l'icône quand la tuile est étroite, jamais dessus. */
+.tile{container-type:inline-size}
+@container (max-width:15rem){.tile .badge{position:static;justify-self:start;max-width:100%;order:3}}
+@media (max-width:519px){.pagehead .lvchip{order:9;flex:1 1 100%;white-space:normal;justify-content:flex-start} .hide-xs{display:none}}

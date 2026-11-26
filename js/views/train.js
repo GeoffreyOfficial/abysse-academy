@@ -78,8 +78,8 @@
       u.$("#fc").onclick = () => { if (!c.flipped) flip(); };
       const sh = u.$("#show"); if (sh) sh.onclick = flip;
       const rate = ok => {
-        G.rateCard(card, ok); if (!ok) c.deck.push(card); c.i++; c.flipped = false; if (ok) c.done++;
-        AA.store.save(); if (ok) G.addXp(3); G.checkBadges(); AA.router.refresh();
+        const cx = G.cardXp(card); G.rateCard(card, ok); if (!ok) c.deck.push(card); c.i++; c.flipped = false; if (ok) c.done++;
+        AA.store.save(); if (ok) G.addXp(cx); G.checkBadges(); AA.router.refresh();
       };
       const y = u.$("#yes"); if (y) { y.onclick = () => { fx.sfx.ok(); fx.buzz(10); rate(true); }; u.$("#no").onclick = () => { fx.sfx.bad(); rate(false); }; }
     }

@@ -17,7 +17,7 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { "Content-Type": TYPES[path.extname(f)] || "application/octet-stream" }); fs.createReadStream(f).pipe(res);
 });
 const FAST = process.argv[2] === "rapide";
-const SCREENS = ["home", "map/n2", "map/n4", "train", "flash", "lab", "sim", "pc", "scen", "scen/s1", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "cursus", "cursus/e2", "carnet", "examen", "examen/n3/quick", "fiches/n2", "brief", "brief/gp", "brief/auto", "succ", "succ/go", "reports", "sources", "valider"];
+const SCREENS = ["home", "map/n2", "map/n4", "train", "flash", "lab", "sim", "pc", "scen", "scen/s1", "calc", "tables", "profile", "club", "settings", "cours", "cours/n3", "progres", "progres/n3", "moniteur", "search/palier", "glossary", "mistakes", "backup", "parcours", "cursus", "cursus/e2", "carnet", "examen", "examen/n3/quick", "fiches/n2", "brief", "brief/gp", "brief/auto", "succ", "succ/go", "reports", "sources", "valider"];
 const CASES = FAST ? [[280, 1.4], [390, 1], [1440, 1.25]] : [[280, 1], [280, 1.4], [360, 1.25], [390, 1.4], [600, 1.4], [884, 1.4], [1024, 1], [1440, 1.4], [3840, 1]];
 
 (async () => {

@@ -131,7 +131,7 @@
     render(el) {
       const s = AA.ctx.sim || (AA.ctx.sim = fresh());
       if (s.autoPause == null) s.autoPause = true;
-      el.innerHTML = `${ui.head(t("lab.sim"), "lab", `<button class="btn ghost sm" id="shelp" aria-expanded="false">${AA.icon("info")} ${t("sim.howBtn")}</button>`)}
+      el.innerHTML = `${ui.head(t("lab.sim"), "lab", `<button class="btn ghost sm" id="shelp" aria-expanded="false" aria-label="${t("sim.howBtn")}">${AA.icon("info")}<span class="hide-xs"> ${t("sim.howBtn")}</span></button>`)}
         <div class="sim-how card" id="showto" hidden><ol>${AA.i18n.raw("sim.how").map(x => `<li>${x}</li>`).join("")}</ol><p class="xs muted" style="margin:0">${t("sim.intro")}</p></div>
         <div class="sim">
           <div class="stack">
@@ -239,7 +239,7 @@
       }
       function finish() {
         const clean = s.alerts.size === 0 && s.maxRatio <= 2;
-        if (clean && !s.saved) { s.saved = true; AA.S.simOk++; G.addXp(30); AA.store.save(); G.checkBadges(); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 2, 40, "rgba(61,220,151,.9)"); }
+        if (clean && !s.saved) { s.saved = true; AA.S.simOk++; if (AA.S.simDay !== AA.u.today()) { AA.S.simDay = AA.u.today(); G.addXp(30); } AA.store.save(); G.checkBadges(); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 2, 40, "rgba(61,220,151,.9)"); }
         const names = AA.i18n.raw("sim.alertNames");
         const r = u.$("#simres"); if (r) r.innerHTML = `<div class="feedback ${clean ? "ok" : "bad"}" style="margin-top:var(--sp-4)"><h4>${clean ? t("sim.clean") : t("sim.alerts")}</h4><p>${t("sim.summary", { d: u.num(s.max, 1), t: Math.round(s.t), a: Math.round(s.air) })}${s.alerts.size ? " " + t("sim.alertList", { l: [...s.alerts].map(a => names[a]).join(", ") }) : ""}</p>${clean ? "" : `<p class="small">${t("sim.tip")}</p>`}<button class="btn block" id="sagain" style="margin-top:var(--sp-3)">${AA.icon("refresh")} ${t("sim.reset")}</button></div>`;
         const ag = u.$("#sagain"); if (ag) ag.onclick = () => { AA.ctx.sim = fresh(); AA.router.refresh(); };

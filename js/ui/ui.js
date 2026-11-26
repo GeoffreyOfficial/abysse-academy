@@ -19,7 +19,7 @@
     document.body.classList.toggle("immersive", !!v.immersive);
     if (!tab.dataset.built) {
       tab.dataset.built = 1;
-      tab.innerHTML = `<nav aria-label="${t("nav.label")}">${TABS.map(([id, ic]) => `<button class="tab" data-tab="${id}">${AA.icon(ic)}<span>${t("tab." + id)}</span></button>`).join("")}</nav>`;
+      tab.innerHTML = `<nav aria-label="${t("nav.label")}">${(ui.TABS || TABS).map(([id, ic]) => `<button class="tab" data-tab="${id}">${AA.icon(ic)}<span>${t("tab." + id)}</span></button>`).join("")}</nav>`;
       u.on(tab, "click", "[data-tab]", (e, b) => { AA.fx.sfx.tap(); AA.router.go(b.dataset.tab === "home" ? "home" : b.dataset.tab); });
     }
     u.$$(".tab", tab).forEach(b => { if (b.dataset.tab === v.tab) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current"); });

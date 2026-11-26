@@ -116,7 +116,7 @@ const answerOne = async p => { const c = await p.$(".choice:not([disabled])"); i
       ok(await ready(p).then(() => true, () => false), "sauvegarde abîmée (JSON coupé) : l’appli démarre");
       await p.evaluate(() => localStorage.setItem("abysse-academy", JSON.stringify({ schema: 4, xp: "beaucoup", profile: null, stats: [], days: "hier", themes: 5 }))); await p.reload();
       ok(await ready(p).then(() => true, () => false) && await p.evaluate(() => typeof AA.S.xp === "number" && isFinite(AA.S.xp)), "sauvegarde aux types faux : l’appli démarre avec des valeurs saines");
-      for (const r of ["home", "profile", "quests", "map/n2", "train", "club"]) { await p.evaluate(r => (location.hash = "#/" + r), r); await p.waitForTimeout(150); }
+      for (const r of ["home", "profile", "progres", "map/n2", "train", "club"]) { await p.evaluate(r => (location.hash = "#/" + r), r); await p.waitForTimeout(150); }
       ok(await p.evaluate(() => !!document.querySelector("#view").innerHTML.length), "et tous les écrans principaux s’ouvrent");
       await ctx.close(); }
 
@@ -124,17 +124,17 @@ const answerOne = async p => { const c = await p.$(".choice:not([disabled])"); i
     { const ctx = await b.newContext({ viewport: { width: 390, height: 844 } }); const p = await page(ctx);
       await p.clock.install({ time: new Date("2026-11-29T23:59:50") });
       await p.goto(URL); await ready(p); await seed(p); await p.reload(); await ready(p);
-      const w1 = await p.evaluate(() => { AA.v19.week().c.ans = 40; AA.store.save(); return AA.v19.isoWeek(); });
-      await p.clock.fastForward(30000); await p.evaluate(() => (location.hash = "#/home")); await p.waitForTimeout(200); await p.evaluate(() => (location.hash = "#/quests")); await p.waitForTimeout(300);
-      const w2 = await p.evaluate(() => AA.v19.isoWeek()), c2 = await p.evaluate(() => AA.v19.week().c.ans || 0);
-      ok(w1 !== w2 && c2 === 0 && await p.$(".wk-full"), "minuit le dimanche : nouveaux défis de la semaine, compteurs remis à zéro");
-      await p.clock.setSystemTime(new Date("2026-12-01T09:00:00")); await p.evaluate(() => (location.hash = "#/home")); await p.waitForTimeout(150); await p.evaluate(() => (location.hash = "#/quests")); await p.waitForTimeout(300);
-      ok(await p.$(".ev-card") && /Avent/.test(await p.textContent(".ev-card")), "1er décembre : l’événement « Calendrier de l’Avent » apparaît");
+      const d1 = await p.evaluate(() => { AA.game.dayc().ans = 40; AA.store.save(); return AA.u.today(); });
+      await p.clock.fastForward(30000); await p.evaluate(() => (location.hash = "#/home")); await p.waitForTimeout(200); await p.evaluate(() => (location.hash = "#/train")); await p.waitForTimeout(300);
+      const d2 = await p.evaluate(() => AA.u.today()), c2 = await p.evaluate(() => AA.game.dayc().ans);
+      ok(d1 !== d2 && c2 === 0 && await p.$('.tile[data-t="tutor"]'), "minuit : nouveau jour, compteurs du jour remis à zéro");
+      await p.clock.setSystemTime(new Date("2026-12-01T09:00:00")); await p.evaluate(() => (location.hash = "#/home")); await p.waitForTimeout(300);
+      ok(await p.$(".tu-next") && !(await p.$(".ev-card")), "1er décembre : accueil du tuteur, plus d’événement de saison");
       await ctx.close(); }
 
     console.log("• Clics en rafale, navigation frénétique");
     { const { ctx, p } = await fresh(b);
-      const tabs = ["home", "map/n2", "train", "lab", "profile"];
+      const tabs = ["home", "cours", "train", "progres", "profile"];
       for (let i = 0; i < 40; i++) await p.evaluate(r => (location.hash = "#/" + r), tabs[i % 5]);
       await p.waitForTimeout(900);
       ok(await p.evaluate(() => AA.router.name === "profile" && document.querySelectorAll("#view .pagehead, #view .prof-hero, #view h1").length >= 1), "40 changements d’onglet en rafale : le bon écran à la fin");
@@ -153,7 +153,7 @@ const answerOne = async p => { const c = await p.$(".choice:not([disabled])"); i
     console.log("• Saisies extrêmes");
     { const { ctx, p } = await fresh(b, 320);
       await p.evaluate(() => { AA.S.profile.name = "Maximilien-Alexandre 🐠🤿🐙 de la Grande Barrière".slice(0, 60); AA.store.save(); });
-      for (const r of ["home", "profile", "club", "carnet", "quests"]) { await p.goto(URL + "#/" + r); await p.waitForTimeout(250); ok(await overflow(p) <= 1, "nom très long, écran " + r + " à 320 px : rien ne déborde"); }
+      for (const r of ["home", "profile", "club", "carnet", "progres"]) { await p.goto(URL + "#/" + r); await p.waitForTimeout(250); ok(await overflow(p) <= 1, "nom très long, écran " + r + " à 320 px : rien ne déborde"); }
       await p.goto(URL + "#/club"); await p.waitForTimeout(200);
       const t0 = Date.now(); await p.fill("#clin", "x".repeat(400000) + "AAD1." + "A".repeat(20) + ".abcd"); await p.click("#clgo"); await p.waitForTimeout(200);
       ok(Date.now() - t0 < 4000 && /trouvé|modifié|incomplet|reconnu/.test(await p.textContent("#clout")), "code de 400 000 caractères : refus rapide, sans blocage");

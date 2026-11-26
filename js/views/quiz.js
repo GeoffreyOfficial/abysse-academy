@@ -196,9 +196,9 @@
     u.$("#fc").onclick = () => { if (!c.flipped) flip(); };
     const sh = u.$("#show"); if (sh) { sh.onclick = flip; sh.focus({ preventScroll: true }); }
     const rate = ok => {
-      const card = C.cards.find(x => x.id === q.cid); if (card) G.rateCard(card, ok);
+      const card = C.cards.find(x => x.id === q.cid), cx = card ? G.cardXp(card) : 1; if (card) G.rateCard(card, ok);
       c.answers.push({ q, picked: ok ? 0 : 1, ok, card: true });
-      if (ok) { c.xp += 3; G.addXp(3); fx.sfx.ok(); fx.buzz(10); } else fx.sfx.bad();
+      if (ok) { c.xp += cx; G.addXp(cx); fx.sfx.ok(); fx.buzz(10); } else fx.sfx.bad();
       AA.store.save(); G.checkBadges();
       c.flipped = false; if (c.timeUp || c.idx + 1 >= c.items.length) return finish(c); c.idx++; AA.router.refresh();
     };
@@ -266,12 +266,13 @@
     c.answers.push({ q, picked: ci, ok, player: c.turn, doubt: c.doubt });
     if (c.mode === "boss") { c.hit = ok; if (ok) c.bossHp = Math.max(0, c.bossHp - 1); }
     if (c.mode !== "duel") {
+      const prev = G.qPrev(q);
       G.record(q, ok, c.doubt, ci);
       const wasErr = !!S.errors[q.id];
       if (!String(q.id).startsWith("tab-")) { if (ok) delete S.errors[q.id]; else S.errors[q.id] = (S.errors[q.id] || 0) + 1; }
       if (ok) {
         c.combo++; c.maxCombo = Math.max(c.maxCombo, c.combo); S.bestCombo = Math.max(S.bestCombo, c.combo);
-        let gain = 10 + (c.mode === "exam" ? 0 : Math.min(c.combo - 1, 5) * 2);
+        let gain = G.answerXp(q, prev, c);
         if (c.mode === "errors" && wasErr) { gain += 5; S.rescued++; }
         c.xp += gain; G.addXp(gain, btn);
       }
@@ -335,11 +336,12 @@
           r.best = Math.max(r.best, pct); r.tries++; S.themes[c.module] = r;
           const now = G.starsFor(r.best);
           if (now > old) { const b = (now - old) * 25; c.xp += b; G.addXp(b); c.newStars = now; }
-          if (!air0) { c.xp += 20; G.addXp(20); }
+          /* Série terminée avec au moins 60 % : bonus une fois par cours et par jour (pas de farm). */
+          if (!air0 && pct >= 60) { S.modDay = S.modDay || {}; if (S.modDay[c.module] !== u.today()) { S.modDay[c.module] = u.today(); c.xp += 15; G.addXp(15); } }
         }
         if (c.mode === "stale" && pct >= 50) { S.keepDone = true; S.keepDay = u.today(); }
         if (c.mode === "daily") { if (S.daily[u.today()] == null) { c.xp += 30; G.addXp(30); } S.daily[u.today()] = pct; }
-        if (c.mode === "five" && c.answers.length >= 4) { S.five = (S.five || 0) + 1; const dc = G.dayc(); dc.five = (dc.five || 0) + 1; c.xp += 15; G.addXp(15); }
+        if (c.mode === "five" && c.answers.length >= 4) { S.five = (S.five || 0) + 1; const dc = G.dayc(); dc.five = (dc.five || 0) + 1; if (dc.five === 1) { c.xp += 15; G.addXp(15); } }
         AA.store.save(); G.checkBadges();
       }
       head = `<p class="eyebrow">${air0 ? t("result.air0") : t("result.done", { title: c.title || "" })}</p>
