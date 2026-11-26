@@ -250,7 +250,9 @@
       u.$$("[data-diagram]", el).forEach(f => { const d = C.diagrams[f.dataset.diagram]; if (d) f.outerHTML = d(); });
       u.$$(".prose", el).forEach(p => AA.gloss.link(p));
       enhance(el, m);
-      if (AA.ctx.hl) { const first = AA.search.mark(u.$(".lesson-body", el), AA.ctx.hl); AA.ctx.hl = null; if (first) setTimeout(() => first.scrollIntoView({ block: "center", behavior: AA.a11y.reduced() ? "auto" : "smooth" }), 120); }
+      /* Arrivée depuis la recherche : on défile jusqu'à l'intertitre du passage, puis on surligne. */
+      const secEl = AA.ctx.sec && AA.search.toSection ? AA.search.toSection(u.$(".lesson-body", el), AA.ctx.sec) : null; AA.ctx.sec = null;
+      if (AA.ctx.hl || secEl) { const first = AA.ctx.hl ? AA.search.mark(u.$(".lesson-body", el), AA.ctx.hl) : null; AA.ctx.hl = null; const to = secEl || first; if (to) setTimeout(() => to.scrollIntoView({ block: secEl ? "start" : "center", behavior: AA.a11y.reduced() ? "auto" : "smooth" }), 120); }
       u.$$("[data-tab]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.router.go("lesson/" + m.id + "/" + b.dataset.tab, undefined, true); });
       u.$("#dive").onclick = () => AA.quiz.module(m, tab === "approfondir" && deepQ > 0);
       const cb = u.$("#calc"); if (cb) cb.onclick = () => AA.quiz.calcs(m.id, 6, t("quiz.calcsOf", { title: m.title }));

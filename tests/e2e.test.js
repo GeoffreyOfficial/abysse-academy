@@ -234,7 +234,19 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(await p.$(".result") && await p.evaluate(() => AA.S.five >= 1), "session 5 minutes terminée et comptée");
       /* Recherche et glossaire */
       await p.goto(URL + "#/search"); await p.fill("#sq", "narcose"); await p.waitForTimeout(250);
-      ok((await p.$$(".result")).length > 0, "la recherche trouve « narcose »");
+      ok(await p.$(".sr-best") && (await p.$$(".sr-row")).length > 0, "la recherche trouve « narcose » (meilleur résultat + groupes)");
+      ok(await p.evaluate(() => { const S = AA.search; const top = q => (S.query(q).list[0] || {}).title || "";
+        return /octopus/i.test(top("ocotpus")) && /octopus/i.test(top("detendeur de secours")) && /narcose/i.test(top("NARCOZE")) && /manom/i.test(top("mano")) && S.query("ocotpus").fuzzy && S.query("palliers").list.length > 0; }), "recherche : fautes, majuscules, accents et synonymes de plongée");
+      await p.fill("#sq", "pression partielle"); await p.waitForTimeout(250);
+      ok(/\d/.test(await p.textContent('#sf [data-f="question"]')) && await p.$(".sr-grp .sr-h"), "recherche : compteurs par type et résultats groupés");
+      await p.click('[data-lv="n3"]'); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => [...document.querySelectorAll(".sr-row .sr-lv")].every(x => x.textContent.trim() === "N3")), "recherche : filtre par niveau");
+      await p.click('[data-lv="all"]'); await p.waitForTimeout(150);
+      await p.evaluate(() => { const L = AA.search.query("loi de dalton chaque gaz").list; const i = L.findIndex(x => x.type === "section"); AA.search.goTo(L[i], "x"); }); await p.waitForTimeout(600);
+      ok(/#\/lesson\/dalton/.test(await p.evaluate(() => location.hash)) && await p.$(".lesson-body .sr-flash"), "recherche : lien direct vers le passage du cours");
+      await p.goto(URL + "#/search"); await p.fill("#sq", "zzqxw"); await p.waitForTimeout(250);
+      ok(await p.$(".sr-empty"), "recherche : état vide utile");
+      await p.fill("#sq", ""); await p.waitForTimeout(200); ok(await p.$(".sr-browse .sr-tile"), "recherche : accueil avec raccourcis et idées");
       await p.goto(URL + "#/lesson/dalton"); await p.waitForTimeout(250);
       ok((await p.$$(".prose .gl")).length > 0, "mots du glossaire cliquables dans un cours");
       /* Correction détaillée : méthode pas à pas + revoir le cours sans quitter */

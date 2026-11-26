@@ -32,7 +32,7 @@ const SCREENS = (process.env.SCREENS || "home,map/n2,map/e2,lesson/pression/esse
 function inspect() {
   const W = innerWidth, H = innerHeight, out = [];
   const vis = e => { for (let x = e; x && x !== document.body; x = x.parentElement) { const s = getComputedStyle(x); if (s.display === "none" || s.visibility === "hidden" || +s.opacity === 0) return false; } return true; };
-  const skip = e => e.closest("#scene, #bubbles, .toast, .toasts, .sheet-wrap, [aria-hidden='true'], .rip, svg text, .sr-only, .visually-hidden, .diagram, .dc, .tbl, .map-scene, .decor, .boss-art, .tank, .aquarium, .reveal:not(.in), .sr, #diver, .searchbox .kbd, .face.back") || !!e.closest("details:not([open])") && !e.closest("summary");
+  const skip = e => e.closest("#scene, #bubbles, .toast, .toasts, .sheet-wrap, [aria-hidden='true'], .rip, svg text, .sr-only, .visually-hidden, .diagram, .dc, .tbl, .map-scene, .decor, .boss-art, .tank, .aquarium, .reveal:not(.in), .sr, #diver, .searchbox .kbd, .searchbox .sr-x, .face.back") || !!e.closest("details:not([open])") && !e.closest("summary");
   const name = e => { const c = [...e.classList].slice(0, 2).join("."); return e.tagName.toLowerCase() + (e.id ? "#" + e.id : "") + (c ? "." + c : ""); };
   const atoms = [];
   /* rectangles réels de chaque morceau de texte */
