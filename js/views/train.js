@@ -15,6 +15,7 @@
         <div class="section-title"><h3>${t("train.daily")}</h3></div>
         <div class="tiles">
           ${ui.tile("daily", "sun", "var(--gold)", t("mode.daily"), t("train.dailyS"), S.daily[u.today()] != null ? [t("train.doneToday"), "ok"] : ["+30 XP", "gold"])}
+          ${(() => { const n = AA.game.qDue ? AA.game.qDue().length : 0; return ui.tile("srs", "brain", "var(--world-n3)", t("mode.srs"), t("train.srsS"), n ? [t("srs.dueN", { n }), "pri"] : [t("srs.upShort"), "ok"]); })()}
           ${ui.tile("flash", "cards", "var(--primary)", t("mode.flash"), t("train.flashS"), due ? [t("home.due", { n: due }), "pri"] : null)}
           ${ui.tile("errors", "buoy", "var(--accent)", t("mode.errors"), t("train.errorsS"), nErr ? [String(nErr), "warn"] : null)}
           ${ui.tile("stale", "refresh", "var(--accent)", t("mode.stale"), t("train.staleS"), stale ? [String(stale), "warn"] : null)}
@@ -40,7 +41,7 @@
       u.on(el, "click", ".tile", (e, b) => {
         fx.sfx.tap();
         ({
-          daily: AA.quiz.daily, flash: () => AA.router.go("flash"), errors: AA.quiz.errors, stale: () => G.staleList().length ? AA.quiz.stale() : fx.toast(t("train.noStaleT"), t("train.noStaleS"), "refresh"),
+          daily: AA.quiz.daily, srs: () => AA.quiz.srs(), flash: () => AA.router.go("flash"), errors: AA.quiz.errors, stale: () => G.staleList().length ? AA.quiz.stale() : fx.toast(t("train.noStaleT"), t("train.noStaleS"), "refresh"),
           doubt: () => { const qs = Object.keys(AA.S.doubt).map(id => C.qById[id]).filter(Boolean); qs.length ? AA.quiz.start("errors", u.shuffle(qs).slice(0, 10), { title: t("mode.doubt"), back: "train" }) : fx.toast(t("train.noDoubtT"), t("train.noDoubtS"), "doubt"); },
           calcs: () => AA.quiz.calcs(null, 10, t("mode.calcs")),
           five: AA.quiz.five, story: () => AA.router.go("story"), mistakes: () => AA.router.go("mistakes"),

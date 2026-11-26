@@ -41,6 +41,7 @@
           ${ui.tile("aquarium", "fish", "var(--primary)", t("aqua.title"), t("home.aquaS", { n: Object.keys(S.aqua).length, tot: C.creatures.length }))}
           ${ui.tile("reports", "flag", "var(--accent)", t("rep.list"), (S.reports || []).length ? t("rep.n", { n: S.reports.length }) : t("rep.tileS"), (S.reports || []).length ? [String(S.reports.length), "warn"] : null)}
           ${ui.tile("valider", "check", "var(--ok)", t("set.validate"), t("val.tileS", { n: C.validate.filter(([a]) => (S.validOk || {})[a]).length, tot: C.validate.length }))}
+          ${ui.tile("carnet", "teach", "var(--world-e1)", t("instr.view"), t("instr.tileS", { n: C.modules.filter(m => (S.instr || {})[m.id]).length, all: C.modules.length }))}
           ${ui.tile("sources", "book", "var(--gold)", t("src.page"), t("src.tileS"))}
           ${ui.tile("backup", "save", "var(--ok)", t("bk.title"), AA.sync.linked() ? t("bk.driveOn") : t("prof.backupS"))}
         </div>
@@ -49,6 +50,7 @@
         <section class="card pm-grid">${C.worlds.filter(w => !w.soon).map(w => `<div class="pm-world"><p class="eyebrow" style="margin:var(--sp-3) 0 0;color:var(${w.color})">${u.esc(w.short)}</p>` + C.inWorld(w.id).map(m => { const ms = G.mastery(m.id), a = G.moduleAcc(m.id); return `<a class="trow" href="#/lesson/${m.id}"><b>${u.esc(m.title)}</b>${ui.bar(ms, ms >= .8 ? "var(--ok)" : ms >= .5 ? "var(--gold)" : "var(--accent)")}<span>${a == null ? "—" : Math.round(a * 100) + " %"}</span></a>`; }).join("") + `</div>`).join("")}</section>
         <div class="section-title"><h3>${t("prof.exams")}</h3></div><section class="card">${P.spark()}</section>
         <div class="section-title"><h3>${t("mode.flash")}</h3></div><section class="card"><div class="boxes">${G.boxes().map((n, i) => `<div><b>${n}</b>${i === 0 ? t("flash.new") : t("flash.box", { n: i })}</div>`).join("")}</div></section>
+        ${AA.srsCard ? AA.srsCard() : ""}
         <div class="section-title"><h3>${t("prof.trophies")}</h3><span class="muted small">${got} / ${C.badges.length}</span></div>
         <div class="trophies">${C.badges.map(b => `<div class="trophy ${S.badges[b.id] ? "" : "off"}"><div class="medal">${AA.icon(b.icon)}</div><b>${u.esc(b.name)}</b><span>${u.esc(b.desc)}</span></div>`).join("")}</div>
         <div class="section-title"><h3>${t("prof.path")}</h3><a class="small" href="#/parcours">${t("path.manage")}</a></div>

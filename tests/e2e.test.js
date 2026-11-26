@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console.error("  ✗ " + m); } };
 const WIDTHS = [[280, 653], [390, 844], [884, 1104], [1440, 900], [3840, 2160]];
-const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas"];
+const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet"];
 
 async function newPage(b, w, h) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
@@ -121,6 +121,30 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       await p.goto(URL + "#/map/n3"); await p.waitForTimeout(500); ok(await p.$(".lvbadge"), "carte : « pour qui · quel examen » sur le monde");
       await p.goto(URL + "#/lesson/n3-gaz"); await p.waitForTimeout(300); ok(await p.$(".lvchip"), "cours : étiquette du niveau");
       ok(await p.evaluate(() => ["n3", "n4", "rifap", "e1", "e2", "nitrox"].every(w => AA.content.inWorld(w).reduce((a, m) => a + m.quiz.length, 0) >= 30)), "au moins 30 questions par monde au-delà du N2");
+      await ctx.close(); }
+
+    console.log("• Révisions, Explique-moi, hors ligne, carnet (1.7)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
+      await p.goto(URL + "#/lesson/pression"); await p.waitForTimeout(300); await p.click("#dive"); await p.waitForTimeout(300);
+      const wrongCi = await p.evaluate(() => { const q = document.querySelector("#qtext").textContent; const Q = AA.content.questions.find(x => x.q === q); return Q ? (Q.a + 1) % Q.c.length : 0; });
+      await p.click(`.choice[data-ci="${wrongCi}"]`); await p.waitForTimeout(200);
+      ok(await p.$("#qexp"), "erreur : bouton « Explique-moi »");
+      await p.click("#qexp"); await p.waitForTimeout(300);
+      ok((await p.$$(".exp-bars i")).length >= 3 && await p.$(".exp-step"), "Explique-moi : mini-cours en étapes");
+      const s1 = await p.textContent(".exp-step .eyebrow"); await p.click("#expN"); await p.waitForTimeout(150); ok((await p.textContent(".exp-step .eyebrow")) !== s1, "Explique-moi : étape suivante");
+      await p.click(".exp-end [data-no]"); await p.waitForTimeout(150);
+      ok(await p.evaluate(() => Object.keys(AA.S.qsrs || {}).length >= 1 && Object.values(AA.S.qsrs)[0].b === 0), "erreur : la question revient demain (révisions espacées)");
+      await p.evaluate(() => { const q = AA.content.byId.pression.quiz[1]; AA.S.qsrs[q.id] = { b: 2, due: "2000-01-01", t: 1 }; AA.store.save(true); });
+      await p.goto(URL + "#/train"); await p.waitForTimeout(300); ok(/à revoir/.test(await p.textContent('.tile[data-t="srs"]')), "Entraîner : révisions espacées du jour");
+      await p.click('.tile[data-t="srs"]'); await p.waitForTimeout(300); ok(await p.$(".qcard"), "révisions espacées : la série démarre");
+      await p.goto(URL + "#/home"); await p.waitForTimeout(300); await p.click(".pill.net"); await p.waitForTimeout(400);
+      ok((await p.$$(".net-row")).length >= 3, "indicateur hors ligne et sauvegarde");
+      await p.keyboard.press("Escape");
+      await p.goto(URL + "#/carnet"); await p.waitForTimeout(300); await p.click(".carnet-row [data-instr] >> nth=0"); await p.waitForTimeout(200);
+      await p.fill("#iname", "Moniteur Test"); await p.click("#isave"); await p.waitForTimeout(300);
+      ok(await p.evaluate(() => Object.keys(AA.S.instr).length === 1), "carnet : thème validé par un moniteur");
+      const mid = await p.evaluate(() => Object.keys(AA.S.instr)[0]); await p.goto(URL + "#/lesson/" + mid + "/essentiel"); await p.waitForTimeout(300);
+      ok(/Validé/.test(await p.textContent(".pagehead")), "cours : coche « Validé » visible");
       await ctx.close(); }
 
     console.log("• Écrans et largeurs");

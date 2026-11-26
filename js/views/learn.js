@@ -28,7 +28,7 @@
           ${!open && !w.soon ? `<p class="chip warn" style="margin-top:12px">${AA.icon("lock")} ${u.esc(G.worldLockReason(w))}</p>` : ""}
           ${w.soon ? "" : modeBanner(w, open)}
         </section>
-        ${w.soon ? "" : `<nav class="modlist desk-only" aria-label="${t("map.list")}">${list.map((m, k) => { const okk = G.unlocked(m), s2 = G.stars(m.id); return `<a class="ml-row ${k === cur ? "cur" : ""} ${okk ? "" : "lock"}" href="#/lesson/${m.id}"><span class="ml-ic">${AA.icon(okk ? m.icon : "lock")}</span><span class="grow"><b>${u.esc(m.title)}</b><span class="xs muted">${u.esc(m.depth)} · ${u.esc(m.sub)}</span></span>${AA.stars(s2)}</a>`; }).join("")}
+        ${w.soon ? "" : `<nav class="modlist desk-only" aria-label="${t("map.list")}">${list.map((m, k) => { const okk = G.unlocked(m), s2 = G.stars(m.id); return `<a class="ml-row ${k === cur ? "cur" : ""} ${okk ? "" : "lock"}" href="#/lesson/${m.id}"><span class="ml-ic">${AA.icon(okk ? m.icon : "lock")}</span><span class="grow"><b>${u.esc(m.title)}</b><span class="xs muted">${u.esc(m.depth)} · ${u.esc(m.sub)}</span></span>${AA.instr && AA.instr(m.id) ? `<span class="instr-dot" title="${t("instr.ok")}">${AA.icon("teach")}</span>` : ""}${AA.stars(s2)}</a>`; }).join("")}
           ${boss ? `<a class="ml-row boss" href="#/boss/${w.id}"><span class="ml-ic">${AA.icon("swords")}</span><span class="grow"><b>${u.esc(w.boss.name)}</b><span class="xs muted">${bossRec && bossRec.won ? t("boss.beaten", { n: bossRec.best }) : bossOpen ? t("boss.ready") : t("boss.lockedS")}</span></span></a>` : ""}</nav>`}
         </aside><div class="map-main">
         ${w.soon ? soon(w) : `${w.surface ? `<div class="surface-line">${u.esc(w.surface)}</div>` : ""}<div class="map" data-world="${w.id}" style="--wc:var(${w.color})">
@@ -222,7 +222,7 @@
           <label class="setting"><span class="grow"><b>${t("lesson.validated")}</b><span>${note.ok ? t("lesson.validatedOn", { d: note.ok }) : t("lesson.validatedS")}</span></span><span class="switch"><input type="checkbox" id="valid" ${note.ok ? "checked" : ""}><i></i></span></label>`;
 
       el.innerHTML = `
-        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.levelBadge(m.world, true)}${AA.stars(st)}</div>
+        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.levelBadge(m.world, true)}${AA.instrChip ? AA.instrChip(m.id) : ""}${AA.stars(st)}</div>
         <header class="lesson-hero" style="--wc:var(${w.color})">
           <div class="row" style="gap:var(--sp-4);flex-wrap:nowrap"><span class="ic">${AA.icon(m.icon)}</span><div class="grow"><p class="eyebrow" style="color:var(--wc)">${u.esc(m.depth)}</p><h1 style="font-size:var(--fs-2xl)">${u.esc(m.title)}</h1><p class="muted" style="margin:4px 0 0">${u.esc(m.sub)}</p></div></div>
           <div class="row" style="margin-top:var(--sp-4)">

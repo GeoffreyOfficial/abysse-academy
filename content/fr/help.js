@@ -132,3 +132,15 @@
     return [...out].filter(k => C.sources[k]);
   };
 })();
+
+/* 1.7 : aides des nouveautés */
+Object.assign(AA.content.help, {
+  srs: { t: "Les révisions espacées", ic: "brain", go: "srs", goL: "Réviser maintenant",
+    html: `<p>Chaque question que tu as déjà vue a maintenant une <b>date de retour</b>.</p><ul><li>Bonne réponse sans doute : elle revient dans 2, puis 4, 9, 20 et 45 jours.</li><li>Erreur ou doute : elle revient <b>dès demain</b>.</li></ul><p>Tu révises juste avant d’oublier : c’est la méthode la plus efficace pour retenir longtemps. La plongée du jour commence aussi par ces questions.</p>` },
+  explain: { t: "Explique-moi", ic: "play",
+    html: `<p>Quand tu te trompes, touche <b>« Explique-moi »</b> : un mini-cours de 30 secondes s’ouvre, en 4 ou 5 étapes animées. La notion, le schéma, la méthode, le piège dans lequel tu es tombé, et ce qu’il faut retenir.</p><p>Tu peux mettre en pause, revenir en arrière ou ouvrir le cours complet.</p>` },
+  carnet: { t: "Le carnet de validation", ic: "teach", go: "carnet", goL: "Ouvrir mon carnet",
+    html: `<p>Quand ton moniteur a vu avec toi un thème (en cours, en piscine ou en mer), il peut le <b>valider</b> : son nom, la date et une remarque.</p><p>Le thème porte alors une coche dans la carte et dans le cours. Tu peux partager ou télécharger ton carnet pour le montrer au club.</p><p class="small">Le carnet est une aide pour suivre ta formation : il ne remplace pas le livret officiel de ta fédération.</p>` },
+  net: { t: "Hors ligne et sauvegarde", ic: "shield",
+    html: `<p>Ta progression est enregistrée <b>sur l’appareil</b> à chaque réponse, et une copie de secours est faite chaque jour. Sans réseau, l’appli continue de fonctionner normalement.</p>` }
+});

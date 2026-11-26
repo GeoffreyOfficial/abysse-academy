@@ -492,3 +492,31 @@ AA.i18n.add("fr", {
   "path.dvN6": "250 à 499", "path.dvS6": "très expérimenté",
   "path.dvN7": "500 et +", "path.dvS7": "confirmé"
 });
+
+AA.i18n.add("fr", {
+  "mode.srs": "Révisions espacées", "train.srsS": "Les questions qui arrivent à échéance aujourd’hui",
+  "srs.dueN": "{n} à revoir", "srs.upShort": "à jour", "srs.noneT": "Rien à revoir aujourd’hui", "srs.noneS": "Tes questions reviendront au bon moment. Fais la plongée du jour ou un nouveau cours.",
+  "srs.memT": "Ma mémoire des questions", "srs.memS": "{n} questions suivies · {due} à revoir aujourd’hui. Chaque colonne : dans combien de jours elles reviennent.", "srs.go": "Réviser {n} questions", "srs.upToDate": "Tout est à jour, bravo !",
+  "srs.box0": "1 j", "srs.box1": "2 j", "srs.box2": "4 j", "srs.box3": "9 j", "srs.box4": "20 j", "srs.box5": "45 j",
+  "exp.btn": "Explique-moi", "exp.btnS": "mini-cours animé de 30 s", "exp.title": "Explique-moi",
+  "exp.s1": "La notion", "exp.s2": "Le schéma", "exp.s3": "La méthode", "exp.s3b": "La bonne réponse", "exp.s4": "Le piège", "exp.s5": "À retenir",
+  "exp.youPicked": "Tu as choisi", "exp.trapGen": "La bonne réponse était « {a} ». Relis la question en cherchant le mot qui change tout, puis l’explication ci-dessus.",
+  "exp.prev": "Étape précédente", "exp.pause": "Pause", "exp.next": "Suite", "exp.done": "J’ai compris",
+  "net.title": "Hors ligne et sauvegarde", "net.onT": "En ligne", "net.offT": "Hors ligne",
+  "net.offToast": "Tout continue de fonctionner. Ta progression est enregistrée sur l’appareil.", "net.onToast": "Connexion retrouvée.",
+  "net.saveT": "Progression enregistrée à {h}", "net.saveS": "Sur cet appareil, à chaque réponse (deux copies : rapide et base de données).",
+  "net.offOkT": "Disponible hors ligne", "net.offOkS": "L’appli est installée dans le cache : elle s’ouvre même sans réseau.",
+  "net.offNoT": "Hors ligne pas encore prêt", "net.offNoS": "Ouvre l’appli une fois avec du réseau pour qu’elle se mette en cache.",
+  "net.artT": "Version claude.ai", "net.artS": "Ici, l’appli marche tant que la page est ouverte. Pour le hors ligne complet, installe la version GitHub Pages (Profil › Sauvegarde).",
+  "net.snapT": "{n} copies de secours", "net.snapS": "La plus récente : {d}. Une par jour, les 5 dernières.", "net.snapNone": "La première sera faite aujourd’hui.",
+  "net.driveT": "Synchro Google Drive", "net.driveS": "Facultatif : pour retrouver ta progression sur un autre appareil.",
+  "net.snapNow": "Faire une copie de secours maintenant", "net.more": "Toutes les sauvegardes", "net.snapDoneT": "Copie de secours faite", "net.snapDoneS": "Tu la retrouves dans Profil › Sauvegarde.",
+  "instr.title": "Validation moniteur", "instr.view": "Mon carnet de validation", "instr.tileS": "{n}/{all} thèmes validés par un moniteur",
+  "instr.ok": "Validé", "instr.ask": "Faire valider", "instr.byT": "Validé par {by} le {d}",
+  "instr.how": "À remplir par ton moniteur, ou devant lui, quand il a vu ce thème avec toi.",
+  "instr.name": "Nom du moniteur", "instr.namePh": "Prénom Nom", "instr.date": "Date", "instr.note": "Remarque (facultatif)", "instr.notePh": "Ex. : vu en piscine, à revoir en mer",
+  "instr.save": "Valider ce thème", "instr.update": "Mettre à jour", "instr.remove": "Retirer la validation", "instr.needName": "Indique le nom du moniteur", "instr.doneT": "Thème validé",
+  "instr.intro": "Les thèmes que ton moniteur a validés avec toi, avec son nom et la date.", "instr.count": "{n}/{all} thèmes validés",
+  "instr.share": "Partager", "instr.dl": "Télécharger", "instr.copied": "Carnet copié", "instr.notYet": "pas encore validé", "instr.edit": "Modifier", "instr.validate": "Valider",
+  "instr.note2": "Ce carnet t’aide à suivre ta formation. Il ne remplace pas le livret officiel de ta fédération."
+});

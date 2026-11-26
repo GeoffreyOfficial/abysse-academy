@@ -21,7 +21,7 @@
       daily: () => Q.daily(), five: () => Q.five(), errors: () => Q.errors(), apnee: () => Q.apnee(),
       stale: () => { if (G.staleList().length) Q.stale(); else { const m = oldest(); AA.router.go(m ? "lesson/" + m.id : "map"); } },
       next: () => { const m = G.nextModule(); AA.router.go(m ? "lesson/" + m.id : "map"); },
-      examquick: () => Q.exam(false), examfull: () => Q.exam(true)
+      examquick: () => Q.exam(false), examfull: () => Q.exam(true), srs: () => Q.srs()
     };
     if (typeof go === "function") return go();
     if (acts[go]) return acts[go]();

@@ -1370,6 +1370,41 @@ details.sources ul,.src-list{padding-left:1.1em;margin:.3em 0} details.sources l
 :is(h1,h2,h3,h4)>svg{width:1.1em;height:1.1em;vertical-align:-.16em;flex:0 0 auto;margin-right:.15em}
 svg[viewBox="0 0 24 24"]{max-width:6rem;max-height:6rem}
 
+/* =====================================================================
+   1.7 · révisions espacées, Explique-moi, état hors ligne, carnet
+   ===================================================================== */
+.srs-card{margin-top:var(--sp-4)} .srs-card h3{margin:0}
+.srs-bars{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;height:7.5rem;align-items:end;margin:var(--sp-3) 0}
+.srs-bars>div{display:grid;grid-template-rows:1fr auto auto;height:100%;text-align:center;min-width:0}
+.srs-bars i{align-self:end;display:block;border-radius:8px 8px 3px 3px;background:linear-gradient(var(--primary),color-mix(in srgb,var(--primary) 40%,transparent));transition:height .6s var(--ease)}
+.srs-bars>div:first-child i{background:linear-gradient(var(--accent),color-mix(in srgb,var(--accent) 40%,transparent))}
+.srs-bars b{font-size:var(--fs-sm)} .srs-bars span{font-size:var(--fs-xs);color:var(--muted);white-space:nowrap}
+.exp-btn{display:flex;flex-wrap:wrap;gap:2px 8px;justify-content:center;align-items:center;margin:var(--sp-3) 0 var(--sp-2);background:linear-gradient(90deg,var(--primary),var(--world-n3,var(--primary)))}
+.exp-btn .xs{opacity:.85;font-weight:600}
+.exp-sheet{display:grid;gap:var(--sp-3)}
+.exp-bars{display:flex;gap:4px;margin-right:2.6rem} .exp-bars i{flex:1;height:4px;border-radius:2px;background:var(--surface-3);overflow:hidden} .exp-bars b{display:block;height:100%;width:0;background:var(--primary)}
+.exp-body{min-height:14rem}
+.exp-step{animation:anStep .45s var(--ease) both} .exp-step .eyebrow{display:flex;gap:6px;align-items:center} .exp-step .eyebrow svg{width:14px;height:14px}
+.exp-step h3{margin:4px 0 8px} .exp-q{font-weight:700} .exp-a{display:flex;gap:6px;align-items:center;color:var(--ok);font-weight:700} .exp-a svg,.exp-bad svg{width:16px;height:16px}
+.exp-bad{display:flex;gap:6px;align-items:center;color:var(--bad)}
+.exp-nav{gap:8px} .exp-nav .grow{flex:1} .exp-end{gap:8px;justify-content:space-between;flex-wrap:wrap}
+.reduce-motion .exp-step{animation:none}
+.pill.net{color:var(--ok)} .pill.net.off{color:var(--gold)} .pill.net svg{width:1.05rem;height:1.05rem}
+.pill.net.saved svg{animation:netSaved .7s var(--ease)} @keyframes netSaved{40%{transform:scale(1.3)}}
+.net-row{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:var(--r-md);background:var(--surface-2);text-align:left}
+.net-row>div{display:grid;gap:2px} .net-row svg{width:18px;height:18px;flex:0 0 auto;margin-top:2px} .net-row.ok svg{color:var(--ok)} .net-row.warn svg{color:var(--gold)}
+.instr-chip{cursor:pointer;white-space:nowrap} .instr-chip svg{width:13px;height:13px}
+.instr-dot{color:var(--ok);display:inline-grid} .instr-dot svg{width:15px;height:15px}
+.instr-sheet .field{display:grid;gap:4px;text-align:left} .instr-sheet input{width:100%}
+.carnet{display:grid;gap:var(--sp-3)}
+.carnet-w{border-top:3px solid var(--wc);padding:var(--sp-3) var(--sp-4)} .carnet-w h3{margin:0}
+.carnet-row{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line-soft)} .carnet-row .grow{display:grid;min-width:0}
+.carnet-row.ok b::before{content:"✓ ";color:var(--ok)}
+@media (min-width:1024px){.carnet{grid-template-columns:repeat(auto-fill,minmax(26rem,1fr));align-items:start}}
+@media (max-width:420px){.carnet-row{flex-wrap:wrap}.carnet-row .btn{margin-left:auto}}
+
+.srs-card p svg{width:18px;height:18px;vertical-align:-4px;color:var(--ok)} .srs-card .row h3{flex:1}
+
 </style>
 </head>
 <body>
@@ -1392,7 +1427,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "1.6.0";
+  AA.VERSION = "1.7.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -1505,6 +1540,8 @@ window.AA={BUNDLED:true};
     cards: {}, table: [], daily: {}, scen: {}, simOk: 0, flashCount: 0, duels: 0, apnee: 0, bestCombo: 0, rescued: 0,
     badges: {}, claimed: {}, real: {}, dayc: {}, keepDone: false, keepDay: "", qod: "",
     read: {}, notes: {}, unlockAll: false,
+    /* 1.7 : révisions espacées des questions, carnet de validation moniteur */
+    qsrs: {}, instr: {}, explained: 0,
     /* v3 (Abysse Academy 1.1) */
     wrong: {}, aqua: {}, boss: {}, story: {}, five: 0, glossSeen: {}, searches: [],
     /* 1.1.1 */
@@ -1667,6 +1704,8 @@ window.AA={BUNDLED:true};
     byKey("placed", (x, y) => (x > y ? x : y));
     byKey("placeDone", (x, y) => ((y.pct || 0) >= (x.pct || 0) ? y : x));
     byKey("path", (x, y) => y);
+    byKey("qsrs", (x, y) => ((y.t || 0) >= (x.t || 0) ? y : x));
+    byKey("instr", (x, y) => ((y.t || 0) >= (x.t || 0) ? y : x));
     byKey("story", (x, y) => ((y.done || 0) >= (x.done || 0) ? y : x));
     byKey("wrong", (x, y) => { const z = Object.assign({}, x); Object.entries(y).forEach(([c, v]) => (z[c] = max(z[c], v))); return z; });
     ["seen", "errors", "doubt", "daily", "scen", "badges", "claimed", "real", "read", "notes", "aqua", "glossSeen"].forEach(k => byKey(k, (x, y) => y));
@@ -3033,6 +3072,7 @@ window.AA={BUNDLED:true};
     top.innerHTML = `<a class="brand" href="#/home" aria-label="${t("app.name")}">${AA.logo()}<b>Abysse<span>Academy</span></b></a>
       <span class="grow"></span>
       ${dx != null && dx >= 0 ? `<button class="pill cd" data-hud="countdown" title="${t("hud.exam")}" aria-label="${t("hud.exam")} : J−${dx}">${AA.icon("calendar")}J−${dx}</button>` : ""}
+      <button class="pill net ${navigator.onLine ? "" : "off"}" data-hud="net" title="${t("net.title")}" aria-label="${t("net.title")}">${AA.icon(navigator.onLine ? "shield" : "offline")}</button>
       <button class="pill fire" data-hud="streak" title="${t("hud.streak")}" aria-label="${t("hud.streak")} : ${st}">${AA.icon("flame")}${st}</button>
       <button class="pill xp" data-hud="xp" title="${t("hud.level", { l: lv.l })}" aria-label="${S.xp} XP · ${t("hud.level", { l: lv.l })}">${AA.icon("bolt")}${S.xp}</button>
       <a class="iconbtn" href="#/search" aria-label="${t("search.title")}">${AA.icon("search")}</a>
@@ -3045,7 +3085,7 @@ window.AA={BUNDLED:true};
   /* ---------- Petits composants (renvoient du HTML) ---------- */
   ui.head = (title, backTo, extra) => `<div class="pagehead">${backTo ? `<a class="closebtn" href="#/${backTo}" aria-label="${t("nav.back")}">${AA.icon("back")}</a>` : ""}<h1 class="pagetitle">${title}</h1>${extra || ""}</div>`;
   /* Chaque tuile qui a une fiche d'aide reçoit un petit « ? » (content/fr/help.js). */
-  const TILE_HELP = { examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate", cursus: "cursus" };
+  const TILE_HELP = { srs: "srs", carnet: "carnet", examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate", cursus: "cursus" };
   ui.tile = (id, icon, color, title, sub, badge) => { const hk = TILE_HELP[id], has = hk && AA.content.help && AA.content.help[hk];
     return `<button class="tile" data-t="${id}" style="--c:${color}"><span class="ic">${AA.icon(icon)}</span><b>${title}</b><span>${sub}</span>${badge ? `<span class="badge chip ${badge[1] || ""}">${badge[0]}</span>` : ""}${has ? `<span class="helpbtn tile-help" role="button" tabindex="0" data-help="${hk}" aria-label="${t("help.what")}">?</span>` : ""}</button>`; };
   ui.bar = (p, color) => `<div class="bar"><i style="width:${Math.round(u.clamp(p, 0, 1) * 100)}%${color ? ";background:" + color : ""}"></i></div>`;
@@ -3487,7 +3527,7 @@ window.AA={BUNDLED:true};
           ${!open && !w.soon ? `<p class="chip warn" style="margin-top:12px">${AA.icon("lock")} ${u.esc(G.worldLockReason(w))}</p>` : ""}
           ${w.soon ? "" : modeBanner(w, open)}
         </section>
-        ${w.soon ? "" : `<nav class="modlist desk-only" aria-label="${t("map.list")}">${list.map((m, k) => { const okk = G.unlocked(m), s2 = G.stars(m.id); return `<a class="ml-row ${k === cur ? "cur" : ""} ${okk ? "" : "lock"}" href="#/lesson/${m.id}"><span class="ml-ic">${AA.icon(okk ? m.icon : "lock")}</span><span class="grow"><b>${u.esc(m.title)}</b><span class="xs muted">${u.esc(m.depth)} · ${u.esc(m.sub)}</span></span>${AA.stars(s2)}</a>`; }).join("")}
+        ${w.soon ? "" : `<nav class="modlist desk-only" aria-label="${t("map.list")}">${list.map((m, k) => { const okk = G.unlocked(m), s2 = G.stars(m.id); return `<a class="ml-row ${k === cur ? "cur" : ""} ${okk ? "" : "lock"}" href="#/lesson/${m.id}"><span class="ml-ic">${AA.icon(okk ? m.icon : "lock")}</span><span class="grow"><b>${u.esc(m.title)}</b><span class="xs muted">${u.esc(m.depth)} · ${u.esc(m.sub)}</span></span>${AA.instr && AA.instr(m.id) ? `<span class="instr-dot" title="${t("instr.ok")}">${AA.icon("teach")}</span>` : ""}${AA.stars(s2)}</a>`; }).join("")}
           ${boss ? `<a class="ml-row boss" href="#/boss/${w.id}"><span class="ml-ic">${AA.icon("swords")}</span><span class="grow"><b>${u.esc(w.boss.name)}</b><span class="xs muted">${bossRec && bossRec.won ? t("boss.beaten", { n: bossRec.best }) : bossOpen ? t("boss.ready") : t("boss.lockedS")}</span></span></a>` : ""}</nav>`}
         </aside><div class="map-main">
         ${w.soon ? soon(w) : `${w.surface ? `<div class="surface-line">${u.esc(w.surface)}</div>` : ""}<div class="map" data-world="${w.id}" style="--wc:var(${w.color})">
@@ -3681,7 +3721,7 @@ window.AA={BUNDLED:true};
           <label class="setting"><span class="grow"><b>${t("lesson.validated")}</b><span>${note.ok ? t("lesson.validatedOn", { d: note.ok }) : t("lesson.validatedS")}</span></span><span class="switch"><input type="checkbox" id="valid" ${note.ok ? "checked" : ""}><i></i></span></label>`;
 
       el.innerHTML = `
-        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.levelBadge(m.world, true)}${AA.stars(st)}</div>
+        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.levelBadge(m.world, true)}${AA.instrChip ? AA.instrChip(m.id) : ""}${AA.stars(st)}</div>
         <header class="lesson-hero" style="--wc:var(${w.color})">
           <div class="row" style="gap:var(--sp-4);flex-wrap:nowrap"><span class="ic">${AA.icon(m.icon)}</span><div class="grow"><p class="eyebrow" style="color:var(--wc)">${u.esc(m.depth)}</p><h1 style="font-size:var(--fs-2xl)">${u.esc(m.title)}</h1><p class="muted" style="margin:4px 0 0">${u.esc(m.sub)}</p></div></div>
           <div class="row" style="margin-top:var(--sp-4)">
@@ -3975,12 +4015,13 @@ window.AA={BUNDLED:true};
         ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : t("quiz.bad")}</h4>
           ${okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
           ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}
-          ${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
+          ${okNow || !C.byId[q.m] ? "" : `<button class="btn exp-btn block" id="qexp">${AA.icon("play")} ${t("exp.btn")}<span class="xs">${t("exp.btnS")}</span></button>`}${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
           <div class="qactions"><button class="btn block" id="nextq">${isEnd(c) ? t("quiz.seeResult") : t("quiz.next")} ${AA.icon("next")}</button></div>` : ""}
       </div>`;
     u.$("#qclose").onclick = () => AA.ui.confirm(t("quiz.quitQ"), t("quiz.quitYes"), () => { clearInterval(c.timer); AA.router.go(c.back || "home"); }, c.answers.length === 0);
     const rv = u.$("#revcours"); if (rv) rv.onclick = () => Q.review(q.m);
     const rp = u.$("#qrep"); if (rp) rp.onclick = () => AA.report({ type: "question", q });
+    const qx = u.$("#qexp"); if (qx) qx.onclick = () => AA.explainMe(q, c.picked);
     u.$$(".choice", el).forEach(b => {
       b.onclick = () => answer(c, +b.dataset.ci, b);
       if (answered) return;
@@ -4171,6 +4212,7 @@ window.AA={BUNDLED:true};
         <div class="section-title"><h3>${t("train.daily")}</h3></div>
         <div class="tiles">
           ${ui.tile("daily", "sun", "var(--gold)", t("mode.daily"), t("train.dailyS"), S.daily[u.today()] != null ? [t("train.doneToday"), "ok"] : ["+30 XP", "gold"])}
+          ${(() => { const n = AA.game.qDue ? AA.game.qDue().length : 0; return ui.tile("srs", "brain", "var(--world-n3)", t("mode.srs"), t("train.srsS"), n ? [t("srs.dueN", { n }), "pri"] : [t("srs.upShort"), "ok"]); })()}
           ${ui.tile("flash", "cards", "var(--primary)", t("mode.flash"), t("train.flashS"), due ? [t("home.due", { n: due }), "pri"] : null)}
           ${ui.tile("errors", "buoy", "var(--accent)", t("mode.errors"), t("train.errorsS"), nErr ? [String(nErr), "warn"] : null)}
           ${ui.tile("stale", "refresh", "var(--accent)", t("mode.stale"), t("train.staleS"), stale ? [String(stale), "warn"] : null)}
@@ -4196,7 +4238,7 @@ window.AA={BUNDLED:true};
       u.on(el, "click", ".tile", (e, b) => {
         fx.sfx.tap();
         ({
-          daily: AA.quiz.daily, flash: () => AA.router.go("flash"), errors: AA.quiz.errors, stale: () => G.staleList().length ? AA.quiz.stale() : fx.toast(t("train.noStaleT"), t("train.noStaleS"), "refresh"),
+          daily: AA.quiz.daily, srs: () => AA.quiz.srs(), flash: () => AA.router.go("flash"), errors: AA.quiz.errors, stale: () => G.staleList().length ? AA.quiz.stale() : fx.toast(t("train.noStaleT"), t("train.noStaleS"), "refresh"),
           doubt: () => { const qs = Object.keys(AA.S.doubt).map(id => C.qById[id]).filter(Boolean); qs.length ? AA.quiz.start("errors", u.shuffle(qs).slice(0, 10), { title: t("mode.doubt"), back: "train" }) : fx.toast(t("train.noDoubtT"), t("train.noDoubtS"), "doubt"); },
           calcs: () => AA.quiz.calcs(null, 10, t("mode.calcs")),
           five: AA.quiz.five, story: () => AA.router.go("story"), mistakes: () => AA.router.go("mistakes"),
@@ -4574,6 +4616,7 @@ window.AA={BUNDLED:true};
           ${ui.tile("aquarium", "fish", "var(--primary)", t("aqua.title"), t("home.aquaS", { n: Object.keys(S.aqua).length, tot: C.creatures.length }))}
           ${ui.tile("reports", "flag", "var(--accent)", t("rep.list"), (S.reports || []).length ? t("rep.n", { n: S.reports.length }) : t("rep.tileS"), (S.reports || []).length ? [String(S.reports.length), "warn"] : null)}
           ${ui.tile("valider", "check", "var(--ok)", t("set.validate"), t("val.tileS", { n: C.validate.filter(([a]) => (S.validOk || {})[a]).length, tot: C.validate.length }))}
+          ${ui.tile("carnet", "teach", "var(--world-e1)", t("instr.view"), t("instr.tileS", { n: C.modules.filter(m => (S.instr || {})[m.id]).length, all: C.modules.length }))}
           ${ui.tile("sources", "book", "var(--gold)", t("src.page"), t("src.tileS"))}
           ${ui.tile("backup", "save", "var(--ok)", t("bk.title"), AA.sync.linked() ? t("bk.driveOn") : t("prof.backupS"))}
         </div>
@@ -4582,6 +4625,7 @@ window.AA={BUNDLED:true};
         <section class="card pm-grid">${C.worlds.filter(w => !w.soon).map(w => `<div class="pm-world"><p class="eyebrow" style="margin:var(--sp-3) 0 0;color:var(${w.color})">${u.esc(w.short)}</p>` + C.inWorld(w.id).map(m => { const ms = G.mastery(m.id), a = G.moduleAcc(m.id); return `<a class="trow" href="#/lesson/${m.id}"><b>${u.esc(m.title)}</b>${ui.bar(ms, ms >= .8 ? "var(--ok)" : ms >= .5 ? "var(--gold)" : "var(--accent)")}<span>${a == null ? "—" : Math.round(a * 100) + " %"}</span></a>`; }).join("") + `</div>`).join("")}</section>
         <div class="section-title"><h3>${t("prof.exams")}</h3></div><section class="card">${P.spark()}</section>
         <div class="section-title"><h3>${t("mode.flash")}</h3></div><section class="card"><div class="boxes">${G.boxes().map((n, i) => `<div><b>${n}</b>${i === 0 ? t("flash.new") : t("flash.box", { n: i })}</div>`).join("")}</div></section>
+        ${AA.srsCard ? AA.srsCard() : ""}
         <div class="section-title"><h3>${t("prof.trophies")}</h3><span class="muted small">${got} / ${C.badges.length}</span></div>
         <div class="trophies">${C.badges.map(b => `<div class="trophy ${S.badges[b.id] ? "" : "off"}"><div class="medal">${AA.icon(b.icon)}</div><b>${u.esc(b.name)}</b><span>${u.esc(b.desc)}</span></div>`).join("")}</div>
         <div class="section-title"><h3>${t("prof.path")}</h3><a class="small" href="#/parcours">${t("path.manage")}</a></div>
@@ -5513,7 +5557,7 @@ window.AA={BUNDLED:true};
       daily: () => Q.daily(), five: () => Q.five(), errors: () => Q.errors(), apnee: () => Q.apnee(),
       stale: () => { if (G.staleList().length) Q.stale(); else { const m = oldest(); AA.router.go(m ? "lesson/" + m.id : "map"); } },
       next: () => { const m = G.nextModule(); AA.router.go(m ? "lesson/" + m.id : "map"); },
-      examquick: () => Q.exam(false), examfull: () => Q.exam(true)
+      examquick: () => Q.exam(false), examfull: () => Q.exam(true), srs: () => Q.srs()
     };
     if (typeof go === "function") return go();
     if (acts[go]) return acts[go]();
@@ -5782,6 +5826,165 @@ window.AA={BUNDLED:true};
     return small ? `<a class="chip lvchip" href="#/cursus/${c.id}" style="--wc:var(${(C.worldById[wid] || {}).color})">${u.esc(c.lv)} · ${u.esc(c.tag)}</a>`
       : `<a class="lvbadge" href="#/cursus/${c.id}"><span class="eyebrow">${t("cur.forWho")}</span><span class="small">${c.who}</span><span class="xs muted">${t("cur.exam")} : ${c.exam.replace(/<[^>]+>/g, "")}</span><span class="xs lvmore">${t("cur.more")} ${AA.icon("next")}</span></a>`;
   };
+})();
+
+/* js/views/v17.js */
+/* =====================================================================
+   Abysse Academy 1.7
+   - Révisions espacées sur toutes les questions (S.qsrs)
+   - « Explique-moi » : mini-cours animé de 30 s après une erreur
+   - Hors ligne garanti : indicateur d'état, sauvegarde automatique
+   - Carnet de validation : un moniteur valide un thème (nom, date)
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, ui = AA.ui, fx = AA.fx;
+  const S = () => AA.S;
+  const plus = (d, n) => { const x = new Date(d + "T12:00:00"); x.setDate(x.getDate() + n); return x.toISOString().slice(0, 10); };
+
+  /* ---------- Révisions espacées (toutes les questions) ----------
+     Boîte 0 à 5. Bonne réponse sans doute : boîte suivante, retour dans
+     2, 4, 9, 20 puis 45 jours. Erreur ou doute : boîte 0, retour demain.
+     Les questions déjà vues avant la 1.7 sont reprises depuis leur date. */
+  G.Q_DAYS = [1, 2, 4, 9, 20, 45];
+  G.qState = id => { const s = S(), r = (s.qsrs || {})[id]; if (r) return r; const l = s.last[id]; if (!l) return null; const ok = s.seen[id] === 1; return { b: ok ? 1 : 0, due: plus(l, ok ? 2 : 1) }; };
+  G.qSrs = (q, ok, doubt) => {
+    if (!q || !C.qById[q.id] || q.calc || q.gen) return;
+    const s = S(); s.qsrs = s.qsrs || {}; const r = Object.assign({ b: 0 }, G.qState(q.id) || {});
+    if (ok && !doubt) r.b = Math.min(5, (r.b || 0) + 1); else r.b = 0;
+    r.due = plus(u.today(), G.Q_DAYS[r.b] || 1); r.t = Date.now(); s.qsrs[q.id] = r;
+  };
+  const rec = G.record;
+  G.record = (q, ok, doubt, picked) => { rec(q, ok, doubt, picked); try { G.qSrs(q, ok, doubt); } catch (e) {} };
+  G.qDue = () => { const d = u.today(); return C.questions.filter(q => G.inPlay(q.m)).map(q => [q, G.qState(q.id)]).filter(([, r]) => r && r.due <= d).sort((a, b) => a[1].due.localeCompare(b[1].due) || a[1].b - b[1].b).map(x => x[0]); };
+  G.qMemory = () => { const b = [0, 0, 0, 0, 0, 0]; let n = 0; C.questions.forEach(q => { const r = G.qState(q.id); if (r) { b[Math.min(5, r.b || 0)]++; n++; } }); return { b, n, due: G.qDue().length }; };
+  /* La plongée du jour commence par les questions qui arrivent à échéance. */
+  const ds = G.dailySet;
+  G.dailySet = () => {
+    const base = ds(), due = G.qDue().slice(0, 4), ids = new Set(due.map(q => q.id));
+    const rest = base.filter(q => !ids.has(q.id)), calcs = rest.filter(q => q.gen || q.calc), qs = rest.filter(q => !(q.gen || q.calc));
+    return u.shuffle(due.concat(qs).slice(0, 8)).concat(calcs);
+  };
+  const Q = AA.quiz;
+  Q.srs = () => { const qs = G.qDue(); if (!qs.length) { fx.toast(t("srs.noneT"), t("srs.noneS"), "check"); return; } Q.start("srs", u.shuffle(qs.slice(0, 15)), { title: t("mode.srs"), back: "train" }); };
+  const rs = Q.restart; Q.restart = c => (c && c.mode === "srs" ? Q.srs() : rs(c));
+  const SRSB = ["srs.box0", "srs.box1", "srs.box2", "srs.box3", "srs.box4", "srs.box5"];
+  document.addEventListener("click", e => { if (e.target.closest("[data-srsgo]")) { e.preventDefault(); Q.srs(); } });
+  AA.srsCard = () => { const m = G.qMemory(), tot = m.b.reduce((a, b) => a + b, 0) || 1;
+    return `<section class="card srs-card"><div class="row" style="justify-content:space-between;align-items:baseline"><h3>${t("srs.memT")}</h3>${AA.helpBtn ? AA.helpBtn("srs") : ""}</div>
+      <p class="small muted">${t("srs.memS", { n: m.n, due: m.due })}</p>
+      <div class="srs-bars">${m.b.map((n, i) => `<div><i style="height:${Math.max(4, n / tot * 100)}%"></i><b>${n}</b><span>${t(SRSB[i])}</span></div>`).join("")}</div>
+      ${m.due ? `<button class="btn block" data-srsgo>${AA.icon("refresh")} ${t("srs.go", { n: Math.min(15, m.due) })}</button>` : `<p class="small center">${AA.icon("check")} ${t("srs.upToDate")}</p>`}</section>`; };
+
+  /* ---------- « Explique-moi » : mini-cours animé (≈ 30 s) ---------- */
+  const firstPara = h => { const d = document.createElement("div"); d.innerHTML = h || ""; const p = Array.from(d.querySelectorAll("p")).find(x => x.textContent.trim().length > 40); const s = (p || d).textContent.trim().replace(/\s+/g, " "); return s.length > 320 ? s.slice(0, s.lastIndexOf(" ", 310)) + "…" : s; };
+  const words = s => new Set(String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").match(/[a-z0-9₂]{4,}/g) || []);
+  AA.explainMe = (q, picked) => {
+    const m = C.byId[q.m]; if (!m) return; fx.sfx.flip && fx.sfx.flip();
+    const me = Q.methodFor(q), pf = Q.pitfallFor(q), qw = words(q.q + " " + q.c[q.a] + " " + q.e);
+    const memo = (m.memo || []).map(x => [x, [...words(x[0] + " " + x[1])].filter(w => qw.has(w)).length]).sort((a, b) => b[1] - a[1]).slice(0, 3).map(x => x[0]);
+    const steps = [
+      [t("exp.s1"), "book", `<h3>${u.esc(m.title)}</h3><p>${u.esc(firstPara(m.essentiel))}</p>`],
+      m.diagram && C.diagrams[m.diagram] ? [t("exp.s2"), "eye", C.diagrams[m.diagram]()] : null,
+      me ? [t("exp.s3"), "brain", `<p class="small muted">${u.esc(me.title)}</p><ol class="ex-steps">${me.steps.map(s => `<li>${s}</li>`).join("")}</ol>`]
+        : [t("exp.s3b"), "brain", `<p class="exp-q">${u.esc(q.q)}</p><p class="exp-a">${AA.icon("check")} ${u.esc(q.c[q.a])}</p><p>${u.esc(q.e)}</p>`],
+      [t("exp.s4"), "info", `${picked != null && picked !== q.a ? `<p class="exp-bad">${AA.icon("x")} ${t("exp.youPicked")} <b>${u.esc(q.c[picked])}</b></p>` : ""}${pf ? `<p><b>${u.esc(pf.title)}</b></p><p>${u.esc(pf.why)}</p><p><b>${t("ex.fix")}</b> ${u.esc(pf.fix)}</p>` : `<p>${t("exp.trapGen", { a: u.esc(q.c[q.a]) })}</p>`}`],
+      memo.length ? [t("exp.s5"), "star", `<div class="memo">${memo.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="muted">${u.esc(b)}</span></div>`).join("")}</div>`] : null
+    ].filter(Boolean);
+    const DUR = 6500;
+    const close = ui.sheet(`<div class="exp-sheet"><div class="exp-bars">${steps.map(() => `<i><b></b></i>`).join("")}</div>
+      <div class="exp-body" aria-live="polite"></div>
+      <div class="row exp-nav"><button class="btn ghost sm" id="expP" aria-label="${t("exp.prev")}">${AA.icon("back")}</button><button class="btn ghost sm" id="expK" aria-label="${t("exp.pause")}">${AA.icon("pause")}</button><button class="btn sm grow" id="expN">${t("exp.next")} ${AA.icon("next")}</button></div>
+      <div class="row exp-end"><a class="btn ghost sm" href="#/lesson/${m.id}">${AA.icon("book")} ${t("ex.fullLesson")}</a><button class="btn ghost sm" data-no>${t("ex.backQuiz")}</button></div></div>`, t("exp.title"));
+    const root = document.querySelector(".exp-sheet"); if (!root) return;
+    let i = 0, timer = null, paused = AA.a11y && AA.a11y.reduced(), start = 0, left = DUR;
+    const bars = root.querySelectorAll(".exp-bars b"), body = root.querySelector(".exp-body");
+    const tick = () => { if (!document.body.contains(root)) return stop(); if (paused) return; const p = Math.min(1, 1 - (left - (performance.now() - start)) / DUR); bars[i].style.width = p * 100 + "%"; if (p >= 1) go(i + 1); else timer = requestAnimationFrame(tick); };
+    const stop = () => cancelAnimationFrame(timer);
+    const show = () => { const [h, ic, html] = steps[i]; body.innerHTML = `<div class="exp-step"><p class="eyebrow">${AA.icon(ic)} ${h} · ${i + 1}/${steps.length}</p>${html}</div>`;
+      body.querySelectorAll(".diagram").forEach(d => d.classList.add("in")); bars.forEach((b, k) => (b.style.width = k < i ? "100%" : "0%"));
+      root.querySelector("#expN").innerHTML = i === steps.length - 1 ? `${AA.icon("check")} ${t("exp.done")}` : `${t("exp.next")} ${AA.icon("next")}`; left = DUR; start = performance.now(); stop(); if (!paused) timer = requestAnimationFrame(tick); };
+    const go = k => { if (k >= steps.length) { bars[i].style.width = "100%"; stop(); return; } i = Math.max(0, k); show(); };
+    root.querySelector("#expP").onclick = () => go(i - 1);
+    root.querySelector("#expN").onclick = () => { if (i === steps.length - 1) close(); else go(i + 1); };
+    const kb = root.querySelector("#expK"); kb.onclick = () => { paused = !paused; kb.innerHTML = AA.icon(paused ? "play" : "pause"); if (!paused) { start = performance.now() - (DUR - left); left = DUR; timer = requestAnimationFrame(tick); } else { left = DUR - (performance.now() - start); stop(); } };
+    if (paused) kb.innerHTML = AA.icon("play");
+    show();
+    S().explained = (S().explained || 0) + 1; AA.store.save(false, true);
+  };
+
+  /* ---------- Hors ligne et sauvegarde ---------- */
+  AA.net = { last: 0 };
+  const inArt = () => !!(window.claude && window.claude.use);
+  AA.netSheet = async () => {
+    const on = navigator.onLine, sw = !!(navigator.serviceWorker && navigator.serviceWorker.controller);
+    let cached = false; try { cached = !!(window.caches && (await caches.keys()).some(k => /abysse/i.test(k))); } catch (e) {}
+    let snaps = []; try { snaps = await AA.store.snapshots(); } catch (e) {}
+    const when = S().savedAt ? new Date(S().savedAt).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }) : "—";
+    const row = (ok, title, sub) => `<div class="net-row ${ok ? "ok" : "warn"}">${AA.icon(ok ? "check" : "info")}<div><b>${title}</b><span class="small muted">${sub}</span></div></div>`;
+    const close = ui.sheet(`<div class="help-sheet stack"><div class="help-ic">${AA.icon(on ? "shield" : "offline")}</div><h3>${t(on ? "net.onT" : "net.offT")}</h3>
+      ${row(true, t("net.saveT", { h: when }), t("net.saveS"))}
+      ${inArt() ? row(false, t("net.artT"), t("net.artS")) : row(sw || cached, t(sw || cached ? "net.offOkT" : "net.offNoT"), t(sw || cached ? "net.offOkS" : "net.offNoS"))}
+      ${row(snaps.length > 0, t("net.snapT", { n: snaps.length }), snaps[0] ? t("net.snapS", { d: u.fmtDate ? u.fmtDate(snaps[0].date) : snaps[0].date }) : t("net.snapNone"))}
+      ${row(!!(S().profile.driveAt || (AA.sync && AA.sync.linked && AA.sync.linked())), t("net.driveT"), t("net.driveS"))}
+      <button class="btn block" id="snapnow">${AA.icon("save")} ${t("net.snapNow")}</button><a class="btn ghost block" href="#/backup">${t("net.more")}</a></div>`, t("net.title"));
+    const b = document.getElementById("snapnow"); if (b) b.onclick = async () => { AA.store.save(true); await AA.store.snapshot("manuel"); fx.toast(t("net.snapDoneT"), t("net.snapDoneS"), "save"); close(); };
+  };
+  const hs = AA.hudSheet; AA.hudSheet = k => (k === "net" ? AA.netSheet() : hs(k));
+  const setNet = () => { const p = document.querySelector(".pill.net"); if (p) { p.innerHTML = AA.icon(navigator.onLine ? "shield" : "offline"); p.classList.toggle("off", !navigator.onLine); } };
+  addEventListener("offline", () => { setNet(); fx.toast(t("net.offT"), t("net.offToast"), "offline"); });
+  addEventListener("online", () => { setNet(); fx.toast(t("net.onT"), t("net.onToast"), "shield"); });
+  /* Sauvegarde automatique : à chaque réponse (déjà), et en quittant ou en cachant l'appli,
+     avec une copie de secours du jour mise à jour. */
+  /* On n'écrit en quittant que s'il reste une écriture différée (base de données) en attente. */
+  let dirty = false; const sv = AA.store.save;
+  AA.store.save = (now, quiet) => { sv(now, quiet); dirty = now !== true; };
+  const flush = () => { if (!dirty) return; dirty = false; try { sv(true, true); AA.store.snapshot().catch(() => {}); } catch (e) {} };
+  document.addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") flush(); });
+  addEventListener("pagehide", flush);
+  setInterval(() => { if (document.visibilityState === "visible" && S().profile.onboarded) AA.store.snapshot().catch(() => {}); }, 10 * 60 * 1000);
+  AA.store.onSave(quiet => { if (quiet) return; const p = document.querySelector(".pill.net"); if (p) { p.classList.remove("saved"); void p.offsetWidth; p.classList.add("saved"); } });
+
+  /* ---------- Carnet de validation par un moniteur ---------- */
+  AA.instr = mid => (S().instr || {})[mid] || null;
+  AA.instrChip = mid => { const v = AA.instr(mid);
+    return v ? `<button class="chip ok instr-chip" data-instr="${mid}" title="${t("instr.byT", { by: u.esc(v.by), d: u.fmtDate ? u.fmtDate(v.d) : v.d })}">${AA.icon("check")} ${t("instr.ok")}</button>`
+      : `<button class="chip instr-chip" data-instr="${mid}">${AA.icon("teach")} ${t("instr.ask")}</button>`; };
+  AA.instrSheet = (mid, after) => {
+    const m = C.byId[mid]; if (!m) return; const v = AA.instr(mid), last = S().profile.instrLast || "";
+    const close = ui.sheet(`<div class="help-sheet stack instr-sheet"><div class="help-ic">${AA.icon("teach")}</div><h3>${t("instr.title")}</h3><p class="small muted">${u.esc(C.worldById[m.world].short)} · <b>${u.esc(m.title)}</b></p>
+      <p class="small">${t("instr.how")}</p>
+      ${v ? `<div class="callout check"><span class="eyebrow">${t("instr.ok")}</span>${t("instr.byT", { by: u.esc(v.by), d: u.fmtDate ? u.fmtDate(v.d) : v.d })}${v.note ? `<br><span class="small">${u.esc(v.note)}</span>` : ""}</div>` : ""}
+      <label class="field"><span>${t("instr.name")}</span><input id="iname" maxlength="60" autocomplete="off" value="${u.esc(v ? v.by : last)}" placeholder="${t("instr.namePh")}"></label>
+      <label class="field"><span>${t("instr.date")}</span><input id="idate" type="date" value="${v ? v.d : u.today()}" max="${u.today()}"></label>
+      <label class="field"><span>${t("instr.note")}</span><input id="inote" maxlength="140" autocomplete="off" value="${u.esc(v && v.note || "")}" placeholder="${t("instr.notePh")}"></label>
+      <button class="btn block" id="isave">${AA.icon("check")} ${t(v ? "instr.update" : "instr.save")}</button>
+      ${v ? `<button class="btn ghost block" id="idel">${t("instr.remove")}</button>` : ""}</div>`, t("instr.title"));
+    const done = () => { close(); AA.store.save(); if (after) after(); else AA.router.refresh(); };
+    document.getElementById("isave").onclick = () => { const by = document.getElementById("iname").value.trim(); if (!by) { document.getElementById("iname").focus(); fx.toast(t("instr.needName"), "", "info"); return; }
+      S().instr = S().instr || {}; S().instr[mid] = { by, d: document.getElementById("idate").value || u.today(), note: document.getElementById("inote").value.trim(), t: Date.now() }; S().profile.instrLast = by;
+      fx.sfx.up && fx.sfx.up(); fx.toast(t("instr.doneT"), m.title, "teach"); done(); };
+    const del = document.getElementById("idel"); if (del) del.onclick = () => { delete S().instr[mid]; done(); };
+  };
+  document.addEventListener("click", e => { const b = e.target.closest("[data-instr]"); if (b) { e.preventDefault(); e.stopPropagation(); AA.instrSheet(b.dataset.instr); } }, true);
+  AA.instrText = () => { const L = [t("instr.title") + " · " + (S().profile.name || "") + " · " + u.today(), ""];
+    C.worlds.filter(w => !w.soon).forEach(w => { const ms = C.inWorld(w.id), ok = ms.filter(m => AA.instr(m.id)); if (!ok.length) return; L.push(w.short + " (" + ok.length + "/" + ms.length + ")");
+      ok.forEach(m => { const v = AA.instr(m.id); L.push("  ✓ " + m.title + " — " + v.by + ", " + v.d + (v.note ? " (" + v.note + ")" : "")); }); L.push(""); });
+    return L.join("\n"); };
+  AA.view("carnet", {
+    tab: "profile", depth: 2,
+    render(el) {
+      const ws = C.worlds.filter(w => !w.soon), all = C.modules.length, n = C.modules.filter(m => AA.instr(m.id)).length;
+      el.innerHTML = `${ui.head(t("instr.view"), "profile")}<p class="muted">${t("instr.intro")}</p>
+        <div class="row" style="flex-wrap:wrap;gap:8px;margin:var(--sp-3) 0"><span class="chip ok">${t("instr.count", { n, all })}</span><button class="btn ghost sm" id="ishare">${AA.icon("share")} ${t("instr.share")}</button><button class="btn ghost sm" id="idl">${AA.icon("download")} ${t("instr.dl")}</button></div>
+        <div class="carnet">${ws.map(w => { const ms = C.inWorld(w.id), k = ms.filter(m => AA.instr(m.id)).length; return `<section class="card carnet-w" style="--wc:var(${w.color})"><div class="row" style="justify-content:space-between"><h3>${u.esc(w.short)}</h3><span class="chip ${k === ms.length ? "ok" : ""}">${k}/${ms.length}</span></div>
+          ${ms.map(m => { const v = AA.instr(m.id); return `<div class="carnet-row ${v ? "ok" : ""}"><span class="grow"><b>${u.esc(m.title)}</b><span class="xs muted">${v ? t("instr.byT", { by: u.esc(v.by), d: u.fmtDate ? u.fmtDate(v.d) : v.d }) : t("instr.notYet")}</span></span><button class="btn ${v ? "ghost" : ""} sm" data-instr="${m.id}">${v ? AA.icon("edit") : AA.icon("check")} ${t(v ? "instr.edit" : "instr.validate")}</button></div>`; }).join("")}</section>`; }).join("")}</div>
+        <div class="callout"><span class="eyebrow">${t("common.validate")}</span>${t("instr.note2")}</div>`;
+      const txt = AA.instrText();
+      u.$("#ishare", el).onclick = async () => { try { if (navigator.share) await navigator.share({ title: t("instr.view"), text: txt }); else { await navigator.clipboard.writeText(txt); fx.toast(t("instr.copied"), "", "check"); } } catch (e) {} };
+      u.$("#idl", el).onclick = () => { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([txt], { type: "text/plain" })); a.download = "abysse-carnet-validation.txt"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); };
+    }
+  });
 })();
 
 /* locales/fr.js */
@@ -6278,6 +6481,34 @@ AA.i18n.add("fr", {
   "path.dvN5": "100 à 249", "path.dvS5": "expérimenté",
   "path.dvN6": "250 à 499", "path.dvS6": "très expérimenté",
   "path.dvN7": "500 et +", "path.dvS7": "confirmé"
+});
+
+AA.i18n.add("fr", {
+  "mode.srs": "Révisions espacées", "train.srsS": "Les questions qui arrivent à échéance aujourd’hui",
+  "srs.dueN": "{n} à revoir", "srs.upShort": "à jour", "srs.noneT": "Rien à revoir aujourd’hui", "srs.noneS": "Tes questions reviendront au bon moment. Fais la plongée du jour ou un nouveau cours.",
+  "srs.memT": "Ma mémoire des questions", "srs.memS": "{n} questions suivies · {due} à revoir aujourd’hui. Chaque colonne : dans combien de jours elles reviennent.", "srs.go": "Réviser {n} questions", "srs.upToDate": "Tout est à jour, bravo !",
+  "srs.box0": "1 j", "srs.box1": "2 j", "srs.box2": "4 j", "srs.box3": "9 j", "srs.box4": "20 j", "srs.box5": "45 j",
+  "exp.btn": "Explique-moi", "exp.btnS": "mini-cours animé de 30 s", "exp.title": "Explique-moi",
+  "exp.s1": "La notion", "exp.s2": "Le schéma", "exp.s3": "La méthode", "exp.s3b": "La bonne réponse", "exp.s4": "Le piège", "exp.s5": "À retenir",
+  "exp.youPicked": "Tu as choisi", "exp.trapGen": "La bonne réponse était « {a} ». Relis la question en cherchant le mot qui change tout, puis l’explication ci-dessus.",
+  "exp.prev": "Étape précédente", "exp.pause": "Pause", "exp.next": "Suite", "exp.done": "J’ai compris",
+  "net.title": "Hors ligne et sauvegarde", "net.onT": "En ligne", "net.offT": "Hors ligne",
+  "net.offToast": "Tout continue de fonctionner. Ta progression est enregistrée sur l’appareil.", "net.onToast": "Connexion retrouvée.",
+  "net.saveT": "Progression enregistrée à {h}", "net.saveS": "Sur cet appareil, à chaque réponse (deux copies : rapide et base de données).",
+  "net.offOkT": "Disponible hors ligne", "net.offOkS": "L’appli est installée dans le cache : elle s’ouvre même sans réseau.",
+  "net.offNoT": "Hors ligne pas encore prêt", "net.offNoS": "Ouvre l’appli une fois avec du réseau pour qu’elle se mette en cache.",
+  "net.artT": "Version claude.ai", "net.artS": "Ici, l’appli marche tant que la page est ouverte. Pour le hors ligne complet, installe la version GitHub Pages (Profil › Sauvegarde).",
+  "net.snapT": "{n} copies de secours", "net.snapS": "La plus récente : {d}. Une par jour, les 5 dernières.", "net.snapNone": "La première sera faite aujourd’hui.",
+  "net.driveT": "Synchro Google Drive", "net.driveS": "Facultatif : pour retrouver ta progression sur un autre appareil.",
+  "net.snapNow": "Faire une copie de secours maintenant", "net.more": "Toutes les sauvegardes", "net.snapDoneT": "Copie de secours faite", "net.snapDoneS": "Tu la retrouves dans Profil › Sauvegarde.",
+  "instr.title": "Validation moniteur", "instr.view": "Mon carnet de validation", "instr.tileS": "{n}/{all} thèmes validés par un moniteur",
+  "instr.ok": "Validé", "instr.ask": "Faire valider", "instr.byT": "Validé par {by} le {d}",
+  "instr.how": "À remplir par ton moniteur, ou devant lui, quand il a vu ce thème avec toi.",
+  "instr.name": "Nom du moniteur", "instr.namePh": "Prénom Nom", "instr.date": "Date", "instr.note": "Remarque (facultatif)", "instr.notePh": "Ex. : vu en piscine, à revoir en mer",
+  "instr.save": "Valider ce thème", "instr.update": "Mettre à jour", "instr.remove": "Retirer la validation", "instr.needName": "Indique le nom du moniteur", "instr.doneT": "Thème validé",
+  "instr.intro": "Les thèmes que ton moniteur a validés avec toi, avec son nom et la date.", "instr.count": "{n}/{all} thèmes validés",
+  "instr.share": "Partager", "instr.dl": "Télécharger", "instr.copied": "Carnet copié", "instr.notYet": "pas encore validé", "instr.edit": "Modifier", "instr.validate": "Valider",
+  "instr.note2": "Ce carnet t’aide à suivre ta formation. Il ne remplace pas le livret officiel de ta fédération."
 });
 
 /* content/fr/worlds.js */
@@ -9230,6 +9461,18 @@ AA.content.addPitfalls([
     return [...out].filter(k => C.sources[k]);
   };
 })();
+
+/* 1.7 : aides des nouveautés */
+Object.assign(AA.content.help, {
+  srs: { t: "Les révisions espacées", ic: "brain", go: "srs", goL: "Réviser maintenant",
+    html: `<p>Chaque question que tu as déjà vue a maintenant une <b>date de retour</b>.</p><ul><li>Bonne réponse sans doute : elle revient dans 2, puis 4, 9, 20 et 45 jours.</li><li>Erreur ou doute : elle revient <b>dès demain</b>.</li></ul><p>Tu révises juste avant d’oublier : c’est la méthode la plus efficace pour retenir longtemps. La plongée du jour commence aussi par ces questions.</p>` },
+  explain: { t: "Explique-moi", ic: "play",
+    html: `<p>Quand tu te trompes, touche <b>« Explique-moi »</b> : un mini-cours de 30 secondes s’ouvre, en 4 ou 5 étapes animées. La notion, le schéma, la méthode, le piège dans lequel tu es tombé, et ce qu’il faut retenir.</p><p>Tu peux mettre en pause, revenir en arrière ou ouvrir le cours complet.</p>` },
+  carnet: { t: "Le carnet de validation", ic: "teach", go: "carnet", goL: "Ouvrir mon carnet",
+    html: `<p>Quand ton moniteur a vu avec toi un thème (en cours, en piscine ou en mer), il peut le <b>valider</b> : son nom, la date et une remarque.</p><p>Le thème porte alors une coche dans la carte et dans le cours. Tu peux partager ou télécharger ton carnet pour le montrer au club.</p><p class="small">Le carnet est une aide pour suivre ta formation : il ne remplace pas le livret officiel de ta fédération.</p>` },
+  net: { t: "Hors ligne et sauvegarde", ic: "shield",
+    html: `<p>Ta progression est enregistrée <b>sur l’appareil</b> à chaque réponse, et une copie de secours est faite chaque jour. Sans réseau, l’appli continue de fonctionner normalement.</p>` }
+});
 
 /* content/fr/lessons-plus.js */
 /* =====================================================================

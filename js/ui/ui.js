@@ -31,6 +31,7 @@
     top.innerHTML = `<a class="brand" href="#/home" aria-label="${t("app.name")}">${AA.logo()}<b>Abysse<span>Academy</span></b></a>
       <span class="grow"></span>
       ${dx != null && dx >= 0 ? `<button class="pill cd" data-hud="countdown" title="${t("hud.exam")}" aria-label="${t("hud.exam")} : J−${dx}">${AA.icon("calendar")}J−${dx}</button>` : ""}
+      <button class="pill net ${navigator.onLine ? "" : "off"}" data-hud="net" title="${t("net.title")}" aria-label="${t("net.title")}">${AA.icon(navigator.onLine ? "shield" : "offline")}</button>
       <button class="pill fire" data-hud="streak" title="${t("hud.streak")}" aria-label="${t("hud.streak")} : ${st}">${AA.icon("flame")}${st}</button>
       <button class="pill xp" data-hud="xp" title="${t("hud.level", { l: lv.l })}" aria-label="${S.xp} XP · ${t("hud.level", { l: lv.l })}">${AA.icon("bolt")}${S.xp}</button>
       <a class="iconbtn" href="#/search" aria-label="${t("search.title")}">${AA.icon("search")}</a>
@@ -43,7 +44,7 @@
   /* ---------- Petits composants (renvoient du HTML) ---------- */
   ui.head = (title, backTo, extra) => `<div class="pagehead">${backTo ? `<a class="closebtn" href="#/${backTo}" aria-label="${t("nav.back")}">${AA.icon("back")}</a>` : ""}<h1 class="pagetitle">${title}</h1>${extra || ""}</div>`;
   /* Chaque tuile qui a une fiche d'aide reçoit un petit « ? » (content/fr/help.js). */
-  const TILE_HELP = { examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate", cursus: "cursus" };
+  const TILE_HELP = { srs: "srs", carnet: "carnet", examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate", cursus: "cursus" };
   ui.tile = (id, icon, color, title, sub, badge) => { const hk = TILE_HELP[id], has = hk && AA.content.help && AA.content.help[hk];
     return `<button class="tile" data-t="${id}" style="--c:${color}"><span class="ic">${AA.icon(icon)}</span><b>${title}</b><span>${sub}</span>${badge ? `<span class="badge chip ${badge[1] || ""}">${badge[0]}</span>` : ""}${has ? `<span class="helpbtn tile-help" role="button" tabindex="0" data-help="${hk}" aria-label="${t("help.what")}">?</span>` : ""}</button>`; };
   ui.bar = (p, color) => `<div class="bar"><i style="width:${Math.round(u.clamp(p, 0, 1) * 100)}%${color ? ";background:" + color : ""}"></i></div>`;

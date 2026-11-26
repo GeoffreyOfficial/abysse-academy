@@ -21,6 +21,8 @@
     cards: {}, table: [], daily: {}, scen: {}, simOk: 0, flashCount: 0, duels: 0, apnee: 0, bestCombo: 0, rescued: 0,
     badges: {}, claimed: {}, real: {}, dayc: {}, keepDone: false, keepDay: "", qod: "",
     read: {}, notes: {}, unlockAll: false,
+    /* 1.7 : révisions espacées des questions, carnet de validation moniteur */
+    qsrs: {}, instr: {}, explained: 0,
     /* v3 (Abysse Academy 1.1) */
     wrong: {}, aqua: {}, boss: {}, story: {}, five: 0, glossSeen: {}, searches: [],
     /* 1.1.1 */
@@ -183,6 +185,8 @@
     byKey("placed", (x, y) => (x > y ? x : y));
     byKey("placeDone", (x, y) => ((y.pct || 0) >= (x.pct || 0) ? y : x));
     byKey("path", (x, y) => y);
+    byKey("qsrs", (x, y) => ((y.t || 0) >= (x.t || 0) ? y : x));
+    byKey("instr", (x, y) => ((y.t || 0) >= (x.t || 0) ? y : x));
     byKey("story", (x, y) => ((y.done || 0) >= (x.done || 0) ? y : x));
     byKey("wrong", (x, y) => { const z = Object.assign({}, x); Object.entries(y).forEach(([c, v]) => (z[c] = max(z[c], v))); return z; });
     ["seen", "errors", "doubt", "daily", "scen", "badges", "claimed", "real", "read", "notes", "aqua", "glossSeen"].forEach(k => byKey(k, (x, y) => y));
