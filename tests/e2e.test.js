@@ -132,7 +132,9 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       await p.click(`.choice[data-ci="${wrongCi}"]`); await p.waitForTimeout(200);
       ok(await p.$("#qexp"), "erreur : bouton « Explique-moi »");
       await p.click("#qexp"); await p.waitForTimeout(300);
-      ok((await p.$$(".exp-bars i")).length >= 3 && await p.$(".exp-step"), "Explique-moi : mini-cours en étapes");
+      ok((await p.$$(".exp-bars .exp-dot")).length >= 3 && await p.$(".exp-step"), "Explique-moi : mini-cours en étapes");
+      { const e0 = await p.textContent(".exp-step .eyebrow"); await p.waitForTimeout(7000); ok((await p.textContent(".exp-step .eyebrow")) === e0, "Explique-moi : pas d’avance automatique"); }
+      ok(await p.evaluate(() => { const q = AA.content.questions.find(x => x.q === document.querySelector("#qtext").textContent); return !!q && document.querySelector(".exp-step").textContent.includes(q.q); }), "Explique-moi : part de la question ratée");
       const s1 = await p.textContent(".exp-step .eyebrow"); await p.click("#expN"); await p.waitForTimeout(150); ok((await p.textContent(".exp-step .eyebrow")) !== s1, "Explique-moi : étape suivante");
       await p.click(".exp-end [data-no]"); await p.waitForTimeout(150);
       ok(await p.evaluate(() => Object.keys(AA.S.qsrs || {}).length >= 1 && Object.values(AA.S.qsrs)[0].b === 0), "erreur : la question revient demain (révisions espacées)");

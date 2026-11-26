@@ -367,3 +367,37 @@ html.reduce-motion .bt-arena *,html.reduce-motion .bt-intro *,html.reduce-motion
 .run-card .grow{display:grid;gap:4px;min-width:160px} .run-card .eyebrow{margin:0} .run-card .medal{width:44px;height:44px;flex:0 0 auto;background:var(--primary);color:var(--primary-ink,#04202c);box-shadow:none} .run-card .medal svg{width:22px;height:22px}
 .run-btns{display:flex;gap:8px;flex:1 1 auto;justify-content:flex-end}
 .qdk-row{justify-content:center;margin-top:4px} .bt-dk{justify-self:center;margin-top:8px}
+/* 2.3 · Explique-moi : avance manuelle, étapes lisibles, pas de vide */
+.exp2 .exp-bars{display:flex;gap:6px;margin-right:2.6rem}
+.exp2 .exp-dot{flex:1;height:22px;padding:9px 0;border:0;background:none;cursor:pointer}
+.exp2 .exp-dot b{display:block;height:4px;border-radius:2px;background:var(--surface-3);transition:background .25s}
+.exp2 .exp-dot.done b{background:color-mix(in srgb,var(--primary) 55%,var(--surface-3))}
+.exp2 .exp-dot.on b{background:var(--primary)}
+.exp2 .exp-body{min-height:0;touch-action:pan-y}
+.exp2 .exp-step{display:grid;gap:10px}
+.exp2 .exp-step>*{animation:anStep .4s var(--ease) both}
+.exp2 .exp-step>*:nth-child(2){animation-delay:.08s}.exp2 .exp-step>*:nth-child(3){animation-delay:.16s}.exp2 .exp-step>*:nth-child(4){animation-delay:.24s}.exp2 .exp-step>*:nth-child(n+5){animation-delay:.32s}
+.exp2 .exp-step h3{margin:0}
+.exp2 .exp-q{font-weight:700;margin:0}
+.exp2 .exp-a,.exp2 .exp-bad{display:flex;gap:8px;align-items:flex-start;margin:0;padding:8px 10px;border-radius:10px}
+.exp2 .exp-a{background:color-mix(in srgb,var(--ok) 14%,transparent);color:inherit}
+.exp2 .exp-a svg{color:var(--ok)} .exp2 .exp-bad{background:color-mix(in srgb,var(--bad) 14%,transparent);color:inherit} .exp2 .exp-bad svg{color:var(--bad)}
+.exp2 .exp-a svg,.exp2 .exp-bad svg{flex:none;width:18px;height:18px;margin-top:2px}
+.exp2 .exp-trap{margin:0}
+.exp2 .diagram{margin:0;max-height:52vh}
+.exp2 .diagram svg{max-height:44vh;width:100%;height:auto}
+.exp2 .exp-prose>*:first-child{margin-top:0}.exp2 .exp-prose>*:last-child{margin-bottom:0}
+.exp2 .exp-notion{display:flex;gap:6px;align-items:center;margin:0}.exp2 .exp-notion svg{width:16px;height:16px;flex:none}
+.exp2 .exp-nav{gap:8px;position:sticky;bottom:0;background:var(--surface,inherit);padding-top:6px}
+.exp2 .exp-nav .grow{flex:1} .exp2 #expP:disabled{opacity:.4}
+@media (min-width:900px){.exp2 .exp-step{font-size:1.02rem}}
+.reduce-motion .exp2 .exp-step>*{animation:none}
+.exp2 .exp-flow{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.exp2 .exp-flow li{display:grid;grid-template-columns:2rem 1fr;gap:10px;position:relative;padding-bottom:14px;animation:anStep .45s var(--ease) both;animation-delay:calc(var(--i,0) * .35s)}
+.exp2 .exp-flow li:not(:last-child)::before{content:"";position:absolute;left:calc(1rem - 1px);top:2rem;bottom:0;width:2px;background:repeating-linear-gradient(var(--primary) 0 6px,transparent 6px 12px);opacity:.7}
+.exp2 .exp-flow .n{width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;background:var(--primary);color:var(--on-primary,#04121f);font:800 .95rem var(--font-mono)}
+.exp2 .exp-flow li.ok .n{background:var(--ok)}
+.exp2 .exp-flow b{display:block;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted,inherit);margin-top:5px}
+.exp2 .exp-flow p{margin:2px 0 0;line-height:1.45}
+.exp2 .exp-flow li.ok p{font-weight:700}
+.reduce-motion .exp2 .exp-flow li{animation:none}

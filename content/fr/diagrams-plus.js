@@ -97,6 +97,7 @@
         <rect x="${X(0)}" y="${y}" width="${X(b) - X(0)}" height="16" rx="8" class="d-gold grow-bar"/><rect x="${X(0)}" y="${y + 20}" width="${X(a) - X(0)}" height="16" rx="8" class="d-pri grow-bar" style="animation-delay:${i * .12}s"/>
         <text x="${X(b) - 8}" y="${y + 12}" class="t-on" text-anchor="end">${Math.floor(b)} m · 1,6</text><text x="${X(a) - 8}" y="${y + 32}" class="t-on" text-anchor="end">${Math.floor(a)} m · 1,4</text>`; }).join("")}`, cap); };
 
+  C.dgb = { flow, cycle, zones, profile, bubbles, gauge, team, signs, ear };
   C.addDiagrams({
     "fl-bapteme": () => flow([["Briefing à terre", "Signes OK / problème / monter, respirer calmement, oreilles."], ["Équipement", "Le moniteur règle tout : gilet, lest, bouteille."], ["En surface", "Tête dans l’eau, tu respires sur le détendeur sans bouger."], ["Descente lente", "Tu équilibres tes oreilles tous les mètres, sans attendre."], ["Balade", "Le moniteur gère ta profondeur, toi tu regardes."], ["Remontée et débrief", "Tu respires normalement et tu racontes ce que tu as vu."]], "Le baptême, étape par étape : chaque étape s’allume à son tour."),
     "ear": () => ear("En descendant, l’eau pousse le tympan vers l’intérieur. En soufflant nez pincé, l’air remonte la trompe d’Eustache et le remet droit : c’est le « pop »."),
