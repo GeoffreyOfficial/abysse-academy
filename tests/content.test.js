@@ -48,6 +48,7 @@ section("QCM sans indice (2.2.4)");
   const ABSURDE = /couleur (du|des|de son) (bloc|masque|palmes|écran)|le club s.en charge|(^|\s)à rien( du tout)?$|pour (la )?d[ée]cor|faire joli|au hasard|n.importe (où|quoi|comment)|ce n.est pas utile|sans raison|^rien( du tout)?$|barbecue|appareil photo|explose|go[ûu]te|menu du|le prix|la facture|son maillot|(^|\s)crier|huile d.olive|se transforme en eau|par habitude|par tradition|t.énerves|le grondes|l.humilies|dans son dos|3615|la mairie|le café|du café/i;
   const len = s => String(s).length;
   let longest = 0, crushing = [];
+  (C.computer || []).forEach(q => (q.c || []).forEach((s, i) => { if (i !== q.a) ok(!ABSURDE.test(String(s)), `${q.id} : choix absurde « ${s} »`); }));
   C.questions.forEach(q => {
     q.c.forEach((s, i) => { if (i !== q.a) ok(!ABSURDE.test(String(s)), `${q.id} : choix absurde « ${s} »`); });
     const a = len(q.c[q.a]), o = Math.max(...q.c.filter((_, i) => i !== q.a).map(len));

@@ -2156,7 +2156,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.2.5";
+  AA.VERSION = "2.2.6";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -17577,6 +17577,50 @@ Object.assign(AA.content.help, {
   };
   Object.keys(SC).forEach(id => { const s = C.scenById[id]; if (!s) return; SC[id].forEach((c, i) => { if (s.steps[i]) s.steps[i].c = c; }); });
 
+
+  /* Mode ordinateur (pc-*) : même index de bonne réponse, distracteurs crédibles. */
+  const PC = [
+    ["Tu continues encore quelques minutes, il en reste", "Tu préviens la palanquée et entames la remontée", "Tu remontes de 2 m pour regagner du temps", "Tu remontes seul, sans prévenir, pour aller vite"],
+    ["Tu purges ton gilet et continues au même rythme", "Tu ralentis ta remontée immédiatement", "Tu t’arrêtes 1 min puis repars à la même vitesse", "Tu remontes plus vite pour sortir de l’alarme"],
+    ["Tu fais le palier à 5 m, c’est plus prudent", "Tu vas à 3 m et fais 4 min de palier", "Tu fais 3 min à 3 m, l’ordinateur arrondit", "Tu fais 2 min à 3 m puis 2 min à 1 m"],
+    ["Tu le fais, c’est recommandé", "Tu sors : il n’est pas obligatoire", "Tu le fais seulement si tu as froid", "Tu le fais seulement après 30 m"],
+    ["Tu replonges l’après-midi, en restant peu profond", "Tu préviens le DP, surveilles les signes et ne replonges pas", "Tu remets l’ordinateur à zéro pour l’après-midi", "Tu redescends faire le palier dans l’heure"],
+    ["Tu continues jusqu’à 50 bar, la réserve", "Tu signales « mi-pression/réserve » et entames la remontée", "Tu attends le signal du guide pour remonter", "Tu remontes de 5 m et continues la visite"],
+    ["Chacun suit le sien, puis on se retrouve", "Toute la palanquée suit celui qui exige le palier", "Toute la palanquée suit le plus récent", "On suit le NDL et on fait un palier de sécurité"],
+    ["Tu restes là : 3,5 m de plus, c’est toléré", "Tu remontes au-dessus de 20 m", "Tu remontes à 20 m pile et tu continues", "Tu le notes et tu préviens le DP à la sortie"],
+    ["Tu peux prendre l’avion dès que l’écran s’éteint", "Tu attends au moins ce délai avant de prendre l’avion", "C’est le temps à attendre avant de replonger", "C’est le délai avant de pouvoir monter en altitude en voiture seulement"],
+    ["Environ 14 h pour éliminer l’azote en excès", "Tu ne peux pas replonger avant 14 h", "14 h avant de pouvoir prendre l’avion", "Ta batterie tient encore 14 h"],
+    ["Tu pars : la cabine est pressurisée", "Tu décales le vol, ou tu aurais dû arrêter de plonger plus tôt", "Tu pars : 16 h, c’est déjà plus de 12 h", "Tu respires de l’oxygène avant le vol et tu pars"],
+    ["L’ordinateur s’est mal recalibré en surface", "L’eau est plus froide, il est plus prudent", "Il reste de l’azote de la 1re plongée : il en tient compte", "Le NDL baisse toujours l’après-midi"],
+    ["Tu plonges : une heure, ça tiendra", "Tu plonges et tu suis l’ordinateur de ton binôme", "Tu plonges avec ta table en secours, sans rien dire", "Tu changes ou recharges avant, sinon tu préviens le DP"],
+    ["Son ordinateur ignore la 1re plongée : il ne s’y fie pas, on prévient le DP", "Ce n’est pas grave s’il reste moins profond que le matin", "Il suit le tien pour la 2e plongée, ça suffit", "On fera la moyenne de vos deux ordinateurs"],
+    ["Tu la coupes, ton ordinateur gère le reste", "Tu remontes de quelques mètres et tu préviens ton binôme", "Tu continues : l’alarme sonne toujours un peu tôt", "Tu remontes directement en surface"],
+    ["Oui, le NDL est encore large", "Oui, si on redescend lentement", "Non : ces allers-retours (yoyo) augmentent le risque d’ADD", "Oui, si l’ordinateur ne bipe pas"],
+    ["Tu fais tout à 3 m, en additionnant les durées", "Tu t’arrêtes à 6 m pendant 2 min, puis tu suis le palier suivant", "Tu fais 2 min entre 5 et 7 m, puis tu sors", "Tu le sautes et tu rallonges celui de 3 m"],
+    ["Tu plonges l’après-midi avec l’ordinateur d’un copain", "Tu replonges vite pour refaire le palier", "Pas d’autre plongée, tu surveilles les signes et préviens le DP", "Tu plonges l’après-midi avec ta table, à 12 m maxi"],
+    ["Tu fais la moitié du palier pour garder ta réserve", "Tu préviens ton binôme, restes près de lui et fais le palier, octopus si besoin", "Tu fais le palier à 6 m, c’est plus court", "Tu finis le palier seul, il te reste 40 bar"],
+    ["Le temps restant avant de pouvoir replonger", "Le temps passé en surface depuis la sortie : ton intervalle", "Le temps restant avant de pouvoir prendre l’avion", "Ta durée de plongée"],
+    ["Tu restes sur place pour voir s’il disparaît", "Tu remontes doucement et tu sors, il n’était pas prévu", "Tu préviens la palanquée, vous remontez et faites ce palier", "Tu remontes de quelques mètres pour qu’il disparaisse"]
+  ];
+  (C.computer || []).forEach((q, i) => { if (PC[i] && q.c && q.c.length === PC[i].length) q.c = PC[i]; });
+
+  /* Briefing et atelier des plongées successives : mauvaises réponses crédibles. */
+  AA.i18n.add("fr", {
+    "br.wNew1": "Derrière, en serre-file, pour qu’il voie tout le monde",
+    "br.wNew2": "À côté du plongeur le plus expérimenté",
+    "br.wNew3": "En tête de palanquée, juste devant le guide",
+    "su.wGps1": "La durée totale de remontée (DTR)",
+    "su.wGps3": "Le palier le plus long effectué",
+    "su.wN21": "La majoration, directement",
+    "su.wN22": "Le nouveau groupe de plongée successive",
+    "su.wN23": "Le temps d’intervalle minimum",
+    "su.wIsol3": "Avec une majoration réduite",
+    "su.wInv1": "C’est mieux : on dépense moins d’air en premier",
+    "su.wInv2": "Ça ne change rien si l’intervalle dépasse 2 h",
+    "su.wInv3": "C’est conseillé pour une successive",
+    "su.wPc1": "Je garde le même, mais je le remets à zéro",
+    "su.wPc3": "Je prends celui d’un copain, réglé pareil"
+  });
   /* Briefing simulé : distracteurs crédibles. */
   const B = C.brief;
   if (B) {
