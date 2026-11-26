@@ -16,7 +16,11 @@
 
   /* Choix du niveau : cartes, avec RIFAP / Nitrox en plus. Utilisé à l'accueil et ici. */
   PV.levelCards = cur => `<div class="choicecards lvcards">${P().LEVELS.map(l => `<button data-lv="${l.id}" aria-pressed="${cur === l.id}"><span class="ic">${AA.icon(LV_IC[l.id] || "dive")}</span><span><b>${t("lv." + l.id)}</b><span>${t("lv.s." + l.id)}</span></span></button>`).join("")}</div>`;
-  PV.divesSeg = cur => `<div class="seg" role="group" aria-label="${t("path.dives")}">${P().DIVES.map((n, i) => `<button data-dives="${n}" aria-pressed="${(cur || 0) === n}">${t(["path.dv0", "path.dv1", "path.dv2", "path.dv3"][i])}</button>`).join("")}</div>`;
+  /* 1.6 : 8 tranches plus précises ; une ancienne valeur (20…) tombe dans sa tranche. */
+  const DVN = ["path.dvN0", "path.dvN1", "path.dvN2", "path.dvN3", "path.dvN4", "path.dvN5", "path.dvN6", "path.dvN7"], DVS = ["path.dvS0", "path.dvS1", "path.dvS2", "path.dvS3", "path.dvS4", "path.dvS5", "path.dvS6", "path.dvS7"];
+  PV.divesSeg = cur => { const D = P().DIVES, sel = D.filter(n => n <= (cur || 0)).pop() || 0;
+    return `<div class="divegrid" role="group" aria-label="${t("path.dives")}">${D.map((n, i) => `<button class="divebtn" data-dives="${n}" aria-pressed="${sel === n}"><b>${t(DVN[i])}</b><span class="xs">${t(DVS[i])}</span></button>`).join("")}</div>
+      <p class="xs muted divehint">${AA.icon("info")} ${t("path.divesHint")}</p>`; };
   PV.modeSeg = (wid, cur) => `<div class="seg pmode" role="group" aria-label="${t("path.modeQ")}">${MODES.map(m => `<button data-mode="${m}" data-w="${wid}" aria-pressed="${cur === m}">${AA.icon(MODE_IC[m])} ${t("path.m." + m)}</button>`).join("")}</div>`;
 
   AA.view("parcours", {

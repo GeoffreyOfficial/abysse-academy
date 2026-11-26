@@ -42,6 +42,9 @@
     const kind = tabSwitch ? "tab" : dir;
     const root = document.documentElement;
     const reduce = AA.a11y && AA.a11y.reduced();
+    /* 1.6 : même écran (carte d'un autre monde, onglet d'un cours) : pas de capture
+       d'écran complète (lente sur PC et grand écran), juste un rendu direct et un fondu léger. */
+    if (v && current === v) { R.render("same"); return; }
     if (document.startViewTransition && !reduce) {
       root.dataset.vt = kind;
       try { const tr = document.startViewTransition(() => R.render(kind, true)); [tr.ready, tr.updateCallbackDone].forEach(p => p.catch(() => {})); tr.finished.catch(() => {}).then(() => delete root.dataset.vt); return; } catch (e) {}

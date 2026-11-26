@@ -27,7 +27,7 @@
     { id: "e1", worlds: ["decouverte", "n1", "n2", "rifap", "e1"], goal: "n3" },
     { id: "e2", worlds: ["decouverte", "n1", "n2", "rifap", "n3", "e1", "n4", "e2"], goal: "e2" }
   ];
-  P.DIVES = [0, 20, 100, 500];
+  P.DIVES = [0, 1, 10, 25, 50, 100, 250, 500]; /* 1.6 : borne basse de chaque tranche (plongées en milieu naturel) */
   P.level = () => P.LEVELS.find(l => l.id === S().profile.level) || null;
   P.mode = wid => (S().path || {})[wid] || "learn";
   P.certified = wid => !!(S().certs || {})[wid];

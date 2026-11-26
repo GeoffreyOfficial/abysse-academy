@@ -478,3 +478,17 @@ AA.i18n.add("fr", {
   "cur.pathT": "Le chemin des niveaux", "cur.pathH": "De gauche à droite : chaque étape demande la précédente. Touche un niveau pour sa fiche.",
   "cur.chartT": "Jusqu’où chaque niveau peut descendre", "cur.noPa": "pas d’autonomie", "cur.youLv": "Ton niveau", "cur.after": "après {lv}"
 });
+
+AA.i18n.add("fr", {
+  "path.dives": "Mes plongées en milieu naturel",
+  "onb.divesQ": "Combien de plongées en milieu naturel ?", "onb.divesS": "Mer, lac ou carrière, avec bouteille. Une estimation suffit. Un plongeur expérimenté reçoit plus vite des questions approfondies.",
+  "path.divesHint": "On compte les plongées en milieu naturel (mer, lac, carrière), baptême compris. La piscine et la fosse ne comptent pas.",
+  "path.dvN0": "Aucune", "path.dvS0": "pas encore",
+  "path.dvN1": "1 à 9", "path.dvS1": "premières plongées",
+  "path.dvN2": "10 à 24", "path.dvS2": "débutant",
+  "path.dvN3": "25 à 49", "path.dvS3": "régulier",
+  "path.dvN4": "50 à 99", "path.dvS4": "à l’aise",
+  "path.dvN5": "100 à 249", "path.dvS5": "expérimenté",
+  "path.dvN6": "250 à 499", "path.dvS6": "très expérimenté",
+  "path.dvN7": "500 et +", "path.dvS7": "confirmé"
+});

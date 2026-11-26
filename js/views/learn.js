@@ -128,9 +128,12 @@
     ropePath = u.$("path", svg);
     /* Longueur de corde à chaque nœud (pour faire descendre le plongeur). */
     const L = ropePath.getTotalLength(); ropeStops = [];
-    let k = 0;
-    for (let l = 0; l <= L && k < pts.length; l += 2) { const p = ropePath.getPointAtLength(l); if (Math.hypot(p.x - pts[k][0], p.y - pts[k][1]) < 3) { ropeStops.push(l); k++; } }
-    while (ropeStops.length < pts.length) ropeStops.push(L);
+    /* 1.6 : longueur exacte jusqu'à chaque nœud (un calcul par nœud). L'ancien balayage
+       point par point coûtait plus d'une seconde sur les grandes cartes (PC). */
+    const tmp = document.createElementNS("http://www.w3.org/2000/svg", "path"); svg.appendChild(tmp);
+    let part = `M${pts[0][0]} -14 L${pts[0][0]} ${pts[0][1]}`; tmp.setAttribute("d", part); ropeStops.push(tmp.getTotalLength());
+    for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], my = (y0 + y1) / 2; part += ` C${x0} ${my} ${x1} ${my} ${x1} ${y1}`; tmp.setAttribute("d", part); ropeStops.push(Math.min(L, tmp.getTotalLength())); }
+    tmp.remove();
   }
   /* Décors en parallaxe : falaises, algues, coraux. Tirage stable par monde. */
   /* Faune animée : bancs de poissons, méduses, tortue, bulles des thèmes en cours. */

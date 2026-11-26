@@ -815,3 +815,46 @@ details.sources ul,.src-list{padding-left:1.1em;margin:.3em 0} details.sources l
 .pw-acts{display:flex;flex-wrap:wrap}
 .pw-acts .btn{width:auto;flex:1 1 auto;justify-content:center}
 @media (min-width:1024px){.pw-acts .btn{white-space:nowrap;font-size:var(--fs-sm)}}
+
+/* =====================================================================
+   1.6 · Schémas animés des cours (content/fr/diagrams-plus.js).
+   Les animations attendent que le schéma soit visible (.in).
+   ===================================================================== */
+.diagram .t-num{fill:var(--on-primary,#04121f);font:800 14px var(--font-mono)}
+.diagram .t-on{fill:#04121f;font:700 12.5px var(--font-mono)}
+.diagram .mid{text-anchor:middle} .diagram .mid tspan{text-anchor:middle}
+.diagram.anim .an-step{animation:anStep .55s var(--ease) both;animation-delay:calc(var(--i,0) * .28s)}
+.diagram.anim .an-dash{stroke-dasharray:6 6;animation:anDash 1.1s linear infinite}
+.diagram.anim .an-ring{transform-box:fill-box;transform-origin:center;animation:anDash 2.4s linear infinite}
+.diagram.anim .an-bub{transform-box:fill-box;animation:anBub 3.2s ease-in infinite;animation-delay:calc(var(--i,0) * .35s)}
+.diagram.anim .an-needle{transform-origin:260px 200px;animation:anNeedle 6s ease-in-out infinite alternate}
+.diagram.anim .an-tymp{transform-box:fill-box;transform-origin:left center;animation:anTymp 3s ease-in-out infinite}
+.diagram.anim .an-draw{stroke-dasharray:1400;stroke-dashoffset:1400;animation:anDraw 2.2s var(--ease) forwards}
+@keyframes anStep{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:none}}
+@keyframes anDash{to{stroke-dashoffset:-24}}
+@keyframes anBub{0%{transform:translateY(0);opacity:0}15%{opacity:.9}100%{transform:translateY(-120px);opacity:0}}
+@keyframes anNeedle{0%,15%{transform:rotate(0)}100%{transform:rotate(-140deg)}}
+@keyframes anTymp{0%,100%{transform:scaleX(1)}45%{transform:scaleX(1.9)}55%{transform:scaleX(1.9)}70%{transform:scaleX(1)}}
+@keyframes anDraw{to{stroke-dashoffset:0}}
+.diagram.reveal:not(.in) [class*="an-"]{animation-play-state:paused}
+.reduce-motion .diagram [class*="an-"]{animation:none!important;opacity:1;stroke-dashoffset:0}
+.reduce-motion .diagram .an-move{display:none}
+@media (prefers-reduced-motion:reduce){.diagram [class*="an-"]{animation:none!important;opacity:1;stroke-dashoffset:0}.diagram .an-move{display:none}}
+
+/* 1.6 · même écran : fondu court, sans capture */
+.view-enter.view-same{animation:sameIn .22s ease-out both}
+@keyframes sameIn{from{opacity:.35}to{opacity:1}}
+.reduce-motion .view-enter.view-same{animation:none}
+
+/* 1.6 · expérience en 8 tranches */
+.divegrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.divebtn{display:grid;gap:1px;justify-items:center;padding:8px 4px;border-radius:var(--r-md);background:var(--surface-2);border:1px solid var(--line-soft);color:var(--ink);font:inherit;cursor:pointer;text-align:center;min-width:0}
+.divebtn b{font-size:var(--fs-sm);white-space:nowrap} .divebtn .xs{color:var(--muted);overflow-wrap:anywhere;line-height:1.15}
+.divebtn[aria-pressed="true"]{background:color-mix(in srgb,var(--primary) 20%,var(--surface));border-color:var(--primary);box-shadow:0 0 0 1px var(--primary)}
+.divebtn:hover{border-color:var(--primary)}
+.divehint{display:flex;gap:6px;align-items:flex-start;margin:8px 0 0} .divehint svg{width:14px;height:14px;flex:0 0 auto;margin-top:2px}
+@media (max-width:420px){.divegrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* 1.6 · icônes : jamais géantes (une icône sans taille prenait toute la largeur sur PC) */
+:is(h1,h2,h3,h4)>svg{width:1.1em;height:1.1em;vertical-align:-.16em;flex:0 0 auto;margin-right:.15em}
+svg[viewBox="0 0 24 24"]{max-width:6rem;max-height:6rem}

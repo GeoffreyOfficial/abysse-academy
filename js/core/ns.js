@@ -6,7 +6,7 @@
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "1.5.1";
+  AA.VERSION = "1.6.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
