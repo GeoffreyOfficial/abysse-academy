@@ -108,7 +108,9 @@
 
   /* ---------- Signaler un problème ---------- */
   const KINDS = ["wrong", "unclear", "source", "typo", "idea"];
-  const fileOf = (world, gen) => gen ? (/^(n1|n3|n4|nx)/.test(gen) ? "content/fr/generators-plus.js" : "content/fr/generators.js") : "content/fr/" + ({ nitrox: "n4", e2: "n4" }[world] || world) + ".js";
+  /* Fichier(s) à corriger : le cours de base, et son complément « deep-* » (1.5) s'il existe. */
+  const DEEP = { n3: "deep-n3", n4: "deep-n4", e2: "deep-n4", nitrox: "deep-n4", rifap: "deep-rifap-e1", e1: "deep-rifap-e1", n1: "deep-rifap-e1", decouverte: "deep-rifap-e1" };
+  const fileOf = (world, gen) => gen ? "content/fr/generators*.js ou deep-*.js (générateur " + gen + ")" : "content/fr/" + ({ nitrox: "n4", e2: "n4" }[world] || world) + ".js" + (DEEP[world] ? " + content/fr/" + DEEP[world] + ".js" : "");
   /* cible : { type: "lesson", m, tab } ou { type: "question", q } */
   AA.report = target => {
     const o = { kind: "wrong" };

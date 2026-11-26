@@ -32,6 +32,8 @@
       html: `<p>Chaque bonne réponse, chaque quête et chaque étoile te rapporte des <b>XP</b>. Ils font monter ton <b>niveau</b> de joueur (pas ton niveau de plongée !).</p>
         <p>Le niveau fait évoluer ton <b>avatar</b>, agrandit ton <b>aquarium</b> et débloque des décors.</p>
         <ul><li>Bonne réponse : +10 XP (plus en combo)</li><li>Étoile gagnée : +25 XP</li><li>Quête : +20 XP</li><li>Plongée du jour : +30 XP</li></ul>` },
+    cursus: { t: "Le cursus des brevets", ic: "layers", go: "cursus", goL: "Voir le cursus",
+      html: `<p>Le chemin des niveaux FFESSM : <b>N1 → N2 → N3</b> pour plonger, <b>RIFAP</b> pour secourir, <b>Initiateur, N4, E2</b> pour encadrer. Pour chaque niveau : pour qui, conditions d’accès, ce qu’il permet, l’examen et les équivalences (ANMP, CMAS, ISO).</p>` },
     countdown: { t: "Le compte à rebours", ic: "calendar", go: "settings", goL: "Changer la date",
       html: `<p>Le nombre de jours avant ton examen, si tu as indiqué sa date. Tu peux la changer dans les réglages.</p>` },
     exam: { t: "L’examen blanc", ic: "exam", go: "examquick", goL: "Examen rapide",

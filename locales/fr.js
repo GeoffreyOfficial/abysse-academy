@@ -457,3 +457,18 @@ AA.i18n.add("fr", {
   "ex2.title": "Exemple pas à pas · tiré au hasard", "ex2.try": "Essaie d’abord seul, puis vérifie.", "ex2.show": "Voir la solution", "ex2.other": "Un autre exemple", "ex2.result": "Résultat",
   "map.got": "obtenu"
 });
+
+AA.i18n.add("fr", {
+  "cur.title": "Le cursus des brevets", "cur.tileS": "N1 → E2, équivalences",
+  "cur.intro": "Le chemin des niveaux FFESSM, du baptême au moniteur. Touche un niveau pour savoir à qui il s’adresse, comment y accéder, ce qu’il permet et ce qu’on passe à l’examen.",
+  "cur.you": "Toi : {lv}. Objectif : {goal}.", "cur.got": "obtenu", "cur.goal": "objectif",
+  "cur.who": "Pour qui", "cur.access": "Pour y accéder", "cur.can": "Ce que ça permet", "cur.exam": "L’examen", "cur.eq": "Équivalences",
+  "cur.open": "Ouvrir les {n} cours", "cur.setGoal": "En faire mon objectif", "cur.goalT": "Nouvel objectif",
+  "cur.line.plongeur": "Plongeur", "cur.line.secours": "Secours", "cur.line.qualif": "Qualifications", "cur.line.encadrant": "Encadrement",
+  "cur.eqT": "Tableau des équivalences", "cur.chartL": "Profondeurs autorisées par niveau, encadré et autonome",
+  "cur.pe": "encadré", "cur.pa": "autonome",
+  "cur.note": "Âges, conditions et équivalences changent parfois et dépendent des fédérations : fais-les confirmer par ton moniteur.",
+  "cur.forWho": "Pour qui · quel examen", "cur.more": "Tout le cursus"
+});
+
+AA.i18n.add("fr", { "map.list": "Les thèmes du monde", "lesson.inWorld": "les thèmes" });

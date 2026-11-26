@@ -27,7 +27,7 @@
       const card = w => {
         const mode = P().mode(w.id), cert = (S.certs || {})[w.id], pd = (S.placeDone || {})[w.id];
         const list = C.inWorld(w.id), done = list.filter(m => G.stars(m.id) >= 1 || (S.placed || {})[m.id]).length;
-        return `<section class="card pworld ${mode}" style="--wc:var(${w.color})" data-pw="${w.id}">
+        return `<section class="card pworld m-${mode}" style="--wc:var(${w.color})" data-pw="${w.id}">
           <div class="pw-head"><span class="ic">${AA.icon(w.icon)}</span><span class="grow"><b>${u.esc(w.title)}</b><span class="xs muted">${t("path.modules", { n: done, tot: list.length })}${w.id === goal ? " · " + t("path.isGoal") : ""}</span></span>
             ${cert ? `<span class="chip ok">${AA.icon("check")} ${t("path.got", { d: u.fmtDate(cert) })}</span>` : ""}</div>
           ${ui.bar(done / Math.max(1, list.length), "var(--wc)")}
@@ -41,7 +41,7 @@
         </section>`;
       };
       el.innerHTML = `<div class="pagehead"><a class="closebtn" href="#/profile" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${t("tab.profile")}</span></div>
-        <h1>${t("path.title")}</h1><p class="muted">${t("path.intro")}</p>
+        <h1>${t("path.title")}</h1><p class="muted">${t("path.intro")}</p><a class="btn ghost sm" href="#/cursus">${AA.icon("layers")} ${t("cur.title")}</a>
         <section class="card stack pcfg">
           <div class="row between"><span><p class="eyebrow" style="margin:0">${t("path.level")}</p><b class="h4">${t("lv." + (lv ? lv.id : "none"))}</b></span><button class="btn ghost sm" id="chlv">${AA.icon("edit")} ${t("path.change")}</button></div>
           <div><p class="eyebrow">${t("path.dives")}</p>${PV.divesSeg(pr.dives)}<p class="xs muted" style="margin:6px 0 0">${t(P().expert() ? "path.expertOn" : "path.expertOff")}</p></div>

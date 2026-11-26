@@ -35,6 +35,17 @@
   };
   /* Ajoute des questions à un module existant (pratique pour un pack d'extension). */
   C.addQuestions = (id, qs) => { const m = C.byId[id]; if (m) m.quiz.push(...qs); };
+  /* 1.5 : approfondit un cours existant sans le réécrire (fichiers content/fr/deep-*.js).
+     Ajoute à la fin : essentiel, approfondir (HTML), memo, moniteur, quiz (jamais réordonné). */
+  C.extend = (id, x) => {
+    const m = C.byId[id]; if (!m) return;
+    if (x.essentiel) m.essentiel += x.essentiel;
+    if (x.approfondir) m.approfondir = (m.approfondir || "") + x.approfondir;
+    if (x.memo) m.memo.push(...x.memo);
+    if (x.moniteur) m.moniteur.push(...x.moniteur);
+    if (x.quiz) m.quiz.push(...x.quiz);
+    if (x.gen) m.gen = (m.gen || []).concat(x.gen);
+  };
   /* Flashcards : [{id, m (module), f (recto), b (verso)}] */
   C.addCards = list => C.cards.push(...list);
   C.addComputer = list => C.computer.push(...list);

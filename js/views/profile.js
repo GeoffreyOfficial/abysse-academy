@@ -34,6 +34,7 @@
           <div class="stat"><b>${G.streak()}</b><span>${t("prof.streak")}</span></div>
           <div class="stat"><b>${S.exams.length ? u.num(Math.max(...S.exams.map(e => e.score)), 1) : "—"}</b><span>${t("prof.bestExam")}</span></div></div>
         <div class="tiles" style="margin-top:var(--sp-4)">
+          ${ui.tile("cursus", "layers", "var(--world-n3)", t("cur.title"), t("cur.tileS"))}
           ${ui.tile("parcours", "compass", "var(--accent)", t("path.title"), AA.path.summary())}
           ${ui.tile("quests", "flag", "var(--gold)", t("prof.quests"), t("prof.questsS"), claim ? [t("prof.claim", { n: claim }), "gold"] : null)}
           ${ui.tile("club", "users", "var(--primary)", t("prof.club"), t("prof.clubS"))}

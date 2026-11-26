@@ -1017,7 +1017,7 @@ mark.hl{animation:hl 2.2s var(--ease)} @keyframes hl{0%,30%{background:var(--gol
 .lvcards button{padding:10px 12px}
 .pworlds{display:grid;gap:var(--sp-3);grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))}
 .pworld{display:grid;gap:10px;border-left:4px solid var(--wc);min-width:0}
-.pworld.skip{opacity:.72}
+.pworld.m-skip{opacity:.72}
 .pworld .pw-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;min-width:0}
 .pworld .pw-head .grow{display:grid;min-width:0}
 .pworld .pw-head .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--surface-2);color:var(--wc);flex:0 0 auto}
@@ -1106,7 +1106,7 @@ details.sources ul,.src-list{padding-left:1.1em;margin:.3em 0} details.sources l
 .wchip{scroll-snap-align:center;flex:0 0 auto;display:grid;justify-items:center;gap:4px;min-width:74px;padding:10px 8px;border-radius:var(--r-lg);border:1.5px solid var(--line-soft);background:var(--surface);color:var(--ink);cursor:pointer;transition:transform .2s var(--ease),border-color .2s}
 .wchip b{font:800 .85rem var(--font-display)} .wchip .xs{color:var(--muted)}
 .wchip[aria-pressed="true"]{border-color:var(--wc);background:color-mix(in srgb,var(--wc) 14%,var(--surface));transform:translateY(-2px)}
-.wchip.lock{opacity:.55} .wchip.skip{opacity:.7}
+.wchip.lock{opacity:.55} .wchip.m-skip{opacity:.7}
 .wring{--p:0;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;color:var(--wc);background:radial-gradient(closest-side,var(--surface) 76%,transparent 78% 100%),conic-gradient(var(--wc) calc(var(--p) * 1turn),var(--surface-3) 0)}
 .wring svg{width:20px;height:20px}
 .fauna{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -1127,6 +1127,113 @@ details.sources ul,.src-list{padding-left:1.1em;margin:.3em 0} details.sources l
 @media (prefers-reduced-motion:reduce){.fz,.sunrays,.node .bub i,.node.done::before,.ex-steps li,.intro-card{animation:none!important}.fz.fish{display:none}.reveal{opacity:1;transform:none}}
 .reduce-motion .fz,.reduce-motion .sunrays,.reduce-motion .node .bub,.reduce-motion .node.done::before{display:none} .reduce-motion .reveal{opacity:1;transform:none}
 .example-card>.row{flex-wrap:nowrap;align-items:flex-start} .example-card>.row .eyebrow{min-width:0}
+
+/* ---------- 1.5 · cursus ---------- */
+.cur-line{display:grid;gap:8px;position:relative;padding-left:18px}
+.cur-line::before{content:"";position:absolute;left:6px;top:10px;bottom:10px;width:3px;border-radius:2px;background:linear-gradient(var(--primary),var(--world-e2))}
+.cur-card{position:relative;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line-soft);border-left:4px solid var(--wc);padding:0}
+.cur-card summary{display:flex;gap:10px;align-items:center;padding:12px 14px;cursor:pointer;list-style:none}
+.cur-card summary::-webkit-details-marker{display:none}
+.cur-card summary .grow{display:grid;min-width:0}
+.cur-dot{position:absolute;left:-19px;top:18px;width:13px;height:13px;border-radius:50%;background:var(--surface);border:3px solid var(--wc)}
+.cur-card.got .cur-dot{background:var(--ok);border-color:var(--ok)} .cur-card.goal .cur-dot{background:var(--gold);border-color:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
+.cur-card[open]{box-shadow:0 8px 30px rgba(0,0,0,.18)}
+.cur-card .row{padding:0 14px 14px}
+.cur-dl{display:grid;gap:4px;margin:0;padding:0 14px 12px}
+.cur-dl dt{font:700 var(--fs-xs) var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--wc);margin-top:8px}
+.cur-dl dd{margin:0;color:var(--ink-2)}
+.eqs{display:flex;flex-wrap:wrap;gap:6px} .eq{font-size:var(--fs-sm);padding:4px 10px;border-radius:var(--r-pill);background:var(--surface-2)}
+.dchart{margin:var(--sp-4) 0;padding:12px;border-radius:var(--r-lg);background:var(--surface)} .dchart svg{width:100%;height:auto}
+.dchart .b{font-weight:800} .dchart .lg{display:inline-block;width:18px;height:8px;border-radius:4px;background:var(--primary);vertical-align:middle;margin:0 4px 0 10px} .dchart .lg.pe{opacity:.35}
+.grow-bar{transform-box:fill-box;transform-origin:left;animation:growBar .9s var(--ease) both}
+@keyframes growBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.lvbadge{display:grid;gap:3px;padding:10px 12px;border-radius:var(--r-md);background:var(--surface-2);text-decoration:none;color:var(--ink);margin-bottom:12px;border-left:3px solid var(--wc)}
+.lvbadge .lvmore{display:inline-flex;align-items:center;gap:4px;color:var(--primary);font-weight:700} .lvbadge svg{width:13px;height:13px}
+.lvchip{text-decoration:none;font-size:var(--fs-xs);border-color:var(--wc);color:var(--ink);white-space:nowrap;max-width:55%;overflow:hidden;text-overflow:ellipsis}
+.reduce-motion .grow-bar{animation:none}
+
+/* =====================================================================
+   1.5 · Vraie appli ordinateur : toute la largeur, plusieurs colonnes,
+   tailles adaptées (portable → 4K → ultra-large), textes jamais coupés.
+   ===================================================================== */
+.desk-only{display:none}
+.lesson-side{display:contents}
+.ml-row{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:var(--r-md);text-decoration:none;color:var(--ink);min-width:0}
+.ml-row .grow{display:grid;min-width:0} .ml-row b{font-size:var(--fs-sm);line-height:1.25} .ml-row .xs{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ml-row:hover{background:var(--surface-2)} .ml-row.cur{background:color-mix(in srgb,var(--wc,var(--primary)) 16%,transparent);outline:1px solid var(--wc,var(--primary))}
+.ml-row.lock{opacity:.55} .ml-row .stars svg{width:12px;height:12px}
+.ml-ic{width:2.1rem;height:2.1rem;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);color:var(--wc,var(--primary));flex:0 0 auto} .ml-ic svg{width:1.1rem;height:1.1rem}
+.ml-row.boss .ml-ic{color:var(--bad)}
+.memo.mini>div{padding:8px 0}
+.pmrow{grid-template-columns:32px minmax(0,1fr)} .pmrow b{overflow-wrap:anywhere}
+@media (min-width:520px){.pmrow{grid-template-columns:32px minmax(6.5rem,auto) minmax(0,1fr)}}
+.cur-cols{display:grid;gap:0 var(--sp-6)}
+
+/* Ordinateur : texte un peu plus dense, la taille grandit ensuite avec l'écran */
+@media (min-width:1024px) and (max-width:1599px){html{font-size:calc(var(--ts,1) * 93.75%)}}
+@media (min-width:1600px){html{font-size:calc(var(--ts,1) * 100%)}}
+@media (min-width:2200px){html{font-size:calc(var(--ts,1) * 112.5%)}}
+@media (min-width:2800px){html{font-size:calc(var(--ts,1) * 131.25%)}}
+@media (min-width:3400px){html{font-size:calc(var(--ts,1) * 150%)}}
+
+@media (min-width:1024px){
+  :root{--maxw:min(1680px, calc(100vw - var(--rail) - 48px))}
+  .shell{padding-left:28px;padding-right:28px}
+  #view{max-width:none}
+  .desk-only{display:block}
+  h1,.pagetitle{font-size:clamp(1.8rem,2.2vw,2.6rem)}
+  .hello h1{font-size:clamp(1.7rem,2vw,2.4rem)}
+  .lesson-hero h1{font-size:clamp(1.9rem,2.4vw,2.8rem)}
+  .btn{min-height:2.75rem} .btn.sm{min-height:2.2rem}
+  .tiles{grid-template-columns:repeat(auto-fill,minmax(13rem,1fr))}
+  .explore{grid-template-columns:repeat(auto-fill,minmax(12rem,1fr))}
+  /* Carte : panneau du monde à gauche, plongée à droite */
+  .map-layout{display:grid;grid-template-columns:minmax(18rem,26rem) minmax(0,1fr);gap:var(--sp-6);align-items:start}
+  .map-side{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;scrollbar-width:thin;display:grid;gap:var(--sp-3);align-content:start}
+  .map-side .worldhead{margin-top:0!important}
+  .modlist{display:grid;gap:2px;padding:8px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line-soft)}
+  .map-main .map{max-width:none}
+  .map-main .spot{width:min(48%,30rem)}
+  .wstrip{justify-content:flex-start}
+  .wchip{min-width:6.2rem}
+  /* Cours : article au centre, colonne utile à droite */
+  .lesson-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(16rem,22rem);gap:var(--sp-6);align-items:start}
+  .lesson-side{display:grid;gap:var(--sp-3);position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto;scrollbar-width:thin}
+  .lesson-side .sticky-cta{position:static;margin:0;order:-1}
+  .lesson-side .sticky-cta .card{flex-wrap:wrap}
+  .side-card{padding:12px} .side-card .eyebrow{margin:0 0 6px}
+  .lesson-body .prose{max-width:78ch}
+  /* Accueil : 2 colonnes larges */
+  .home-grid{grid-template-columns:minmax(0,1.6fr) minmax(20rem,1fr)}
+  /* Accueil et réglages immersifs : plus larges, cartes en grille */
+  body.immersive .shell{max-width:min(1200px,92vw)}
+  .onb{max-width:none}
+  .onb .choicecards{grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr))}
+  .pmlist{grid-template-columns:repeat(auto-fit,minmax(26rem,1fr))}
+  .onb>div:first-child,.onb .field,.onb .setting{max-width:760px;margin-inline:auto;width:100%}
+  /* Parcours, cursus, profil */
+  .pworlds{grid-template-columns:repeat(auto-fill,minmax(22rem,1fr))}
+  .cur-cols{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+  div.review{display:grid;grid-template-columns:repeat(auto-fill,minmax(22rem,1fr));gap:10px}
+  .qcard,.quiz-wrap{max-width:980px;margin-inline:auto}
+  .result{max-width:760px;margin-inline:auto}
+  .sheet{width:min(680px,90vw)}
+}
+@media (min-width:1400px){
+  .lesson-layout{grid-template-columns:minmax(0,1fr) minmax(18rem,24rem)}
+  .home-grid{grid-template-columns:minmax(0,1.8fr) minmax(22rem,1fr)}
+}
+@media (min-width:1800px){
+  .cur-cols{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+}
+@media (min-width:2600px){:root{--maxw:min(2200px, calc(100vw - var(--rail) - 64px))}}
+
+/* 1.5 · schéma des profondeurs : taille lisible sur grand écran */
+.dchart svg{display:block;max-width:46rem;margin-inline:auto}
+.dchart figcaption{text-align:center}
+@media (min-width:3400px){:root{--maxw:min(2700px, calc(100vw - var(--rail) - 80px))}}
+@media (min-width:1800px){.map-layout{grid-template-columns:minmax(20rem,28rem) minmax(0,1fr)}}
 
 </style>
 </head>
@@ -1150,7 +1257,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "1.4.0";
+  AA.VERSION = "1.5.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -1496,6 +1603,17 @@ window.AA={BUNDLED:true};
   };
   /* Ajoute des questions à un module existant (pratique pour un pack d'extension). */
   C.addQuestions = (id, qs) => { const m = C.byId[id]; if (m) m.quiz.push(...qs); };
+  /* 1.5 : approfondit un cours existant sans le réécrire (fichiers content/fr/deep-*.js).
+     Ajoute à la fin : essentiel, approfondir (HTML), memo, moniteur, quiz (jamais réordonné). */
+  C.extend = (id, x) => {
+    const m = C.byId[id]; if (!m) return;
+    if (x.essentiel) m.essentiel += x.essentiel;
+    if (x.approfondir) m.approfondir = (m.approfondir || "") + x.approfondir;
+    if (x.memo) m.memo.push(...x.memo);
+    if (x.moniteur) m.moniteur.push(...x.moniteur);
+    if (x.quiz) m.quiz.push(...x.quiz);
+    if (x.gen) m.gen = (m.gen || []).concat(x.gen);
+  };
   /* Flashcards : [{id, m (module), f (recto), b (verso)}] */
   C.addCards = list => C.cards.push(...list);
   C.addComputer = list => C.computer.push(...list);
@@ -2789,7 +2907,7 @@ window.AA={BUNDLED:true};
   /* ---------- Petits composants (renvoient du HTML) ---------- */
   ui.head = (title, backTo, extra) => `<div class="pagehead">${backTo ? `<a class="closebtn" href="#/${backTo}" aria-label="${t("nav.back")}">${AA.icon("back")}</a>` : ""}<h1 class="pagetitle">${title}</h1>${extra || ""}</div>`;
   /* Chaque tuile qui a une fiche d'aide reçoit un petit « ? » (content/fr/help.js). */
-  const TILE_HELP = { examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate" };
+  const TILE_HELP = { examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate", cursus: "cursus" };
   ui.tile = (id, icon, color, title, sub, badge) => { const hk = TILE_HELP[id], has = hk && AA.content.help && AA.content.help[hk];
     return `<button class="tile" data-t="${id}" style="--c:${color}"><span class="ic">${AA.icon(icon)}</span><b>${title}</b><span>${sub}</span>${badge ? `<span class="badge chip ${badge[1] || ""}">${badge[0]}</span>` : ""}${has ? `<span class="helpbtn tile-help" role="button" tabindex="0" data-help="${hk}" aria-label="${t("help.what")}">?</span>` : ""}</button>`; };
   ui.bar = (p, color) => `<div class="bar"><i style="width:${Math.round(u.clamp(p, 0, 1) * 100)}%${color ? ";background:" + color : ""}"></i></div>`;
@@ -3223,13 +3341,17 @@ window.AA={BUNDLED:true};
       const boss = w.boss && !w.soon, bossOpen = boss && G.bossOpen(w.id), bossRec = (AA.S.boss || {})[w.id];
       el.innerHTML = `<h1 class="sr">${t("tab.map")}</h1>
         <div class="wstrip" role="tablist" aria-label="${t("map.worlds")}">${C.worlds.filter(x => !x.soon).map(x => { const l = C.inWorld(x.id), got = l.filter(mm => G.stars(mm.id) >= 1).length, op = G.worldOpen(x), md = AA.path.mode(x.id);
-          return `<button role="tab" class="wchip ${op ? "" : "lock"} ${md}" data-w="${x.id}" aria-pressed="${x.id === w.id}" aria-selected="${x.id === w.id}" style="--wc:var(${x.color})"><span class="wring" style="--p:${l.length ? got / l.length : 0}">${AA.icon(op ? x.icon : "lock")}</span><b>${u.esc(x.short)}</b><span class="xs">${AA.path.certified(x.id) ? "✓ " + t("map.got") : md === "skip" ? t("path.m.skip") : got + "/" + l.length}</span></button>`; }).join("")}</div>
+          return `<button role="tab" class="wchip ${op ? "" : "lock"} m-${md}" data-w="${x.id}" aria-pressed="${x.id === w.id}" aria-selected="${x.id === w.id}" style="--wc:var(${x.color})"><span class="wring" style="--p:${l.length ? got / l.length : 0}">${AA.icon(op ? x.icon : "lock")}</span><b>${u.esc(x.short)}</b><span class="xs">${AA.path.certified(x.id) ? "✓ " + t("map.got") : md === "skip" ? t("path.m.skip") : got + "/" + l.length}</span></button>`; }).join("")}</div>
+        <div class="map-layout"><aside class="map-side">
         <section class="worldhead" style="--wc:var(${w.color});margin-top:var(--sp-4)">
-          <div class="row between"><p class="eyebrow" style="margin:0">${t("map.world")} ${C.worlds.indexOf(w) + 1}</p>${AA.helpBtn("map")}</div><h2>${u.esc(w.title)}</h2><p class="muted" style="margin:6px 0 12px">${u.esc(w.sub)}</p>
+          <div class="row between"><p class="eyebrow" style="margin:0">${t("map.world")} ${C.worlds.indexOf(w) + 1}</p>${AA.helpBtn("map")}</div><h2>${u.esc(w.title)}</h2><p class="muted" style="margin:6px 0 12px">${u.esc(w.sub)}</p>${w.soon ? "" : AA.levelBadge(w.id)}
           ${w.soon ? "" : `<div class="row between small"><span>${AA.icon("star")} ${starsGot} / ${starsMax}</span><span class="muted">${t("map.done", { n: list.filter(m => G.stars(m.id) >= 1).length, tot: list.length })}</span></div>${AA.ui.bar(starsGot / Math.max(1, starsMax))}`}
           ${!open && !w.soon ? `<p class="chip warn" style="margin-top:12px">${AA.icon("lock")} ${u.esc(G.worldLockReason(w))}</p>` : ""}
           ${w.soon ? "" : modeBanner(w, open)}
         </section>
+        ${w.soon ? "" : `<nav class="modlist desk-only" aria-label="${t("map.list")}">${list.map((m, k) => { const okk = G.unlocked(m), s2 = G.stars(m.id); return `<a class="ml-row ${k === cur ? "cur" : ""} ${okk ? "" : "lock"}" href="#/lesson/${m.id}"><span class="ml-ic">${AA.icon(okk ? m.icon : "lock")}</span><span class="grow"><b>${u.esc(m.title)}</b><span class="xs muted">${u.esc(m.depth)} · ${u.esc(m.sub)}</span></span>${AA.stars(s2)}</a>`; }).join("")}
+          ${boss ? `<a class="ml-row boss" href="#/boss/${w.id}"><span class="ml-ic">${AA.icon("swords")}</span><span class="grow"><b>${u.esc(w.boss.name)}</b><span class="xs muted">${bossRec && bossRec.won ? t("boss.beaten", { n: bossRec.best }) : bossOpen ? t("boss.ready") : t("boss.lockedS")}</span></span></a>` : ""}</nav>`}
+        </aside><div class="map-main">
         ${w.soon ? soon(w) : `${w.surface ? `<div class="surface-line">${u.esc(w.surface)}</div>` : ""}<div class="map" data-world="${w.id}" style="--wc:var(${w.color})">
           <div class="para far" data-k=".22" aria-hidden="true"></div><div class="para mid" data-k=".1" aria-hidden="true"></div><div class="fauna" aria-hidden="true"></div><div class="sunrays" aria-hidden="true"></div>
           <svg class="rope" aria-hidden="true"></svg>
@@ -3243,7 +3365,7 @@ window.AA={BUNDLED:true};
             <div class="info"><small>${t("boss.eyebrow")}</small><b>${u.esc(w.boss.name)}</b><span>${bossRec && bossRec.won ? t("boss.beaten", { n: bossRec.best }) : bossOpen ? `<span style="color:var(--accent)">${t("boss.ready")}</span>` : t("boss.lockedS")}</span></div></div>` : ""}
           <button class="diver" id="diver" aria-label="${t("map.diver")}" hidden>${diverSvg()}</button>
         </div>`}
-        ${w.soon ? "" : `<div class="depthchip" id="depthchip" aria-hidden="true">${AA.icon("gauge")}<b>${u.esc(list[0] ? list[0].depth : "")}</b></div>`}`;
+        ${w.soon ? "" : `<div class="depthchip" id="depthchip" aria-hidden="true">${AA.icon("gauge")}<b>${u.esc(list[0] ? list[0].depth : "")}</b></div>`}</div></div>`;
       u.$$("[data-w]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.router.go("map/" + b.dataset.w, undefined, true); });
       u.$$(".node[data-id]", el).forEach(b => b.onclick = () => {
         const m = C.byId[b.dataset.id];
@@ -3418,7 +3540,7 @@ window.AA={BUNDLED:true};
           <label class="setting"><span class="grow"><b>${t("lesson.validated")}</b><span>${note.ok ? t("lesson.validatedOn", { d: note.ok }) : t("lesson.validatedS")}</span></span><span class="switch"><input type="checkbox" id="valid" ${note.ok ? "checked" : ""}><i></i></span></label>`;
 
       el.innerHTML = `
-        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.stars(st)}</div>
+        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.levelBadge(m.world, true)}${AA.stars(st)}</div>
         <header class="lesson-hero" style="--wc:var(${w.color})">
           <div class="row" style="gap:var(--sp-4);flex-wrap:nowrap"><span class="ic">${AA.icon(m.icon)}</span><div class="grow"><p class="eyebrow" style="color:var(--wc)">${u.esc(m.depth)}</p><h1 style="font-size:var(--fs-2xl)">${u.esc(m.title)}</h1><p class="muted" style="margin:4px 0 0">${u.esc(m.sub)}</p></div></div>
           <div class="row" style="margin-top:var(--sp-4)">
@@ -3431,13 +3553,18 @@ window.AA={BUNDLED:true};
           </div>
         </header>
         ${!ok ? `<div class="callout trap"><span class="eyebrow">${t("map.locked")}</span>${u.esc(G.lockReason(m))} ${t("lesson.lockedRead")}</div>` : ""}
+        <div class="lesson-layout"><div class="lesson-main">
         <div class="seg lesson-tabs" role="tablist" style="margin-top:var(--sp-4)">${TABS.map(k => `<button role="tab" data-tab="${k}" aria-pressed="${k === tab}" aria-selected="${k === tab}">${t("lesson.tab." + k)}</button>`).join("")}</div>
         <article class="card lesson-body" style="margin-top:var(--sp-3)">${body}</article>
         <div class="row between lesson-nav">${i > 0 ? `<a class="btn ghost sm" href="#/lesson/${list[i - 1].id}">${AA.icon("back")} ${u.esc(list[i - 1].title)}</a>` : "<span></span>"}${i < list.length - 1 ? `<a class="btn ghost sm" href="#/lesson/${list[i + 1].id}">${u.esc(list[i + 1].title)} ${AA.icon("next")}</a>` : ""}</div>
+        </div><aside class="lesson-side">
+        <section class="card side-card desk-only"><p class="eyebrow">${u.esc(w.short)} · ${t("lesson.inWorld")}</p>
+          ${list.map((x, k) => `<a class="ml-row ${x.id === m.id ? "cur" : ""} ${G.unlocked(x) ? "" : "lock"}" href="#/lesson/${x.id}"><span class="ml-ic">${AA.icon(G.unlocked(x) ? x.icon : "lock")}</span><span class="grow"><b>${u.esc(x.title)}</b></span>${AA.stars(G.stars(x.id))}</a>`).join("")}</section>
+        ${m.memo.length && tab !== "memo" ? `<section class="card side-card desk-only"><p class="eyebrow">${t("lesson.tab.memo")}</p><div class="memo mini">${m.memo.slice(0, 5).map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="small muted">${u.esc(b)}</span></div>`).join("")}</div></section>` : ""}
         <div class="sticky-cta"><div class="card glass">
           <button class="btn grow" id="dive" ${ok ? "" : "disabled"}>${AA.icon("play")} ${tab === "approfondir" && deepQ ? t("lesson.diveDeep", { n: deepQ }) : t("lesson.dive", { n: Math.min(10, m.quiz.length) })}</button>
           ${gens ? `<button class="btn gold sm" id="calc" ${ok ? "" : "disabled"} aria-label="${t("lesson.calcs")}">${AA.icon("calc")}</button>` : ""}
-        </div></div>`;
+        </div></div></aside></div>`;
       u.$$("[data-diagram]", el).forEach(f => { const d = C.diagrams[f.dataset.diagram]; if (d) f.outerHTML = d(); });
       u.$$(".prose", el).forEach(p => AA.gloss.link(p));
       enhance(el, m);
@@ -4299,6 +4426,7 @@ window.AA={BUNDLED:true};
           <div class="stat"><b>${G.streak()}</b><span>${t("prof.streak")}</span></div>
           <div class="stat"><b>${S.exams.length ? u.num(Math.max(...S.exams.map(e => e.score)), 1) : "—"}</b><span>${t("prof.bestExam")}</span></div></div>
         <div class="tiles" style="margin-top:var(--sp-4)">
+          ${ui.tile("cursus", "layers", "var(--world-n3)", t("cur.title"), t("cur.tileS"))}
           ${ui.tile("parcours", "compass", "var(--accent)", t("path.title"), AA.path.summary())}
           ${ui.tile("quests", "flag", "var(--gold)", t("prof.quests"), t("prof.questsS"), claim ? [t("prof.claim", { n: claim }), "gold"] : null)}
           ${ui.tile("club", "users", "var(--primary)", t("prof.club"), t("prof.clubS"))}
@@ -5106,7 +5234,7 @@ window.AA={BUNDLED:true};
       const card = w => {
         const mode = P().mode(w.id), cert = (S.certs || {})[w.id], pd = (S.placeDone || {})[w.id];
         const list = C.inWorld(w.id), done = list.filter(m => G.stars(m.id) >= 1 || (S.placed || {})[m.id]).length;
-        return `<section class="card pworld ${mode}" style="--wc:var(${w.color})" data-pw="${w.id}">
+        return `<section class="card pworld m-${mode}" style="--wc:var(${w.color})" data-pw="${w.id}">
           <div class="pw-head"><span class="ic">${AA.icon(w.icon)}</span><span class="grow"><b>${u.esc(w.title)}</b><span class="xs muted">${t("path.modules", { n: done, tot: list.length })}${w.id === goal ? " · " + t("path.isGoal") : ""}</span></span>
             ${cert ? `<span class="chip ok">${AA.icon("check")} ${t("path.got", { d: u.fmtDate(cert) })}</span>` : ""}</div>
           ${ui.bar(done / Math.max(1, list.length), "var(--wc)")}
@@ -5120,7 +5248,7 @@ window.AA={BUNDLED:true};
         </section>`;
       };
       el.innerHTML = `<div class="pagehead"><a class="closebtn" href="#/profile" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${t("tab.profile")}</span></div>
-        <h1>${t("path.title")}</h1><p class="muted">${t("path.intro")}</p>
+        <h1>${t("path.title")}</h1><p class="muted">${t("path.intro")}</p><a class="btn ghost sm" href="#/cursus">${AA.icon("layers")} ${t("cur.title")}</a>
         <section class="card stack pcfg">
           <div class="row between"><span><p class="eyebrow" style="margin:0">${t("path.level")}</p><b class="h4">${t("lv." + (lv ? lv.id : "none"))}</b></span><button class="btn ghost sm" id="chlv">${AA.icon("edit")} ${t("path.change")}</button></div>
           <div><p class="eyebrow">${t("path.dives")}</p>${PV.divesSeg(pr.dives)}<p class="xs muted" style="margin:6px 0 0">${t(P().expert() ? "path.expertOn" : "path.expertOff")}</p></div>
@@ -5327,7 +5455,9 @@ window.AA={BUNDLED:true};
 
   /* ---------- Signaler un problème ---------- */
   const KINDS = ["wrong", "unclear", "source", "typo", "idea"];
-  const fileOf = (world, gen) => gen ? (/^(n1|n3|n4|nx)/.test(gen) ? "content/fr/generators-plus.js" : "content/fr/generators.js") : "content/fr/" + ({ nitrox: "n4", e2: "n4" }[world] || world) + ".js";
+  /* Fichier(s) à corriger : le cours de base, et son complément « deep-* » (1.5) s'il existe. */
+  const DEEP = { n3: "deep-n3", n4: "deep-n4", e2: "deep-n4", nitrox: "deep-n4", rifap: "deep-rifap-e1", e1: "deep-rifap-e1", n1: "deep-rifap-e1", decouverte: "deep-rifap-e1" };
+  const fileOf = (world, gen) => gen ? "content/fr/generators*.js ou deep-*.js (générateur " + gen + ")" : "content/fr/" + ({ nitrox: "n4", e2: "n4" }[world] || world) + ".js" + (DEEP[world] ? " + content/fr/" + DEEP[world] + ".js" : "");
   /* cible : { type: "lesson", m, tab } ou { type: "question", q } */
   AA.report = target => {
     const o = { kind: "wrong" };
@@ -5418,6 +5548,62 @@ window.AA={BUNDLED:true};
       };
     }
   });
+})();
+
+/* js/views/cursus.js */
+/* =====================================================================
+   Abysse Academy · « Le cursus » : le chemin des brevets FFESSM,
+   pour qui, accès, prérogatives, examen et équivalences (ANMP, CMAS, ISO).
+   Données : content/fr/cursus.js
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, ui = AA.ui;
+
+  /* Schéma des profondeurs : qui peut aller où, encadré ou autonome. */
+  const depthChart = () => {
+    const rows = [["N1", 20, 0, "--world-n1"], ["N2", 40, 20, "--world-n2"], ["N3", 60, 60, "--world-n3"], ["N4", 60, 60, "--world-n4"]];
+    const W = 320, X = d => 70 + d / 60 * (W - 80);
+    return `<figure class="diagram dchart"><svg viewBox="0 0 ${W} ${rows.length * 34 + 40}" role="img" aria-label="${t("cur.chartL")}">
+      ${[0, 6, 12, 20, 40, 60].map(d => `<line x1="${X(d)}" x2="${X(d)}" y1="8" y2="${rows.length * 34 + 10}" class="s-line"/><text x="${X(d)}" y="${rows.length * 34 + 28}" class="d-text" text-anchor="middle">${d === 60 ? "60 m" : d}</text>`).join("")}
+      ${rows.map(([n, pe, pa, c], i) => { const y = 14 + i * 34; return `<text x="4" y="${y + 15}" class="d-text b">${n}</text>
+        <rect x="${X(0)}" y="${y}" width="${X(pe) - X(0)}" height="10" rx="5" style="fill:var(${c});opacity:.35" class="grow-bar"/>
+        <rect x="${X(0)}" y="${y + 12}" width="${Math.max(0, X(pa) - X(0))}" height="10" rx="5" style="fill:var(${c})" class="grow-bar"/>`; }).join("")}
+      </svg><figcaption class="xs muted"><span class="lg pe"></span> ${t("cur.pe")} <span class="lg pa"></span> ${t("cur.pa")}</figcaption></figure>`;
+  };
+
+  AA.view("cursus", {
+    tab: "profile", depth: 2,
+    render(el, [focus]) {
+      const S = AA.S, P = AA.path, lv = P.level(), goal = AA.game.goalWorld();
+      const here = id => (S.certs || {})[id] ? "got" : id === goal ? "goal" : "";
+      const lines = [["plongeur", "dive"], ["secours", "buoy"], ["qualif", "mol"], ["encadrant", "teach"]];
+      const card = c => `<details class="cur-card ${here(c.id)}" id="cur-${c.id}" ${c.id === focus || (!focus && c.id === goal) ? "open" : ""} style="--wc:var(${(C.worldById[c.world] || {}).color || "--muted"})">
+        <summary><span class="cur-dot"></span><span class="grow"><b>${u.esc(c.lv)}</b><span class="xs muted">${u.esc(c.tag)}</span></span>
+          ${(S.certs || {})[c.id] ? `<span class="chip ok xs">${t("cur.got")}</span>` : c.id === goal ? `<span class="chip gold xs">${t("cur.goal")}</span>` : ""}</summary>
+        <dl class="cur-dl"><dt>${t("cur.who")}</dt><dd>${c.who}</dd><dt>${t("cur.access")}</dt><dd>${c.access}</dd><dt>${t("cur.can")}</dt><dd>${c.can}</dd><dt>${t("cur.exam")}</dt><dd>${c.exam}</dd>
+          <dt>${t("cur.eq")}</dt><dd><div class="eqs">${c.eq.map(([o, n]) => `<span class="eq"><b>${u.esc(o)}</b> ${u.esc(n)}</span>`).join("")}</div></dd></dl>
+        ${c.world && C.inWorld(c.world).length ? `<div class="row"><a class="btn sm" href="#/map/${c.world}">${AA.icon("map")} ${t("cur.open", { n: C.inWorld(c.world).length })}</a><button class="btn ghost sm" data-goal="${c.world}">${AA.icon("target")} ${t("cur.setGoal")}</button></div>` : ""}
+      </details>`;
+      el.innerHTML = `${ui.head(t("cur.title"), "profile")}
+        <p class="muted">${t("cur.intro")}</p>
+        ${lv ? `<p class="small">${t("cur.you", { lv: t("lv." + lv.id), goal: (C.worldById[goal] || {}).short || "" })}</p>` : ""}
+        ${depthChart()}
+        <div class="cur-cols">${lines.map(([ln, ic]) => { const cs = C.cursus.filter(c => c.line === ln); return cs.length ? `<div class="cur-col"><div class="section-title"><h3>${AA.icon(ic)} ${t("cur.line." + ln)}</h3></div><div class="cur-line ${ln}">${cs.map(card).join("")}</div></div>` : ""; }).join("")}</div>
+        <div class="section-title"><h3>${t("cur.eqT")}</h3></div>
+        <div class="tbl"><table><tr><th>FFESSM</th><th>ANMP</th><th>CMAS</th><th>ISO</th></tr>
+          ${C.cursus.filter(c => c.line === "plongeur" || c.id === "n4").map(c => { const g = k => ((c.eq.find(e => e[0].startsWith(k)) || [])[1]) || "—"; const iso = c.eq.find(e => e[0].startsWith("ISO")); return `<tr><td><b>${u.esc(c.lv)}</b></td><td>${u.esc(g("ANMP"))}</td><td>${u.esc(g("CMAS"))}</td><td>${iso ? u.esc(iso[0].replace("ISO ", "") + " · " + iso[1]) : "—"}</td></tr>`; }).join("")}</table></div>
+        <div class="callout"><span class="eyebrow">${t("common.validate")}</span>${t("cur.note")} <a href="#/valider">${t("set.validate")}</a></div>`;
+      u.$$("[data-goal]", el).forEach(b => b.onclick = () => { S.profile.goal = b.dataset.goal; AA.store.save(); AA.fx.sfx.up(); AA.fx.toast(t("cur.goalT"), C.worldById[b.dataset.goal].title, "target"); AA.router.refresh(); });
+      if (focus) { const f = u.$("#cur-" + focus); if (f) setTimeout(() => f.scrollIntoView({ block: "start", behavior: "smooth" }), 150); }
+    }
+  });
+  /* Bandeau « Pour qui · Quel examen » (carte et cours). */
+  AA.levelBadge = (wid, small) => {
+    const c = C.cursusById[wid]; if (!c) return "";
+    return small ? `<a class="chip lvchip" href="#/cursus/${c.id}" style="--wc:var(${(C.worldById[wid] || {}).color})">${u.esc(c.lv)} · ${u.esc(c.tag)}</a>`
+      : `<a class="lvbadge" href="#/cursus/${c.id}"><span class="eyebrow">${t("cur.forWho")}</span><span class="small">${c.who}</span><span class="xs muted">${t("cur.exam")} : ${c.exam.replace(/<[^>]+>/g, "")}</span><span class="xs lvmore">${t("cur.more")} ${AA.icon("next")}</span></a>`;
+  };
 })();
 
 /* locales/fr.js */
@@ -5880,6 +6066,21 @@ AA.i18n.add("fr", {
   "ex2.title": "Exemple pas à pas · tiré au hasard", "ex2.try": "Essaie d’abord seul, puis vérifie.", "ex2.show": "Voir la solution", "ex2.other": "Un autre exemple", "ex2.result": "Résultat",
   "map.got": "obtenu"
 });
+
+AA.i18n.add("fr", {
+  "cur.title": "Le cursus des brevets", "cur.tileS": "N1 → E2, équivalences",
+  "cur.intro": "Le chemin des niveaux FFESSM, du baptême au moniteur. Touche un niveau pour savoir à qui il s’adresse, comment y accéder, ce qu’il permet et ce qu’on passe à l’examen.",
+  "cur.you": "Toi : {lv}. Objectif : {goal}.", "cur.got": "obtenu", "cur.goal": "objectif",
+  "cur.who": "Pour qui", "cur.access": "Pour y accéder", "cur.can": "Ce que ça permet", "cur.exam": "L’examen", "cur.eq": "Équivalences",
+  "cur.open": "Ouvrir les {n} cours", "cur.setGoal": "En faire mon objectif", "cur.goalT": "Nouvel objectif",
+  "cur.line.plongeur": "Plongeur", "cur.line.secours": "Secours", "cur.line.qualif": "Qualifications", "cur.line.encadrant": "Encadrement",
+  "cur.eqT": "Tableau des équivalences", "cur.chartL": "Profondeurs autorisées par niveau, encadré et autonome",
+  "cur.pe": "encadré", "cur.pa": "autonome",
+  "cur.note": "Âges, conditions et équivalences changent parfois et dépendent des fédérations : fais-les confirmer par ton moniteur.",
+  "cur.forWho": "Pour qui · quel examen", "cur.more": "Tout le cursus"
+});
+
+AA.i18n.add("fr", { "map.list": "Les thèmes du monde", "lesson.inWorld": "les thèmes" });
 
 /* content/fr/worlds.js */
 /* Abysse Academy · contenu FR · Mondes de la carte
@@ -8731,6 +8932,8 @@ AA.content.addPitfalls([
       html: `<p>Chaque bonne réponse, chaque quête et chaque étoile te rapporte des <b>XP</b>. Ils font monter ton <b>niveau</b> de joueur (pas ton niveau de plongée !).</p>
         <p>Le niveau fait évoluer ton <b>avatar</b>, agrandit ton <b>aquarium</b> et débloque des décors.</p>
         <ul><li>Bonne réponse : +10 XP (plus en combo)</li><li>Étoile gagnée : +25 XP</li><li>Quête : +20 XP</li><li>Plongée du jour : +30 XP</li></ul>` },
+    cursus: { t: "Le cursus des brevets", ic: "layers", go: "cursus", goL: "Voir le cursus",
+      html: `<p>Le chemin des niveaux FFESSM : <b>N1 → N2 → N3</b> pour plonger, <b>RIFAP</b> pour secourir, <b>Initiateur, N4, E2</b> pour encadrer. Pour chaque niveau : pour qui, conditions d’accès, ce qu’il permet, l’examen et les équivalences (ANMP, CMAS, ISO).</p>` },
     countdown: { t: "Le compte à rebours", ic: "calendar", go: "settings", goL: "Changer la date",
       html: `<p>Le nombre de jours avant ton examen, si tu as indiqué sa date. Tu peux la changer dans les réglages.</p>` },
     exam: { t: "L’examen blanc", ic: "exam", go: "examquick", goL: "Examen rapide",
@@ -8845,6 +9048,757 @@ AA.content.addPitfalls([
   Object.keys(DIAG).forEach(id => { const m = C.byId[id]; if (m && !m.diagram) m.diagram = DIAG[id]; });
   /* Générateurs « cousins » pour les exemples (clé = module, valeur = générateurs existants). */
   C.exampleGens = { "d-oreilles": ["n1pabs"], "n3-deco": ["n3ppo2"], "n4-guide": ["n4pal"], "n3-autonomie": ["n3air"], "n1-secu": ["n1pabs"] };
+})();
+
+/* content/fr/cursus.js */
+/* =====================================================================
+   Abysse Academy · le cursus des brevets (FFESSM) et ses équivalences
+   Chaque niveau : pour qui, accès, prérogatives, examen, équivalences.
+   Les âges et conditions exactes changent parfois : tout est « à faire
+   valider par ton moniteur » (voir aussi C.validate). Corriger ici.
+   Espaces d'évolution (Code du sport) : 0-6 m, 0-12 m, 0-20 m, 0-40 m, 0-60 m.
+   PE = plongée encadrée (avec un guide), PA = plongée autonome (sans guide).
+   ===================================================================== */
+(function () {
+  "use strict";
+  const C = AA.content;
+  C.cursus = [
+    { id: "decouverte", lv: "Baptême", world: "decouverte", line: "plongeur", tag: "Découverte",
+      who: "Tout le monde, sans expérience. Premier contact avec la plongée.",
+      access: "Aucun brevet. Un moniteur te tient la main pendant toute la plongée.",
+      can: "Plonger avec un moniteur, en général jusqu’à 6 m.",
+      exam: "Pas d’examen : on découvre.",
+      eq: [["ANMP", "Baptême"], ["CMAS", "Baptême"], ["ISO", "—"]] },
+    { id: "n1", lv: "Niveau 1", world: "n1", line: "plongeur", tag: "PE20",
+      who: "Débutant qui veut plonger régulièrement, accompagné.",
+      access: "À partir de 14 ans environ (plus jeune avec des brevets enfants). Certificat médical.",
+      can: "Plonger <b>encadré</b> (avec un guide) jusqu’à <b>20 m</b> (PE20).",
+      exam: "Formation pratique en piscine puis en milieu naturel, petites connaissances théoriques (signes, oreilles, sécurité).",
+      eq: [["ANMP", "Niveau 1"], ["CMAS", "Plongeur 1 étoile"], ["ISO 24801-1", "Plongeur encadré"]] },
+    { id: "n2", lv: "Niveau 2", world: "n2", line: "plongeur", tag: "PA20 · PE40",
+      who: "Plongeur N1 qui veut devenir <b>autonome</b> à faible profondeur et descendre plus bas encadré.",
+      access: "N1, environ 16 ans. Certificat médical.",
+      can: "<b>Autonome</b> jusqu’à <b>20 m</b> (PA20) avec d’autres plongeurs autonomes ; <b>encadré</b> jusqu’à <b>40 m</b> (PE40).",
+      exam: "Épreuves pratiques (remontées, assistance, autonomie) et un <b>écrit</b> : physique (pressions, volumes, flottabilité), accidents, décompression, matériel, réglementation.",
+      eq: [["ANMP", "Niveau 2"], ["CMAS", "Plongeur 2 étoiles"], ["ISO 24801-2", "Plongeur autonome"]] },
+    { id: "rifap", lv: "RIFAP", world: "rifap", line: "secours", tag: "Secours",
+      who: "Tout plongeur qui veut savoir réagir face à un accident de plongée.",
+      access: "En général à partir du N1 ou du N2. Souvent exigé pour le N3, le N4 et l’initiateur.",
+      can: "Porter secours : sortir la victime de l’eau, alerter, oxygéner, surveiller.",
+      exam: "Mises en situation pratiques : alerte, oxygénothérapie, position d’attente, bilan.",
+      eq: [["Secourisme", "Complète le PSC1, ne le remplace pas"]] },
+    { id: "nitrox", lv: "Nitrox", world: "nitrox", line: "qualif", tag: "Qualification",
+      who: "Plongeur qui veut respirer un mélange plus riche en oxygène (moins d’azote).",
+      access: "Nitrox de base dès le N1 ; nitrox confirmé à partir du N2.",
+      can: "Plonger au nitrox dans les limites de son niveau, en respectant la PpO₂ maximale.",
+      exam: "Calculs (profondeur maximale, profondeur équivalente), analyse du mélange, pratique.",
+      eq: [["ANMP", "Nitrox"], ["CMAS", "Nitrox"], ["ISO 11107", "Plongeur nitrox"]] },
+    { id: "n3", lv: "Niveau 3", world: "n3", line: "plongeur", tag: "PA60",
+      who: "Plongeur N2 expérimenté qui veut être <b>autonome jusqu’à 60 m</b>.",
+      access: "N2, 18 ans, expérience de plongées en autonomie. RIFAP souvent demandé.",
+      can: "<b>Autonome</b> jusqu’à <b>60 m</b> (PA60), avec un directeur de plongée présent sur le site.",
+      exam: "Pratique en profondeur, organisation de la plongée en autonomie, théorie approfondie : gaz, narcose, décompression, matériel, réglementation.",
+      eq: [["ANMP", "Niveau 3"], ["CMAS", "Plongeur 3 étoiles"], ["ISO 24801-2", "Plongeur autonome (au-delà)"]] },
+    { id: "e1", lv: "Initiateur (E1)", world: "e1", line: "encadrant", tag: "Enseigne 0-6 m",
+      who: "Plongeur qui veut <b>enseigner</b> en piscine et en milieu protégé.",
+      access: "Au moins N2, environ 16 à 18 ans, RIFAP, stage pédagogique en club.",
+      can: "Enseigner en piscine et en milieu naturel protégé jusqu’à <b>6 m</b>, sous l’autorité d’un moniteur.",
+      exam: "Stage en situation, séances pédagogiques évaluées, connaissances sur la pédagogie et la sécurité.",
+      eq: [["ANMP", "Moniteur ANMP niveau initial"], ["CMAS", "Moniteur 1 étoile (partiel)"]] },
+    { id: "n4", lv: "N4 · Guide de palanquée", world: "n4", line: "encadrant", tag: "Guide jusqu’à 40 m",
+      who: "Plongeur N3 qui veut <b>guider</b> des palanquées.",
+      access: "N3, 18 ans, RIFAP, solide expérience.",
+      can: "<b>Guider</b> des plongeurs (en général jusqu’à 40 m) et plonger autonome jusqu’à 60 m.",
+      exam: "Épreuves physiques, conduite de palanquée, assistance, théorie (physiologie, décompression, réglementation, matériel).",
+      eq: [["ANMP", "Guide de palanquée"], ["CMAS", "Plongeur 3 étoiles + encadrement"], ["ISO 24801-3", "Plongeur guide (Dive leader)"]] },
+    { id: "e2", lv: "E2 (initiateur + guide)", world: "e2", line: "encadrant", tag: "Enseigne 0-20 m",
+      who: "Guide de palanquée et initiateur qui veut enseigner plus profond.",
+      access: "N4 et initiateur, stage pédagogique.",
+      can: "Enseigner jusqu’à <b>20 m</b>, sous l’autorité d’un moniteur.",
+      exam: "Validation en club et en stage selon le cursus fédéral.",
+      eq: [["ANMP", "Encadrant 20 m"], ["Suite", "MF1 (E3) puis MF2 (E4)"]] },
+    { id: "mf", lv: "MF1 puis MF2", world: "", line: "encadrant", tag: "Moniteur",
+      who: "Pour aller plus loin : moniteur fédéral.",
+      access: "E2 ou N4 + initiateur, stages et examens fédéraux.",
+      can: "MF1 (E3) : enseigner jusqu’à 40 m et diriger des plongées. MF2 (E4) : jusqu’à 60 m et former des moniteurs.",
+      exam: "Examens fédéraux (hors de cette appli pour l’instant).",
+      eq: [["État", "BPJEPS / DEJEPS plongée (moniteurs professionnels)"], ["ISO 24802", "Moniteur de plongée"]] }
+  ];
+  C.cursusById = {}; C.cursus.forEach(c => (C.cursusById[c.id] = c));
+  /* Étiquette courte par monde : « Pour qui · Quel examen ». */
+  C.levelTag = wid => { const c = C.cursusById[wid]; return c ? { lv: c.lv, tag: c.tag, who: c.who, exam: c.exam } : null; };
+})();
+
+/* content/fr/deep-n3.js */
+/* Abysse Academy · contenu FR · Niveau 3 approfondi (1.5)
+   Complète les cours de content/fr/n3.js (C.extend ajoute à la fin, sans réordonner)
+   et ajoute les thèmes manquants. Points réglementaires : à faire valider par ton moniteur. */
+(function () {
+  "use strict";
+  const C = AA.content;
+
+  C.extend("n3-gaz", {
+    essentiel: `
+<h3>Lire la narcose chez soi et chez les autres</h3>
+<p>La narcose ne prévient pas : on ne la sent pas toujours chez soi. Les signes se voient souvent <b>chez le binôme</b> :</p>
+<ul><li>regard fixe, réponses lentes aux signes, gestes répétés ;</li><li>rire sans raison ou au contraire angoisse soudaine ;</li><li>erreurs de lecture : manomètre ou ordinateur relus plusieurs fois ;</li><li>oubli du plan (demi-tour, pression de remontée).</li></ul>
+<p><b>Réflexe</b> : signe « ça ne va pas », on remonte <b>de quelques mètres</b> ensemble, on se stabilise, on vérifie l’air. Si ça ne passe pas, on termine la plongée.</p>
+<h3>Méthode : calculer une pression partielle sans se tromper</h3>
+<ol><li>Profondeur → <b>pression absolue</b> : 1 + profondeur ÷ 10.</li><li>Pourcentage → <b>fraction</b> : 21 % = 0,21 ; 79 % = 0,79.</li><li>Pp = P abs × fraction.</li></ol>
+<div class="callout ex"><span class="eyebrow">Exemple</span>À 45 m : P abs = 5,5 bar. Pp O₂ = 5,5 × 0,21 ≈ 1,16 bar ; Pp N₂ = 5,5 × 0,79 ≈ 4,35 bar.</div>
+<div class="callout ex"><span class="eyebrow">Dans l’autre sens</span>À quelle profondeur l’air atteint-il une Pp O₂ de 1,4 bar ? 1,4 ÷ 0,21 ≈ 6,67 bar absolu ; − 1 = 5,67 bar d’eau ; × 10 ≈ <b>56 m</b>.</div>`,
+    approfondir: `
+<h3>Pourquoi l’azote endort-il ?</h3>
+<p>L’azote se dissout dans les graisses, notamment dans les membranes des cellules nerveuses. Sous forte pression, il perturbe la transmission de l’influx nerveux, comme certains gaz anesthésiants. C’est pour cela que la narcose ressemble à une ivresse et qu’elle <b>disparaît dès que la pression baisse</b>.</p>
+<h3>Les deux toxicités de l’oxygène</h3>
+<ul><li><b>Neurologique</b> (effet Paul Bert) : forte Pp O₂, effet rapide, convulsions. C’est le risque de la plongée profonde à l’air et du nitrox.</li>
+<li><b>Pulmonaire</b> (effet Lorrain Smith) : Pp O₂ plus modérée mais longtemps (oxygénothérapie prolongée, plongées techniques). Irritation des poumons.</li></ul>`,
+    memo: [["Narcose chez l’autre", "Regard fixe, lenteur, rires ou angoisse : on remonte de quelques mètres."], ["Pp", "1) P abs 2) fraction 3) multiplier."], ["O₂ neurologique", "Paul Bert : convulsions, forte Pp O₂."]],
+    quiz: [
+      { q: "Ton binôme relit trois fois son manomètre à 48 m et rit sans raison. Que fais-tu ?", c: ["Tu continues la descente", "Tu lui fais signe et vous remontez de quelques mètres ensemble", "Tu le laisses seul", "Tu lâches ton lest"], a: 1, e: "Signes de narcose : on remonte un peu ensemble, on se stabilise, on vérifie l’air. Si ça persiste, fin de plongée." },
+      { q: "Pp O₂ de l’air à 35 m ?", c: ["0,74 bar", "0,95 bar", "1,05 bar", "3,56 bar"], a: 1, e: "P abs = 4,5 bar. 4,5 × 0,21 ≈ 0,95 bar." },
+      { q: "L’effet Paul Bert désigne…", c: ["la toxicité neurologique de l’oxygène", "la narcose", "l’ADD", "le froid"], a: 0, e: "Forte Pp O₂ : atteinte du système nerveux, convulsions possibles.", lvl: 2 },
+      { q: "Pourquoi la narcose ressemble-t-elle à une ivresse ?", c: ["L’azote sous pression perturbe le fonctionnement des nerfs", "On boit de l’eau de mer", "Le froid fait boire", "L’oxygène manque"], a: 0, e: "L’azote dissous dans les membranes nerveuses agit comme un anesthésiant.", lvl: 2 },
+      { q: "Un plongeur ressent la narcose à 40 m un jour et pas un autre. C’est…", c: ["impossible", "normal : la narcose varie selon la forme, le froid, le stress", "un problème de matériel", "un signe d’ADD"], a: 1, e: "La sensibilité varie d’un jour à l’autre : on reste humble à chaque plongée profonde." },
+      { q: "Pour calculer une Pp, la première étape est…", c: ["la pression absolue", "la vitesse de remontée", "le volume du bloc", "la température"], a: 0, e: "On part toujours de la pression absolue (1 + profondeur ÷ 10)." },
+      { q: "Pp N₂ de l’air à 25 m ?", c: ["1,98 bar", "2,77 bar", "3,5 bar", "0,74 bar"], a: 1, e: "P abs = 3,5 bar. 3,5 × 0,79 ≈ 2,77 bar." }
+    ]
+  });
+
+  C.extend("n3-deco", {
+    essentiel: `
+<h3>Comment le corps se charge et se décharge en azote</h3>
+<p>Sous pression, l’azote se <b>dissout</b> dans le sang puis dans les tissus (loi de Henry). Certains tissus se chargent vite (sang, cerveau), d’autres lentement (graisses, articulations). À la remontée, l’azote doit sortir <b>par les poumons</b>. Si la pression baisse trop vite, il forme des <b>bulles</b> : c’est l’accident de décompression.</p>
+<p>Les <b>paliers</b> donnent le temps à l’azote de sortir sans former de grosses bulles. La <b>vitesse de remontée</b> lente joue le même rôle.</p>
+<h3>La courbe de sécurité</h3>
+<p>Pour chaque profondeur, il existe une durée au-delà de laquelle un palier devient obligatoire : c’est la <b>courbe de sécurité</b> (plongée « sans palier »). Plus on est profond, plus cette durée est courte. Ta table et ton ordinateur te la donnent.</p>
+<div class="callout"><span class="eyebrow">Bon réflexe</span>Même sans palier obligatoire, un <b>palier de principe</b> de quelques minutes vers 3 à 5 m est une bonne habitude (à confirmer selon ta formation).</div>
+<h3>Planifier une plongée avec paliers</h3>
+<ol><li>Choisis la <b>profondeur maximale</b> et la <b>durée</b> avec ta table (ou le mode planification de l’ordinateur).</li><li>Note les <b>paliers</b> et la <b>durée totale de remontée</b>.</li><li>Vérifie que l’<b>air</b> suffit pour la remontée et les paliers, avec une marge.</li><li>Prévois le plan B : que fais-tu si tu dépasses le temps ou la profondeur ?</li></ol>`,
+    approfondir: `
+<h3>Le modèle de Haldane, en deux idées</h3>
+<p>Les tables reposent sur un modèle : le corps est vu comme plusieurs <b>compartiments</b> qui se chargent et se déchargent à des vitesses différentes (périodes). Chaque compartiment tolère une certaine <b>sursaturation</b> (rapport entre l’azote dissous et la pression ambiante) sans former de bulles dangereuses. Le palier sert à rester sous ce seuil.</p>
+<p>Les ordinateurs utilisent des modèles dérivés (par exemple à compartiments avec des « facteurs de prudence »). Ils calculent en continu ton vrai profil, d’où des durées souvent différentes de la table.</p>
+<h3>Les bulles silencieuses</h3>
+<p>Même après une plongée parfaite, on détecte souvent de petites bulles dans le sang veineux, sans symptôme : elles sont filtrées par les poumons. Les règles (vitesse lente, paliers, pas d’effort, hydratation) visent à en limiter le nombre.</p>`,
+    memo: [["Henry", "Plus de pression = plus d’azote dissous."], ["Courbe de sécurité", "Au-delà : palier obligatoire."], ["Haldane", "Compartiments + sursaturation critique."]],
+    moniteur: ["Quelle vitesse de remontée et quel palier de principe appliquons-nous ?"],
+    quiz: [
+      { q: "La « courbe de sécurité » indique…", c: ["la durée maximale sans palier obligatoire à une profondeur", "la profondeur maximale du N3", "la vitesse du bateau", "la réserve d’air"], a: 0, e: "Au-delà de cette durée, la table impose des paliers." },
+      { q: "Par où l’azote dissous sort-il du corps ?", c: ["Par les poumons, à l’expiration", "Par la peau seulement", "Par l’estomac", "Il ne sort jamais"], a: 0, e: "Le sang ramène l’azote aux poumons, qui l’éliminent à chaque expiration." },
+      { q: "Les tissus qui se chargent lentement en azote…", c: ["se déchargent aussi lentement", "se vident instantanément", "ne comptent pas", "sont uniquement le sang"], a: 0, e: "Graisses et articulations se chargent et se vident lentement : d’où l’importance des successives.", lvl: 2 },
+      { q: "Dans le modèle de Haldane, un compartiment est caractérisé par…", c: ["sa période (vitesse de charge)", "sa couleur", "sa profondeur maximale", "sa température"], a: 0, e: "Chaque compartiment a une période et un seuil de sursaturation critique.", lvl: 2 },
+      { q: "Pourquoi l’ordinateur donne-t-il souvent plus de temps que la table ?", c: ["Il calcule le profil réel, pas la profondeur maximale pendant tout le temps", "Il est moins prudent par défaut", "Il ne gère pas la décompression", "Il se trompe"], a: 0, e: "La table suppose toute la plongée à la profondeur maximale ; l’ordinateur suit ta profondeur réelle." },
+      { q: "Avant une plongée avec paliers, on vérifie que l’air suffit pour…", c: ["la remontée et les paliers, avec une marge", "le fond seulement", "le retour en bateau", "rien de plus"], a: 0, e: "L’air des paliers fait partie du plan : sans air, pas de palier." }
+    ]
+  });
+
+  C.extend("n3-autonomie", {
+    essentiel: `
+<h3>Méthode : combien de temps au fond ?</h3>
+<ol><li><b>Air utilisable</b> = (pression du bloc − pression de remontée) × volume du bloc.</li><li><b>Conso au fond</b> = conso en surface × pression absolue.</li><li><b>Temps</b> = air utilisable ÷ conso au fond.</li></ol>
+<div class="callout ex"><span class="eyebrow">Exemple</span>Bloc 12 L à 210 bar, remontée décidée à 100 bar, conso 18 L/min en surface, à 35 m (4,5 bar). Air utilisable : 110 × 12 = 1 320 L. Conso au fond : 18 × 4,5 = 81 L/min. Temps ≈ 1 320 ÷ 81 ≈ <b>16 min</b>.</div>
+<h3>La règle des tiers (variante prudente)</h3>
+<p>Certains plongeurs appliquent : un tiers de l’air pour l’aller, un tiers pour le retour, un tiers en réserve. En mer depuis le bateau, on raisonne plutôt avec une <b>pression de remontée</b> qui couvre remontée, paliers et imprévus.</p>
+<h3>Perte de palanquée</h3>
+<ol><li>Chercher autour de soi <b>une minute</b> environ, en tournant, en regardant vers le haut (bulles).</li><li>Si rien : <b>remonter</b> en respectant vitesse et paliers.</li><li>Se retrouver <b>en surface</b>, signaler au bateau.</li></ol>
+<p>La procédure exacte est fixée <b>avant</b> la plongée avec le DP.</p>`,
+    approfondir: `
+<h3>Gérer un incident à 50 m</h3>
+<p>À 50 m, une minute de panique consomme plus d’air que cinq minutes de calme en surface. Ordre de priorité : <b>respirer, se stabiliser, réfléchir, agir</b>. Un problème de détendeur ? Source d’air de secours (octopus ou second détendeur sur une autre sortie), puis remontée contrôlée. Un essoufflement ? On arrête tout effort, expirations longues, on remonte de quelques mètres.</p>
+<h3>Le directeur de plongée (DP)</h3>
+<p>Il organise la plongée sur le site : palanquées, paramètres maximum (profondeur, durée), matériel de secours, procédures. Les plongeurs autonomes restent responsables du respect de ces paramètres.</p>`,
+    memo: [["Temps au fond", "(P bloc − P remontée) × V ÷ (conso × P abs)."], ["Perte de palanquée", "1 min de recherche, puis remontée normale, rendez-vous en surface."], ["Ordre", "Respirer, stabiliser, réfléchir, agir."]],
+    quiz: [
+      { q: "Bloc 15 L à 200 bar, remontée à 90 bar, conso 20 L/min, à 45 m. Temps au fond environ ?", c: ["≈ 8 min", "≈ 15 min", "≈ 30 min", "≈ 55 min"], a: 1, e: "Air utilisable : 110 × 15 = 1 650 L. Conso au fond : 20 × 5,5 = 110 L/min. 1 650 ÷ 110 = 15 min." },
+      { q: "Tu as perdu ta palanquée à 40 m. Après environ une minute de recherche…", c: ["tu restes au fond à attendre", "tu remontes normalement (vitesse, paliers) et tu retrouves les autres en surface", "tu remontes le plus vite possible", "tu continues seul la plongée"], a: 1, e: "Procédure classique : recherche courte, remontée normale, rendez-vous en surface. À fixer avant avec le DP." },
+      { q: "En cas d’incident en profondeur, l’ordre conseillé est…", c: ["agir vite sans réfléchir", "respirer, se stabiliser, réfléchir, agir", "remonter d’abord, réfléchir ensuite", "appeler le bateau"], a: 1, e: "Le calme économise l’air et évite l’erreur." },
+      { q: "Qui fixe la profondeur et la durée maximales d’une palanquée autonome sur un site ?", c: ["Le directeur de plongée", "Le pilote", "Le plus expérimenté de la palanquée seul", "Personne"], a: 0, e: "Le DP organise et fixe les paramètres ; la palanquée les respecte." },
+      { q: "La conso au fond se calcule…", c: ["conso surface × pression absolue", "conso surface + profondeur", "conso surface ÷ pression", "conso surface × profondeur"], a: 0, e: "Le volume d’air respiré est multiplié par la pression absolue." }
+    ]
+  });
+
+  C.extend("n3-accidents", {
+    essentiel: `
+<h3>Les autres accidents à connaître au N3</h3>
+<div class="tbl"><table><tr><th>Accident</th><th>Cause</th><th>Prévention</th></tr>
+<tr><td>Surpression pulmonaire</td><td>Blocage de l’expiration à la remontée (panique, toux, apnée)</td><td>Toujours expirer en remontant, ne jamais bloquer</td></tr>
+<tr><td>Essoufflement</td><td>CO₂ qui s’accumule (effort, froid, détendeur dur, stress)</td><td>Pas d’effort, expirer longuement, matériel entretenu</td></tr>
+<tr><td>Hypothermie</td><td>Froid prolongé</td><td>Combinaison adaptée, durée raisonnable</td></tr>
+<tr><td>Noyade</td><td>Panne d’air, panique, malaise</td><td>Gestion de l’air, binôme attentif</td></tr>
+<tr><td>Barotraumatismes</td><td>Pressions mal équilibrées (oreilles, sinus, masque, dents)</td><td>Équilibrer tôt et souvent, ne pas plonger enrhumé</td></tr></table></div>
+<h3>Le bilan d’une victime après la plongée</h3>
+<p>On note : <b>l’heure</b> des signes, les <b>paramètres</b> de la plongée (profondeur, durée, paliers, ordinateur), ce qui s’est passé (remontée rapide ? effort ?), les gestes faits (oxygène depuis quelle heure, eau). Ces informations aident le médecin.</p>`,
+    approfondir: `
+<h3>Le foramen ovale perméable (FOP)</h3>
+<p>Une petite communication entre les oreillettes du cœur, présente chez une partie de la population. Elle peut laisser passer des bulles du sang veineux vers le sang artériel, et explique certains ADD neurologiques « immérités ». Le sujet est médical : on en parle avec un médecin fédéral, pas entre plongeurs.</p>`,
+    memo: [["Surpression pulmonaire", "Bloquer l’expiration en remontant."], ["Essoufflement", "CO₂ : stop effort, expirer longtemps."], ["Bilan", "Heure, paramètres, faits, gestes."]],
+    quiz: [
+      { q: "La surpression pulmonaire vient le plus souvent…", c: ["d’un blocage de l’expiration à la remontée", "d’un excès d’azote", "du froid", "d’un masque mal vidé"], a: 0, e: "L’air des poumons se dilate en remontant : s’il ne sort pas, il déchire les alvéoles." },
+      { q: "Face à un essoufflement sous l’eau, on…", c: ["accélère pour remonter", "arrête l’effort et expire longuement", "retient sa respiration", "lâche son détendeur"], a: 1, e: "L’essoufflement vient du CO₂ : on réduit l’effort et on vide bien les poumons." },
+      { q: "Pour le médecin, on note en priorité…", c: ["l’heure des signes et les paramètres de la plongée", "la couleur des palmes", "le nom du bateau", "la météo de la veille"], a: 0, e: "Horaires, profondeur, durée, paliers et gestes faits guident le traitement." },
+      { q: "Le foramen ovale perméable peut expliquer…", c: ["certains ADD neurologiques sans faute apparente", "la narcose", "le mal de mer", "les crampes"], a: 0, e: "Il peut laisser passer des bulles vers la circulation artérielle. Sujet à voir avec un médecin.", lvl: 2 }
+    ]
+  });
+
+  C.extend("n3-materiel", {
+    essentiel: `
+<h3>Pourquoi la redondance ?</h3>
+<p>En autonomie profonde, il n’y a pas de guide pour te dépanner. Ton matériel doit pouvoir <b>tomber en panne sans te mettre en danger</b> : deux premiers étages (bloc à deux sorties), deux moyens de connaître ta profondeur et ton temps, un moyen de te signaler en surface.</p>
+<h3>Le parachute de palier</h3>
+<p>Gonflé depuis le palier, il signale ta position au bateau et sert de repère vertical. On s’entraîne à le lancer <b>sans remonter avec lui</b> : le moulinet ou la bobine doit se dérouler librement.</p>
+<h3>Check avant la plongée</h3>
+<ul><li>Bloc ouvert, pression vérifiée, deux détendeurs qui respirent bien.</li><li>Gilet qui gonfle et purge, direct-system fixé.</li><li>Ordinateur réglé (mélange, niveau de prudence), batterie.</li><li>Lest bien réparti, largable.</li><li>Parachute, lampe, couteau ou coupe-fil accessibles.</li></ul>`,
+    quiz: [
+      { q: "La redondance du matériel, c’est…", c: ["pouvoir subir une panne sans être en danger", "avoir du matériel neuf", "plonger plus lourd", "porter deux masques"], a: 0, e: "Deux sources d’air, deux instruments : une panne ne doit pas devenir un accident." },
+      { q: "En lançant ton parachute au palier, le risque principal est…", c: ["d’être entraîné vers la surface", "de perdre ton masque", "d’avoir froid", "aucun"], a: 0, e: "Si la bobine se bloque, le parachute t’emmène : on s’entraîne et on garde le contrôle." },
+      { q: "Avant une plongée profonde, on vérifie le réglage de l’ordinateur…", c: ["mélange et niveau de prudence", "la langue uniquement", "la couleur de l’écran", "rien"], a: 0, e: "Un mauvais mélange ou un mauvais réglage fausse tous les calculs." }
+    ]
+  });
+
+  /* ---------- Nouveaux thèmes N3 ---------- */
+  C.module({
+    id: "n3-cadre", world: "n3", depth: "−58 m", icon: "shield",
+    title: "Le cadre du N3",
+    sub: "Prérogatives, directeur de plongée, matériel exigé",
+    essentiel: `
+<p>Le N3 est un plongeur <b>autonome jusqu’à 60 m</b>. Autonome ne veut pas dire seul : il plonge en <b>palanquée</b> avec d’autres plongeurs autonomes, sur un site organisé par un <b>directeur de plongée</b> (DP).</p>
+<div class="tbl"><table><tr><th>Espace</th><th>Le N3 peut…</th></tr>
+<tr><td>0 à 20 m</td><td>plonger autonome (comme le N2)</td></tr>
+<tr><td>20 à 40 m</td><td>plonger autonome</td></tr>
+<tr><td>40 à 60 m</td><td>plonger autonome, en palanquée de N3 (ou plus)</td></tr></table></div>
+<h3>Le rôle du DP</h3>
+<ul><li>Il <b>compose les palanquées</b> et fixe les paramètres (profondeur, durée maximales).</li><li>Il vérifie le matériel de secours présent sur le site (oxygène, trousse, moyen d’alerte).</li><li>Il note les paramètres au retour (fiche de sécurité).</li></ul>
+<h3>Le matériel exigé en autonomie</h3>
+<p>Chaque plongeur autonome doit avoir de quoi connaître sa <b>profondeur</b> et son <b>temps</b> (ordinateur ou profondimètre + montre), ses <b>paliers</b> (table ou ordinateur), un <b>gilet</b>, une <b>source d’air de secours</b> (deuxième détendeur complet) et un moyen d’alerte en surface.</p>
+<div class="callout trap"><span class="eyebrow">À valider</span>Les prérogatives, l’âge et les équipements obligatoires viennent du Code du sport et du cursus fédéral, qui évoluent : fais-les confirmer par ton moniteur.</div>`,
+    approfondir: `
+<h3>Le Code du sport en pratique</h3>
+<p>La plongée en club est encadrée par le Code du sport (établissements d’activités physiques et sportives). Il définit les espaces d’évolution (0-6, 0-12, 0-20, 0-40, 0-60 m), les aptitudes (PE = encadré, PA = autonome), le matériel de secours obligatoire et le rôle du directeur de plongée. Les brevets fédéraux (FFESSM, ANMP…) donnent ces aptitudes.</p>
+<h3>Plonger à l’étranger</h3>
+<p>Les règles locales s’appliquent. Les centres demandent ta carte de niveau et souvent ton carnet de plongées. Les équivalences (CMAS, ISO) aident à faire reconnaître ton niveau.</p>`,
+    memo: [["N3", "Autonome jusqu’à 60 m, en palanquée."], ["DP", "Compose les palanquées, fixe les paramètres."], ["Matériel", "Profondeur, temps, paliers, gilet, 2ᵉ détendeur, alerte."]],
+    moniteur: ["Quelles prérogatives exactes du N3 appliquons-nous au club ?", "Quel matériel exiges-tu pour une plongée à 50 m ?"],
+    quiz: [
+      { q: "Le N3 peut plonger en autonomie jusqu’à…", c: ["20 m", "40 m", "60 m", "sans limite"], a: 2, e: "Le N3 est autonome jusqu’à 60 m (PA60), sous l’organisation d’un DP." },
+      { q: "Qui compose les palanquées sur le site ?", c: ["Le directeur de plongée", "Le plus âgé", "Le pilote du bateau", "Chacun choisit seul"], a: 0, e: "Le DP compose les palanquées et fixe les paramètres." },
+      { q: "Lequel n’est PAS exigé d’un plongeur autonome ?", c: ["Un moyen de connaître profondeur et temps", "Une source d’air de secours", "Un appareil photo", "Un gilet"], a: 2, e: "L’appareil photo est un loisir ; les autres sont des équipements de sécurité." },
+      { q: "PA60 signifie…", c: ["plongée autonome jusqu’à 60 m", "plongée accompagnée 60 minutes", "palier à 60 m", "pression 60 bar"], a: 0, e: "PA = autonome, PE = encadré, le nombre = profondeur maximale." },
+      { q: "D’où viennent les espaces 0-6, 0-12, 0-20, 0-40, 0-60 m ?", c: ["Du Code du sport", "Des fabricants d’ordinateurs", "De la météo", "Des assurances seulement"], a: 0, e: "Le Code du sport fixe ces espaces et les aptitudes qui y donnent accès.", lvl: 2 },
+      { q: "À l’étranger, quelles règles s’appliquent ?", c: ["Les règles locales", "Toujours le Code du sport français", "Aucune", "Celles de ton ordinateur"], a: 0, e: "On suit les règles du pays et du centre ; les équivalences aident à faire reconnaître son niveau.", lvl: 2 }
+    ]
+  });
+
+  C.module({
+    id: "n3-physio", world: "n3", depth: "−60 m", icon: "lungs",
+    title: "Le corps en profondeur",
+    sub: "Respiration, circulation, froid, effort",
+    essentiel: `
+<p>Comprendre son corps aide à comprendre <b>pourquoi</b> les règles existent.</p>
+<h3>La respiration</h3>
+<p>À chaque inspiration, l’oxygène passe des alvéoles au sang ; le CO₂ fait le chemin inverse. Sous l’eau, l’air est <b>plus dense</b> : respirer demande plus de travail. Le CO₂ s’élimine moins bien si on respire court et vite.</p>
+<p><b>Bonne ventilation</b> : expiration longue et complète, inspiration calme. On vide le CO₂ et on économise l’air.</p>
+<h3>La circulation</h3>
+<p>Le cœur envoie le sang oxygéné vers les organes (circulation artérielle) et ramène le sang chargé en CO₂ et en azote vers les poumons (circulation veineuse). L’azote dissous voyage avec le sang : c’est pourquoi l’<b>effort</b> et le <b>froid</b>, qui modifient la circulation, influencent la décompression.</p>
+<h3>Le froid</h3>
+<p>Le corps perd sa chaleur environ 20 fois plus vite dans l’eau que dans l’air. Le froid fait consommer plus, favorise l’essoufflement et la narcose, et perturbe l’élimination de l’azote.</p>
+<div class="callout ex"><span class="eyebrow">Exemple</span>Deux plongées identiques à 35 m : l’une à 24 °C, l’autre à 13 °C. Dans la seconde, conso plus forte, plus de fatigue et une décompression moins efficace : on prévoit une marge plus large.</div>`,
+    approfondir: `
+<h3>Les échanges gazeux</h3>
+<p>Le gaz passe des alvéoles au sang selon les <b>différences de pression partielle</b> : il va toujours de la plus forte vers la plus faible. En profondeur, la Pp d’azote inspirée est forte, l’azote entre dans le sang. À la remontée, elle baisse, l’azote ressort. C’est la loi de Henry vue de l’intérieur.</p>
+<h3>L’espace mort</h3>
+<p>Une partie de l’air respiré reste dans le tuba, la bouche, la trachée sans servir aux échanges. Respirer court et vite ventile surtout cet espace mort : le CO₂ s’accumule. D’où l’expiration longue.</p>`,
+    memo: [["Air dense", "Respirer coûte plus d’effort en profondeur."], ["Ventilation", "Expirer long, inspirer calme."], ["Froid", "Conso, essoufflement, narcose, décompression moins bonne."]],
+    quiz: [
+      { q: "Pourquoi expirer longuement sous l’eau ?", c: ["Pour bien éliminer le CO₂", "Pour couler", "Pour économiser le gilet", "Ce n’est pas utile"], a: 0, e: "Une expiration complète vide le CO₂ et évite l’essoufflement." },
+      { q: "Le corps perd sa chaleur dans l’eau…", c: ["moins vite que dans l’air", "aussi vite que dans l’air", "beaucoup plus vite que dans l’air", "jamais"], a: 2, e: "Environ 20 fois plus vite : la protection thermique est un élément de sécurité." },
+      { q: "En profondeur, respirer demande plus d’effort car…", c: ["l’air est plus dense", "l’air est plus chaud", "le détendeur rétrécit", "il y a moins d’oxygène"], a: 0, e: "La densité de l’air augmente avec la pression." },
+      { q: "Respirer court et vite ventile surtout…", c: ["l’espace mort", "les alvéoles", "l’estomac", "le gilet"], a: 0, e: "L’air reste dans les voies respiratoires sans participer aux échanges : le CO₂ monte.", lvl: 2 },
+      { q: "Un gaz passe des alvéoles au sang…", c: ["de la plus forte pression partielle vers la plus faible", "au hasard", "seulement en surface", "seulement à l’expiration"], a: 0, e: "Les échanges suivent les différences de pression partielle.", lvl: 2 },
+      { q: "Plonger dans une eau froide demande…", c: ["une marge plus large (air, déco)", "moins de lest", "une descente plus rapide", "rien de particulier"], a: 0, e: "Le froid augmente la conso, la fatigue et gêne l’élimination de l’azote." }
+    ]
+  });
+
+  /* Calcul en plus : temps au fond (chiffres neufs à chaque fois). */
+  const u = AA.u, G = AA.game, PK = u.pick, N = u.num, M = (...a) => G.mkCalc(...a);
+  C.addGenerators({
+    n3temps: { m: "n3-autonomie", make: () => { const V = PK([12, 15]), P0 = PK([200, 210, 230]), Pr = PK([80, 100, 110]), c = PK([16, 18, 20, 22]), d = PK([30, 35, 40, 45, 50]); const p = 1 + d / 10, tm = Math.floor((P0 - Pr) * V / (c * p));
+      return M(`Bloc ${V} L à ${P0} bar, remontée à ${Pr} bar, conso ${c} L/min en surface, à ${d} m. Temps au fond environ ?`, tm, [Math.floor((P0 - Pr) * V / c), Math.floor(P0 * V / (c * p)), tm + 6], ` min`, `Air utilisable = (${P0} − ${Pr}) × ${V} = ${(P0 - Pr) * V} L. Conso au fond = ${c} × ${N(p)} = ${N(c * p)} L/min. ${(P0 - Pr) * V} ÷ ${N(c * p)} ≈ ${tm} min.`, 0); } },
+    n3prof: { m: "n3-gaz", make: () => { const lim = PK([1.4, 1.5, 1.6]); const d = Math.floor((lim / .21 - 1) * 10);
+      return M(`À l’air, à quelle profondeur environ la Pp O₂ atteint-elle ${N(lim)} bar ?`, d, [Math.floor(lim / .21 * 10), Math.floor((lim / .79 - 1) * 10) + 30, d - 10], ` m`, `${N(lim)} ÷ 0,21 = ${N(lim / .21)} bar absolu. − 1 = ${N(lim / .21 - 1)} bar d’eau. × 10 ≈ ${d} m.`, 0); } }
+  });
+  ["n3temps"].forEach(k => C.byId["n3-autonomie"].gen.push(k));
+  C.byId["n3-gaz"].gen.push("n3prof");
+})();
+
+/* content/fr/deep-n4.js */
+/* Abysse Academy · contenu FR · N4 (guide de palanquée), E2 et Nitrox approfondis (1.5)
+   Complète content/fr/n4.js sans le réordonner. À faire valider par ton moniteur. */
+(function () {
+  "use strict";
+  const C = AA.content;
+
+  /* ================= N4 · guide de palanquée ================= */
+  C.extend("n4-guide", {
+    essentiel: `
+<h3>Le briefing en 6 points (méthode)</h3>
+<ol><li><b>Le site</b> : fond, relief, courant, repères, point de sortie.</li><li><b>Les paramètres</b> : profondeur maximale, durée, pression de début de remontée.</li><li><b>L’ordre de la palanquée</b> : qui est à côté de qui.</li><li><b>Les signes</b> : rappel des principaux, en particulier « combien d’air ? », « ça ne va pas », « on remonte ».</li><li><b>Les incidents</b> : perte de palanquée, panne d’air, procédure de remontée.</li><li><b>Les questions</b> : on vérifie que tout le monde a compris.</li></ol>
+<div class="callout ex"><span class="eyebrow">Exemple de briefing</span>« On descend le long du mouillage jusqu’à 25 m, on suit le tombant à gauche, demi-tour à 120 bar ou à 25 minutes. Je demande les pressions toutes les 5 minutes. Si vous me perdez : une minute de recherche, puis remontée lente et rendez-vous sous le bateau. Des questions ? »</div>
+<h3>Placer ses plongeurs</h3>
+<p>Le guide se place pour <b>voir tout le monde</b> : en général légèrement devant et au-dessus, en se retournant souvent. Le plongeur le plus fragile reste <b>près du guide</b>. Dans le courant, on progresse en se protégeant derrière les reliefs.</p>`,
+    approfondir: `
+<h3>Anticiper plutôt que réagir</h3>
+<p>Un bon guide voit le problème <b>avant</b> qu’il arrive : une respiration qui s’accélère, un plongeur qui palme beaucoup, qui se tient mal (lest), qui regarde trop souvent vers la surface. Il ralentit, se rapproche, demande « ça va ? », et adapte la plongée sans attendre l’incident.</p>
+<h3>Le stress du plongeur encadré</h3>
+<p>Le stress augmente la consommation, l’essoufflement et le risque de remontée rapide. Un ton calme au briefing, des gestes lents et une plongée à la portée de tous font partie de la sécurité.</p>`,
+    memo: [["Briefing", "Site, paramètres, ordre, signes, incidents, questions."], ["Position", "Voir tout le monde, le plus fragile près du guide."], ["Anticiper", "Respiration, palmage, regard vers la surface."]],
+    quiz: [
+      { q: "Le plongeur le plus fragile de la palanquée se place…", c: ["loin derrière", "près du guide", "en tête, seul", "n’importe où"], a: 1, e: "Le guide garde sous ses yeux celui qui risque le plus d’avoir un problème." },
+      { q: "Un plongeur encadré palme beaucoup et respire vite. Le guide…", c: ["accélère pour finir vite", "ralentit, se rapproche et vérifie que tout va bien", "l’ignore", "lui fait signe de remonter seul"], a: 1, e: "Signes d’effort et d’essoufflement possible : on ralentit et on anticipe." },
+      { q: "Pourquoi demander « des questions ? » à la fin du briefing ?", c: ["Pour vérifier que tout le monde a compris", "Par politesse seulement", "Pour gagner du temps", "Ce n’est pas utile"], a: 0, e: "Un briefing mal compris est un briefing inutile." },
+      { q: "Dans le courant, la palanquée progresse…", c: ["en pleine eau face au courant", "en s’abritant derrière les reliefs", "le plus vite possible", "en surface"], a: 1, e: "Les reliefs protègent du courant et économisent l’effort et l’air." },
+      { q: "Le stress d’un plongeur encadré augmente…", c: ["sa consommation et le risque de remontée rapide", "sa flottabilité", "son autonomie", "rien"], a: 0, e: "Le stress fait respirer plus vite et pousse à remonter : le guide rassure et adapte.", lvl: 2 }
+    ]
+  });
+
+  C.extend("n4-air", {
+    essentiel: `
+<h3>Méthode : quand faire demi-tour ?</h3>
+<ol><li>Repère le <b>plus gros consommateur</b> (pressions demandées tôt).</li><li>Calcule l’air dont il a besoin pour <b>revenir, remonter et faire les paliers</b>, plus une marge.</li><li>Ajoute ce besoin à la pression de fin de plongée prévue : c’est sa <b>pression de demi-tour</b>.</li></ol>
+<div class="callout ex"><span class="eyebrow">Exemple</span>Bloc 15 L, retour prévu en 8 minutes à 25 m (3,5 bar), conso 22 L/min en surface. Air du retour : 22 × 3,5 × 8 = 616 L, soit environ 41 bar. Si la remontée doit commencer à 80 bar, le demi-tour se fait vers <b>120 bar</b> (80 + 41, arrondi).</div>`,
+    quiz: [
+      { q: "La pression de demi-tour se calcule pour…", c: ["le plongeur qui consomme le moins", "le plongeur qui consomme le plus", "le guide uniquement", "le bloc le plus gros"], a: 1, e: "C’est le plus gros consommateur qui arrive le premier à sa limite." },
+      { q: "Retour de 10 minutes à 20 m, conso 20 L/min, bloc 12 L. Air du retour environ ?", c: ["≈ 25 bar", "≈ 50 bar", "≈ 100 bar", "≈ 17 bar"], a: 1, e: "20 × 3 × 10 = 600 L. 600 ÷ 12 = 50 bar." }
+    ]
+  });
+
+  C.extend("n4-assistance", {
+    essentiel: `
+<h3>Les situations à reconnaître</h3>
+<div class="tbl"><table><tr><th>Situation</th><th>Signes</th><th>Réponse du guide</th></tr>
+<tr><td>Essoufflement</td><td>Respiration rapide, regard inquiet, bulles en continu</td><td>Arrêter l’effort, contact, remonter de quelques mètres, expirations longues</td></tr>
+<tr><td>Panne d’air</td><td>Signe « plus d’air », panique possible</td><td>Donner sa source de secours, contrôler, remontée</td></tr>
+<tr><td>Narcose</td><td>Comportement anormal, réponses lentes</td><td>Remonter de quelques mètres avec le plongeur</td></tr>
+<tr><td>Perte de connaissance</td><td>Plongeur inerte, détendeur parfois hors de la bouche</td><td>Remontée assistée immédiate, puis secours (RIFAP)</td></tr></table></div>
+<p>Dans tous les cas : <b>contact physique</b>, <b>contrôle de la respiration</b>, puis décision de remonter ou non.</p>`,
+    quiz: [
+      { q: "Un plongeur est inerte au fond, détendeur hors de la bouche. Le guide…", c: ["attend qu’il se réveille", "le remonte immédiatement en l’assistant", "fait un palier avec lui", "remonte seul chercher de l’aide"], a: 1, e: "Perte de connaissance sous l’eau : remontée assistée sans attendre, puis secours." },
+      { q: "Face à un essoufflement, la première action est…", c: ["d’arrêter l’effort et de rassurer", "de remonter le plus vite possible", "de donner son masque", "de continuer"], a: 0, e: "On supprime la cause (effort), on rassure et on remonte de quelques mètres." }
+    ]
+  });
+
+  C.extend("n4-orga", {
+    essentiel: `
+<h3>La palanquée encadrée, en pratique</h3>
+<p>Le nombre de plongeurs encadrés par un guide est <b>limité</b> par le Code du sport, selon l’espace et le niveau des plongeurs (souvent 4 plongeurs encadrés, parfois avec un serre-file). Les débutants sont encadrés dans des espaces plus petits. <i>Chiffres exacts : à faire valider par ton moniteur.</i></p>
+<h3>Le guide et le DP</h3>
+<p>Le guide reçoit du DP : la composition de la palanquée, la profondeur et la durée maximales. Il rend compte au retour : <b>heure de sortie, profondeur atteinte, durée, paliers</b> et incidents éventuels.</p>`,
+    quiz: [
+      { q: "Au retour, le guide rend compte au DP de…", c: ["la profondeur, la durée, les paliers et les incidents", "la couleur de l’eau", "uniquement des poissons vus", "rien"], a: 0, e: "La fiche de sécurité doit être complète : c’est aussi une information pour les secours si besoin." }
+    ]
+  });
+
+  C.module({
+    id: "n4-deco", world: "n4", depth: "−45 m", icon: "timer",
+    title: "Décompression du guide",
+    sub: "Gérer les paliers de toute une palanquée",
+    essentiel: `
+<p>Le guide gère la décompression <b>de tous ses plongeurs</b>. Chacun a son ordinateur, avec des réglages et des profils parfois différents.</p>
+<h3>Les règles du guide</h3>
+<ul><li>Choisir un profil de plongée qui <b>reste dans la courbe de sécurité</b> si des plongeurs débutants sont encadrés.</li><li>Faire remonter la palanquée <b>groupée</b>, à vitesse lente, le guide contrôlant la vitesse.</li><li>Aux paliers, suivre <b>l’ordinateur le plus pénalisant</b> de la palanquée.</li><li>Surveiller les plongeurs pendant le palier : flottabilité, froid, air.</li></ul>
+<h3>Plongée « en yo-yo »</h3>
+<p>Les montées et descentes répétées favorisent les bulles. Le guide conduit un profil <b>du plus profond vers le moins profond</b>, sans remonter puis redescendre.</p>
+<div class="callout ex"><span class="eyebrow">Exemple</span>Deux plongeurs ont 3 minutes de palier à 3 m, un troisième 6 minutes. Toute la palanquée fait <b>6 minutes</b> : on ne laisse personne seul au palier.</div>`,
+    approfondir: `
+<h3>Pourquoi un profil « inversé » est dangereux</h3>
+<p>Descendre profond en fin de plongée, alors que le corps est déjà chargé en azote, augmente le risque : les petites bulles formées au début peuvent être comprimées puis grossir à la remontée. On termine toujours <b>par le plus haut</b>.</p>`,
+    memo: [["Ordinateur", "On suit le plus pénalisant."], ["Profil", "Du plus profond au moins profond, pas de yo-yo."], ["Palier", "Toute la palanquée ensemble."]],
+    moniteur: ["Quelle vitesse de remontée et quels paliers de principe applique-t-on avec des débutants ?"],
+    quiz: [
+      { q: "Au palier, la palanquée suit…", c: ["l’ordinateur le moins pénalisant", "l’ordinateur le plus pénalisant", "la moyenne", "le guide seul"], a: 1, e: "Personne ne fait moins que ce que demande son ordinateur." },
+      { q: "Un profil en « yo-yo »…", c: ["favorise la formation de bulles", "est recommandé", "économise l’air", "n’a aucun effet"], a: 0, e: "Les remontées et redescentes répétées sont à éviter." },
+      { q: "Un plongeur a 6 min de palier, les autres 3 min. La palanquée…", c: ["fait 6 min ensemble", "laisse le plongeur seul", "fait 3 min", "remonte sans palier"], a: 0, e: "On reste groupé : on suit le plus long." },
+      { q: "Le profil conseillé est…", c: ["du plus profond vers le moins profond", "du moins profond vers le plus profond", "au hasard", "toujours à la même profondeur"], a: 0, e: "On commence profond et on termine plus haut." },
+      { q: "Pourquoi éviter de redescendre profond en fin de plongée ?", c: ["Les bulles déjà formées peuvent grossir à la remontée suivante", "On consomme moins", "Le courant change", "Ce n’est pas un problème"], a: 0, e: "Le profil inversé augmente le risque d’accident de décompression.", lvl: 2 }
+    ]
+  });
+
+  C.module({
+    id: "n4-physio", world: "n4", depth: "−50 m", icon: "heart",
+    title: "Physiologie et accidents (niveau guide)",
+    sub: "Comprendre pour prévenir chez les autres",
+    essentiel: `
+<p>Le guide doit <b>reconnaître tôt</b> les problèmes chez des plongeurs moins expérimentés.</p>
+<div class="tbl"><table><tr><th>Accident</th><th>Mécanisme</th><th>Ce que voit le guide</th></tr>
+<tr><td>Barotraumatisme d’oreille</td><td>Pression mal équilibrée</td><td>Plongeur qui s’arrête, se tient l’oreille, descend mal</td></tr>
+<tr><td>Surpression pulmonaire</td><td>Expiration bloquée à la remontée</td><td>Remontée paniquée, détendeur lâché</td></tr>
+<tr><td>Essoufflement</td><td>CO₂ en excès</td><td>Respiration rapide, agitation</td></tr>
+<tr><td>Narcose</td><td>Azote sous pression</td><td>Comportement inhabituel</td></tr>
+<tr><td>ADD</td><td>Bulles d’azote</td><td>Après la plongée : fatigue anormale, douleurs, troubles</td></tr>
+<tr><td>Hypothermie</td><td>Froid</td><td>Frissons, gestes maladroits</td></tr></table></div>
+<h3>Le rôle du guide après la plongée</h3>
+<p>Il observe ses plongeurs <b>après la sortie</b> : un ADD peut apparaître dans les minutes ou les heures qui suivent. Un plongeur qui « ne se sent pas bien » est pris au sérieux : oxygène et avis médical.</p>`,
+    memo: [["Avant", "Reconnaître les signes chez les autres."], ["Après", "Observer : l’ADD peut arriver plus tard."], ["Doute", "Oxygène et avis médical."]],
+    quiz: [
+      { q: "Un plongeur se tient l’oreille et n’arrive pas à descendre. Le guide…", c: ["le pousse vers le bas", "remonte un peu avec lui pour qu’il équilibre", "continue sans lui", "lui dit de forcer"], a: 1, e: "On remonte de quelques mètres et on laisse le temps d’équilibrer. Jamais forcer." },
+      { q: "Après la plongée, un plongeur se dit très fatigué et a mal à l’épaule. Le guide…", c: ["lui conseille une sieste", "pense à un ADD : oxygène et avis médical", "l’ignore", "lui propose de replonger"], a: 1, e: "Un doute d’ADD se traite : oxygène, alerte, avis médical." },
+      { q: "Des frissons et des gestes maladroits sous l’eau évoquent…", c: ["l’hypothermie", "la narcose seulement", "un ADD", "rien"], a: 0, e: "Le froid rend maladroit : on écourte la plongée." },
+      { q: "Pourquoi le guide observe-t-il ses plongeurs après la sortie ?", c: ["Un ADD peut apparaître plus tard", "Pour ranger le matériel", "Par habitude", "Pour la photo"], a: 0, e: "Les signes d’ADD apparaissent souvent après la plongée." }
+    ]
+  });
+
+  /* ================= E2 · enseigner jusqu'à 20 m ================= */
+  C.extend("e2-enseigner20", {
+    essentiel: `
+<h3>Une séance en milieu naturel, étape par étape</h3>
+<ol><li><b>Objectif</b> clair et unique (exemple : « vidage de masque à 10 m »).</li><li><b>Briefing</b> à terre : démonstration, critères de réussite, signes.</li><li><b>Exercice</b> sous l’eau : démonstration, essai de l’élève, correction.</li><li><b>Débriefing</b> : ce qui est réussi, ce qui reste à travailler, prochaine étape.</li></ol>
+<div class="callout ex"><span class="eyebrow">Exemple d’objectif bien écrit</span>« À la fin de la séance, l’élève sait lâcher et reprendre son détendeur à 6 m, sans remonter et sans paniquer, trois fois de suite. »</div>
+<h3>Progresser du plus facile au plus difficile</h3>
+<p>Piscine → fond de sable peu profond → milieu naturel plus profond. Un exercice est maîtrisé quand il est réussi <b>calmement et plusieurs fois</b>.</p>`,
+    quiz: [
+      { q: "Un bon objectif de séance est…", c: ["clair, unique et vérifiable", "vague pour s’adapter", "une liste de dix exercices", "secret"], a: 0, e: "L’élève et le moniteur doivent savoir quand l’objectif est atteint." },
+      { q: "Ordre d’une séance ?", c: ["Exercice, briefing, objectif", "Objectif, briefing, exercice, débriefing", "Débriefing d’abord", "Sans ordre"], a: 1, e: "On prépare, on fait, puis on tire les leçons." },
+      { q: "Un exercice est maîtrisé quand il est réussi…", c: ["une fois, par chance", "calmement et plusieurs fois", "avec l’aide du moniteur", "en piscine seulement"], a: 1, e: "La répétition calme montre la maîtrise." }
+    ]
+  });
+
+  C.extend("e2-securite", {
+    essentiel: `
+<h3>Le rapport élève-moniteur</h3>
+<p>En enseignement, le moniteur garde ses élèves <b>à portée de main</b>. Il peut intervenir immédiatement : rattraper un élève qui remonte, lui donner de l’air, le stabiliser.</p>
+<h3>Les risques propres à l’enseignement</h3>
+<ul><li><b>Remontées répétées</b> lors des exercices (yo-yo) : on limite et on espace.</li><li><b>Fatigue et froid</b> des élèves qui attendent leur tour : séances courtes.</li><li><b>Exercices de panne d’air</b> : toujours contrôlés, jamais improvisés.</li></ul>`,
+    quiz: [
+      { q: "Pendant un exercice, l’élève reste…", c: ["à portée de main du moniteur", "à 10 m du moniteur", "seul pour apprendre", "en surface"], a: 0, e: "Le moniteur doit pouvoir intervenir immédiatement." },
+      { q: "Pourquoi limiter les remontées répétées en séance ?", c: ["Elles favorisent les accidents de décompression", "Elles ennuient l’élève", "Elles usent le matériel", "Sans raison"], a: 0, e: "Les profils en yo-yo augmentent le risque." }
+    ]
+  });
+
+  C.module({
+    id: "e2-evaluer", world: "e2", depth: "−20 m", icon: "check",
+    title: "Évaluer et faire progresser",
+    sub: "Observer, corriger, valider",
+    essentiel: `
+<p>Enseigner, c’est aussi <b>savoir dire où en est l’élève</b>.</p>
+<h3>Observer</h3>
+<p>Le moniteur regarde <b>un point à la fois</b> : la respiration, puis la position, puis le geste. Il note mentalement ce qui est réussi et ce qui ne l’est pas.</p>
+<h3>Corriger</h3>
+<ul><li>Commencer par ce qui est <b>réussi</b>.</li><li>Une seule correction à la fois, la plus importante pour la sécurité.</li><li>Montrer à nouveau plutôt que longuement expliquer.</li></ul>
+<h3>Valider</h3>
+<p>Une compétence se valide sur des <b>critères connus</b> à l’avance, en conditions réelles, plusieurs fois. Le carnet de formation garde la trace.</p>
+<div class="callout ex"><span class="eyebrow">Exemple de critères</span>Remontée contrôlée de 10 m : vitesse lente régulière, regard vers le haut, expiration, arrêt au repère de 3 m, gilet géré seul.</div>`,
+    memo: [["Observer", "Un point à la fois."], ["Corriger", "Réussite d’abord, une correction, démontrer."], ["Valider", "Critères connus, plusieurs fois, trace écrite."]],
+    quiz: [
+      { q: "Pour corriger un élève, on commence par…", c: ["ce qui est réussi", "toutes les erreurs", "une note sur 20", "rien"], a: 0, e: "Commencer par le positif rend la correction acceptable et motivante." },
+      { q: "Combien de corrections à la fois ?", c: ["Une, la plus importante", "Toutes", "Aucune", "Cinq"], a: 0, e: "Trop d’informations noient l’élève." },
+      { q: "Une compétence se valide…", c: ["sur des critères connus, plusieurs fois", "sur une impression", "une seule fois", "sans que l’élève le sache"], a: 0, e: "Critères clairs et répétition : la validation est juste et compréhensible." },
+      { q: "Pour observer un exercice, le moniteur regarde…", c: ["un point à la fois", "tout en même temps", "seulement le paysage", "seulement le manomètre"], a: 0, e: "On décompose pour bien voir." }
+    ]
+  });
+
+  /* ================= Nitrox ================= */
+  C.extend("nx-base", {
+    essentiel: `
+<h3>Méthode : la profondeur maximale (MOD)</h3>
+<ol><li>Choisis la <b>Pp O₂ maximale</b> (souvent 1,4 ou 1,6 bar selon la fédération et l’usage).</li><li>Divise par la <b>fraction d’O₂</b> : tu obtiens la pression absolue maximale.</li><li>Retire 1 bar (l’air), multiplie par 10.</li><li><b>Arrondis vers le bas</b>.</li></ol>
+<div class="callout ex"><span class="eyebrow">Exemple</span>Nitrox 33 %, Pp O₂ max 1,4 bar : 1,4 ÷ 0,33 ≈ 4,24 bar ; − 1 = 3,24 ; × 10 ≈ <b>32 m</b>.</div>
+<h3>Pourquoi moins d’azote = moins de décompression</h3>
+<p>Avec 32 % d’O₂, il n’y a que 68 % d’azote au lieu de 79 %. À la même profondeur, tu dissous moins d’azote : c’est comme si tu plongeais <b>moins profond</b> pour la décompression (profondeur équivalente air).</p>`,
+    quiz: [
+      { q: "Nitrox 30 %, Pp O₂ max 1,4 bar. MOD environ ?", c: ["36 m", "43 m", "50 m", "26 m"], a: 0, e: "1,4 ÷ 0,30 ≈ 4,67 bar ; − 1 = 3,67 ; × 10 ≈ 36 m." },
+      { q: "On arrondit la MOD…", c: ["vers le bas", "vers le haut", "au hasard", "jamais"], a: 0, e: "On reste du côté de la sécurité." }
+    ]
+  });
+
+  C.extend("nx-securite", {
+    essentiel: `
+<h3>Les règles d’or du nitrox</h3>
+<ul><li><b>Analyser soi-même</b> son bloc avant de plonger et noter le pourcentage.</li><li><b>Régler l’ordinateur</b> sur le bon mélange.</li><li>Ne jamais dépasser la <b>MOD</b> inscrite sur le bloc.</li><li>Utiliser du matériel <b>compatible</b> avec l’oxygène pour les mélanges riches.</li></ul>`,
+    quiz: [
+      { q: "Qui analyse le mélange du bloc nitrox ?", c: ["Le plongeur lui-même, avant la plongée", "Personne", "Le gonfleur seulement", "L’ordinateur tout seul"], a: 0, e: "Chacun vérifie son gaz : une erreur de mélange peut être grave." },
+      { q: "Ton ordinateur est réglé sur l’air mais tu plonges au nitrox 32. Conséquence ?", c: ["Il calcule une décompression plus prudente mais ne surveille pas ta Pp O₂", "Rien", "Il explose", "Il te donne trop de temps"], a: 0, e: "Il ne surveillera pas la toxicité de l’oxygène : réglage toujours sur le bon mélange.", lvl: 2 }
+    ]
+  });
+
+  C.module({
+    id: "nx-pratique", world: "nitrox", depth: "−35 m", icon: "tank",
+    title: "Le nitrox en pratique",
+    sub: "Analyser, marquer, régler, plonger",
+    essentiel: `
+<h3>Avant la plongée</h3>
+<ol><li><b>Analyse</b> : l’analyseur se calibre à l’air (21 %), puis on mesure le bloc. On note le pourcentage, la MOD, la date et son nom sur l’étiquette ou le registre.</li><li><b>Marquage</b> : un bloc nitrox est identifié (bande, étiquette) pour ne pas être confondu avec un bloc d’air.</li><li><b>Ordinateur</b> : régler le pourcentage d’O₂ et la Pp O₂ maximale.</li></ol>
+<h3>Pendant la plongée</h3>
+<p>On respecte la <b>MOD</b>. L’ordinateur alerte si la Pp O₂ devient trop forte. La décompression est plus courte à profondeur égale, mais on garde les bonnes habitudes (vitesse lente, palier de principe).</p>
+<h3>Après</h3>
+<p>Le nitrox ne supprime pas le risque d’accident de décompression : il le réduit si on garde le même profil qu’à l’air.</p>
+<div class="callout ex"><span class="eyebrow">Exemple</span>Bloc analysé à 31,6 % : on retient 32 % pour régler l’ordinateur ? Non : on règle <b>la valeur mesurée</b> (31 ou 32 % selon l’ordinateur, en restant prudent) et on calcule la MOD avec elle.</div>`,
+    memo: [["Analyse", "Calibrer à 21 %, mesurer, noter."], ["Marquage", "Bloc nitrox identifié."], ["Ordinateur", "Bon pourcentage, bonne Pp O₂ max."]],
+    quiz: [
+      { q: "On calibre l’analyseur d’oxygène…", c: ["à l’air (21 %)", "dans l’eau", "à 100 % uniquement", "jamais"], a: 0, e: "La référence la plus simple est l’air ambiant à 21 %." },
+      { q: "Pourquoi marquer un bloc nitrox ?", c: ["Pour ne pas le confondre avec un bloc d’air", "Pour la décoration", "Pour le peser", "Sans raison"], a: 0, e: "Une confusion de bloc peut fausser la MOD et l’ordinateur." },
+      { q: "Le nitrox supprime-t-il le risque d’ADD ?", c: ["Non, il le réduit si le profil reste celui de l’air", "Oui, totalement", "Il l’augmente", "Il n’a aucun lien"], a: 0, e: "Moins d’azote, moins de risque, mais jamais zéro." },
+      { q: "Sur l’étiquette d’analyse, on note…", c: ["le pourcentage, la MOD, la date, le nom", "la couleur du bloc", "la météo", "rien"], a: 0, e: "La trace écrite évite les erreurs." }
+    ]
+  });
+
+
+  /* Compléments de questions des nouveaux thèmes */
+  C.addQuestions("n4-deco", [
+    { q: "Qui contrôle la vitesse de remontée de la palanquée ?", c: ["Le guide", "Le plus rapide", "Chacun pour soi", "Le bateau"], a: 0, e: "Le guide fixe et contrôle une vitesse lente, palanquée groupée." }
+  ]);
+  C.addQuestions("n4-physio", [
+    { q: "Un plongeur encadré lâche son détendeur et fonce vers la surface. Risque principal ?", c: ["La surpression pulmonaire", "La narcose", "Le froid", "Aucun"], a: 0, e: "Remontée paniquée, souvent poumons bloqués : risque majeur de surpression pulmonaire." },
+    { q: "Un comportement inhabituel à 38 m chez un plongeur encadré évoque d’abord…", c: ["la narcose", "un ADD", "le mal de mer", "la faim"], a: 0, e: "À cette profondeur, la narcose est la première hypothèse : on remonte de quelques mètres." }
+  ]);
+  C.addQuestions("e2-evaluer", [
+    { q: "Où garde-t-on la trace des compétences validées ?", c: ["Dans le carnet de formation", "Nulle part", "Dans sa tête", "Sur le bloc"], a: 0, e: "Le carnet suit la progression d’un moniteur à l’autre." },
+    { q: "Plutôt que de longues explications, il vaut souvent mieux…", c: ["montrer à nouveau le geste", "parler plus fort", "passer à autre chose", "noter l’élève"], a: 0, e: "La démonstration est plus efficace qu’un long discours sous l’eau." }
+  ]);
+  C.addQuestions("nx-pratique", [
+    { q: "Avant de plonger au nitrox, l’ordinateur doit être réglé sur…", c: ["le pourcentage d’O₂ mesuré et la Pp O₂ max", "l’air", "la température", "la date"], a: 0, e: "Sinon il ne surveille ni la toxicité de l’oxygène ni la bonne décompression." },
+    { q: "Ton bloc est analysé à 34 %. Ce qui est écrit sur l’étiquette de la veille indique 32 %. Tu retiens…", c: ["34 %, ta propre mesure", "32 %, c’est écrit", "21 %", "la moyenne"], a: 0, e: "On se fie à sa propre analyse du jour : la MOD change avec le mélange." }
+  ]);
+
+
+  /* 1.5 · questions en plus (E2 et Nitrox) */
+  C.addQuestions("e2-enseigner20", [
+    { q: "Un élève réussit l’exercice en piscine mais panique à 8 m en mer. Tu…", c: ["reviens à une profondeur plus faible et refais l’étape", "insistes à 8 m", "valides quand même", "arrêtes la formation"], a: 0, e: "On revient à l’étape où l’élève réussit, puis on progresse doucement." },
+    { q: "Pourquoi un briefing à terre avant l’exercice ?", c: ["Sous l’eau, on ne peut presque pas expliquer", "Pour gagner du temps sous l’eau seulement", "Par tradition", "Ce n’est pas utile"], a: 0, e: "Tout ce qui peut être expliqué se fait à terre : sous l’eau on montre et on corrige." },
+    { q: "L’E2 enseigne jusqu’à…", c: ["6 m", "20 m", "40 m", "60 m"], a: 1, e: "L’E2 enseigne jusqu’à 20 m, sous l’autorité d’un moniteur (à faire valider)." }
+  ]);
+  C.addQuestions("e2-securite", [
+    { q: "Un élève a froid au milieu de la séance. Tu…", c: ["écourtes la séance", "continues comme prévu", "lui demandes de palmer plus vite", "descends plus profond"], a: 0, e: "Le froid augmente les risques : on écourte." },
+    { q: "Avant un exercice de panne d’air, on vérifie…", c: ["que l’élève connaît le signe et la procédure", "la météo de demain", "rien de particulier", "la couleur de son masque"], a: 0, e: "Un exercice de panne d’air est préparé et contrôlé." }
+  ]);
+  C.addQuestions("e2-evaluer", [
+    { q: "Un critère de réussite doit être…", c: ["observable", "secret", "flou", "le même pour tous les exercices"], a: 0, e: "On doit pouvoir voir si l’élève l’atteint ou non." },
+    { q: "Le débriefing se fait…", c: ["juste après la séance, à chaud mais au calme", "une semaine plus tard", "jamais", "sous l’eau"], a: 0, e: "Le souvenir est frais : on fixe ce qui a été appris." },
+    { q: "Valoriser un progrès sert à…", c: ["motiver et fixer le bon geste", "flatter seulement", "perdre du temps", "rien"], a: 0, e: "Ce qui est reconnu se répète." }
+  ]);
+  C.addQuestions("nx-base", [
+    { q: "Nitrox 36 %, Pp O₂ max 1,6 bar. MOD environ ?", c: ["34 m", "44 m", "54 m", "28 m"], a: 0, e: "1,6 ÷ 0,36 ≈ 4,44 bar ; − 1 = 3,44 ; × 10 ≈ 34 m." },
+    { q: "Un nitrox contient…", c: ["plus d’oxygène et moins d’azote que l’air", "moins d’oxygène que l’air", "de l’hélium", "uniquement de l’oxygène"], a: 0, e: "Air enrichi en oxygène : l’azote diminue d’autant." },
+    { q: "Plus le pourcentage d’O₂ est élevé, plus la MOD…", c: ["diminue", "augmente", "ne change pas", "dépend de la température"], a: 0, e: "L’oxygène atteint plus vite sa Pp limite : la profondeur maximale baisse." }
+  ]);
+  C.addQuestions("nx-securite", [
+    { q: "Dépasser la MOD expose surtout à…", c: ["la toxicité neurologique de l’oxygène", "la narcose seule", "l’hypothermie", "rien"], a: 0, e: "Au-delà de la MOD, la Pp O₂ dépasse la limite choisie : risque de convulsions." },
+    { q: "Avec du nitrox, la narcose…", c: ["existe toujours (l’oxygène peut aussi être narcotique)", "disparaît totalement", "augmente forcément", "n’existe qu’en surface"], a: 0, e: "On reste prudent : le nitrox n’est pas un mélange « anti-narcose »." }
+  ]);
+  C.addQuestions("nx-pratique", [
+    { q: "Analyse : l’analyseur affiche 23 % à l’air libre. Tu…", c: ["le recalibres avant de mesurer ton bloc", "mesures ton bloc quand même", "ajoutes 2 % au résultat", "ignores"], a: 0, e: "À l’air, il doit indiquer 21 % : sinon on recalibre." }
+  ]);
+
+
+  C.addQuestions("nx-pratique", [
+    { q: "Sur l’étiquette d’un bloc nitrox, on note au minimum…", c: ["le % d’O₂ analysé, la MOD, la date et le nom de qui a analysé", "seulement la couleur du bloc", "la marque du détendeur", "rien, l’analyse suffit"], a: 0, e: "L’étiquette permet à chacun de vérifier le mélange avant de plonger." },
+    { q: "Qui doit analyser le mélange avant la plongée ?", c: ["le plongeur qui va l’utiliser", "uniquement le gonfleur", "personne", "le binôme seulement après la plongée"], a: 0, e: "On analyse soi-même son bloc : c’est la règle de base du nitrox." },
+    { q: "Ton ordinateur est réglé sur l’air alors que tu plonges au nitrox 32 %. Conséquence ?", c: ["il est plus prudent sur la désaturation mais ne surveille pas ta Pp O₂", "il est dangereux pour la désaturation", "aucune différence", "il refuse de s’allumer"], a: 0, e: "Mieux vaut le régler sur le bon mélange pour suivre la MOD et l’oxygène (à faire valider)." }
+  ]);
+
+  /* Calculs en plus */
+  const u = AA.u, G = AA.game, PK = u.pick, N = u.num, M = (...a) => G.mkCalc(...a);
+  C.addGenerators({
+    n4demi: { m: "n4-air", make: () => { const V = PK([12, 15]), d = PK([20, 25, 30, 35]), c = PK([18, 20, 22, 25]), tr = PK([5, 6, 8, 10]), Pr = PK([70, 80, 100]); const p = 1 + d / 10, b = Math.ceil(c * p * tr / V);
+      return M(`Bloc ${V} L. Retour prévu de ${tr} min à ${d} m, conso ${c} L/min en surface, remontée à ${Pr} bar. Pression de demi-tour environ ?`, Pr + b, [Pr, Pr + Math.ceil(c * tr / V), Pr + 2 * b], ` bar`, `Air du retour = ${c} × ${N(p)} × ${tr} = ${N(c * p * tr)} L, soit ${N(c * p * tr)} ÷ ${V} ≈ ${b} bar. Demi-tour = ${Pr} + ${b} = ${Pr + b} bar.`, 0); } }
+  });
+  C.byId["n4-air"].gen.push("n4demi");
+})();
+
+/* content/fr/deep-rifap-e1.js */
+/* Abysse Academy · contenu FR · RIFAP, Initiateur, N1 et Découverte approfondis (1.5)
+   Complète les cours existants sans les réordonner. Gestes de secours : selon les
+   recommandations en vigueur et ta formation (à faire valider par ton moniteur). */
+(function () {
+  "use strict";
+  const C = AA.content;
+
+  /* ================= RIFAP ================= */
+  C.extend("r-role", {
+    essentiel: `
+<h3>La chaîne des secours</h3>
+<ol><li><b>Protéger</b> : sortir la victime de l’eau sans se mettre en danger, la mettre à l’abri (soleil, vent, mouvement du bateau).</li><li><b>Examiner</b> : conscience, respiration, signes d’accident.</li><li><b>Alerter</b> : faire alerter tôt, avec un message complet.</li><li><b>Secourir</b> : oxygène, position adaptée, réanimation si besoin, surveillance.</li></ol>
+<p>Le RIFAP t’apprend à tenir ta place dans cette chaîne <b>jusqu’à l’arrivée des secours</b>.</p>
+<div class="callout ex"><span class="eyebrow">Exemple</span>Au retour d’une plongée, un plongeur se plaint de fourmillements dans la main. Toi : tu l’installes à l’abri, tu préviens le directeur de plongée, tu mets l’oxygène en route pendant que quelqu’un alerte, et tu notes l’heure.</div>`,
+    quiz: [
+      { q: "Ordre de la chaîne des secours ?", c: ["Alerter, protéger, secourir, examiner", "Protéger, examiner, alerter, secourir", "Secourir, alerter, protéger", "Examiner seulement"], a: 1, e: "On se protège et on protège la victime, on examine, on alerte, on secourt." },
+      { q: "Le RIFAP te prépare à agir…", c: ["jusqu’à l’arrivée des secours", "à la place des médecins", "seulement sous l’eau", "après l’hôpital"], a: 0, e: "Tu es le premier maillon : tu tiens jusqu’au relais des secours." }
+    ]
+  });
+
+  C.extend("r-alerte", {
+    essentiel: `
+<h3>Le message d’alerte, mot à mot</h3>
+<ol><li><b>Qui</b> appelle et d’où (nom du bateau, position, numéro de rappel).</li><li><b>Quoi</b> : accident de plongée, nombre de victimes.</li><li><b>État</b> de chaque victime : consciente ou non, respire ou non, signes.</li><li><b>Gestes faits</b> : oxygène depuis quelle heure.</li><li><b>Paramètres</b> de la plongée : profondeur, durée, paliers, mélange.</li><li>On <b>ne raccroche pas</b> le premier.</li></ol>
+<div class="callout ex"><span class="eyebrow">Exemple</span>« Ici le bateau Galatée, au mouillage devant la pointe Est, rappel au 06… Un plongeur de 42 ans, conscient, douleur au genou depuis 15 minutes, plongée à 38 m pendant 30 minutes avec paliers. Il est sous oxygène depuis 14 h 20. »</div>`,
+    quiz: [
+      { q: "Dans le message d’alerte, on donne aussi…", c: ["les paramètres de la plongée", "le prix de la plongée", "la météo de demain", "rien de plus"], a: 0, e: "Profondeur, durée, paliers et mélange aident le médecin." },
+      { q: "Qui raccroche en premier ?", c: ["L’appelant", "Les secours", "Peu importe", "Personne ne raccroche"], a: 1, e: "On attend que les secours aient toutes les informations et raccrochent." }
+    ]
+  });
+
+  C.extend("r-o2", {
+    essentiel: `
+<h3>Mettre l’oxygène en route, étape par étape</h3>
+<ol><li>Vérifier la <b>pression</b> de la bouteille d’oxygène.</li><li>Ouvrir doucement, régler le <b>débit</b> selon le masque (fort débit pour un masque à haute concentration, selon le protocole de ta formation).</li><li>Gonfler le <b>ballon réserve</b> avant de poser le masque.</li><li>Poser le masque, expliquer à la victime, noter <b>l’heure</b>.</li><li>Surveiller la <b>réserve</b> d’oxygène : prévoir le relais.</li></ol>
+<div class="callout ex"><span class="eyebrow">Combien de temps ?</span>Une bouteille de 5 L à 200 bar contient environ 1 000 L d’oxygène. À 15 L/min, cela fait environ <b>66 minutes</b>. Moins si la pression de départ est plus basse : on calcule tôt.</div>
+<div class="callout trap"><span class="eyebrow">Sécurité</span>Pas de graisse sur le matériel oxygène, pas de flamme ni de cigarette à proximité.</div>`,
+    quiz: [
+      { q: "Une bouteille d’O₂ de 5 L à 150 bar, débit 15 L/min. Autonomie environ ?", c: ["≈ 25 min", "≈ 50 min", "≈ 100 min", "≈ 10 min"], a: 1, e: "5 × 150 = 750 L. 750 ÷ 15 = 50 min." },
+      { q: "Avant de poser le masque à haute concentration, on…", c: ["gonfle le ballon réserve", "coupe l’oxygène", "graisse le détendeur", "attend 10 minutes"], a: 0, e: "Le ballon doit être plein pour que la victime respire de l’oxygène pur dès le début." },
+      { q: "Pourquoi noter l’heure de mise sous oxygène ?", c: ["Pour les secours et le médecin", "Pour la facture", "Par habitude", "Ce n’est pas utile"], a: 0, e: "La durée d’oxygénothérapie guide la suite de la prise en charge." }
+    ]
+  });
+
+  C.extend("r-vict", {
+    essentiel: `
+<h3>Le bilan en 4 questions</h3>
+<ol><li>Répond-elle ? (conscience)</li><li>Respire-t-elle normalement ? (regarder, écouter, sentir, 10 secondes)</li><li>Saigne-t-elle ?</li><li>Que s’est-il passé ? (plongée, symptômes, heure)</li></ol>
+<div class="tbl"><table><tr><th>État</th><th>Conduite (selon ta formation)</th></tr>
+<tr><td>Consciente</td><td>Position confortable (souvent allongée), oxygène, eau si elle peut boire, surveillance.</td></tr>
+<tr><td>Inconsciente qui respire</td><td>Position latérale de sécurité (PLS), oxygène, surveillance de la respiration.</td></tr>
+<tr><td>Inconsciente qui ne respire pas</td><td>Alerte, réanimation cardio-pulmonaire (compressions et insufflations), défibrillateur dès qu’il arrive.</td></tr></table></div>
+<p>Après une noyade, la réanimation commence souvent par des <b>insufflations</b> : le manque d’oxygène est la cause. Suis le protocole appris en formation.</p>`,
+    quiz: [
+      { q: "Victime inconsciente qui respire. Position ?", c: ["Assise", "Latérale de sécurité (PLS)", "Debout", "Sur le ventre, tête dans l’eau"], a: 1, e: "La PLS garde les voies aériennes libres." },
+      { q: "Pour vérifier la respiration, on regarde, écoute et sent pendant…", c: ["2 secondes", "10 secondes environ", "1 minute", "5 minutes"], a: 1, e: "Une dizaine de secondes suffit pour décider." },
+      { q: "Victime inconsciente qui ne respire pas : on…", c: ["attend les secours sans rien faire", "alerte et commence la réanimation", "lui donne à boire", "la met en PLS"], a: 1, e: "Sans respiration, chaque minute compte : alerte et RCP, défibrillateur dès que possible." }
+    ]
+  });
+
+  C.module({
+    id: "r-cas", world: "rifap", depth: "Récif 5", icon: "heart",
+    title: "Cas pratiques",
+    sub: "Trois situations, les bons réflexes",
+    essentiel: `
+<p>Le RIFAP s’évalue en <b>situation</b>. Voici trois cas pour t’entraîner à enchaîner les gestes.</p>
+<h3>Cas 1 · Douleur après la plongée</h3>
+<p>Trente minutes après une plongée à 35 m, Lina se plaint d’une douleur à l’épaule qui augmente. <b>Réflexes</b> : penser ADD, l’allonger à l’abri, oxygène, faire boire de l’eau, alerter, noter l’heure et les paramètres, surveiller.</p>
+<h3>Cas 2 · Plongeur sorti inconscient</h3>
+<p>Un plongeur est remonté inconscient. <b>Réflexes</b> : le sortir de l’eau, bilan (respire-t-il ?), alerte immédiate, PLS et oxygène s’il respire, réanimation sinon, défibrillateur.</p>
+<h3>Cas 3 · Malaise sur le bateau</h3>
+<p>Avant même la plongée, un plongeur est pâle et nauséeux (mal de mer ?). <b>Réflexes</b> : il ne plonge pas, on l’installe à l’air, on surveille ; si des signes apparaissent après une plongée, on pense d’abord à un accident de plongée.</p>
+<div class="callout trap"><span class="eyebrow">Règle d’or</span>Tout signe anormal après une plongée est un <b>accident de plongée jusqu’à preuve du contraire</b>.</div>`,
+    memo: [["Après plongée", "Tout signe = accident de plongée jusqu’à preuve du contraire."], ["Inconscient", "Bilan, alerte, PLS ou RCP, oxygène."], ["Douleur", "Penser ADD : oxygène, eau, alerte."]],
+    quiz: [
+      { q: "Une douleur au genou 40 min après une plongée profonde. Premier réflexe ?", c: ["Un antidouleur et on oublie", "Penser ADD : oxygène et alerte", "Un massage", "Une nouvelle plongée"], a: 1, e: "Tout signe après plongée est un accident jusqu’à preuve du contraire." },
+      { q: "Un plongeur malade avant la plongée…", c: ["plonge quand même", "ne plonge pas", "plonge plus profond", "plonge seul"], a: 1, e: "On ne plonge pas malade : le risque augmente pour lui et pour la palanquée." },
+      { q: "Un plongeur remonté inconscient respire. On…", c: ["le met en PLS sous oxygène et on alerte", "le fait asseoir", "attend qu’il se réveille", "lui fait boire de l’eau"], a: 0, e: "PLS, oxygène, alerte et surveillance de la respiration." },
+      { q: "Pourquoi noter l’heure des premiers signes ?", c: ["Elle aide les médecins à décider du traitement", "Pour le carnet de plongée", "Pour l’assurance seulement", "Ce n’est pas utile"], a: 0, e: "L’évolution dans le temps est une information médicale importante." },
+      { q: "Une victime consciente d’ADD peut boire…", c: ["de l’eau plate, si elle n’a pas de troubles", "de l’alcool", "du café fort", "rien du tout, jamais"], a: 0, e: "L’hydratation aide, si la victime est consciente et peut avaler (selon le protocole)." },
+      { q: "Le défibrillateur se pose…", c: ["dès qu’il arrive, sur une victime qui ne respire pas", "jamais en plongée", "seulement à l’hôpital", "sur une victime consciente"], a: 0, e: "Le défibrillateur guide les gestes : on l’utilise dès que possible en cas d’arrêt." }
+    ]
+  });
+
+  /* ================= Initiateur ================= */
+  C.extend("e2-role", {
+    essentiel: `
+<h3>L’initiateur au quotidien</h3>
+<p>En piscine, il fait découvrir les premiers gestes (vidage de masque, lâcher-reprise du détendeur, palmage). En milieu protégé (0-6 m), il fait vivre les premières plongées des débutants et les baptêmes, <b>sous l’autorité d’un moniteur</b> qui organise.</p>
+<div class="callout ex"><span class="eyebrow">Une matinée type</span>Préparer le matériel des élèves, briefing à terre, deux élèves maximum dans l’eau avec lui, exercices simples, retour, débriefing, carnet rempli.</div>`,
+    quiz: [
+      { q: "L’initiateur enseigne sous l’autorité…", c: ["d’un moniteur", "de personne", "du pilote du bateau", "de ses élèves"], a: 0, e: "Il fait partie d’une équipe pédagogique dirigée par un moniteur." }
+    ]
+  });
+
+  C.extend("e2-peda", {
+    essentiel: `
+<h3>La démonstration réussie</h3>
+<ol><li>Se placer <b>face à l’élève</b>, à sa hauteur.</li><li>Faire le geste <b>lentement</b>, en entier, une première fois.</li><li>Le refaire en <b>décomposant</b> les étapes clés.</li><li>Laisser l’élève essayer, puis corriger <b>une chose</b>.</li></ol>
+<div class="callout ex"><span class="eyebrow">Exemple</span>Vidage de masque : expiration par le nez, main en haut du masque, regard vers le haut. L’initiateur montre d’abord le geste entier, puis insiste sur « souffler par le nez ».</div>`,
+    quiz: [
+      { q: "Pour démontrer un geste, on le fait…", c: ["vite, pour gagner du temps", "lentement, en entier, puis décomposé", "une seule fois", "dos à l’élève"], a: 1, e: "Lentement puis décomposé : l’élève voit et retient." }
+    ]
+  });
+
+  C.extend("e2-seance", {
+    essentiel: `
+<h3>Fiche de séance (modèle)</h3>
+<div class="tbl"><table><tr><th>Rubrique</th><th>Exemple</th></tr>
+<tr><td>Public</td><td>2 débutants adultes, 3ᵉ séance piscine</td></tr>
+<tr><td>Objectif</td><td>Lâcher-reprise du détendeur à 3 m, calme, 3 fois</td></tr>
+<tr><td>Matériel</td><td>Blocs, gilets, lests vérifiés</td></tr>
+<tr><td>Déroulé</td><td>Rappel (5 min), démonstration, essais, jeu de fin</td></tr>
+<tr><td>Sécurité</td><td>Élèves à portée de main, signes rappelés</td></tr>
+<tr><td>Bilan</td><td>Réussi / à revoir, prochaine étape</td></tr></table></div>`,
+    quiz: [
+      { q: "Une fiche de séance indique d’abord…", c: ["le public et l’objectif", "la couleur des blocs", "le prix", "le nom de la piscine"], a: 0, e: "On adapte toute la séance au public et à un objectif clair." }
+    ]
+  });
+
+  C.extend("e2-secu", {
+    essentiel: `
+<h3>Les incidents fréquents en baptême</h3>
+<ul><li><b>Oreilles</b> : l’enfant ou l’adulte n’arrive pas à équilibrer → on remonte un peu, on recommence doucement, on n’insiste pas.</li><li><b>Panique</b> : regard affolé, veut remonter → contact, calme, on remonte lentement en contrôlant l’expiration.</li><li><b>Froid</b> : on écourte.</li></ul>`,
+    quiz: [
+      { q: "Un baptisé panique et veut remonter. Tu…", c: ["le laisses monter seul", "gardes le contact et remontes lentement avec lui en contrôlant son expiration", "le tiens au fond", "lui retires son détendeur"], a: 1, e: "Contrôle, calme et remontée lente : on évite la surpression pulmonaire." }
+    ]
+  });
+
+  C.extend("e2-com", {
+    essentiel: `
+<h3>Motiver sans mettre la pression</h3>
+<p>Fixer des étapes <b>atteignables</b>, valoriser chaque progrès, adapter le rythme. Un élève qui échoue a besoin d’une étape plus petite, pas d’un discours.</p>`,
+    quiz: [
+      { q: "Un élève échoue trois fois au même exercice. Tu…", c: ["le fais recommencer encore", "proposes une étape plus petite", "abandonnes", "le grondes"], a: 1, e: "On découpe la difficulté pour retrouver la réussite." }
+    ]
+  });
+
+  C.module({
+    id: "e1-piscine", world: "e1", depth: "Île 6", icon: "wave",
+    title: "Enseigner en piscine",
+    sub: "Les premiers gestes, dans l’ordre",
+    essentiel: `
+<p>La piscine est l’endroit idéal pour apprendre : eau claire, chaude, peu profonde. Voici une progression classique (à adapter).</p>
+<ol><li><b>Respirer</b> sur le détendeur, debout puis à genoux.</li><li><b>Vider le masque</b> partiellement puis totalement.</li><li><b>Lâcher et reprendre</b> le détendeur.</li><li><b>Palmer</b> efficacement, en surface puis immergé.</li><li><b>Équilibrer</b> ses oreilles en descendant au fond du bassin.</li><li><b>Se stabiliser</b> avec le gilet.</li><li><b>Signes</b> et réactions : « ça ne va pas », « plus d’air ».</li></ol>
+<div class="callout ex"><span class="eyebrow">Exemple de jeu</span>Le « relais du lest » : les élèves se passent un petit lest au fond, en restant stabilisés. Ils travaillent la flottabilité sans s’en rendre compte.</div>
+<h3>Sécurité en piscine</h3>
+<p>Même à 4 m, on <b>surveille</b> en continu : pas de remontée poumons pleins, pas d’apnée prolongée en fin de séance, matériel vérifié.</p>`,
+    memo: [["Progression", "Respirer, masque, détendeur, palmes, oreilles, gilet, signes."], ["Jeu", "Apprendre sans s’en rendre compte."], ["Sécurité", "Surveillance continue, même à 4 m."]],
+    quiz: [
+      { q: "Premier exercice classique en piscine ?", c: ["Respirer sur le détendeur", "Descendre à 6 m", "Vider le masque en remontant", "Remonter sans détendeur"], a: 0, e: "On commence par le geste de base : respirer calmement sous l’eau." },
+      { q: "Pourquoi utiliser des jeux ?", c: ["Pour apprendre sans stress", "Pour perdre du temps", "Pour remplacer la sécurité", "Sans raison"], a: 0, e: "Le jeu détend et fait travailler les gestes." },
+      { q: "Même à 4 m de profondeur, le risque de surpression pulmonaire…", c: ["existe si l’élève remonte poumons bloqués", "n’existe pas", "n’existe qu’en mer", "dépend de l’eau chlorée"], a: 0, e: "Les plus grandes variations de volume sont près de la surface." },
+      { q: "Le gilet s’apprend…", c: ["après les gestes de base", "avant de respirer sur le détendeur", "jamais en piscine", "seulement en mer"], a: 0, e: "On construit sur des bases solides : respirer, masque, détendeur." },
+      { q: "En fin de séance, on évite…", c: ["les apnées prolongées", "le débriefing", "de ranger le matériel", "de sourire"], a: 0, e: "Fatigue et apnée font un mauvais mélange." },
+      { q: "Qui organise la séance de l’initiateur en piscine ?", c: ["Un moniteur responsable", "L’élève", "Le maître-nageur seul", "Personne"], a: 0, e: "L’initiateur agit dans un cadre fixé par un moniteur." }
+    ]
+  });
+
+  /* ================= N1 et Découverte ================= */
+  C.extend("n1-physique", {
+    essentiel: `
+<h3>Pourquoi les oreilles font mal en descendant</h3>
+<p>Le tympan est une petite membrane. Dehors, l’eau pousse de plus en plus fort ; dedans, l’air de l’oreille reste à la pression de départ. Le tympan est poussé vers l’intérieur : ça fait mal. En <b>équilibrant</b> (Valsalva, déglutition), tu envoies de l’air derrière le tympan pour égaliser.</p>
+<div class="callout ex"><span class="eyebrow">Exemple</span>Entre la surface et 10 m, la pression double (1 → 2 bar). Entre 30 et 40 m, elle passe de 4 à 5 bar (+25 %). C’est pour ça que <b>les premiers mètres</b> demandent le plus d’équilibrages.</div>`,
+    quiz: [
+      { q: "Où la pression change-t-elle le plus, en proportion ?", c: ["Près de la surface", "Vers 40 m", "Partout pareil", "Au fond seulement"], a: 0, e: "De 0 à 10 m, elle double : on équilibre souvent dès le début." }
+    ]
+  });
+  C.extend("n1-secu", {
+    essentiel: `
+<h3>Panne d’air : la procédure du N1</h3>
+<ol><li>Faire le signe <b>« plus d’air »</b> au guide ou au binôme.</li><li>Prendre la <b>source d’air de secours</b> qu’on te donne.</li><li>Remonter <b>ensemble</b>, lentement, en se tenant.</li></ol>
+<p>C’est pour ça qu’on surveille son manomètre et qu’on annonce sa pression quand le guide la demande.</p>`,
+    quiz: [
+      { q: "Tu n’as presque plus d’air. Premier geste ?", c: ["Remonter seul très vite", "Faire le signe « plus d’air » au guide", "Retenir ta respiration", "Lâcher ton lest"], a: 1, e: "On prévient : le guide te donne de l’air et vous remontez ensemble." }
+    ]
+  });
+  C.extend("d-bapteme", {
+    essentiel: `
+<h3>Les 3 réflexes à retenir avant ton baptême</h3>
+<ol><li><b>Respire normalement</b> : ne retiens jamais ta respiration.</li><li><b>Équilibre tes oreilles</b> souvent, avant d’avoir mal.</li><li><b>Fais un signe</b> au moniteur dès que quelque chose ne va pas.</li></ol>`,
+    quiz: [
+      { q: "Pendant un baptême, tu dois…", c: ["retenir ta respiration pour économiser l’air", "respirer normalement", "descendre vite", "ne rien dire si tu as mal"], a: 1, e: "On ne bloque jamais sa respiration sous l’eau." }
+    ]
+  });
+
+  /* Calcul en plus : autonomie d'une bouteille d'oxygène (RIFAP). */
+  const u = AA.u, G = AA.game, PK = u.pick, N = u.num, M = (...a) => G.mkCalc(...a);
+  C.addGenerators({
+    ro2: { m: "r-o2", make: () => { const V = PK([2, 3, 5, 15]), P = PK([120, 150, 180, 200]), d = PK([9, 12, 15]); const t = Math.floor(V * P / d);
+      return M(`Bouteille d’oxygène de ${V} L à ${P} bar, débit ${d} L/min. Autonomie environ ?`, t, [Math.floor(V * P / 10), Math.floor(P / d), t * 2], ` min`, `Oxygène disponible = ${V} × ${P} = ${V * P} L. ÷ ${d} L/min ≈ ${t} min. (En pratique on garde une petite réserve.)`, 0); } }
+  });
+  C.byId["r-o2"].gen = (C.byId["r-o2"].gen || []).concat("ro2");
 })();
 
 /* js/app.js */

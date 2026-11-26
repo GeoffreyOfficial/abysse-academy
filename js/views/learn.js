@@ -20,13 +20,17 @@
       const boss = w.boss && !w.soon, bossOpen = boss && G.bossOpen(w.id), bossRec = (AA.S.boss || {})[w.id];
       el.innerHTML = `<h1 class="sr">${t("tab.map")}</h1>
         <div class="wstrip" role="tablist" aria-label="${t("map.worlds")}">${C.worlds.filter(x => !x.soon).map(x => { const l = C.inWorld(x.id), got = l.filter(mm => G.stars(mm.id) >= 1).length, op = G.worldOpen(x), md = AA.path.mode(x.id);
-          return `<button role="tab" class="wchip ${op ? "" : "lock"} ${md}" data-w="${x.id}" aria-pressed="${x.id === w.id}" aria-selected="${x.id === w.id}" style="--wc:var(${x.color})"><span class="wring" style="--p:${l.length ? got / l.length : 0}">${AA.icon(op ? x.icon : "lock")}</span><b>${u.esc(x.short)}</b><span class="xs">${AA.path.certified(x.id) ? "✓ " + t("map.got") : md === "skip" ? t("path.m.skip") : got + "/" + l.length}</span></button>`; }).join("")}</div>
+          return `<button role="tab" class="wchip ${op ? "" : "lock"} m-${md}" data-w="${x.id}" aria-pressed="${x.id === w.id}" aria-selected="${x.id === w.id}" style="--wc:var(${x.color})"><span class="wring" style="--p:${l.length ? got / l.length : 0}">${AA.icon(op ? x.icon : "lock")}</span><b>${u.esc(x.short)}</b><span class="xs">${AA.path.certified(x.id) ? "✓ " + t("map.got") : md === "skip" ? t("path.m.skip") : got + "/" + l.length}</span></button>`; }).join("")}</div>
+        <div class="map-layout"><aside class="map-side">
         <section class="worldhead" style="--wc:var(${w.color});margin-top:var(--sp-4)">
-          <div class="row between"><p class="eyebrow" style="margin:0">${t("map.world")} ${C.worlds.indexOf(w) + 1}</p>${AA.helpBtn("map")}</div><h2>${u.esc(w.title)}</h2><p class="muted" style="margin:6px 0 12px">${u.esc(w.sub)}</p>
+          <div class="row between"><p class="eyebrow" style="margin:0">${t("map.world")} ${C.worlds.indexOf(w) + 1}</p>${AA.helpBtn("map")}</div><h2>${u.esc(w.title)}</h2><p class="muted" style="margin:6px 0 12px">${u.esc(w.sub)}</p>${w.soon ? "" : AA.levelBadge(w.id)}
           ${w.soon ? "" : `<div class="row between small"><span>${AA.icon("star")} ${starsGot} / ${starsMax}</span><span class="muted">${t("map.done", { n: list.filter(m => G.stars(m.id) >= 1).length, tot: list.length })}</span></div>${AA.ui.bar(starsGot / Math.max(1, starsMax))}`}
           ${!open && !w.soon ? `<p class="chip warn" style="margin-top:12px">${AA.icon("lock")} ${u.esc(G.worldLockReason(w))}</p>` : ""}
           ${w.soon ? "" : modeBanner(w, open)}
         </section>
+        ${w.soon ? "" : `<nav class="modlist desk-only" aria-label="${t("map.list")}">${list.map((m, k) => { const okk = G.unlocked(m), s2 = G.stars(m.id); return `<a class="ml-row ${k === cur ? "cur" : ""} ${okk ? "" : "lock"}" href="#/lesson/${m.id}"><span class="ml-ic">${AA.icon(okk ? m.icon : "lock")}</span><span class="grow"><b>${u.esc(m.title)}</b><span class="xs muted">${u.esc(m.depth)} · ${u.esc(m.sub)}</span></span>${AA.stars(s2)}</a>`; }).join("")}
+          ${boss ? `<a class="ml-row boss" href="#/boss/${w.id}"><span class="ml-ic">${AA.icon("swords")}</span><span class="grow"><b>${u.esc(w.boss.name)}</b><span class="xs muted">${bossRec && bossRec.won ? t("boss.beaten", { n: bossRec.best }) : bossOpen ? t("boss.ready") : t("boss.lockedS")}</span></span></a>` : ""}</nav>`}
+        </aside><div class="map-main">
         ${w.soon ? soon(w) : `${w.surface ? `<div class="surface-line">${u.esc(w.surface)}</div>` : ""}<div class="map" data-world="${w.id}" style="--wc:var(${w.color})">
           <div class="para far" data-k=".22" aria-hidden="true"></div><div class="para mid" data-k=".1" aria-hidden="true"></div><div class="fauna" aria-hidden="true"></div><div class="sunrays" aria-hidden="true"></div>
           <svg class="rope" aria-hidden="true"></svg>
@@ -40,7 +44,7 @@
             <div class="info"><small>${t("boss.eyebrow")}</small><b>${u.esc(w.boss.name)}</b><span>${bossRec && bossRec.won ? t("boss.beaten", { n: bossRec.best }) : bossOpen ? `<span style="color:var(--accent)">${t("boss.ready")}</span>` : t("boss.lockedS")}</span></div></div>` : ""}
           <button class="diver" id="diver" aria-label="${t("map.diver")}" hidden>${diverSvg()}</button>
         </div>`}
-        ${w.soon ? "" : `<div class="depthchip" id="depthchip" aria-hidden="true">${AA.icon("gauge")}<b>${u.esc(list[0] ? list[0].depth : "")}</b></div>`}`;
+        ${w.soon ? "" : `<div class="depthchip" id="depthchip" aria-hidden="true">${AA.icon("gauge")}<b>${u.esc(list[0] ? list[0].depth : "")}</b></div>`}</div></div>`;
       u.$$("[data-w]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.router.go("map/" + b.dataset.w, undefined, true); });
       u.$$(".node[data-id]", el).forEach(b => b.onclick = () => {
         const m = C.byId[b.dataset.id];
@@ -215,7 +219,7 @@
           <label class="setting"><span class="grow"><b>${t("lesson.validated")}</b><span>${note.ok ? t("lesson.validatedOn", { d: note.ok }) : t("lesson.validatedS")}</span></span><span class="switch"><input type="checkbox" id="valid" ${note.ok ? "checked" : ""}><i></i></span></label>`;
 
       el.innerHTML = `
-        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.stars(st)}</div>
+        <div class="pagehead"><a class="closebtn" href="#/map/${m.world}" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(w.short)} · ${i + 1}/${list.length}</span>${AA.levelBadge(m.world, true)}${AA.stars(st)}</div>
         <header class="lesson-hero" style="--wc:var(${w.color})">
           <div class="row" style="gap:var(--sp-4);flex-wrap:nowrap"><span class="ic">${AA.icon(m.icon)}</span><div class="grow"><p class="eyebrow" style="color:var(--wc)">${u.esc(m.depth)}</p><h1 style="font-size:var(--fs-2xl)">${u.esc(m.title)}</h1><p class="muted" style="margin:4px 0 0">${u.esc(m.sub)}</p></div></div>
           <div class="row" style="margin-top:var(--sp-4)">
@@ -228,13 +232,18 @@
           </div>
         </header>
         ${!ok ? `<div class="callout trap"><span class="eyebrow">${t("map.locked")}</span>${u.esc(G.lockReason(m))} ${t("lesson.lockedRead")}</div>` : ""}
+        <div class="lesson-layout"><div class="lesson-main">
         <div class="seg lesson-tabs" role="tablist" style="margin-top:var(--sp-4)">${TABS.map(k => `<button role="tab" data-tab="${k}" aria-pressed="${k === tab}" aria-selected="${k === tab}">${t("lesson.tab." + k)}</button>`).join("")}</div>
         <article class="card lesson-body" style="margin-top:var(--sp-3)">${body}</article>
         <div class="row between lesson-nav">${i > 0 ? `<a class="btn ghost sm" href="#/lesson/${list[i - 1].id}">${AA.icon("back")} ${u.esc(list[i - 1].title)}</a>` : "<span></span>"}${i < list.length - 1 ? `<a class="btn ghost sm" href="#/lesson/${list[i + 1].id}">${u.esc(list[i + 1].title)} ${AA.icon("next")}</a>` : ""}</div>
+        </div><aside class="lesson-side">
+        <section class="card side-card desk-only"><p class="eyebrow">${u.esc(w.short)} · ${t("lesson.inWorld")}</p>
+          ${list.map((x, k) => `<a class="ml-row ${x.id === m.id ? "cur" : ""} ${G.unlocked(x) ? "" : "lock"}" href="#/lesson/${x.id}"><span class="ml-ic">${AA.icon(G.unlocked(x) ? x.icon : "lock")}</span><span class="grow"><b>${u.esc(x.title)}</b></span>${AA.stars(G.stars(x.id))}</a>`).join("")}</section>
+        ${m.memo.length && tab !== "memo" ? `<section class="card side-card desk-only"><p class="eyebrow">${t("lesson.tab.memo")}</p><div class="memo mini">${m.memo.slice(0, 5).map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="small muted">${u.esc(b)}</span></div>`).join("")}</div></section>` : ""}
         <div class="sticky-cta"><div class="card glass">
           <button class="btn grow" id="dive" ${ok ? "" : "disabled"}>${AA.icon("play")} ${tab === "approfondir" && deepQ ? t("lesson.diveDeep", { n: deepQ }) : t("lesson.dive", { n: Math.min(10, m.quiz.length) })}</button>
           ${gens ? `<button class="btn gold sm" id="calc" ${ok ? "" : "disabled"} aria-label="${t("lesson.calcs")}">${AA.icon("calc")}</button>` : ""}
-        </div></div>`;
+        </div></div></aside></div>`;
       u.$$("[data-diagram]", el).forEach(f => { const d = C.diagrams[f.dataset.diagram]; if (d) f.outerHTML = d(); });
       u.$$(".prose", el).forEach(p => AA.gloss.link(p));
       enhance(el, m);
