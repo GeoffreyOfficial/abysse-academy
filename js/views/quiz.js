@@ -64,16 +64,20 @@
     list.forEach(m => u.shuffle(m.quiz).slice(0, 3).forEach(q => qs.push(q)));
     Q.start("stale", u.shuffle(qs).slice(0, 12), { title: t("mode.stale"), back: "home", stale: list.map(m => m.id) });
   };
-  Q.exam = full => {
-    const wid = "n2", mods = C.inWorld(wid), pick = [];
+  /* Examen blanc du monde visé (N2 par défaut, ou l'objectif choisi dans « Mon parcours »). */
+  Q.examWorld = () => { const g = G.goalWorld(); return C.inWorld(g).length >= 2 ? g : "n2"; };
+  Q.exam = (full, wid) => {
+    wid = wid || Q.examWorld();
+    const mods = C.inWorld(wid), pick = [], w = C.worldById[wid];
     mods.forEach(m => pick.push(...u.shuffle(m.quiz.filter(q => q.lvl !== 2)).slice(0, full ? 2 : 1)));
     const all = C.questions.filter(q => q.world === wid && !pick.includes(q));
     const n = full ? 40 : 20, nc = full ? 10 : 4;
     const rest = u.shuffle(all).slice(0, Math.max(0, n - nc - pick.length));
-    const calcs = Array.from({ length: nc }, () => G.gen());
-    Q.start("exam", u.shuffle(pick.slice(0, n - nc).concat(rest, calcs)), { full, timeLeft: (full ? 45 : 20) * 60, title: t(full ? "mode.examFull" : "mode.examQuick"), back: "train" });
+    const wg = G.genKeys().filter(k => C.byId[C.generators[k].m] && C.byId[C.generators[k].m].world === wid);
+    const calcs = Array.from({ length: nc }, () => G.gen(wg.length ? u.pick(wg) : undefined)).filter(Boolean);
+    Q.start("exam", u.shuffle(pick.slice(0, n - calcs.length).concat(rest, calcs)), { full, world: wid, timeLeft: (full ? 45 : 20) * 60, title: t(full ? "mode.examFull" : "mode.examQuick") + (w && wid !== "n2" ? " · " + w.short : ""), back: "train" });
   };
-  Q.apnee = () => Q.start("apnee", u.shuffle(C.questions.filter(q => q.world === G.goalWorld() && G.unlocked(q.m))), { time: 60, title: t("mode.apnee"), back: "train" });
+  Q.apnee = () => Q.start("apnee", u.shuffle(C.questions.filter(q => q.world === G.goalWorld() && G.inPlay(q.m))), { time: 60, title: t("mode.apnee"), back: "train" });
   Q.computer = n => Q.start("pc", u.shuffle(C.computer).slice(0, n || C.computer.length), { title: t("mode.pc"), back: "pc", n });
   Q.duel = (a, b) => {
     const qs = u.shuffle(C.questions.filter(q => q.world === "n2" && q.lvl !== 2)).slice(0, 6).concat([G.gen(), G.gen()]);
@@ -90,12 +94,12 @@
   };
   /* 5 minutes : cartes à revoir, erreurs, doutes, nouveautés et un calcul. Fin douce au bout du temps. */
   Q.five = () => {
-    const S = AA.S, qs = [], used = new Set(), add = q => { if (q && !used.has(q.id) && (q.card || q.calc || G.unlocked(q.m))) { used.add(q.id); qs.push(q); } };
+    const S = AA.S, qs = [], used = new Set(), add = q => { if (q && !used.has(q.id) && (q.card || q.calc || G.inPlay(q.m))) { used.add(q.id); qs.push(q); } };
     u.shuffle(G.cardsDue()).slice(0, 3).forEach(cd => add({ card: true, id: "card:" + cd.id, cid: cd.id, m: cd.m, f: cd.f, b: cd.b, q: cd.f, c: [], e: cd.b }));
     Object.keys(S.errors).filter(id => C.qById[id] && !id.startsWith("pc-")).sort((a, b) => S.errors[b] - S.errors[a]).slice(0, 3).forEach(id => add(C.qById[id]));
     Object.keys(S.doubt).filter(id => C.qById[id]).slice(0, 1).forEach(id => add(C.qById[id]));
     G.staleList().slice(0, 1).forEach(m => add(u.pick(m.quiz)));
-    const pool = C.questions.filter(q => G.unlocked(q.m));
+    const pool = C.questions.filter(q => G.inPlay(q.m));
     u.shuffle(pool.filter(q => S.seen[q.id] !== 1)).forEach(q => { if (qs.length < 9) add(q); });
     u.shuffle(pool).forEach(q => { if (qs.length < 9) add(q); });
     const cards = qs.filter(q => q.card), rest = u.shuffle(qs.filter(q => !q.card));
@@ -106,7 +110,8 @@
   Q.restart = c => {
     const m = c.mode;
     if (m === "module") Q.module(C.byId[c.module]);
-    else if (m === "exam") Q.exam(c.full);
+    else if (m === "exam") Q.exam(c.full, c.world);
+    else if (m === "place") AA.path.startPlacement(c.world);
     else if (m === "apnee") Q.apnee();
     else if (m === "daily") Q.daily();
     else if (m === "errors") Q.errors();
@@ -301,7 +306,7 @@
       head = `<p class="eyebrow">${t(c.full ? "exam.fullLabel" : "exam.quickLabel")}</p><div class="big">${u.num(score, 1)}<span class="muted" style="font-size:.4em"> / 20</span></div>`;
       sub = t(score >= 15 ? "exam.good" : score >= 10 ? "exam.mid" : "exam.low") + (c.answers.length < n ? " " + t("exam.unanswered", { n: n - c.answers.length }) : "");
       const by = {}; c.answers.forEach(a => { const k = a.q.calc ? "calc" : a.q.m; by[k] = by[k] || [0, 0]; by[k][1]++; if (a.ok) by[k][0]++; });
-      extra = `<div class="tbl"><table><tr><th>${t("exam.part")}</th><th>${t("exam.success")}</th></tr>${C.inWorld("n2").filter(m => by[m.id]).map(m => `<tr><td><a href="#/lesson/${m.id}">${u.esc(m.title)}</a></td><td class="mono">${by[m.id][0]} / ${by[m.id][1]}</td></tr>`).join("")}${by.calc ? `<tr><td><b>${t("exam.calcs")}</b></td><td class="mono">${by.calc[0]} / ${by.calc[1]}</td></tr>` : ""}</table></div>`;
+      extra = `<div class="tbl"><table><tr><th>${t("exam.part")}</th><th>${t("exam.success")}</th></tr>${C.inWorld(c.world || "n2").filter(m => by[m.id]).map(m => `<tr><td><a href="#/lesson/${m.id}">${u.esc(m.title)}</a></td><td class="mono">${by[m.id][0]} / ${by[m.id][1]}</td></tr>`).join("")}${by.calc ? `<tr><td><b>${t("exam.calcs")}</b></td><td class="mono">${by.calc[0]} / ${by.calc[1]}</td></tr>` : ""}</table></div>`;
     } else if (c.mode === "apnee") {
       const rec = good > S.apnee;
       if (!c.saved) { if (rec) S.apnee = good; const dc = G.dayc(); dc.apnee = Math.max(dc.apnee || 0, good); c.saved = true; AA.store.save(); G.checkBadges(); }
@@ -309,6 +314,8 @@
       sub = rec && good ? t("apnee.record") : t("apnee.best", { n: S.apnee });
     } else if (c.mode === "duel") {
       return duelResult(el, c);
+    } else if (c.mode === "place") {
+      return AA.pathView.placeResult(el, c);
     } else if (c.mode === "boss") {
       return bossResult(el, c);
     } else {

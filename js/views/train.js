@@ -30,8 +30,8 @@
         </div>
         <div class="section-title"><h3>${t("train.tests")}</h3></div>
         <div class="tiles">
-          ${ui.tile("examfull", "exam", "var(--accent)", t("mode.examFull"), t("train.examFullS"), best != null ? [t("home.best", { s: u.num(best, 1) }), "gold"] : null)}
-          ${ui.tile("examquick", "exam", "var(--accent)", t("mode.examQuick"), t("train.examQuickS"))}
+          ${ui.tile("examfull", "exam", "var(--accent)", t("mode.examFull"), t("train.examFullS") + " · " + u.esc(C.worldById[AA.quiz.examWorld()].short), best != null ? [t("home.best", { s: u.num(best, 1) }), "gold"] : null)}
+          ${ui.tile("examquick", "exam", "var(--accent)", t("mode.examQuick"), t("train.examQuickS") + " · " + u.esc(C.worldById[AA.quiz.examWorld()].short))}
           ${ui.tile("apnee", "timer", "var(--gold)", t("mode.apnee"), t("train.apneeS"), S.apnee ? [t("train.record", { n: S.apnee }), "gold"] : null)}
           ${ui.tile("duel", "users", "var(--primary)", t("mode.duel"), t("train.duelS"))}
         </div>
@@ -56,7 +56,7 @@
     render(el, [mid]) {
       const c = AA.ctx.flash && AA.ctx.flash.mid === (mid || "") ? AA.ctx.flash : (AA.ctx.flash = { mid: mid || "", deck: null, i: 0, flipped: false, done: 0, all: false });
       if (!c.deck) {
-        let pool = mid ? C.cards.filter(x => x.m === mid) : c.all ? C.cards.filter(x => G.unlocked(x.m)) : G.cardsDue();
+        let pool = mid ? C.cards.filter(x => x.m === mid) : c.all ? C.cards.filter(x => G.inPlay(x.m)) : G.cardsDue();
         if (mid && !c.all) { const d = u.today(); const due = pool.filter(x => { const s = AA.S.cards[x.id]; return !s || s.due <= d; }); pool = due.length ? due : pool; }
         c.deck = u.shuffle(pool).slice(0, 20); c.i = 0; c.flipped = false;
       }

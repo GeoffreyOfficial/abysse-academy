@@ -11,10 +11,14 @@
     guard: () => !AA.S.profile.onboarded, fallback: "home",
     render(el) {
       const S = AA.S, P = S.profile;
-      const o = AA.ctx.onb || (AA.ctx.onb = { step: 0, name: P.name, goal: P.goal, daily: P.dailyGoal, theme: P.theme, exam: P.examDate });
+      const o = AA.ctx.onb || (AA.ctx.onb = { step: 0, name: P.name, goal: "", daily: P.dailyGoal, theme: P.theme, exam: P.examDate, lv: P.level || "none", rifap: false, nitrox: false, dives: P.dives || 0, place: true, modes: null, key: "" });
       const drv = AA.sync.possible() && !!AA.sync.clientId() && !AA.sync.linked();
-      const steps = drv ? 6 : 5, last = steps - 1, dots = `<div class="dots" aria-hidden="true">${Array.from({ length: steps }, (_, i) => `<i class="${i === o.step ? "on" : ""}"></i>`).join("")}</div>`;
+      const steps = drv ? 8 : 7, last = steps - 1, dots = `<div class="dots" aria-hidden="true">${Array.from({ length: steps }, (_, i) => `<i class="${i === o.step ? "on" : ""}"></i>`).join("")}</div>`;
       const nav = (label, extra) => `<div class="stack">${dots}<button class="btn block" id="onext">${label} ${AA.icon("next")}</button>${extra || ""}</div>`;
+      const PV = AA.pathView, PA = AA.path;
+      /* Modes conseillés recalculés seulement si le niveau déclaré change. */
+      const key = [o.lv, o.rifap, o.nitrox].join("|");
+      if (o.key !== key) { const d = PA.defaults(o.lv, o); o.modes = d.modes; o.cov = d.cov; o.goal = d.goal; o.key = key; }
       let h = "";
       if (o.step === 0) {
         const mods = Object.keys(S.themes).length;
@@ -26,24 +30,37 @@
         h = `<div><p class="eyebrow">1 / ${last}</p><h1>${t("onb.nameQ")}</h1><p class="muted">${t("onb.nameS")}</p></div>
           <div class="field"><label for="oname" class="sr">${t("onb.nameQ")}</label><input class="input center" id="oname" maxlength="24" autocomplete="given-name" placeholder="${t("onb.namePh")}" value="${u.esc(o.name)}"></div>${nav(t("common.next"))}`;
       } else if (o.step === 2) {
-        const goals = C.worlds.filter(w => !w.soon);
-        h = `<div><p class="eyebrow">2 / ${last}</p><h1>${t("onb.goalQ")}</h1><p class="muted">${t("onb.goalS")}</p></div>
-          <div class="choicecards">${goals.map(w => `<button data-goal="${w.id}" aria-pressed="${o.goal === w.id}" style="--wc:var(${w.color})"><span class="ic" style="color:var(${w.color})">${AA.icon(w.icon)}</span><span><b>${u.esc(w.title)}</b><span>${u.esc(w.sub)}</span></span></button>`).join("")}</div>
-          <div class="field"><label for="oexam">${t("onb.examQ")}</label><input class="input" type="date" id="oexam" value="${u.esc(o.exam)}"></div>${nav(t("common.next"))}`;
+        h = `<div><p class="eyebrow">2 / ${last}</p><h1>${t("onb.levelQ")}</h1><p class="muted">${t("onb.levelS")}</p></div>
+          ${PV.levelCards(o.lv)}<div class="card soft stack" style="gap:0;text-align:left">${PV.extras(o)}</div>${nav(t("common.next"))}`;
       } else if (o.step === 3) {
-        h = `<div><p class="eyebrow">3 / ${last}</p><h1>${t("onb.dailyQ")}</h1><p class="muted">${t("onb.dailyS")}</p></div>
-          <div class="choicecards">${[[10, "relax", "wave"], [20, "regular", "target"], [40, "intense", "flame"]].map(([n, k, ic]) => `<button data-daily="${n}" aria-pressed="${o.daily === n}"><span class="ic">${AA.icon(ic)}</span><span><b>${t("onb.d." + k)}</b><span>${t("onb.dailyN", { n })}</span></span></button>`).join("")}</div>${nav(t("common.next"))}`;
+        h = `<div><p class="eyebrow">3 / ${last}</p><h1>${t("onb.divesQ")}</h1><p class="muted">${t("onb.divesS")}</p></div>
+          ${PV.divesSeg(o.dives)}<p class="small muted">${t(o.dives >= 100 || ["n3", "n4", "e1", "e2"].includes(o.lv) ? "path.expertOn" : "path.expertOff")}</p>${nav(t("common.next"))}`;
       } else if (o.step === 4) {
-        h = `<div><p class="eyebrow">4 / ${last}</p><h1>${t("onb.themeQ")}</h1><p class="muted">${t("onb.themeS")}</p></div>
+        const ws = C.worlds.filter(w => !w.soon && C.inWorld(w.id).length);
+        h = `<div><p class="eyebrow">4 / ${last}</p><h1>${t("onb.pathQ")}</h1><p class="muted">${t("onb.pathS")}</p></div>
+          <div class="field"><label>${t("onb.goalQ")}</label><div class="seg">${ws.map(w => `<button data-goal="${w.id}" aria-pressed="${o.goal === w.id}">${u.esc(w.short)}</button>`).join("")}</div></div>
+          <div class="pmlist">${ws.map(w => `<div class="pmrow" style="--wc:var(${w.color})"><span class="ic">${AA.icon(w.icon)}</span><b>${u.esc(w.short)}</b><div class="seg">${["learn", "review", "skip"].map(m => `<button data-om="${m}" data-w="${w.id}" aria-pressed="${o.modes[w.id] === m}" aria-label="${u.esc(w.short)} : ${t("path.m." + m)}">${t("path.m." + m)}</button>`).join("")}</div></div>`).join("")}</div>
+          <p class="xs muted" style="margin:0">${t("onb.pathHint")}</p>
+          <label class="setting"><span class="grow"><b>${t("onb.placeQ")}</b><span>${t("onb.placeS")}</span></span><span class="switch"><input type="checkbox" id="oplace" ${o.place ? "checked" : ""}><i></i></span></label>
+          <div class="field"><label for="oexam">${t("onb.examQ")}</label><input class="input" type="date" id="oexam" value="${u.esc(o.exam)}"></div>${nav(t("common.next"))}`;
+      } else if (o.step === 5) {
+        h = `<div><p class="eyebrow">5 / ${last}</p><h1>${t("onb.dailyQ")}</h1><p class="muted">${t("onb.dailyS")}</p></div>
+          <div class="choicecards">${[[10, "relax", "wave"], [20, "regular", "target"], [40, "intense", "flame"]].map(([n, k, ic]) => `<button data-daily="${n}" aria-pressed="${o.daily === n}"><span class="ic">${AA.icon(ic)}</span><span><b>${t("onb.d." + k)}</b><span>${t("onb.dailyN", { n })}</span></span></button>`).join("")}</div>${nav(t("common.next"))}`;
+      } else if (o.step === 6) {
+        h = `<div><p class="eyebrow">6 / ${last}</p><h1>${t("onb.themeQ")}</h1><p class="muted">${t("onb.themeS")}</p></div>
           ${swatches(o.theme)}${nav(drv ? t("common.next") : t("onb.go"))}`;
       } else {
-        h = `<div><p class="eyebrow">5 / ${last}</p><div class="drive-hero">${AA.icon("save")}</div><h1>${t("dr.onbT")}</h1><p class="muted">${t("dr.onbS")}</p></div>
+        h = `<div><p class="eyebrow">7 / ${last}</p><div class="drive-hero">${AA.icon("save")}</div><h1>${t("dr.onbT")}</h1><p class="muted">${t("dr.onbS")}</p></div>
           <ul class="onb-points">${["dr.p1", "dr.p2", "dr.p3"].map((k, i) => `<li>${AA.icon(["check", "transfer", "lock"][i])}<span>${t(k)}</span></li>`).join("")}</ul>
           <div class="stack">${dots}<button class="btn block" id="odrive">${AA.icon("transfer")} ${t("dr.link")}</button>
           <button class="btn ghost block" id="onext">${t("dr.later")}</button><p class="xs muted center" style="margin:0">${t("dr.laterS")}</p></div>`;
       }
       el.innerHTML = `<section class="onb">${h}${o.step ? `<button class="linkbtn" id="oback">${t("nav.back")}</button>` : ""}</section>`;
-      const save = () => { const n = u.$("#oname"); if (n) o.name = n.value.trim(); const e = u.$("#oexam"); if (e) o.exam = e.value; };
+      const save = () => { const n = u.$("#oname"); if (n) o.name = n.value.trim(); const e = u.$("#oexam"); if (e) o.exam = e.value; const pl = u.$("#oplace"); if (pl) o.place = pl.checked; };
+      u.$$("[data-lv]", el).forEach(b => b.onclick = () => { o.lv = b.dataset.lv; fx.sfx.tap(); AA.router.refresh(); });
+      AA.pathView.wireExtras(o, () => AA.router.refresh());
+      u.$$("[data-dives]", el).forEach(b => b.onclick = () => { o.dives = +b.dataset.dives; fx.sfx.tap(); AA.router.refresh(); });
+      u.$$("[data-om]", el).forEach(b => b.onclick = () => { save(); o.modes[b.dataset.w] = b.dataset.om; fx.sfx.tap(); AA.router.refresh(); });
       u.$$("[data-goal]", el).forEach(b => b.onclick = () => { save(); o.goal = b.dataset.goal; fx.sfx.tap(); AA.router.refresh(); });
       u.$$("[data-daily]", el).forEach(b => b.onclick = () => { o.daily = +b.dataset.daily; fx.sfx.tap(); AA.router.refresh(); });
       u.$$("[data-theme]", el).forEach(b => b.onclick = () => { o.theme = b.dataset.theme; AA.S.profile.theme = o.theme; AA.ui.applyTheme(); fx.sfx.tap(); AA.router.refresh(); });
@@ -56,7 +73,9 @@
         if (drv) { AA.S.profile.driveNag = u.addDays(3); AA.S.profile.driveNagN = 1; AA.store.save(true); }
       };
       const finish = () => {
-        Object.assign(AA.S.profile, { name: o.name, goal: o.goal, dailyGoal: o.daily, theme: o.theme, examDate: o.exam, onboarded: true });
+        const S2 = AA.S; S2.certs = S2.certs || {}; S2.path = Object.assign({}, o.modes);
+        (o.cov || []).forEach(w => { if (!S2.certs[w]) S2.certs[w] = u.today(); });
+        Object.assign(S2.profile, { name: o.name, goal: o.goal, dailyGoal: o.daily, theme: o.theme, examDate: o.exam, level: o.lv, dives: o.dives, placeAsk: !!o.place, onboarded: true });
         AA.store.save(true); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 2, 50, "rgba(62,230,216,.8)");
         AA.router.go("home", {}, true);
       };
@@ -104,7 +123,7 @@
       const qod = G.qod();
       el.innerHTML = `
         <header class="hello has-ava"><a class="ava-link" href="#/profile" aria-label="${t("tab.profile")}">${AA.avatar.mine("md")}</a><div><h1>${hello}</h1><p>${line}</p></div></header>
-        ${driveCard()}
+        ${driveCard()}${AA.pathView.homeCard()}
         <div class="home-grid"><div class="col-main">
         <section class="card today" style="margin-top:var(--sp-5)">
           ${AA.ui.ring(done / goal, Math.min(done, 999), "/ " + goal, done >= goal)}
@@ -137,7 +156,7 @@
         <section class="card" id="qod"><p class="qtext" style="margin-bottom:var(--sp-4)">${u.esc(qod.q)}</p><div class="choices">${qodOrder(qod).map((i, k) => `<button class="choice" data-qi="${i}"><span class="k">${"ABCD"[k]}</span><span>${u.esc(qod.c[i])}</span><span class="mk"></span></button>`).join("")}</div><div id="qodx"></div></section>` : ""}
         </aside></div>
       `;
-      wireDrive(); AA.avatar.checkEvolution();
+      wireDrive(); AA.pathView.wireHome(); AA.avatar.checkEvolution();
       u.$("#daily").onclick = () => AA.quiz.daily();
       u.$("#five").onclick = () => { fx.sfx.tap(); AA.quiz.five(); };
       u.$("#rescue").onclick = () => AA.quiz.errors();

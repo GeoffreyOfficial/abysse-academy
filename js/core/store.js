@@ -10,12 +10,13 @@
   const AA = window.AA, u = AA.u;
   const KEY = "abysse-academy";
   const LEGACY_KEY = "ardoise-n2-v1";
-  const SCHEMA = 3;
+  const SCHEMA = 4;
 
   const FRESH = () => ({
     schema: SCHEMA, savedAt: 0, createdAt: u.today(),
     profile: { name: "", goal: "n2", dailyGoal: 20, theme: "abysse", lang: "fr", sound: true, haptics: true, onboarded: false, examDate: "", imported: false,
-      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "", avatar: null, driveNag: "", driveNagN: 0 },
+      textSize: 1, cvd: false, voiceRate: 1, gestures: true, motion: true, scene: true, backupAt: "", avatar: null, driveNag: "", driveNagN: 0,
+      level: "", dives: 0, placeAsk: false },
     xp: 0, days: [], themes: {}, stats: {}, seen: {}, last: {}, errors: {}, doubt: {}, exams: [],
     cards: {}, table: [], daily: {}, scen: {}, simOk: 0, flashCount: 0, duels: 0, apnee: 0, bestCombo: 0, rescued: 0,
     badges: {}, claimed: {}, real: {}, dayc: {}, keepDone: false, keepDay: "", qod: "",
@@ -25,7 +26,9 @@
     /* 1.1.1 */
     qodAns: null, pcBest: 0, pcRuns: 0,
     /* 1.2 */
-    aquaCfg: {}, fedOn: "", evoSeen: null
+    aquaCfg: {}, fedOn: "", evoSeen: null,
+    /* 1.3 : parcours libre (niveaux obtenus, révision, passés, positionnement) */
+    certs: {}, path: {}, placed: {}, placeDone: {}
   });
 
   /* Migrations : de la version N vers N+1. Ajoute la suivante ici. */
@@ -42,7 +45,18 @@
     },
     /* 2 → 3 : nouveaux champs (aquarium, boss, histoire, erreurs détaillées, accessibilité).
        Les valeurs par défaut viennent de FRESH ; rien n'est perdu. */
-    2: o => Object.assign(o, { schema: 3 })
+    2: o => Object.assign(o, { schema: 3 }),
+    /* 3 → 4 : parcours pour tous les niveaux. Un profil existant venait d'une appli
+       pensée pour un N1 qui prépare le N2 : on le garde tel quel (N1 obtenu, N2 visé). */
+    3: o => {
+      o.profile = o.profile || {};
+      if (o.profile.onboarded && !o.profile.level) {
+        o.profile.level = "n1"; o.certs = Object.assign({ decouverte: o.createdAt || u.today(), n1: o.createdAt || u.today() }, o.certs || {});
+        o.path = Object.assign({ decouverte: "review", n1: "review" }, o.path || {});
+        if (!o.profile.goal) o.profile.goal = "n2";
+      }
+      o.schema = 4; return o;
+    }
   };
   function migrate(o) {
     if (!o || typeof o !== "object") return null;
@@ -163,6 +177,10 @@
     byKey("cards", (x, y) => (y.box >= x.box ? y : x));
     byKey("last", (x, y) => (y > x ? y : x));
     byKey("boss", (x, y) => ({ best: max(x.best, y.best), won: x.won || y.won, tries: max(x.tries, y.tries) }));
+    byKey("certs", (x, y) => (x < y ? x : y));
+    byKey("placed", (x, y) => (x > y ? x : y));
+    byKey("placeDone", (x, y) => ((y.pct || 0) >= (x.pct || 0) ? y : x));
+    byKey("path", (x, y) => y);
     byKey("story", (x, y) => ((y.done || 0) >= (x.done || 0) ? y : x));
     byKey("wrong", (x, y) => { const z = Object.assign({}, x); Object.entries(y).forEach(([c, v]) => (z[c] = max(z[c], v))); return z; });
     ["seen", "errors", "doubt", "daily", "scen", "badges", "claimed", "real", "read", "notes", "aqua", "glossSeen"].forEach(k => byKey(k, (x, y) => y));

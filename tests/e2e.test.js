@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console.error("  ✗ " + m); } };
 const WIDTHS = [[280, 653], [390, 844], [884, 1104], [1440, 900], [3840, 2160]];
-const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup"];
+const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base"];
 
 async function newPage(b, w, h) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
@@ -32,7 +32,7 @@ async function newPage(b, w, h) {
   return { ctx, p };
 }
 const ready = p => p.waitForFunction(() => window.AA && AA.router && AA.router.name && document.documentElement.classList.contains("ready"));
-const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA.S; S.profile.onboarded = true; S.profile.name = "Test"; S.xp = 500; S.evoSeen = 9; S.profile.driveNag = "2099-01-01"; AA.content.questions.slice(0, 30).forEach((q, i) => { S.stats[q.id] = { n: 2, ok: i % 2 }; if (i % 2) S.wrong[q.id] = { [(q.a + 1) % q.c.length]: 1 }; }); AA.store.save(true); }); };
+const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA.S; S.profile.onboarded = true; S.profile.name = "Test"; S.xp = 500; S.evoSeen = 9; S.profile.driveNag = "2099-01-01"; AA.path.applyLevel("n1"); S.profile.goal = "n2"; AA.content.questions.slice(0, 30).forEach((q, i) => { S.stats[q.id] = { n: 2, ok: i % 2 }; if (i % 2) S.wrong[q.id] = { [(q.a + 1) % q.c.length]: 1 }; }); AA.store.save(true); }); };
 
 (async () => {
   await new Promise(r => server.listen(PORT, r));
@@ -41,8 +41,45 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
     console.log("• Premier lancement");
     { const { ctx, p } = await newPage(b, 390, 844);
       await p.goto(URL); await p.waitForSelector("#onext");
-      for (let i = 0; i < 6 && await p.$("#onext"); i++) { if (i === 1) await p.fill("#oname", "Test"); if (i === 5) ok(!!await p.$("#odrive"), "étape « Protège ta progression » (Google Drive conseillé)"); await p.click("#onext"); await p.waitForTimeout(150); }
+      for (let i = 0; i < 8 && await p.$("#onext"); i++) {
+        if (i === 1) await p.fill("#oname", "Test");
+        if (i === 2) { ok((await p.$$("[data-lv]")).length === 8, "accueil : 8 niveaux proposés (de « pas de niveau » à E2)"); await p.click('[data-lv="n3"]'); await p.waitForTimeout(120); }
+        if (i === 3) await p.click('[data-dives="100"]');
+        if (i === 4) { ok(await p.evaluate(() => document.querySelector('[data-om="review"][data-w="n2"]').getAttribute("aria-pressed") === "true" && document.querySelector('[data-om="learn"][data-w="n4"]').getAttribute("aria-pressed") === "true"), "accueil : parcours pré-réglé selon le niveau (N2 en révision, N4 à apprendre)"); await p.click('[data-om="skip"][data-w="decouverte"]'); await p.waitForTimeout(120); }
+        if (i === 7) ok(!!await p.$("#odrive"), "étape « Protège ta progression » (Google Drive conseillé)");
+        await p.click("#onext"); await p.waitForTimeout(150);
+      }
       ok(await p.evaluate(() => AA.router.name === "home" && AA.S.profile.onboarded), "accueil atteint après l’accueil");
+      ok(await p.evaluate(() => { const S = AA.S; return S.profile.level === "n3" && S.profile.goal === "n4" && S.certs.n2 && S.path.decouverte === "skip" && S.path.n1 === "review" && AA.path.expert() && AA.game.worldOpen("n4") && !AA.game.worldOpen("e2") && AA.game.worldOpen("n3"); }), "niveau N3 : objectif N4, mondes obtenus, Découverte passée, expérience prise en compte");
+      ok(await p.$(".place-card"), "accueil : test de positionnement proposé");
+      await p.click("#plgo"); await p.waitForTimeout(250);
+      for (let i = 0; i < 40 && !(await p.$(".result")); i++) { await p.click(".choice >> nth=0"); await p.waitForTimeout(40); const n = await p.$("#nextq"); if (n) await n.click(); await p.waitForTimeout(40); }
+      ok(await p.$(".result [data-pm]"), "test de positionnement : résultat par thème et choix de la suite");
+      await p.click('[data-pm="review"]'); await p.waitForTimeout(250);
+      ok(await p.evaluate(() => Object.keys(AA.S.placeDone).length === 1 && !AA.S.profile.placeAsk), "positionnement enregistré, parcours adapté");
+      await ctx.close(); }
+
+    console.log("• Mon parcours");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => AA.game.worldOpen("n2") && !AA.game.worldOpen("n3") && AA.game.unlocked("n1-signes") && AA.game.inPlay("d-bapteme")), "profil N1 : N1 et N2 ouverts, N3 fermé");
+      await p.goto(URL + "#/parcours"); await p.waitForTimeout(250);
+      ok((await p.$$(".pworld")).length >= 9, "« Mon parcours » liste tous les mondes");
+      await p.click('[data-mode="skip"][data-w="n1"]'); await p.waitForTimeout(150);
+      ok(await p.evaluate(() => AA.S.path.n1 === "skip" && !AA.game.inPlay("n1-signes") && !AA.game.dailySet().some(q => q.m && AA.content.byId[q.m] && AA.content.byId[q.m].world === "n1")), "passer un monde : il sort des révisions");
+      await p.click('[data-cert="n2"]'); await p.waitForTimeout(200); await p.click('[data-cm="skip"]'); await p.waitForTimeout(250);
+      ok(await p.evaluate(() => AA.S.certs.n2 && AA.S.path.n2 === "skip" && AA.game.worldOpen("n3") && AA.game.worldOpen("rifap") && AA.S.profile.goal !== "n2"), "« J’ai obtenu ce niveau » : N2 passé, N3 et RIFAP ouverts, objectif suivant");
+      await p.click('[data-mode="review"][data-w="n3"]'); await p.waitForTimeout(150);
+      ok(await p.evaluate(() => AA.game.unlocked("n3-materiel") && AA.game.bossOpen("n3")), "réviser : tout le monde N3 ouvert");
+      await p.goto(URL + "#/lesson/n3-gaz"); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => document.querySelector('[data-tab="memo"]').getAttribute("aria-pressed") === "true"), "en révision, le cours s’ouvre sur « À retenir »");
+      await p.goto(URL + "#/map/n1"); await p.waitForTimeout(500);
+      ok(await p.$("#wresume"), "carte : bandeau « monde passé » avec « Reprendre »");
+      await p.click("#wresume"); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => AA.S.path.n1 === "review"), "reprendre un monde passé");
+      await p.goto(URL + "#/parcours"); await p.waitForTimeout(200); await p.click("#chlv"); await p.waitForTimeout(200); await p.click('#lvbody [data-lv="e1"]'); await p.waitForTimeout(100); await p.click("#lvok"); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => AA.S.profile.level === "e1" && AA.S.certs.rifap && AA.game.worldOpen("e1")), "changer de niveau déclaré (Initiateur)");
+      const ex = await p.evaluate(() => { AA.S.profile.goal = "n3"; AA.quiz.exam(false); const c = AA.ctx; return c.world === "n3" && c.items.length >= 10; });
+      ok(ex, "examen blanc du monde visé (N3)");
       await ctx.close(); }
 
     console.log("• Écrans et largeurs");
@@ -161,7 +198,7 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(await p.evaluate(() => AA.S.xp === 321 && AA.S.profile.name === "Ancien" && AA.S.schema === AA.store.SCHEMA), "reprise d’une sauvegarde Ardoise N2");
       await p.evaluate(() => { localStorage.setItem("abysse-academy", JSON.stringify({ schema: 2, xp: 777, profile: { name: "V1", onboarded: true }, themes: {}, stats: {} })); });
       await p.reload(); await ready(p); await p.waitForTimeout(300);
-      ok(await p.evaluate(() => AA.S.xp === 777 && AA.S.schema === 3 && AA.S.aqua && AA.S.profile.textSize === 1), "migration du schéma 2 vers 3 sans perte");
+      ok(await p.evaluate(() => AA.S.xp === 777 && AA.S.schema === AA.store.SCHEMA && AA.S.aqua && AA.S.profile.textSize === 1 && AA.S.profile.level === "n1" && AA.S.certs.n1 && AA.S.profile.goal), "migration du schéma 2 vers 4 sans perte (profil existant : N1 obtenu)");
       const r = await p.evaluate(async () => {
         const code = await AA.store.toCodeAsync(), back = await AA.store.fromCodeAsync("https://x/#/import/" + code);
         const a = AA.store.parse(AA.store.exportText()); const b2 = AA.u.clone(a); b2.xp = 50; b2.themes = { dalton: { best: 100, tries: 3 } }; b2.savedAt = a.savedAt + 1000;

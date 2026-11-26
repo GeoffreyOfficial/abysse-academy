@@ -26,7 +26,7 @@
   --accent:#FF7A59; --accent-ink:#2B0B02; --accent-soft:rgba(255,122,89,.15);
   --gold:#FFC857; --gold-ink:#3A2600; --gold-soft:rgba(255,200,87,.15);
   --ok:#3DDC97; --ok-soft:rgba(61,220,151,.15); --bad:#FF5C7A; --bad-soft:rgba(255,92,122,.15);
-  --world-n2:#3EE6D8; --world-rifap:#FF7A59; --world-e1:#FFC857; --world-e2:#A78BFA;
+  --world-n2:#3EE6D8; --world-rifap:#FF7A59; --world-e1:#FFC857; --world-e2:#A78BFA; --world-dec:#7DD3FC; --world-n1:#86EFAC; --world-nx:#F9A8D4; --world-n3:#60A5FA; --world-n4:#F472B6;
   --shadow:0 10px 30px rgba(0,0,0,.35); --glow:0 0 24px rgba(62,230,216,.25);
   --bubble:rgba(191,243,247,.5);
 }
@@ -40,7 +40,7 @@
   --accent:#E85A33; --accent-ink:#FFFFFF; --accent-soft:rgba(232,90,51,.12);
   --gold:#D99A0B; --gold-ink:#FFFFFF; --gold-soft:rgba(217,154,11,.14);
   --ok:#14915C; --ok-soft:rgba(20,145,92,.12); --bad:#D2385A; --bad-soft:rgba(210,56,90,.12);
-  --world-n2:#0A97A8; --world-rifap:#E85A33; --world-e1:#C98A05; --world-e2:#7C5CE0;
+  --world-n2:#0A97A8; --world-rifap:#E85A33; --world-e1:#C98A05; --world-e2:#7C5CE0; --world-dec:#0284C7; --world-n1:#16A34A; --world-nx:#DB2777; --world-n3:#2563EB; --world-n4:#C026D3;
   --shadow:0 10px 28px rgba(11,37,55,.12); --glow:0 0 20px rgba(10,151,168,.18);
   --bubble:rgba(10,151,168,.28);
 }
@@ -54,7 +54,7 @@
   --accent:#5EE0C8; --accent-ink:#04231E; --accent-soft:rgba(94,224,200,.14);
   --gold:#FFD166; --gold-ink:#3A2600; --gold-soft:rgba(255,209,102,.15);
   --ok:#56D69B; --ok-soft:rgba(86,214,155,.15); --bad:#FF6B8B; --bad-soft:rgba(255,107,139,.15);
-  --world-n2:#FF8C6B; --world-rifap:#5EE0C8; --world-e1:#FFD166; --world-e2:#C4A1FF;
+  --world-n2:#FF8C6B; --world-rifap:#5EE0C8; --world-e1:#FFD166; --world-e2:#C4A1FF; --world-dec:#7DD3FC; --world-n1:#A3E635; --world-nx:#F9A8D4; --world-n3:#93C5FD; --world-n4:#F0ABFC;
   --shadow:0 10px 30px rgba(0,0,0,.4); --glow:0 0 24px rgba(255,140,107,.25);
   --bubble:rgba(255,209,190,.4);
 }
@@ -68,6 +68,6 @@
   --accent:#FF9A3C; --accent-ink:#000000; --accent-soft:rgba(255,154,60,.2);
   --gold:#FFE14D; --gold-ink:#000000; --gold-soft:rgba(255,225,77,.2);
   --ok:#4DFF9A; --ok-soft:rgba(77,255,154,.18); --bad:#FF4D6D; --bad-soft:rgba(255,77,109,.2);
-  --world-n2:#00F0FF; --world-rifap:#FF9A3C; --world-e1:#FFE14D; --world-e2:#C9A7FF;
+  --world-n2:#00F0FF; --world-rifap:#FF9A3C; --world-e1:#FFE14D; --world-e2:#C9A7FF; --world-dec:#38BDF8; --world-n1:#4ADE80; --world-nx:#FF4FD8; --world-n3:#3B82F6; --world-n4:#E879F9;
   --shadow:none; --glow:none; --bubble:rgba(255,255,255,.35);
 }

@@ -19,11 +19,12 @@
       const cur = list.findIndex(m => G.unlocked(m) && G.stars(m.id) < 1);
       const boss = w.boss && !w.soon, bossOpen = boss && G.bossOpen(w.id), bossRec = (AA.S.boss || {})[w.id];
       el.innerHTML = `<h1 class="sr">${t("tab.map")}</h1>
-        <div class="seg" role="tablist" aria-label="${t("map.worlds")}">${C.worlds.map(x => `<button role="tab" data-w="${x.id}" aria-pressed="${x.id === w.id}" aria-selected="${x.id === w.id}">${!G.worldOpen(x) ? "🔒 " : ""}${u.esc(x.short)}</button>`).join("")}</div>
+        <div class="seg" role="tablist" aria-label="${t("map.worlds")}">${C.worlds.map(x => `<button role="tab" data-w="${x.id}" aria-pressed="${x.id === w.id}" aria-selected="${x.id === w.id}">${!G.worldOpen(x) ? "🔒 " : AA.path.mode(x.id) === "skip" ? "⏭ " : AA.path.certified(x.id) ? "✓ " : ""}${u.esc(x.short)}</button>`).join("")}</div>
         <section class="worldhead" style="--wc:var(${w.color});margin-top:var(--sp-4)">
           <p class="eyebrow">${t("map.world")} ${C.worlds.indexOf(w) + 1}</p><h2>${u.esc(w.title)}</h2><p class="muted" style="margin:6px 0 12px">${u.esc(w.sub)}</p>
           ${w.soon ? "" : `<div class="row between small"><span>${AA.icon("star")} ${starsGot} / ${starsMax}</span><span class="muted">${t("map.done", { n: list.filter(m => G.stars(m.id) >= 1).length, tot: list.length })}</span></div>${AA.ui.bar(starsGot / Math.max(1, starsMax))}`}
           ${!open && !w.soon ? `<p class="chip warn" style="margin-top:12px">${AA.icon("lock")} ${u.esc(G.worldLockReason(w))}</p>` : ""}
+          ${w.soon ? "" : modeBanner(w, open)}
         </section>
         ${w.soon ? soon(w) : `${w.surface ? `<div class="surface-line">${u.esc(w.surface)}</div>` : ""}<div class="map" data-world="${w.id}" style="--wc:var(${w.color})">
           <div class="para far" data-k=".22" aria-hidden="true"></div><div class="para mid" data-k=".1" aria-hidden="true"></div>
@@ -45,11 +46,21 @@
         if (!G.unlocked(m)) { fx.sfx.bad(); fx.buzz(30); b.classList.add("shake"); setTimeout(() => b.classList.remove("shake"), 400); fx.toast(t("map.locked"), G.lockReason(m), "lock", () => AA.router.go("lesson/" + m.id)); return; }
         fx.sfx.tap(); AA.router.go("lesson/" + m.id);
       });
+      const rs = u.$("#wresume"); if (rs) rs.onclick = () => { AA.path.setMode(w.id, AA.path.certified(w.id) ? "review" : "learn"); AA.store.save(); fx.sfx.up(); AA.router.refresh(); };
       const bn = u.$("#bossnode"); if (bn) bn.onclick = () => { fx.sfx.tap(); AA.router.go("boss/" + w.id); };
       const dv = u.$("#diver"); if (dv) dv.onclick = () => { const m = list[cur >= 0 ? cur : list.length - 1]; if (m) AA.router.go("lesson/" + m.id); };
       requestAnimationFrame(() => u.$$(".map", el).forEach(m => { rope(m); decor(m); placeDiver(m, w, list, cur); onScroll(); }));
     }
   });
+  /* Bandeau du parcours libre : révision, passé, obtenu, ou « déjà ce niveau ? ». */
+  function modeBanner(w, open) {
+    const P = AA.path, mode = P.mode(w.id), cert = (AA.S.certs || {})[w.id];
+    const chips = `${cert ? `<span class="chip ok">${AA.icon("check")} ${t("path.got", { d: u.fmtDate(cert) })}</span>` : ""}${mode === "review" ? `<span class="chip">${AA.icon("refresh")} ${t("path.m.review")}</span>` : ""}`;
+    if (mode === "skip") return `<div class="mode-banner skip"><p class="small" style="margin:0">${t("map.skipS")}</p><div class="row"><button class="btn sm" id="wresume">${AA.icon("play")} ${t("map.resume")}</button><a class="btn ghost sm" href="#/parcours">${t("path.manage")}</a></div></div>`;
+    if (mode === "review") return `<div class="mode-banner"><div class="row">${chips}</div><p class="xs muted" style="margin:0">${t("map.reviewS")}</p></div>`;
+    if (!open) return `<p class="xs" style="margin:10px 0 0">${t("map.already")} <a href="#/parcours">${t("path.manage")}</a></p>`;
+    return chips ? `<div class="row" style="margin-top:10px">${chips}</div>` : "";
+  }
   function soon(w) {
     return `<section class="card soft stack" style="margin-top:var(--sp-4)"><h3>${t("map.soonT")}</h3><p class="muted">${t("map.soonS")}</p>
       <ul class="path">${AA.i18n.raw("map.soonList").map(x => `<li><span><b>${x[0]}</b><span>${x[1]}</span></span></li>`).join("")}</ul></section>`;
@@ -132,7 +143,8 @@
     fallback: "map",
     render(el, [id, tabArg]) {
       const m = C.byId[id], w = C.worldById[m.world], S = AA.S, list = C.inWorld(m.world), i = list.indexOf(m);
-      const tab = TABS.includes(tabArg) ? tabArg : "essentiel";
+      /* En révision, le cours s'ouvre sur « À retenir » (cours allégé). */
+      const tab = TABS.includes(tabArg) ? tabArg : AA.path.mode(m.world) === "review" && m.memo.length ? "memo" : "essentiel";
       const ok = G.unlocked(m), st = G.stars(m.id), read = S.read[m.id] || {}, note = S.notes[m.id] || { text: "", ok: "" };
       const deepQ = m.quiz.filter(q => q.lvl === 2).length, gens = G.genKeys(m.id).length;
       const acc = G.moduleAcc(m.id);

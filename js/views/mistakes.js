@@ -24,9 +24,9 @@
       }).filter(x => x.n > 0).sort((a, b) => b.n - a.n);
     },
     train(p) {
-      const qs = qOf(p).filter(q => G.unlocked(q.m)).sort((a, b) => miss(b.id) - miss(a.id));
+      const qs = qOf(p).filter(q => G.inPlay(q.m)).sort((a, b) => miss(b.id) - miss(a.id));
       const pick = qs.slice(0, 6).concat(u.shuffle(qs.slice(6)).slice(0, 2));
-      const gens = (p.gen || []).filter(k => C.generators[k] && G.unlocked(C.generators[k].m));
+      const gens = (p.gen || []).filter(k => C.generators[k] && G.inPlay(C.generators[k].m));
       const calc = gens.length ? [G.gen(u.pick(gens)), G.gen(u.pick(gens))] : [];
       AA.quiz.start("errors", u.shuffle(pick.concat(calc)).slice(0, 10), { title: p.title, back: "mistakes" });
     }

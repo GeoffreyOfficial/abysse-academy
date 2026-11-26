@@ -34,6 +34,7 @@
           <div class="stat"><b>${G.streak()}</b><span>${t("prof.streak")}</span></div>
           <div class="stat"><b>${S.exams.length ? u.num(Math.max(...S.exams.map(e => e.score)), 1) : "—"}</b><span>${t("prof.bestExam")}</span></div></div>
         <div class="tiles" style="margin-top:var(--sp-4)">
+          ${ui.tile("parcours", "compass", "var(--accent)", t("path.title"), AA.path.summary())}
           ${ui.tile("quests", "flag", "var(--gold)", t("prof.quests"), t("prof.questsS"), claim ? [t("prof.claim", { n: claim }), "gold"] : null)}
           ${ui.tile("club", "users", "var(--primary)", t("prof.club"), t("prof.clubS"))}
           ${ui.tile("aquarium", "fish", "var(--primary)", t("aqua.title"), t("home.aquaS", { n: Object.keys(S.aqua).length, tot: C.creatures.length }))}
@@ -46,8 +47,9 @@
         <div class="section-title"><h3>${t("mode.flash")}</h3></div><section class="card"><div class="boxes">${G.boxes().map((n, i) => `<div><b>${n}</b>${i === 0 ? t("flash.new") : t("flash.box", { n: i })}</div>`).join("")}</div></section>
         <div class="section-title"><h3>${t("prof.trophies")}</h3><span class="muted small">${got} / ${C.badges.length}</span></div>
         <div class="trophies">${C.badges.map(b => `<div class="trophy ${S.badges[b.id] ? "" : "off"}"><div class="medal">${AA.icon(b.icon)}</div><b>${u.esc(b.name)}</b><span>${u.esc(b.desc)}</span></div>`).join("")}</div>
-        <div class="section-title"><h3>${t("prof.path")}</h3></div>
-        <section class="card"><ol class="path">${C.roadmap.map(r => `<li class="${r.done ? "done" : r.here ? "here" : ""}"><span><b>${u.esc(r.t)}</b><span>${u.esc(r.d)}</span></span></li>`).join("")}</ol></section>
+        <div class="section-title"><h3>${t("prof.path")}</h3><a class="small" href="#/parcours">${t("path.manage")}</a></div>
+        <section class="card"><p class="small muted" style="margin:0 0 var(--sp-3)">${AA.path.summary()}</p><ol class="path">${AA.path.roadmap().map(r => `<li class="${r.done ? "done" : r.here ? "here" : ""} ${r.skip ? "skip" : ""}"><span><b>${u.esc(r.t)}</b><span>${u.esc(r.d)}</span></span></li>`).join("")}</ol>
+        <a class="btn block" style="margin-top:var(--sp-3)" href="#/parcours">${AA.icon("compass")} ${t("path.manage")}</a></section>
         <a class="btn ghost block" style="margin-top:var(--sp-5)" href="#/settings">${AA.icon("gear")} ${t("nav.settings")}</a>`;
       u.on(el, "click", ".tile", (e, b) => AA.router.go(b.dataset.t));
       u.$("#avedit").onclick = u.$("#avedit2").onclick = () => AA.avatar.picker(() => AA.router.refresh());
@@ -116,7 +118,7 @@
         <section class="card" style="margin-top:var(--sp-4)"><h3>${t("set.me")}</h3>
           <div class="field" style="margin-top:var(--sp-3)"><label for="sname">${t("set.name")}</label><input class="input" id="sname" maxlength="24" value="${u.esc(p.name)}"></div>
           <div class="field" style="margin-top:var(--sp-3)"><label for="exd">${t("set.exam")}</label><input class="input" type="date" id="exd" value="${u.esc(p.examDate)}"></div>
-          <div class="field" style="margin-top:var(--sp-3)"><label>${t("set.goal")}</label><div class="seg">${C.worlds.filter(w => !w.soon).map(w => `<button data-goal="${w.id}" aria-pressed="${p.goal === w.id}">${u.esc(w.short)}</button>`).join("")}</div></div>
+          <div class="field" style="margin-top:var(--sp-3)"><label>${t("set.goal")}</label><div class="seg">${C.worlds.filter(w => !w.soon && C.inWorld(w.id).length).map(w => `<button data-goal="${w.id}" aria-pressed="${G.goalWorld() === w.id}">${u.esc(w.short)}</button>`).join("")}</div></div>
           <div class="field" style="margin-top:var(--sp-3)"><label>${t("set.daily")}</label><div class="seg">${[10, 20, 40].map(n => `<button data-daily="${n}" aria-pressed="${p.dailyGoal === n}">${t("onb.dailyN", { n })}</button>`).join("")}</div></div></section>
         <section class="card" style="margin-top:var(--sp-4)" id="a11y"><h3>${t("set.a11y")}</h3>
           <div class="field" style="margin-top:var(--sp-3)"><label>${t("set.textSize")}</label><div class="seg textsize">${AA.a11y.SIZES.map((z, i) => `<button data-ts="${z}" aria-pressed="${(p.textSize || 1) === z}" style="font-size:${.8 + i * .12}rem" aria-label="${Math.round(z * 100)} %">Aa</button>`).join("")}</div>

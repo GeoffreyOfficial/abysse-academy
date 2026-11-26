@@ -29,6 +29,11 @@
     if (typeof w === "string") w = C.worldById[w];
     if (!w || w.soon) return false;
     if (S().unlockAll || !w.unlock) return true;
+    /* Parcours libre : un monde en révision, obtenu ou passé est ouvert,
+       et un monde dont la source est obtenue ou passée aussi. */
+    const P = AA.path;
+    if (P && (P.mode(w.id) !== "learn" || P.certified(w.id))) return true;
+    if (P && (P.certified(w.unlock.world) || P.mode(w.unlock.world) !== "learn")) return true;
     /* Un monde déjà commencé reste ouvert (jamais de retour en arrière). */
     if (C.inWorld(w.id).some(m => S().themes[m.id])) return true;
     if (w.unlock.boss) return !!(S().boss[w.unlock.world] || {}).won;
@@ -40,9 +45,17 @@
     if (typeof m === "string") m = C.byId[m];
     if (!m) return false;
     if (S().unlockAll || S().themes[m.id]) return true;
+    if (!G.worldOpen(m.world)) return false;
+    const P = AA.path, pl = S().placed || {};
+    if (P && (P.mode(m.world) !== "learn" || P.certified(m.world)) || pl[m.id]) return true;
     const list = C.inWorld(m.world), i = list.indexOf(m);
-    if (i <= 0) return G.worldOpen(m.world);
-    return G.stars(list[i - 1].id) >= 1;
+    if (i <= 0) return true;
+    return G.stars(list[i - 1].id) >= 1 || !!pl[list[i - 1].id];
+  };
+  /* En jeu : ouvert et pas dans un monde « passé » (pour les révisions, le quiz du jour…). */
+  G.inPlay = m => {
+    if (typeof m === "string") m = C.byId[m];
+    return !!m && G.unlocked(m) && (!AA.path || AA.path.active(m.world));
   };
   G.worldLockReason = w => {
     const src = C.worldById[w.unlock.world];
@@ -55,7 +68,7 @@
     return AA.t("lock.prev", { title: list[i - 1].title });
   };
   /* Boss de fin de monde : ouvert quand tous les thèmes du monde ont 1 étoile. */
-  G.bossOpen = wid => { const w = C.worldById[wid]; if (!w || !w.boss || !G.worldOpen(w)) return false; if (S().unlockAll) return true; const l = C.inWorld(wid); return l.length > 0 && l.every(m => G.stars(m.id) >= 1); };
+  G.bossOpen = wid => { const w = C.worldById[wid]; if (!w || !w.boss || !G.worldOpen(w)) return false; if (S().unlockAll) return true; if (AA.path && (AA.path.mode(wid) === "review" || AA.path.certified(wid))) return true; const l = C.inWorld(wid); return l.length > 0 && l.every(m => G.stars(m.id) >= 1); };
   G.bossLeft = wid => C.inWorld(wid).filter(m => G.stars(m.id) < 1);
 
   /* ---------- Suivi des réponses ---------- */
@@ -108,7 +121,7 @@
 
   /* ---------- Flashcards (boîtes de Leitner) ---------- */
   G.cardState = c => S().cards[c.id] || { box: 0, due: "" };
-  G.cardsDue = () => { const d = u.today(); return C.cards.filter(c => { const s = S().cards[c.id]; return (!s || s.due <= d) && G.unlocked(c.m); }); };
+  G.cardsDue = () => { const d = u.today(); return C.cards.filter(c => { const s = S().cards[c.id]; return (!s || s.due <= d) && G.inPlay(c.m); }); };
   G.rateCard = (c, ok) => {
     const s = G.cardState(c);
     s.box = ok ? Math.min(5, s.box + 1) : 0;
@@ -207,33 +220,35 @@
   };
 
   /* ---------- Sélections ---------- */
-  G.goalWorld = () => { const g = S().profile.goal; return C.worldById[g] && !C.worldById[g].soon ? g : "n2"; };
+  G.goalWorld = () => { const g = S().profile.goal; return C.worldById[g] && !C.worldById[g].soon ? g : (AA.path ? AA.path.suggestGoal() : "n2"); };
   G.nextModule = () => {
     const order = [G.goalWorld()].concat(C.worlds.map(w => w.id).filter(id => id !== G.goalWorld()));
-    for (const wid of order) { const m = C.inWorld(wid).find(x => G.unlocked(x) && G.stars(x.id) < 1); if (m) return m; }
-    const all = C.modules.filter(x => G.unlocked(x) && G.stars(x.id) < 3);
+    for (const wid of order) { const m = C.inWorld(wid).find(x => G.inPlay(x) && G.stars(x.id) < 1 && !(S().placed || {})[x.id]); if (m) return m; }
+    const all = C.modules.filter(x => G.inPlay(x) && G.stars(x.id) < 3);
     return all.sort((a, b) => G.stars(a.id) - G.stars(b.id))[0] || C.modules[0];
   };
   G.qod = () => {
     const A = S().qodAns; /* réponse du jour déjà donnée : on garde la même question */
     if (A && A.d === u.today()) { const q = C.questions.find(x => x.id === A.id); if (q) return q; }
-    const pool = C.questions.filter(q => G.unlocked(q.m));
+    const pool = C.questions.filter(q => G.inPlay(q.m));
     if (!pool.length) return null;
     return pool[u.seedOf(u.today() + "q") % pool.length];
   };
-  G.weakModules = (k = 3) => C.modules.map(m => ({ m, a: G.moduleAcc(m.id) })).filter(x => x.a != null && G.unlocked(x.m)).sort((a, b) => a.a - b.a).slice(0, k);
+  G.weakModules = (k = 3) => C.modules.map(m => ({ m, a: G.moduleAcc(m.id) })).filter(x => x.a != null && G.inPlay(x.m)).sort((a, b) => a.a - b.a).slice(0, k);
 
   /* Session du jour : erreurs, thème faible, rappels anciens, doutes, inédites, 2 calculs. */
   G.dailySet = () => {
     const s = S(), used = new Set(), pick = [];
-    const add = q => { if (q && !used.has(q.id) && G.unlocked(q.m)) { used.add(q.id); pick.push(q); } };
+    const add = q => { if (q && !used.has(q.id) && G.inPlay(q.m)) { used.add(q.id); pick.push(q); } };
     Object.keys(s.errors).filter(id => C.qById[id] && !id.startsWith("pc-")).sort((a, b) => s.errors[b] - s.errors[a]).slice(0, 3).forEach(id => add(C.qById[id]));
     Object.keys(s.doubt).filter(id => C.qById[id]).slice(0, 2).forEach(id => add(C.qById[id]));
-    const weak = C.inWorld(G.goalWorld()).filter(m => G.unlocked(m)).map(m => ({ m, a: G.moduleAcc(m.id) ?? .5 })).sort((x, y) => x.a - y.a)[0];
+    const weak = C.inWorld(G.goalWorld()).filter(m => G.inPlay(m)).map(m => ({ m, a: G.moduleAcc(m.id) ?? .5 })).sort((x, y) => x.a - y.a)[0];
     if (weak) u.shuffle(weak.m.quiz).slice(0, 2).forEach(add);
     C.modules.filter(m => G.stars(m.id) >= 1).sort((a, b) => (G.lastSeen(a.id) || "").localeCompare(G.lastSeen(b.id) || "")).slice(0, 2)
       .forEach(m => add(m.quiz.slice().sort((a, b) => (s.last[a.id] || "").localeCompare(s.last[b.id] || ""))[0]));
-    const pool = C.questions.filter(q => G.unlocked(q.m));
+    const pool = C.questions.filter(q => G.inPlay(q.m));
+    /* Plongeur expérimenté : 3 questions « Approfondir » du monde visé en priorité. */
+    if (AA.path && AA.path.expert()) u.shuffle(pool.filter(q => q.lvl === 2 && C.byId[q.m] && C.byId[q.m].world === G.goalWorld())).slice(0, 3).forEach(add);
     u.shuffle(pool.filter(q => s.seen[q.id] === undefined)).forEach(q => { if (pick.length < 8) add(q); });
     u.shuffle(pool).forEach(q => { if (pick.length < 8) add(q); });
     return u.shuffle(pick).concat([G.gen(), G.gen()].filter(Boolean));
@@ -242,8 +257,9 @@
   /* ---------- Générateurs de calculs ---------- */
   G.genKeys = mid => Object.keys(C.generators).filter(k => !mid || C.generators[k].m === mid);
   G.gen = key => {
-    const keys = key ? [key] : G.genKeys().filter(k => G.unlocked(C.generators[k].m));
-    const k = u.pick(keys.length ? keys : G.genKeys()); if (!k) return null;
+    const keys = key ? [key] : G.genKeys().filter(k => G.inPlay(C.generators[k].m));
+    const gk = key ? [] : keys.filter(x => C.byId[C.generators[x].m] && C.byId[C.generators[x].m].world === G.goalWorld());
+    const k = u.pick(gk.length && Math.random() < .5 ? gk : keys.length ? keys : G.genKeys()); if (!k) return null;
     const q = C.generators[k].make();
     return Object.assign(q, { id: "gen:" + k, gen: k, m: C.generators[k].m, calc: true });
   };
