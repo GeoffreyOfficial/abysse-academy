@@ -2148,7 +2148,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.2.0";
+  AA.VERSION = "2.2.1";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -4056,15 +4056,16 @@ window.AA={BUNDLED:true};
       emit();
       try {
         if (!sy.tokenOk()) { if (!interactive && !st.linked) return false; await token(interactive); }
-        const remote = await pull(), before = JSON.stringify([AA.S.xp, Object.keys(AA.S.stats).length, AA.S.savedAt]);
-        if (remote && (remote.resetAt || 0) > (AA.S.resetAt || 0)) {
+        const remote = await pull(), before = JSON.stringify([AA.S.xp, Object.keys(AA.S.stats).length, AA.S.savedAt, AA.S.profile.onboarded]);
+        const wasOnb = !!AA.S.profile.onboarded, adopt = !!remote && (remote.resetAt || 0) > (AA.S.resetAt || 0);
+        if (adopt) {
           try { await AA.store.snapshot("reset"); } catch (e) {}
           if (AA.fx) AA.fx.toast(AA.t("rs.remoteT"), AA.t("rs.remoteS"), "refresh");
         }
-        if (remote) { AA.S = AA.store.merge(AA.S, remote); AA.S.profile.onboarded = true; AA.store.save(true, true); }
+        if (remote) { AA.S = AA.store.merge(AA.S, remote); AA.S.profile.onboarded = sy.onbAfter(wasOnb, remote, adopt); AA.store.save(true, true); }
         await push();
         st.last = Date.now(); st.err = ""; ls.set(st);
-        const changed = remote && before !== JSON.stringify([AA.S.xp, Object.keys(AA.S.stats).length, AA.S.savedAt]);
+        const changed = remote && before !== JSON.stringify([AA.S.xp, Object.keys(AA.S.stats).length, AA.S.savedAt, AA.S.profile.onboarded]);
         if (changed && AA.router) { AA.ui.applyTheme(); AA.a11y.apply(); AA.router.refresh(); }
         return true;
       } catch (e) {
@@ -4075,6 +4076,9 @@ window.AA={BUNDLED:true};
     return busy;
   };
   sy.connect = () => sy.now(true);
+  /* Après une synchro : l'accueil (prénom, niveau, plongées, objectif) n'est sauté que si l'une
+     des deux copies l'a déjà fait. Une réinitialisation venue du Drive le redemande. (2.2.1) */
+  sy.onbAfter = (wasOnb, remote, adopt) => { const r = !!(remote && remote.profile && remote.profile.onboarded); return adopt ? r : !!wasOnb || r; };
   /* Réinitialisation complète : jeton d'abord (fenêtre Google si besoin, pendant le geste
      de l'utilisateur), puis remise à zéro locale (reset), puis la copie du Drive est
      remplacée par le profil neuf et les doublons supprimés. Renvoie true si tout a réussi. */

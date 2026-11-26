@@ -227,6 +227,14 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(rz, "réinitialisation « Drive compris » : l’ancienne progression ne revient pas par la synchro");
       const rsd = await p.evaluate(() => { const s0 = AA.sync.possible, c0 = AA.sync.clientId; AA.sync.possible = () => true; AA.sync.clientId = () => "test"; AA.resetFlow(); document.querySelector("#rsnext").click(); const ok = !!document.querySelector("#rsdrive"); AA.sync.possible = s0; AA.sync.clientId = c0; document.querySelector(".sheet-wrap [data-no]").click(); return ok; });
       ok(rsd, "réinitialiser : case « effacer aussi le Google Drive » proposée");
+      ok(await p.evaluate(() => { const F = AA.store.FRESH(), on = { profile: { onboarded: true } }, f = AA.sync.onbAfter; return f(false, F, false) === false && f(true, F, false) === true && f(false, on, false) === true && f(true, F, true) === false; }),
+        "synchro Drive après réinitialisation : l’accueil (prénom, niveau, plongées) n’est plus sauté");
+      { const R = await newPage(b, 390, 844); await R.p.goto(URL); await seed(R.p); await R.p.goto(URL + "#/settings"); await R.p.waitForTimeout(300);
+        await R.p.evaluate(() => AA.resetFlow()); await R.p.waitForTimeout(200); await R.p.click("#rsnext"); await R.p.waitForTimeout(150);
+        await R.p.check("#rsok"); await R.p.click("#rsnext"); await R.p.waitForTimeout(150); await R.p.fill("#rsword", "EFFACER");
+        await R.p.waitForFunction(() => { const g = document.querySelector("#rsgo"); return g && !g.disabled; }, null, { timeout: 8000 }); await R.p.click("#rsgo"); await R.p.waitForTimeout(800);
+        ok(await R.p.evaluate(() => AA.router.name === "welcome" && !AA.S.profile.onboarded && AA.S.xp === 0), "tout réinitialiser : retour à l’accueil du début (prénom, niveau, plongées, objectif)");
+        await R.ctx.close(); }
       await ctx.close(); }
 
     console.log("• Écrans et largeurs");
