@@ -74,7 +74,7 @@
         if (!done) return `<button class="dq dq-go" data-go="${u.esc(G.questGo(q.test) || "daily")}"><span class="ck"></span><span><b class="small">${u.esc(q.t)}</b>${ui.bar(v / n, "var(--gold)")}<span class="xs muted mono">${Math.min(v, n)}/${n}</span></span><span class="dq-do">${t("home.doIt")} ${AA.icon("next")}</span></button>`;
         return `<div class="dq done"><span class="ck">${AA.icon("check")}</span><span><b class="small">${u.esc(q.t)}</b>${ui.bar(1, "var(--gold)")}</span>${cl ? `<span class="chip ok">✓</span>` : `<button class="btn gold sm" data-claim="${key}" data-xp="20">+20 XP</button>`}</div>`; }).join("");
       const bk = today + "bonus";
-      el.innerHTML = `${ui.head(t("prof.quests"), "profile", AA.helpBtn("quests"))}${ui.intro("quests")}
+      el.innerHTML = `${ui.head(t("prof.quests"), "profile", AA.helpBtn("quests"))}${ui.intro("quests")}${AA.weekSection ? AA.weekSection() + `<div style="height:var(--sp-4)"></div>` : ""}
         <section class="card"><div class="row" style="gap:var(--sp-3)"><span class="medal">${AA.icon("sun")}</span><div class="grow"><h3>${t("quests.daily")}</h3><p class="small muted" style="margin:0">${t("quests.dailyS")}</p></div></div>
           <div style="margin-top:var(--sp-3)">${dqh}</div>
           ${all ? (S.claimed[bk] ? `<p class="small muted">${t("quests.bonusDone")}</p>` : `<button class="btn block" data-claim="${bk}" data-xp="30" style="margin-top:var(--sp-3)">${t("quests.bonus")}</button>`) : ""}</section>

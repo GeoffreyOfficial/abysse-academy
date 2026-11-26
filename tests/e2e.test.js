@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console.error("  ✗ " + m); } };
 const WIDTHS = [[280, 653], [390, 844], [884, 1104], [1440, 900], [3840, 2160]];
-const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet", "examen", "examen/n3/quick", "fiches/n2", "fiches/e2/e2-evaluer"];
+const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "quests", "club", "settings", "aquarium", "story", "story/anse", "boss/n2", "search/palier", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet", "examen", "examen/n3/quick", "fiches/n2", "fiches/e2/e2-evaluer", "brief", "brief/gp", "succ", "succ/go"];
 
 async function newPage(b, w, h) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
@@ -164,6 +164,49 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       const canSpeak = await p.evaluate(() => AA.a11y.canSpeak);
       if (canSpeak) { await p.click("[data-oral]"); await p.waitForTimeout(300); ok(await p.$(".oral-bar"), "lecture du cours : lecteur affiché"); await p.click("#orStop"); }
       else ok(true, "lecture du cours : synthèse vocale absente ici (bouton masqué)");
+      await ctx.close(); }
+
+    console.log("• Briefing, successives, défis, club (1.9)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => AA.content.computer.length >= 19 && AA.content.qById["pc-" + (AA.content.computer.length - 1)]), "mode ordinateur : nouveaux cas ajoutés à la fin");
+      await p.goto(URL + "#/brief"); await p.waitForTimeout(250); await p.click('.tile[data-t="gp"]'); await p.waitForTimeout(250);
+      ok(await p.$(".br-card .br-facts") && (await p.$$(".br-it")).length >= 12, "briefing : plongée tirée au hasard et liste à trier");
+      const idx = await p.evaluate(() => AA.ctx.brief.items.map((x, i) => x.ok ? i : -1).filter(i => i >= 0));
+      for (const i of idx) await p.click(`.br-it[data-i="${i}"]`);
+      await p.click("#brv"); await p.waitForTimeout(150); ok(await p.$(".br-it.res.good") && !(await p.$(".br-it.res.wrong")), "briefing : correction du contenu"); await p.click("#brn"); await p.waitForTimeout(150);
+      for (let i = 0; i < 6; i++) { await p.click(`[data-p="${i}"]`); await p.waitForTimeout(60); }
+      await p.click("#brv"); await p.waitForTimeout(120); ok((await p.$$(".br-order li.good")).length === 6, "briefing : ordre des parties vérifié"); await p.click("#brn"); await p.waitForTimeout(150);
+      for (let i = 0; i < 8 && !(await p.$(".result")); i++) { const a = await p.evaluate(() => AA.ctx.brief.qs[AA.ctx.brief.qi].a); await p.click(`.opt[data-k="${a}"]`); await p.waitForTimeout(80); await p.click("#brn"); await p.waitForTimeout(100); }
+      ok(await p.$(".result") && await p.$(".br-model .br-step") && await p.evaluate(() => AA.S.v19.brief === 1 && AA.v19.week().c.brief === 1), "briefing : réussi, briefing modèle, compté pour les défis");
+      await p.goto(URL + "#/succ"); await p.waitForTimeout(250); await p.click('.tile[data-t="go"]'); await p.waitForTimeout(250);
+      ok(await p.$(".su-case .su-svg"), "successives : cas illustré (profil des deux plongées)");
+      for (let i = 0; i < 12 && !(await p.$(".result")); i++) { const a = await p.evaluate(() => AA.ctx.succ.steps[AA.ctx.succ.i].a); await p.click(`.opt[data-k="${a}"]`); await p.waitForTimeout(80); await p.click("#sun"); await p.waitForTimeout(100); }
+      ok(await p.evaluate(() => AA.S.v19.succ === 1), "successives : cas résolu sans faute");
+      await p.goto(URL + "#/home"); await p.waitForTimeout(300); ok(await p.$(".wk-card .wk-ch"), "accueil : défis de la semaine");
+      await p.evaluate(() => { const w = AA.v19.week(); AA.v19.weekChallenges().forEach(c => (w.c[c.k] = c.n)); for (let i = 0; i < 7; i++) { const d = AA.u.addDays(-i); if (!AA.S.days.includes(d)) AA.S.days.push(d); } AA.S.days.sort(); AA.store.save(); });
+      await p.goto(URL + "#/quests"); await p.waitForTimeout(300); ok(await p.$(".wk-full") && await p.$(".ev-card"), "quêtes : défis de la semaine et événement de saison");
+      for (let i = 0; i < 3; i++) { const c = await p.$(".wk-full [data-wclaim]:not([data-wclaim='all'])"); if (c) { await c.click(); await p.waitForTimeout(550); } }
+      const all = await p.$('[data-wclaim="all"]'); if (all) { await all.click(); await p.waitForTimeout(550); }
+      ok(await p.evaluate(() => AA.S.v19.weeks === 1 && AA.S.badges.week1), "défis : 3 récompenses, bonus et trophée « Semaine parfaite »");
+      await p.goto(URL + "#/club"); await p.waitForTimeout(250);
+      const card = await p.evaluate(() => AA.v19.encode("AAC1", { id: "zz9", n: "Léa", x: 4200, l: 7, wk: AA.v19.isoWeek(), wx: 300, s: 4, e: 14.5, t: Date.now() }));
+      await p.fill("#clin", "Voici ma carte : " + card + " à bientôt"); await p.click("#clgo"); await p.waitForTimeout(1200);
+      ok((await p.$$(".cl-list li")).length === 2 && /Léa/.test(await p.textContent(".cl-list")), "club : carte de score ajoutée au classement");
+      await p.fill("#clin", card.slice(0, 20) + (card[20] === "A" ? "B" : "A") + card.slice(21)); await p.click("#clgo"); await p.waitForTimeout(200);
+      ok(/modifié|incomplet/.test(await p.textContent("#clout")), "club : code abîmé refusé avec un message clair");
+      await p.click("#clnew"); await p.waitForTimeout(250);
+      for (let i = 0; i < 14 && !(await p.$(".result")); i++) { const c = await p.$(".choice:not([disabled])"); if (c) await c.click(); await p.waitForTimeout(70); }
+      const code = await p.inputValue(".cl-code textarea"); ok(/^AAD1\./.test(code), "duel à distance : code du défi après la partie");
+      const B = await newPage(b, 390, 844); await B.p.goto(URL); await seed(B.p); await B.p.evaluate(() => { AA.S.profile.name = "Lou"; AA.store.save(); });
+      await B.p.goto(URL + "#/club/d/" + code); await B.p.waitForTimeout(500); ok(await B.p.$(".cl-chal #clplay"), "duel à distance : le lien ouvre le défi chez l’ami");
+      await B.p.click("#clplay"); await B.p.waitForTimeout(250);
+      for (let i = 0; i < 14 && !(await B.p.$(".result")); i++) { const c = await B.p.$(".choice:not([disabled])"); if (c) await c.click(); await B.p.waitForTimeout(70); }
+      ok(await B.p.$(".result .cl-vs"), "duel à distance : résultat comparé chez l’ami");
+      const reply = await B.p.inputValue(".cl-code textarea"); await B.ctx.close();
+      await p.goto(URL + "#/club"); await p.waitForTimeout(250); await p.fill("#clin", reply); await p.click("#clgo"); await p.waitForTimeout(250);
+      ok(await p.$("#clout .cl-vs") && await p.evaluate(() => AA.S.v19.duels.some(d => d.role === "a" && d.opp && d.opp.n === "Lou")), "duel à distance : la réponse donne le résultat chez le lanceur");
+      const m = await p.evaluate(() => { const a = AA.S, b = JSON.parse(JSON.stringify(a)); b.savedAt = (a.savedAt || 0) + 5; b.v19.club.members.yy1 = { id: "yy1", n: "Max", x: 10, t: 1 }; b.v19.brief = 0; const r = AA.store.merge(a, b); return r.v19.club.members.zz9 && r.v19.club.members.yy1 && r.v19.brief === 1; });
+      ok(m, "fusion de sauvegardes : club et compteurs 1.9 conservés");
       await ctx.close(); }
 
     console.log("• Écrans et largeurs");

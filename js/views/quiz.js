@@ -6,7 +6,7 @@
 (function () {
   "use strict";
   const AA = window.AA, u = AA.u, t = AA.t, G = AA.game, C = AA.content, fx = AA.fx;
-  const NOFB = m => m === "exam" || m === "apnee" || m === "duel";
+  const NOFB = m => m === "exam" || m === "apnee" || m === "duel" || m === "rduel";
   const TIMED = m => m === "exam" || m === "apnee" || m === "five";
   const Q = (AA.quiz = {});
 
@@ -349,6 +349,7 @@
       if (st >= 2) setTimeout(() => fx.burst(innerWidth / 2, innerHeight * .35, 50, "rgba(255,200,87,.9)"), 200);
       if (st >= 1) fx.sfx.up();
     }
+    if (c.onResult) { try { extra += c.onResult(c, good, n) || ""; } catch (e) {} }
     const m = c.module && C.byId[c.module];
     el.innerHTML = `<div class="topclose"><button class="closebtn" id="rclose" aria-label="${t("nav.back")}">${AA.icon("close")}</button></div>
       <section class="card result stack-lg">${head}<p>${sub}</p>

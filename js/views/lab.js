@@ -16,6 +16,8 @@
           ${ui.tile("pc", "watch", "var(--ok)", t("mode.pc"), t("lab.pcS", { n: C.computer.length }), S.pcRuns ? [t("pc.best", { n: S.pcBest }), S.pcBest === 100 ? "ok" : ""] : null)}
           ${ui.tile("scen", "cross", "var(--accent)", t("lab.scen"), t("lab.scenS"), [sc + "/" + C.scenarios.length, sc === C.scenarios.length ? "ok" : ""])}
           ${ui.tile("tables", "table", "var(--gold)", t("lab.tables"), t("lab.tablesS"), S.table.length ? [t("lab.rows", { n: S.table.length }), "gold"] : null)}
+          ${ui.tile("brief", "chat", "var(--accent)", t("br.title"), t("br.tileS"), AA.v19 && AA.v19.state().brief ? [t("br.okN", { n: AA.v19.state().brief }), "ok"] : null)}
+          ${ui.tile("succ", "table", "var(--gold)", t("su.title"), t("su.tileS"), AA.v19 && AA.v19.state().succ ? [t("su.okN", { n: AA.v19.state().succ }), "ok"] : null)}
           ${ui.tile("calc", "calc", "var(--world-e2)", t("lab.calc"), t("lab.calcS"))}
         </div>`;
       u.on(el, "click", ".tile", (e, b) => { fx.sfx.tap(); AA.router.go(b.dataset.t); });

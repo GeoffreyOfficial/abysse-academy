@@ -709,9 +709,9 @@ html.offline .brand::after{content:"";width:8px;height:8px;border-radius:50%;bac
 .searchbox .input{padding-left:2.8rem;padding-right:3rem;min-height:3.2rem;font-size:var(--fs-lg);border-radius:var(--r-lg)}
 .searchbox .kbd{position:absolute;right:12px}
 .results{display:grid;gap:10px}
-.result{display:grid;grid-template-columns:2.5rem minmax(0,1fr);gap:12px;align-items:start;text-align:left;padding:12px 14px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line)}
-.result b{display:block;font:700 var(--fs-md)/1.3 var(--font-display);margin:2px 0}
-.result .small{display:block;line-height:1.45}
+.results>.result{display:grid;grid-template-columns:2.5rem minmax(0,1fr);gap:12px;align-items:start;text-align:left;padding:12px 14px;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line)}
+.results>.result b{display:block;font:700 var(--fs-md)/1.3 var(--font-display);margin:2px 0}
+.results>.result .small{display:block;line-height:1.45}
 .ric{width:2.5rem;height:2.5rem;border-radius:12px;display:grid;place-items:center;background:var(--surface-2);color:var(--primary)} .ric svg{width:1.2rem;height:1.2rem}
 mark{background:var(--gold-soft);color:inherit;border-radius:4px;padding:0 2px;box-shadow:0 0 0 1px color-mix(in srgb,var(--gold) 40%,transparent)}
 mark.hl{animation:hl 2.2s var(--ease)} @keyframes hl{0%,30%{background:var(--gold);color:var(--gold-ink)}}
@@ -827,7 +827,7 @@ mark.hl{animation:hl 2.2s var(--ease)} @keyframes hl{0%,30%{background:var(--gol
 .chip{max-width:100%}
 .worldhead .chip,.rv .chip,.profile .chip,.pagehead .chip,.pit .chip{white-space:normal;overflow-wrap:anywhere}
 .pagehead{min-width:0} .pagehead .pagetitle{min-width:0;overflow-wrap:anywhere}
-@media (max-width:359px){.pagetitle{font-size:var(--fs-xl)} .rv{padding:10px} .result{padding:10px}}
+@media (max-width:359px){.pagetitle{font-size:var(--fs-xl)} .rv{padding:10px} .results>.result{padding:10px}}
 .sim{grid-template-columns:minmax(0,1fr)} @media (min-width:700px){.sim{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}}
 .sim>*{min-width:0} .sim .row .seg{min-width:0;max-width:100%}
 .sim .stack{grid-template-columns:minmax(0,1fr)} .simcv{max-width:100%;min-width:0}
@@ -1458,6 +1458,56 @@ svg[viewBox="0 0 24 24"]{max-width:6rem;max-height:6rem}
 .fic-preview .diagram .t-pri{fill:#0b7f86}.fic-preview .diagram .t-gold{fill:#9a6f00}.fic-preview .diagram .t-acc{fill:#c4502c}.fic-preview .diagram .t-ok{fill:#22844b}.fic-preview .diagram .t-bad{fill:#b33}
 .fic-preview .diagram .d-pri{fill:#2bb3b3}
 
+/* =====================================================================
+   1.9 · briefing, plongées successives, défis de la semaine, club
+   ===================================================================== */
+.wk-card{display:grid;gap:8px;color:var(--ink);text-decoration:none}
+.wk-ch{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;min-width:0}
+.wk-full .wk-ch{grid-template-columns:auto minmax(0,1fr) auto auto}
+.wk-ic{display:grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:color-mix(in srgb,var(--gold) 16%,var(--surface-2));color:var(--gold)}
+.wk-ic svg{width:1.1rem;height:1.1rem} .wk-ch.done .wk-ic{background:color-mix(in srgb,var(--ok) 22%,var(--surface-2));color:var(--ok)}
+.wk-tx{display:grid;gap:4px;min-width:0} .wk-tx b{overflow-wrap:anywhere}
+.ev-card{margin-top:var(--sp-3);border-left:4px solid var(--ec);background:linear-gradient(135deg,color-mix(in srgb,var(--ec) 14%,var(--surface)),var(--surface) 60%)}
+.ev-card h3{margin:0} .ev-medal{color:var(--ec)} .ev-soon{opacity:.85}
+.br-steps{display:flex;gap:6px;margin:0 0 var(--sp-3)} .br-steps i{flex:1;height:5px;border-radius:3px;background:var(--surface-3)} .br-steps i.on{background:var(--accent)} .br-steps i.done{background:var(--ok)}
+.br-card{border-top:4px solid var(--accent)} .br-site{display:flex;gap:var(--sp-3);align-items:center} .br-site h3{margin:0}
+.br-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,9.5rem),1fr));gap:8px 14px;margin:var(--sp-3) 0 0}
+.br-facts div{min-width:0} .br-facts .wide{grid-column:1/-1} .br-facts dt{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em} .br-facts dd{margin:2px 0 0;font-weight:600;overflow-wrap:anywhere}
+.br-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,17rem),1fr));gap:8px}
+.br-it{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;align-items:center;text-align:left;font:inherit;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-md,12px);padding:10px 12px;cursor:pointer;min-width:0}
+.br-it span:last-child{overflow-wrap:anywhere}
+.br-it .ck{display:grid;place-items:center;width:1.5rem;height:1.5rem;border-radius:7px;border:2px solid var(--line);color:var(--primary-ink)} .br-it .ck svg{width:1rem;height:1rem}
+.br-it.on{border-color:var(--primary);background:color-mix(in srgb,var(--primary) 14%,var(--surface))} .br-it.on .ck{background:var(--primary);border-color:var(--primary)}
+.br-it.res{cursor:default} .br-it.res .ck{border:0;color:#fff} .br-it.good .ck{background:var(--ok)} .br-it.miss .ck{background:var(--gold)} .br-it.wrong .ck{background:var(--bad)} .br-it.skip{opacity:.6} .br-it.skip .ck{background:var(--surface-3);color:var(--muted)}
+.br-it.miss{border-color:var(--gold)} .br-it.wrong{border-color:var(--bad)}
+.br-order{list-style:none;margin:var(--sp-3) 0;padding:0;display:grid;gap:6px;counter-reset:none}
+.br-order li{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 12px;border-radius:10px;background:var(--surface-2);border:1px solid var(--line);min-width:0}
+.br-order li.good{border-color:var(--ok)} .br-order li.wrong{border-color:var(--bad)}
+.br-n{display:inline-grid;place-items:center;flex:none;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--accent);color:#fff;font-weight:700;font-size:.85rem}
+.br-pool{display:flex;flex-wrap:wrap;gap:8px} .br-pool .btn{white-space:normal;text-align:left;max-width:100%}
+.br-sc{display:grid;gap:8px;text-align:left} .br-sc div{display:grid;grid-template-columns:6rem minmax(0,1fr) 3rem;align-items:center;gap:8px}
+.br-model{display:grid;gap:12px} .br-step{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start} .br-step p{overflow-wrap:anywhere}
+.su-method{margin:0;padding-left:1.2rem;display:grid;gap:6px}
+.su-case{border-left:4px solid var(--gold)} .su-svg{display:block;width:100%;max-width:26rem;height:auto;margin-top:var(--sp-2)}
+.su-svg .su-surf{stroke:var(--primary);stroke-width:2;stroke-dasharray:4 4} .su-svg .su-dive{fill:color-mix(in srgb,var(--primary) 18%,transparent);stroke:var(--primary);stroke-width:2.5;stroke-linejoin:round}
+.su-svg .su-int{stroke:var(--gold);stroke-width:5;stroke-linecap:round} .su-svg .su-t{fill:var(--ink);font-size:11px;font-weight:700} .su-svg .su-t.mute{fill:var(--muted);font-weight:500} .su-svg .su-t.acc{fill:var(--gold)}
+.cl-grid{display:grid;gap:var(--sp-4)}
+@media (min-width:900px){.cl-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:start}}
+.cl-list{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.cl-list li{display:grid;grid-template-columns:2rem minmax(0,1fr) auto auto;gap:8px;align-items:center;padding:8px 10px;border-radius:12px;background:var(--surface-2);min-width:0}
+.cl-list li.me{box-shadow:0 0 0 2px var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--surface-2))}
+.cl-pos{font-weight:800;text-align:center} .cl-nm{display:grid;min-width:0} .cl-nm b{overflow-wrap:anywhere} .cl-val{font-weight:700;white-space:nowrap}
+.cl-box{display:grid;gap:8px} .cl-ta{font-size:.75rem;word-break:break-all;resize:vertical;min-height:4.5rem}
+.cl-more summary{cursor:pointer;font-weight:600;margin-top:var(--sp-2)}
+.cl-vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;text-align:center}
+.cl-vs>div{display:grid;gap:2px;min-width:0} .cl-vs b{overflow-wrap:anywhere} .cl-vs .big2{font-size:1.8rem;font-weight:800}
+.cl-vs.win>div:first-child .big2{color:var(--ok)} .cl-vs.lose>div:last-child .big2{color:var(--ok)}
+.cl-x{color:var(--gold)} .cl-x svg{width:1.8rem;height:1.8rem}
+.cl-recent{display:grid;gap:6px} .cl-r{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:6px 10px;border-radius:10px;background:var(--surface-2)}
+.cl-code{text-align:left;margin-top:var(--sp-3)}
+@media (max-width:360px){.cl-list li{grid-template-columns:1.5rem minmax(0,1fr) auto}.cl-list li .btn{grid-column:3}.cl-val{grid-column:2}.br-sc div{grid-template-columns:minmax(0,1fr) 2.6rem}.br-sc div .bar{grid-column:1/-1;grid-row:2}}
+.cl-you{font-size:.7rem;padding:1px 8px;vertical-align:middle;margin-left:4px}
+
 </style>
 </head>
 <body>
@@ -1480,7 +1530,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "1.8.0";
+  AA.VERSION = "1.9.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -3138,7 +3188,7 @@ window.AA={BUNDLED:true};
   /* ---------- Petits composants (renvoient du HTML) ---------- */
   ui.head = (title, backTo, extra) => `<div class="pagehead">${backTo ? `<a class="closebtn" href="#/${backTo}" aria-label="${t("nav.back")}">${AA.icon("back")}</a>` : ""}<h1 class="pagetitle">${title}</h1>${extra || ""}</div>`;
   /* Chaque tuile qui a une fiche d'aide reçoit un petit « ? » (content/fr/help.js). */
-  const TILE_HELP = { fiches: "fiches", srs: "srs", carnet: "carnet", examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate", cursus: "cursus" };
+  const TILE_HELP = { brief: "brief", succ: "succ", fiches: "fiches", srs: "srs", carnet: "carnet", examfull: "exam", examquick: "exam", errors: "errors", stale: "stale", doubt: "doubt", calcs: "calcs", parcours: "parcours", quests: "quests", aquarium: "aquarium", story: "story", mistakes: "mistakes", boss: "boss", sim: "sim", pc: "pc", scen: "scen", tables: "tables", calc: "calc", daily: "daily", flash: "flash", five: "five", apnee: "apnee", duel: "duel", reports: "reports", sources: "sources", valider: "validate", cursus: "cursus" };
   ui.tile = (id, icon, color, title, sub, badge) => { const hk = TILE_HELP[id], has = hk && AA.content.help && AA.content.help[hk];
     return `<button class="tile" data-t="${id}" style="--c:${color}"><span class="ic">${AA.icon(icon)}</span><b>${title}</b><span>${sub}</span>${badge ? `<span class="badge chip ${badge[1] || ""}">${badge[0]}</span>` : ""}${has ? `<span class="helpbtn tile-help" role="button" tabindex="0" data-help="${hk}" aria-label="${t("help.what")}">?</span>` : ""}</button>`; };
   ui.bar = (p, color) => `<div class="bar"><i style="width:${Math.round(u.clamp(p, 0, 1) * 100)}%${color ? ";background:" + color : ""}"></i></div>`;
@@ -3523,6 +3573,7 @@ window.AA={BUNDLED:true};
           return ok ? `<a class="dq done dq-go" href="#/quests"><span class="ck">${AA.icon("check")}</span><span><b class="small">${u.esc(q.t)}</b>${AA.ui.bar(1)}</span>${cl ? `<span class="chip ok">✓</span>` : `<span class="chip gold">${t("home.claim")}</span>`}</a>`
             : `<button class="dq dq-go" data-go="${u.esc(go || "")}"><span class="ck"></span><span><b class="small">${u.esc(q.t)}</b>${AA.ui.bar(v / n)}</span><span class="dq-do">${t("home.doIt")} ${AA.icon("next")}</span></button>`; }).join("")}
           ${ns ? `<a class="questline" href="#/quests"><span class="eyebrow">${t("home.questNow")}</span><b>${u.esc(ns.st.t)}</b><span class="small muted">${u.esc(ns.c.title)}</span></a>` : ""}</section>
+        ${AA.weekCard ? AA.weekCard() : ""}
         ${qod ? `<div class="section-title"><h3>${t("home.qod")} ${AA.helpBtn("qod")}</h3><span class="chip">${u.esc(C.moduleTitle(qod.m))}</span></div>
         <section class="card" id="qod"><p class="qtext" style="margin-bottom:var(--sp-4)">${u.esc(qod.q)}</p><div class="choices">${qodOrder(qod).map((i, k) => `<button class="choice" data-qi="${i}"><span class="k">${"ABCD"[k]}</span><span>${u.esc(qod.c[i])}</span><span class="mk"></span></button>`).join("")}</div><div id="qodx"></div></section>` : ""}
         </aside></div>
@@ -3834,7 +3885,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = window.AA, u = AA.u, t = AA.t, G = AA.game, C = AA.content, fx = AA.fx;
-  const NOFB = m => m === "exam" || m === "apnee" || m === "duel";
+  const NOFB = m => m === "exam" || m === "apnee" || m === "duel" || m === "rduel";
   const TIMED = m => m === "exam" || m === "apnee" || m === "five";
   const Q = (AA.quiz = {});
 
@@ -4177,6 +4228,7 @@ window.AA={BUNDLED:true};
       if (st >= 2) setTimeout(() => fx.burst(innerWidth / 2, innerHeight * .35, 50, "rgba(255,200,87,.9)"), 200);
       if (st >= 1) fx.sfx.up();
     }
+    if (c.onResult) { try { extra += c.onResult(c, good, n) || ""; } catch (e) {} }
     const m = c.module && C.byId[c.module];
     el.innerHTML = `<div class="topclose"><button class="closebtn" id="rclose" aria-label="${t("nav.back")}">${AA.icon("close")}</button></div>
       <section class="card result stack-lg">${head}<p>${sub}</p>
@@ -4363,6 +4415,8 @@ window.AA={BUNDLED:true};
           ${ui.tile("pc", "watch", "var(--ok)", t("mode.pc"), t("lab.pcS", { n: C.computer.length }), S.pcRuns ? [t("pc.best", { n: S.pcBest }), S.pcBest === 100 ? "ok" : ""] : null)}
           ${ui.tile("scen", "cross", "var(--accent)", t("lab.scen"), t("lab.scenS"), [sc + "/" + C.scenarios.length, sc === C.scenarios.length ? "ok" : ""])}
           ${ui.tile("tables", "table", "var(--gold)", t("lab.tables"), t("lab.tablesS"), S.table.length ? [t("lab.rows", { n: S.table.length }), "gold"] : null)}
+          ${ui.tile("brief", "chat", "var(--accent)", t("br.title"), t("br.tileS"), AA.v19 && AA.v19.state().brief ? [t("br.okN", { n: AA.v19.state().brief }), "ok"] : null)}
+          ${ui.tile("succ", "table", "var(--gold)", t("su.title"), t("su.tileS"), AA.v19 && AA.v19.state().succ ? [t("su.okN", { n: AA.v19.state().succ }), "ok"] : null)}
           ${ui.tile("calc", "calc", "var(--world-e2)", t("lab.calc"), t("lab.calcS"))}
         </div>`;
       u.on(el, "click", ".tile", (e, b) => { fx.sfx.tap(); AA.router.go(b.dataset.t); });
@@ -4704,7 +4758,7 @@ window.AA={BUNDLED:true};
         if (!done) return `<button class="dq dq-go" data-go="${u.esc(G.questGo(q.test) || "daily")}"><span class="ck"></span><span><b class="small">${u.esc(q.t)}</b>${ui.bar(v / n, "var(--gold)")}<span class="xs muted mono">${Math.min(v, n)}/${n}</span></span><span class="dq-do">${t("home.doIt")} ${AA.icon("next")}</span></button>`;
         return `<div class="dq done"><span class="ck">${AA.icon("check")}</span><span><b class="small">${u.esc(q.t)}</b>${ui.bar(1, "var(--gold)")}</span>${cl ? `<span class="chip ok">✓</span>` : `<button class="btn gold sm" data-claim="${key}" data-xp="20">+20 XP</button>`}</div>`; }).join("");
       const bk = today + "bonus";
-      el.innerHTML = `${ui.head(t("prof.quests"), "profile", AA.helpBtn("quests"))}${ui.intro("quests")}
+      el.innerHTML = `${ui.head(t("prof.quests"), "profile", AA.helpBtn("quests"))}${ui.intro("quests")}${AA.weekSection ? AA.weekSection() + `<div style="height:var(--sp-4)"></div>` : ""}
         <section class="card"><div class="row" style="gap:var(--sp-3)"><span class="medal">${AA.icon("sun")}</span><div class="grow"><h3>${t("quests.daily")}</h3><p class="small muted" style="margin:0">${t("quests.dailyS")}</p></div></div>
           <div style="margin-top:var(--sp-3)">${dqh}</div>
           ${all ? (S.claimed[bk] ? `<p class="small muted">${t("quests.bonusDone")}</p>` : `<button class="btn block" data-claim="${bk}" data-xp="30" style="margin-top:var(--sp-3)">${t("quests.bonus")}</button>`) : ""}</section>
@@ -6197,6 +6251,549 @@ window.AA={BUNDLED:true};
   };
 })();
 
+/* js/views/v19.js */
+/* =====================================================================
+   Abysse Academy 1.9
+   - Briefing de palanquée simulé (choisir, ordonner, répondre, modèle).
+   - Atelier plongées successives : la méthode pas à pas, avec des
+     majorations d'exercice (jamais les valeurs de la table).
+   - Défis de la semaine (3 par semaine) et événements de saison.
+   - Duels à distance par code ou lien, classement de club sans serveur
+     (cartes de score échangées, codes vérifiés par une somme de contrôle).
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, ui = AA.ui, fx = AA.fx, Q = AA.quiz;
+  const S = () => AA.S;
+  const V = (AA.v19 = {});
+
+  /* ---------- État (anciens profils : champs créés à la demande) ---------- */
+  const st = () => {
+    const s = S();
+    if (!s.v19 || typeof s.v19 !== "object") s.v19 = {};
+    const v = s.v19;
+    ["brief", "succ", "weeks", "events", "rduel"].forEach(k => { if (typeof v[k] !== "number") v[k] = 0; });
+    if (!v.ev || typeof v.ev !== "object") v.ev = {};
+    if (!v.club || typeof v.club !== "object") v.club = { name: "", members: {} };
+    if (!v.club.members || typeof v.club.members !== "object") v.club.members = {};
+    if (!Array.isArray(v.duels)) v.duels = [];
+    if (!v.cid) v.cid = Math.random().toString(36).slice(2, 10);
+    return v;
+  };
+  V.state = st;
+
+  /* ---------- Semaine ISO ---------- */
+  const isoWeek = day => {
+    const x = new Date((day || u.today()) + "T12:00:00"), wd = (x.getDay() + 6) % 7;
+    x.setDate(x.getDate() - wd + 3);
+    const y = x.getFullYear(), j4 = new Date(y, 0, 4, 12);
+    const w = 1 + Math.round(((x - j4) / 864e5 - 3 + ((j4.getDay() + 6) % 7)) / 7);
+    return y + "-W" + String(w).padStart(2, "0");
+  };
+  const weekStart = () => { const x = new Date(u.today() + "T12:00:00"); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return u.dstr(x); };
+  V.isoWeek = isoWeek;
+  V.week = () => {
+    const v = st(), id = isoWeek();
+    if (!v.week || v.week.id !== id) v.week = { id, c: {}, got: {} };
+    if (!v.week.c) v.week.c = {}; if (!v.week.got) v.week.got = {};
+    return v.week;
+  };
+  V.weekChallenges = () => {
+    const pool = (C.weekly || []).slice(), r = u.seeded(u.seedOf(isoWeek() + "aa")), out = [];
+    while (out.length < 3 && pool.length) out.push(pool.splice(Math.floor(r() * pool.length), 1)[0]);
+    return out;
+  };
+
+  /* ---------- Événements de saison ---------- */
+  const md = d => d.slice(5);
+  V.events = () => { const today = md(u.today()); return (C.events || []).filter(e => e.from <= today && today <= e.to); };
+  V.nextEvent = () => {
+    const today = md(u.today()), list = (C.events || []).slice().sort((a, b) => a.from.localeCompare(b.from));
+    return list.find(e => e.from > today) || list[0] || null;
+  };
+  const evKey = e => e.id + "-" + u.today().slice(0, 4);
+  const evState = e => { const v = st(), k = evKey(e); if (!v.ev[k] || typeof v.ev[k] !== "object") v.ev[k] = { c: {}, got: 0 }; if (!v.ev[k].c) v.ev[k].c = {}; return v.ev[k]; };
+  const evDays = e => { const y = u.today().slice(0, 4); return (S().days || []).filter(d => d >= y + "-" + e.from && d <= y + "-" + e.to).length; };
+  V.evProgress = e => { const n = e.goal.n, v = e.goal.k === "days" ? evDays(e) : (evState(e).c[e.goal.k] || 0); return [Math.min(v, n), n]; };
+  const daysLeft = e => u.daysBetween(u.today(), u.today().slice(0, 4) + "-" + e.to);
+
+  /* ---------- Compteurs ---------- */
+  let quiet = 0;
+  const bump = (k, n) => {
+    n = n == null ? 1 : n;
+    try {
+      const w = V.week(); w.c[k] = (w.c[k] || 0) + n;
+      V.events().forEach(e => { const r = evState(e); r.c[k] = (r.c[k] || 0) + n; });
+    } catch (e) {}
+  };
+  V.bump = bump;
+  V.weekVal = ch => { if (ch.k === "days") { const ws = weekStart(); return (S().days || []).filter(d => d >= ws).length; } return V.week().c[ch.k] || 0; };
+
+  const rec = G.record;
+  G.record = function (q, ok) {
+    const r = rec.apply(this, arguments);
+    bump("ans"); if (ok) bump("ok");
+    if (q && (q.calc || q.gen) && ok) bump("calcOk");
+    if (AA.ctx && AA.ctx.mode === "srs") bump("srs");
+    return r;
+  };
+  const rate = G.rateCard;
+  G.rateCard = function () { const r = rate.apply(this, arguments); bump("flash"); return r; };
+  const addXp = G.addXp;
+  G.addXp = function (n) { const r = addXp.apply(this, arguments); if (n > 0 && !quiet) bump("xp", n); return r; };
+  const giveXp = (n, el) => { quiet++; try { G.addXp(n, el); } finally { quiet--; } };
+  if (AA.examReport) { const er = AA.examReport; AA.examReport = function (c) { if (c && !c._v19) { c._v19 = 1; bump("exam"); } return er.apply(this, arguments); }; }
+  /* Mode ordinateur et duel sur place : comptés à partir des totaux. */
+  const watch = { pc: () => S().pcRuns || 0, duel: () => S().duels || 0 };
+  const lastTot = {};
+  const syncTotals = () => { Object.keys(watch).forEach(k => { const v = watch[k](); if (lastTot[k] != null && v > lastTot[k]) bump(k, v - lastTot[k]); lastTot[k] = v; }); };
+  AA.store.onSave && AA.store.onSave(() => { try { syncTotals(); } catch (e) {} });
+  V.resetTotals = () => Object.keys(watch).forEach(k => (lastTot[k] = watch[k]()));
+
+  /* Trophées de la 1.9 */
+  const cond = G.cond;
+  G.cond = function (c) { if (c && c.k === "v19") return [st()[c.f] || 0, c.n || 1]; return cond.apply(this, arguments); };
+  const qg = G.questGo;
+  G.questGo = function (c) { if (c && c.k === "v19") return { brief: "brief", succ: "succ", rduel: "club", weeks: "quests", events: "quests" }[c.f] || "quests"; return qg.apply(this, arguments); };
+
+  /* Fusion de deux sauvegardes : on garde le plus avancé. */
+  const merge = AA.store.merge;
+  AA.store.merge = function (a, b) {
+    const r = merge.apply(this, arguments);
+    try {
+      const x = (a && a.v19) || {}, y = (b && b.v19) || {}, z = Object.assign({}, x, y);
+      ["brief", "succ", "weeks", "events", "rduel"].forEach(k => (z[k] = Math.max(x[k] || 0, y[k] || 0)));
+      z.ev = Object.assign({}, x.ev || {}, y.ev || {});
+      z.club = { name: (y.club || {}).name || (x.club || {}).name || "", members: Object.assign({}, (x.club || {}).members || {}) };
+      Object.entries((y.club || {}).members || {}).forEach(([id, m]) => { const o = z.club.members[id]; if (!o || (m.t || 0) >= (o.t || 0)) z.club.members[id] = m; });
+      const all = (x.duels || []).concat(y.duels || []), seen = {};
+      z.duels = all.filter(d => { if (!d || !d.i) return false; const k = d.i + d.role; if (seen[k]) { if (d.opp && !seen[k].opp) seen[k].opp = d.opp; return false; } seen[k] = d; return true; }).slice(-60);
+      z.cid = x.cid || y.cid;
+      r.v19 = z;
+    } catch (e) {}
+    return r;
+  };
+
+  /* =====================================================================
+     Défis de la semaine : carte de l'accueil et section des quêtes
+     ===================================================================== */
+  const chLine = (ch, full) => {
+    const w = V.week(), v = Math.min(V.weekVal(ch), ch.n), done = v >= ch.n, got = w.got[ch.id];
+    const right = got ? `<span class="chip ok">✓</span>` : done ? (full ? `<button class="btn gold sm" data-wclaim="${ch.id}">+50 XP</button>` : `<span class="chip gold">${t("wk.claim")}</span>`) : `<span class="xs muted mono">${v}/${ch.n}</span>`;
+    return `<div class="wk-ch ${done ? "done" : ""}"><span class="wk-ic">${AA.icon(done ? "check" : ch.ic || "target")}</span><span class="wk-tx"><b class="small">${u.esc(ch.t)}</b>${ui.bar(v / ch.n, "var(--gold)")}</span>${right}${full && !done && ch.go ? `<button class="btn ghost sm" data-wgo="${u.esc(ch.go)}" aria-label="${t("home.doIt")}">${AA.icon("next")}</button>` : ""}</div>`;
+  };
+  const evCard = (full) => {
+    const e = V.events()[0];
+    if (!e) { const n = V.nextEvent(); return n && full ? `<section class="card ev-card ev-soon" style="--ec:var(${n.color || "--primary"})"><div class="row" style="gap:var(--sp-3);flex-wrap:nowrap"><span class="medal">${AA.icon(n.ic)}</span><div class="grow"><p class="eyebrow">${t("ev.soon")}</p><h3>${u.esc(n.title)}</h3><p class="small muted" style="margin:0">${t("ev.from", { d: evDate(n.from) })}</p></div></div></section>` : ""; }
+    const [v, n] = V.evProgress(e), done = v >= n, s = evState(e), left = daysLeft(e);
+    return `<section class="card ev-card" style="--ec:var(${e.color || "--primary"})"><div class="row" style="gap:var(--sp-3);flex-wrap:nowrap"><span class="medal ev-medal">${AA.icon(e.ic)}</span><div class="grow"><p class="eyebrow">${t("ev.now")} · ${t(left > 1 ? "ev.left" : "ev.last", { n: left })}</p><h3>${u.esc(e.title)}</h3></div></div>
+      <p class="small" style="margin:var(--sp-2) 0">${u.esc(e.text)}</p>${ui.bar(v / n, `var(${e.color || "--primary"})`)}
+      <div class="row between" style="margin-top:6px"><span class="xs muted mono">${v}/${n}</span>${s.got ? `<span class="chip ok">${t("ev.done")}</span>` : done ? (full ? `<button class="btn gold sm" data-evclaim="${e.id}">+${e.xp} XP</button>` : `<a class="chip gold" href="#/quests">${t("wk.claim")}</a>`) : `<span class="chip">+${e.xp} XP</span>`}</div></section>`;
+  };
+  const evDate = mmdd => { const [m, d] = mmdd.split("-").map(Number); return new Date(2000, m - 1, d).toLocaleDateString(AA.i18n ? AA.i18n.locale : "fr-FR", { day: "numeric", month: "long" }); };
+  AA.weekCard = () => {
+    const chs = V.weekChallenges(), w = V.week(), nd = chs.filter(c => V.weekVal(c) >= c.n).length;
+    return `<div class="section-title"><h3>${t("wk.title")} ${AA.helpBtn("week")}</h3><a class="small" href="#/quests">${t("wk.see")}</a></div>
+      <a class="card wk-card" href="#/quests" aria-label="${t("wk.title")} : ${nd}/3">${chs.map(c => chLine(c, false)).join("")}<p class="xs muted" style="margin:6px 0 0">${t("wk.ends", { n: 7 - ((new Date().getDay() + 6) % 7) })}${w.got.all ? " · " + t("wk.allDone") : ""}</p></a>
+      ${evCard(false)}`;
+  };
+  AA.weekSection = () => {
+    const chs = V.weekChallenges(), w = V.week(), all = chs.every(c => V.weekVal(c) >= c.n);
+    return `<section class="card wk-full"><div class="row" style="gap:var(--sp-3)"><span class="medal">${AA.icon("trophy")}</span><div class="grow"><h3>${t("wk.title")}</h3><p class="small muted" style="margin:0">${t("wk.sub", { n: 7 - ((new Date().getDay() + 6) % 7) })}</p></div></div>
+      <div class="stack" style="margin-top:var(--sp-3);gap:var(--sp-2)">${chs.map(c => chLine(c, true)).join("")}</div>
+      ${all ? (w.got.all ? `<p class="small muted">${t("wk.allDone")}</p>` : `<button class="btn block" data-wclaim="all" style="margin-top:var(--sp-3)">${AA.icon("trophy")} ${t("wk.bonus")}</button>`) : `<p class="xs muted" style="margin:var(--sp-2) 0 0">${t("wk.bonusS")}</p>`}</section>
+      <div style="margin-top:var(--sp-4)">${evCard(true)}</div>`;
+  };
+  /* Réclamer : délégation globale (accueil et quêtes). */
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-wclaim],[data-evclaim],[data-wgo]"); if (!b) return;
+    e.preventDefault();
+    if (b.dataset.wgo) { fx.sfx.tap(); AA.goTo(b.dataset.wgo); return; }
+    const v = st();
+    if (b.dataset.evclaim) {
+      const ev = V.events().find(x => x.id === b.dataset.evclaim); if (!ev) return;
+      const s = evState(ev), [p, n] = V.evProgress(ev); if (s.got || p < n) return;
+      s.got = u.today(); v.events++; giveXp(ev.xp, b);
+    } else {
+      const w = V.week(), id = b.dataset.wclaim, chs = V.weekChallenges();
+      if (w.got[id]) return;
+      if (id === "all") { if (!chs.every(c => V.weekVal(c) >= c.n)) return; w.got.all = u.today(); v.weeks++; giveXp(100, b); }
+      else { const ch = chs.find(c => c.id === id); if (!ch || V.weekVal(ch) < ch.n) return; w.got[id] = u.today(); giveXp(50, b); }
+    }
+    AA.store.save(); fx.sfx.badge(); fx.buzz([20, 30, 20]); fx.burstAt(b, 24, "rgba(255,200,87,.9)"); G.checkBadges(); setTimeout(AA.router.refresh, 450);
+  });
+
+  /* =====================================================================
+     Briefing de palanquée
+     ===================================================================== */
+  const R = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const DIVERS = { n1: { l: "N1", pe: 20, pa: 0 }, n1d: { l: "N1 débutant", pe: 20, pa: 0 }, n2: { l: "N2", pe: 40, pa: 20 }, n3: { l: "N3", pe: 60, pa: 60 } };
+  V.newBrief = role => {
+    const B = C.brief, site = u.pick(B.sites), cond = u.pick(B.conds);
+    role = role === "auto" ? "auto" : "gp";
+    let team, lim;
+    if (role === "auto") { team = ["n2"]; lim = 20; }
+    else { team = u.pick([["n1", "n2", "n2"], ["n1d", "n1"], ["n2", "n2", "n2"], ["n1", "n1", "n2"], ["n2", "n3"]]); lim = Math.min(...team.map(k => DIVERS[k].pe)); }
+    const dp = role === "auto" ? u.pick([20, 20, 18, 15]) : u.pick([20, 25, 30, 35, 40].filter(x => x <= 40));
+    const max = Math.min(dp, lim, site.deep), dur = u.pick([35, 40, 45, 50]);
+    const tank = u.pick([[12, 200], [12, 230], [15, 200], [15, 230]]);
+    return { role, site, cond, team, lim, dp, max, dur, tank, mid: Math.round(tank[1] / 2 / 10) * 10 };
+  };
+  const teamTxt = b => b.role === "auto" ? t("br.teamAuto") : t("br.teamGp", { list: b.team.map(k => DIVERS[k].l).join(", ") });
+  const opts4 = (good, wrongs) => { const vals = [good].concat(wrongs.filter(x => x !== good)).filter((x, i, A) => A.indexOf(x) === i).slice(0, 4); const c = u.shuffle(vals); return { c, a: c.indexOf(good) }; };
+  const briefQs = b => {
+    const B = C.brief, qs = [], unit = x => x + " m";
+    const d = opts4(unit(b.max), [unit(b.dp), unit(b.site.deep), unit(b.lim === 20 && b.dp > 20 ? b.dp : b.max + 5), unit(Math.max(10, b.max - 5))]);
+    qs.push({ q: t("br.qDepth", { dp: b.dp, site: b.site.deep, team: teamTxt(b) }), c: d.c, a: d.a, e: b.max < b.dp ? t(b.max === b.lim ? "br.eDepthLim" : "br.eDepthSite", { m: b.max, lim: b.lim }) : t("br.eDepthDp", { m: b.max }) });
+    const p = b.tank[1], m = opts4(b.mid + " bar", [50 + " bar", (p - 50) + " bar", 70 + " bar", (b.mid + 30) + " bar"]);
+    qs.push({ q: t("br.qMid", { v: b.tank[0], p }), c: m.c, a: m.a, e: t("br.eMid", { m: b.mid }) });
+    const hz = opts4(b.site.hz, u.shuffle(C.brief.sites.filter(s => s.id !== b.site.id).map(s => s.hz)));
+    qs.push({ q: t("br.qSite", { site: b.site.n }), c: hz.c, a: hz.a, e: t("br.eSite") });
+    const cd = opts4(b.cond.c[0], b.cond.c.slice(1)); qs.push({ q: b.cond.q, c: cd.c, a: cd.a, e: b.cond.e });
+    const lo = opts4(B.lost.c[0], B.lost.c.slice(1)); qs.push({ q: B.lost.q, c: lo.c, a: lo.a, e: B.lost.e });
+    if (b.team.includes("n1d")) qs.push(Object.assign({ e: t("br.eNew") }, opts4(t("br.aNew"), [t("br.wNew1"), t("br.wNew2"), t("br.wNew3")]), { q: t("br.qNew") }));
+    else { const w = opts4(B.who.c[0], B.who.c.slice(1)); qs.push({ q: B.who.q, c: w.c, a: w.a, e: B.who.e }); }
+    return qs;
+  };
+  const modelBrief = b => {
+    const s = b.site, lines = [
+      [t("br.plan1"), t("br.m1", { site: s.n, see: s.see, cond: b.cond.n.toLowerCase(), hz: s.hz })],
+      [t("br.plan2"), t("br.m2", { max: b.max, dur: b.dur, mid: b.mid })],
+      [t("br.plan3"), b.role === "auto" ? t("br.m3auto") : t("br.m3gp", { team: b.team.map(k => DIVERS[k].l).join(", ") })],
+      [t("br.plan4"), b.cond.id === "courant" ? t("br.m4cur") : t("br.m4")],
+      [t("br.plan5"), t("br.m5")],
+      [t("br.plan6"), t("br.m6")]
+    ];
+    return `<div class="br-model">${lines.map(([h, p], i) => `<div class="br-step"><span class="br-n">${i + 1}</span><div><b>${h}</b><p class="small" style="margin:2px 0 0">${p}</p></div></div>`).join("")}</div>`;
+  };
+  const briefCtx = role => {
+    const b = V.newBrief(role), B = C.brief;
+    const items = u.shuffle(B.items.map(x => ({ t: x.t, w: x.w, ok: 1 })).concat(u.shuffle(B.wrong).slice(0, 4).map(x => ({ t: x.t, w: x.w, ok: 0 }))));
+    return { b, phase: 0, items, sel: {}, order: [], plan: u.shuffle(B.plan.map((x, i) => Object.assign({ i }, x))), qs: briefQs(b), qi: 0, pick: null, sc: [0, 0, 0], saved: false };
+  };
+  const briefHead = (c, step) => `<div class="pagehead"><a class="closebtn" href="#/brief" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${t("br.title")} · ${t("br.step", { i: step, n: 3 })}</span></div>
+    <div class="br-steps" aria-hidden="true">${[1, 2, 3].map(k => `<i class="${k < step ? "done" : k === step ? "on" : ""}"></i>`).join("")}</div>`;
+  const briefCard = b => `<section class="card br-card"><div class="br-site"><span class="medal">${AA.icon("flag")}</span><div><p class="eyebrow">${t("br.dive")}</p><h3>${u.esc(b.site.n)}</h3></div></div>
+    <dl class="br-facts"><div><dt>${t("br.fDp")}</dt><dd>${b.dp} m · ${b.dur} min</dd></div><div><dt>${t("br.fSite")}</dt><dd>${t("br.fSiteV", { d: b.site.deep })}</dd></div><div><dt>${t("br.fCond")}</dt><dd>${u.esc(b.cond.n)}</dd></div><div><dt>${t("br.fTank")}</dt><dd>${b.tank[0]} L · ${b.tank[1]} bar</dd></div><div class="wide"><dt>${t("br.fTeam")}</dt><dd>${u.esc(teamTxt(b))}</dd></div></dl></section>`;
+  AA.view("brief", {
+    tab: "lab", depth: 30,
+    render(el, [role]) {
+      const v = st();
+      if (!role) {
+        el.innerHTML = `${ui.head(t("br.title"), "lab", AA.helpBtn("brief"))}<p class="muted">${t("br.intro")}</p>
+          <div class="tiles one-sm" style="margin-top:var(--sp-4)">
+            ${ui.tile("gp", "users", "var(--world-n4, var(--primary))", t("br.gp"), t("br.gpS"))}
+            ${ui.tile("auto", "dive", "var(--ok)", t("br.auto"), t("br.autoS"))}
+          </div>
+          ${v.brief ? `<p class="small muted" style="margin-top:var(--sp-4)">${t("br.stats", { n: v.brief })}</p>` : ""}
+          ${ui.callout("check", t("common.validate"), u.esc(C.brief.note))}`;
+        u.on(el, "click", ".tile", (e, b) => { fx.sfx.tap(); AA.ctx.brief = briefCtx(b.dataset.t); AA.router.go("brief/" + b.dataset.t); });
+        return;
+      }
+      const c = AA.ctx.brief && AA.ctx.brief.b && AA.ctx.brief.b.role === (role === "auto" ? "auto" : "gp") ? AA.ctx.brief : (AA.ctx.brief = briefCtx(role)), b = c.b;
+      if (c.phase === 0) {
+        el.innerHTML = `${briefHead(c, 1)}${briefCard(b)}<h2 class="qtext" style="margin-top:var(--sp-4)">${t("br.p1")}</h2><p class="small muted">${t("br.p1S")}</p>
+          <div class="br-items">${c.items.map((x, i) => `<button class="br-it ${c.sel[i] ? "on" : ""}" data-i="${i}" aria-pressed="${!!c.sel[i]}"><span class="ck">${c.sel[i] ? AA.icon("check") : ""}</span><span>${u.esc(x.t)}</span></button>`).join("")}</div>
+          <button class="btn block" id="brv" style="margin-top:var(--sp-4)">${t("br.check")}</button>`;
+        u.$$(".br-it", el).forEach(x => x.onclick = () => { const i = +x.dataset.i; c.sel[i] = !c.sel[i]; fx.sfx.tap(); x.classList.toggle("on", c.sel[i]); x.setAttribute("aria-pressed", c.sel[i]); u.$(".ck", x).innerHTML = c.sel[i] ? AA.icon("check") : ""; });
+        u.$("#brv").onclick = () => {
+          const good = c.items.filter((x, i) => x.ok && c.sel[i]).length, bad = c.items.filter((x, i) => !x.ok && c.sel[i]).length, tot = c.items.filter(x => x.ok).length;
+          c.sc[0] = Math.max(0, good - bad) / tot; c.phase = 0.5; c.p1 = { good, bad, tot }; (c.sc[0] >= .8 ? fx.sfx.ok : fx.sfx.bad)(); AA.router.refresh();
+        };
+        return;
+      }
+      if (c.phase === 0.5) {
+        el.innerHTML = `${briefHead(c, 1)}<section class="card stack"><h3>${t("br.p1R", { g: c.p1.good, n: c.p1.tot })}${c.p1.bad ? " · " + t("br.p1Bad", { n: c.p1.bad }) : ""}</h3>
+          <div class="br-items">${c.items.map((x, i) => { const s = !!c.sel[i], cls = x.ok ? (s ? "good" : "miss") : (s ? "wrong" : "skip"); return `<div class="br-it res ${cls}"><span class="ck">${AA.icon(x.ok ? "check" : "x")}</span><span><b class="small">${u.esc(x.t)}</b>${cls !== "good" && cls !== "skip" || !x.ok ? `<span class="xs muted" style="display:block">${u.esc(x.w)}</span>` : ""}</span></div>`; }).join("")}</div>
+          <button class="btn block" id="brn">${t("quiz.next")} ${AA.icon("next")}</button></section>`;
+        u.$("#brn").onclick = () => { c.phase = 1; AA.router.refresh(); };
+        return;
+      }
+      if (c.phase === 1) {
+        const done = c.order.length === c.plan.length;
+        el.innerHTML = `${briefHead(c, 2)}<h2 class="qtext">${t("br.p2")}</h2><p class="small muted">${t("br.p2S")}</p>
+          <ol class="br-order">${c.order.map((k, i) => { const x = c.plan.find(p => p.i === k); return `<li class="${c.checked ? (x.i === i ? "good" : "wrong") : ""}"><span class="br-n">${i + 1}</span>${u.esc(x.t)}${c.checked && x.i !== i ? `<span class="xs muted"> · ${t("br.pos", { n: x.i + 1 })}</span>` : ""}</li>`; }).join("")}</ol>
+          ${c.checked ? "" : `<div class="br-pool">${c.plan.filter(p => !c.order.includes(p.i)).map(p => `<button class="btn ghost" data-p="${p.i}">${u.esc(p.t)}</button>`).join("")}</div>`}
+          <div class="row" style="margin-top:var(--sp-4);gap:var(--sp-2)">${c.checked ? `<button class="btn block" id="brn">${t("quiz.next")} ${AA.icon("next")}</button>` : `<button class="btn ghost" id="brr" ${c.order.length ? "" : "disabled"}>${AA.icon("refresh")} ${t("br.undo")}</button><button class="btn grow" id="brv" ${done ? "" : "disabled"}>${t("br.check")}</button>`}</div>
+          ${c.checked ? `<p class="small muted">${t("br.p2Note")}</p>` : ""}`;
+        u.$$("[data-p]", el).forEach(x => x.onclick = () => { c.order.push(+x.dataset.p); fx.sfx.tap(); AA.router.refresh(); });
+        const rr = u.$("#brr"); if (rr) rr.onclick = () => { c.order.pop(); AA.router.refresh(); };
+        const vv = u.$("#brv"); if (vv) vv.onclick = () => { c.checked = true; c.sc[1] = c.order.filter((k, i) => k === i).length / c.plan.length; (c.sc[1] >= .8 ? fx.sfx.ok : fx.sfx.bad)(); AA.router.refresh(); };
+        const nn = u.$("#brn"); if (nn) nn.onclick = () => { c.phase = 2; AA.router.refresh(); };
+        return;
+      }
+      if (c.phase === 2) {
+        const q = c.qs[c.qi], ans = c.pick != null;
+        el.innerHTML = `${briefHead(c, 3)}<p class="eyebrow">${t("br.p3")} · ${c.qi + 1}/${c.qs.length}</p>
+          <section class="qcard"><p class="story">${AA.icon("chat")} ${t("br.asks")}</p><h2 class="qtext">${u.esc(q.q)}</h2>
+          ${q.c.map((o, k) => `<button class="opt ${ans ? (k === q.a ? "good" : k === c.pick ? "wrong" : "") : ""}" data-k="${k}" ${ans ? "disabled" : ""}>${u.esc(o)}</button>`).join("")}
+          ${ans ? `<div class="feedback ${c.pick === q.a ? "ok" : "bad"}"><h4>${c.pick === q.a ? t("scen.good") : t("scen.bad")}</h4><p>${u.esc(q.e)}</p></div><div class="qactions"><button class="btn block" id="brn">${t("quiz.next")} ${AA.icon("next")}</button></div>` : ""}</section>`;
+        u.$$(".opt", el).forEach(x => x.onclick = () => { c.pick = +x.dataset.k; const ok = c.pick === q.a; if (ok) { c.sc[2] += 1 / c.qs.length; fx.sfx.ok(); fx.buzz(15); } else { fx.sfx.bad(); fx.buzz([40, 40, 40]); } G.markDay(); AA.router.refresh(); });
+        const nn = u.$("#brn"); if (nn) { nn.focus({ preventScroll: true }); nn.onclick = () => { c.qi++; c.pick = null; if (c.qi >= c.qs.length) c.phase = 3; AA.router.refresh(); }; }
+        return;
+      }
+      /* Résultat */
+      const pct = Math.round((c.sc[0] * .35 + c.sc[1] * .2 + c.sc[2] * .45) * 100), ok = pct >= 80;
+      if (!c.saved) { c.saved = true; const xp = 20 + Math.round(pct / 4); G.addXp(xp); c.xp = xp; if (ok) { v.brief++; bump("brief"); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 3, 40, "rgba(61,220,151,.9)"); } AA.store.save(); G.checkBadges(); }
+      el.innerHTML = `<section class="card result stack-lg"><p class="eyebrow">${t("br.title")} · ${u.esc(b.site.n)}</p><div class="big">${pct}<span class="muted" style="font-size:.4em"> %</span></div>
+        <p>${t(ok ? "br.ok" : "br.ko")}</p>
+        <div class="br-sc">${[["br.sc1", c.sc[0]], ["br.sc2", c.sc[1]], ["br.sc3", c.sc[2]]].map(([k, x]) => `<div><span class="small">${t(k)}</span>${ui.bar(x, x >= .8 ? "var(--ok)" : "var(--gold)")}<b class="mono xs">${Math.round(x * 100)} %</b></div>`).join("")}</div>
+        <div class="row" style="justify-content:center"><span class="chip gold">${AA.icon("bolt")} +${c.xp} XP</span></div>
+        <div class="stack"><button class="btn block" id="bre">${AA.icon("refresh")} ${t("br.again")}</button><a class="btn ghost block" href="#/brief">${t("br.other")}</a></div></section>
+        <div class="section-title"><h3>${t("br.model")}</h3><span class="small muted">${t("br.modelS")}</span></div>
+        <section class="card">${modelBrief(b)}<p class="xs muted" style="margin:var(--sp-3) 0 0">${u.esc(C.brief.note)}</p></section>`;
+      u.$("#bre").onclick = () => { AA.ctx.brief = briefCtx(b.role); AA.router.refresh(); };
+    }
+  });
+
+  /* =====================================================================
+     Atelier plongées successives
+     ===================================================================== */
+  const hm = min => min >= 60 ? Math.floor(min / 60) + " h" + (min % 60 ? " " + String(min % 60).padStart(2, "0") : "") : min + " min";
+  V.newSucc = () => {
+    const kind = u.pick(["succ", "succ", "succ", "succ", "consec", "isol"]);
+    const p1 = u.pick([15, 18, 20, 22, 25, 28, 30, 35, 40]), t1 = R(3, 9) * 5;
+    const inv = kind === "succ" && Math.random() < .25;
+    const p2 = inv ? Math.min(40, p1 + u.pick([5, 8, 10])) : u.pick([12, 15, 18, 20, 22, 25].filter(x => x <= p1) .concat([12]));
+    const t2 = R(4, 9) * 5;
+    const I = kind === "consec" ? R(3, 14) : kind === "isol" ? R(13, 20) * 60 : u.pick([20, 30, 45, 60, 90, 120, 150, 180, 240, 300, 360, 480]);
+    const maj = R(3, 30);
+    return { kind, p1, t1, p2, t2, I, maj, inv };
+  };
+  const succSteps = s => {
+    const steps = [], O = (good, w, e, q) => { const o = opts4(good, w); return { q, c: o.c, a: o.a, e }; };
+    steps.push(O(t(s.kind === "consec" ? "su.tConsec" : s.kind === "isol" ? "su.tIsol" : "su.tSucc"), [t("su.tConsec"), t("su.tSucc"), t("su.tIsol")], t("su.eType", { i: hm(s.I) }), t("su.qType", { i: hm(s.I) })));
+    if (s.kind === "consec") {
+      steps.push(O(t("su.aConsecHow"), [t("su.wConsec1"), t("su.wConsec2"), t("su.wConsec3")], t("su.eConsecHow"), t("su.qConsecHow")));
+      const d = Math.max(s.p1, s.p2), tt = s.t1 + s.t2;
+      steps.push(O(t("su.pt", { p: d, t: tt }), [t("su.pt", { p: s.p2, t: s.t2 }), t("su.pt", { p: d, t: s.t2 }), t("su.pt", { p: d, t: tt + s.I }), t("su.pt", { p: Math.round((s.p1 + s.p2) / 2), t: tt })], t("su.eConsecV", { p: d, t1: s.t1, t2: s.t2, t: tt }), t("su.qConsecV")));
+    } else if (s.kind === "isol") {
+      steps.push(O(t("su.aIsol"), [t("su.wIsol1"), t("su.wIsol2"), t("su.wIsol3")], t("su.eIsol"), t("su.qIsol")));
+    } else {
+      steps.push(O(t("su.aGps"), [t("su.wGps1"), t("su.wGps2"), t("su.wGps3")], t("su.eGps"), t("su.qGps", { p: s.p1, t: s.t1 })));
+      steps.push(O(t("su.aN2"), [t("su.wN21"), t("su.wN22"), t("su.wN23")], t("su.eN2"), t("su.qN2", { i: hm(s.I) })));
+      steps.push(O(t("su.aMaj"), [t("su.wMaj1"), t("su.wMaj2"), t("su.wMaj3")], t("su.eMaj"), t("su.qMaj", { p: s.p2 })));
+      const dt = s.t2 + s.maj;
+      steps.push(O(dt + " min", [s.t2 + " min", s.maj + " min", (dt + s.t1) + " min", (s.t2 - s.maj > 0 ? s.t2 - s.maj : dt + 5) + " min"], t("su.eDur", { t: s.t2, m: s.maj, d: dt }), t("su.qDur", { m: s.maj, t: s.t2 })));
+      steps.push(O(s.p2 + " m", [s.p1 + " m", Math.max(s.p1, s.p2) + 3 + " m", Math.round((s.p1 + s.p2) / 2) + " m"].filter(x => x !== s.p2 + " m"), t("su.eDepth", { p: s.p2 }), t("su.qDepth")));
+      if (s.inv) steps.push(O(t("su.aInv"), [t("su.wInv1"), t("su.wInv2"), t("su.wInv3")], t("su.eInv"), t("su.qInv", { p1: s.p1, p2: s.p2 })));
+    }
+    steps.push(O(t("su.aPc"), [t("su.wPc1"), t("su.wPc2"), t("su.wPc3")], t("su.ePc"), t("su.qPc")));
+    return steps;
+  };
+  const succSvg = s => {
+    const W = 320, H = 120, top = 18, sc = 80 / 40, x0 = 10, w1 = 95, gap = 70, w2 = 95;
+    const y1 = top + s.p1 * sc, y2 = top + s.p2 * sc, a = x0, b = a + w1, c2 = b + gap, d = c2 + w2;
+    const dive = (x, w, y, lab, dur) => `<path d="M${x} ${top} L${x + 12} ${y} L${x + w - 18} ${y} L${x + w} ${top}" class="su-dive"/><text x="${x + w / 2}" y="${y + 13}" text-anchor="middle" class="su-t">${lab}</text><text x="${x + w / 2}" y="${top - 6}" text-anchor="middle" class="su-t mute">${dur}</text>`;
+    return `<svg class="su-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="${t("su.svg")}"><line x1="0" y1="${top}" x2="${W}" y2="${top}" class="su-surf"/>
+      ${dive(a, w1, y1, s.p1 + " m", s.t1 + " min")}<line x1="${b + 4}" y1="${top + 1}" x2="${c2 - 4}" y2="${top + 1}" class="su-int"/><text x="${(b + c2) / 2}" y="${top + 16}" text-anchor="middle" class="su-t acc">${hm(s.I)}</text>
+      ${dive(c2, w2, y2, s.p2 + " m", s.t2 + " min")}</svg>`;
+  };
+  const succCtx = () => { const s = V.newSucc(); return { s, steps: succSteps(s), i: 0, pick: null, good: 0, saved: false }; };
+  AA.view("succ", {
+    tab: "lab", depth: 30,
+    render(el, [go]) {
+      const v = st();
+      if (go !== "go") {
+        el.innerHTML = `${ui.head(t("su.title"), "lab", AA.helpBtn("succ"))}<p class="muted">${t("su.intro")}</p>
+          <section class="card stack" style="margin-top:var(--sp-4)"><h3>${t("su.methodT")}</h3><ol class="su-method">${AA.i18n.raw("su.method").map(x => `<li>${x}</li>`).join("")}</ol></section>
+          <div class="tiles one-sm" style="margin-top:var(--sp-4)">${ui.tile("go", "table", "var(--gold)", t("su.start"), t("su.startS"), v.succ ? [t("su.okN", { n: v.succ }), "ok"] : null)}${ui.tile("pc", "watch", "var(--ok)", t("mode.pc"), t("lab.pcS", { n: C.computer.length }))}</div>
+          ${ui.callout("trap", t("su.noteT"), u.esc(C.succNote))}`;
+        u.on(el, "click", ".tile", (e, b) => { fx.sfx.tap(); if (b.dataset.t === "pc") AA.router.go("pc"); else { AA.ctx.succ = succCtx(); AA.router.go("succ/go"); } });
+        return;
+      }
+      const c = AA.ctx.succ && AA.ctx.succ.steps ? AA.ctx.succ : (AA.ctx.succ = succCtx()), s = c.s, q = c.steps[c.i];
+      const caseCard = `<section class="card su-case"><p class="eyebrow">${t("su.case")}</p><p class="small" style="margin:0">${t("su.caseS", { p1: s.p1, t1: s.t1, i: hm(s.I), p2: s.p2, t2: s.t2 })}</p>${succSvg(s)}</section>`;
+      if (!q) {
+        const n = c.steps.length, ok = c.good === n;
+        if (!c.saved) { c.saved = true; G.addXp(c.good * 5); if (ok) { v.succ++; bump("succ"); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight / 3, 40, "rgba(255,200,87,.9)"); } AA.store.save(); G.checkBadges(); }
+        el.innerHTML = `<section class="card result stack-lg"><p class="eyebrow">${t("su.title")}</p><div class="big">${c.good}<span class="muted" style="font-size:.4em"> / ${n}</span></div><p>${t(ok ? "su.perfect" : "su.retry")}</p>
+          <div class="row" style="justify-content:center"><span class="chip gold">${AA.icon("bolt")} +${c.good * 5} XP</span></div>
+          <div class="stack"><button class="btn block" id="sun">${AA.icon("refresh")} ${t("su.next")}</button><a class="btn ghost block" href="#/succ">${t("su.back")}</a><a class="btn ghost block" href="#/lesson/deco">${t("su.lesson")}</a></div></section>${caseCard}`;
+        u.$("#sun").onclick = () => { AA.ctx.succ = succCtx(); AA.router.refresh(); };
+        return;
+      }
+      const ans = c.pick != null;
+      el.innerHTML = `<div class="pagehead"><a class="closebtn" href="#/succ" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${t("su.title")} · ${t("scen.step", { i: c.i + 1, n: c.steps.length })}</span></div>
+        ${caseCard}<section class="qcard" style="margin-top:var(--sp-3)"><h2 class="qtext">${u.esc(q.q)}</h2>
+        ${q.c.map((o, k) => `<button class="opt ${ans ? (k === q.a ? "good" : k === c.pick ? "wrong" : "") : ""}" data-k="${k}" ${ans ? "disabled" : ""}>${u.esc(o)}</button>`).join("")}
+        ${ans ? `<div class="feedback ${c.pick === q.a ? "ok" : "bad"}"><h4>${c.pick === q.a ? t("scen.good") : t("scen.bad")}</h4><p>${u.esc(q.e)}</p></div><div class="qactions"><button class="btn block" id="sun">${t("quiz.next")} ${AA.icon("next")}</button></div>` : ""}</section>`;
+      u.$$(".opt", el).forEach(x => x.onclick = () => { c.pick = +x.dataset.k; const ok = c.pick === q.a; bump("ans"); if (ok) { c.good++; bump("ok"); if (/\d/.test(q.c[q.a])) bump("calcOk"); fx.sfx.ok(); fx.buzz(15); } else { fx.sfx.bad(); fx.buzz([40, 40, 40]); } G.markDay(); AA.router.refresh(); });
+      const nn = u.$("#sun"); if (nn) { nn.focus({ preventScroll: true }); nn.onclick = () => { c.i++; c.pick = null; AA.router.refresh(); }; }
+    }
+  });
+
+  /* =====================================================================
+     Codes : JSON → base64 URL + somme de contrôle (détecte les erreurs de
+     copie, ce n'est pas une protection contre la triche).
+     ===================================================================== */
+  const b64u = str => { const by = new TextEncoder().encode(str); let s = ""; by.forEach(b => (s += String.fromCharCode(b))); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+  const unb64u = str => { const s = atob(str.replace(/-/g, "+").replace(/_/g, "/")); return new TextDecoder().decode(Uint8Array.from(s, c => c.charCodeAt(0))); };
+  const sum = s => (u.seedOf("aa19" + s) % 1679616).toString(36).padStart(4, "0");
+  V.encode = (pre, o) => { const b = b64u(JSON.stringify(o)); return pre + "." + b + "." + sum(pre + b); };
+  /* Renvoie { ok, kind, data } ou { ok:false, err } (err : clé de texte). */
+  V.decode = txt => {
+    const m = String(txt || "").match(/(AAD1|AAC1)\.([A-Za-z0-9_-]{8,4000})\.([0-9a-z]{4})/);
+    if (!m) return { ok: false, err: "cl.errNone" };
+    if (sum(m[1] + m[2]) !== m[3]) return { ok: false, err: "cl.errSum" };
+    try { const d = JSON.parse(unb64u(m[2])); if (!d || typeof d !== "object") throw 0; return { ok: true, kind: m[1] === "AAD1" ? "duel" : "card", data: d, code: m[0] }; }
+    catch (e) { return { ok: false, err: "cl.errSum" }; }
+  };
+  const clean = (s, n) => String(s == null ? "" : s).replace(/[\u0000-\u001f<>]/g, "").trim().slice(0, n || 20);
+  const num = (x, a, b) => { x = Number(x); return isFinite(x) ? u.clamp(Math.round(x), a, b) : a; };
+  const canLink = () => /^https?:$/.test(location.protocol) && !AA.BUNDLED && !(window.claude && window.claude.use);
+  const linkFor = (kind, code) => location.origin + location.pathname + "#/club/" + kind + "/" + code;
+  const myName = () => clean(S().profile.name) || t("cl.me");
+
+  /* ---------- Carte de score (classement de club) ---------- */
+  V.myCard = () => {
+    const s = S(), v = st(), lv = G.levelOf(s.xp), w = V.week();
+    const best = (s.exams || []).reduce((m, e) => Math.max(m, e.score || 0), 0);
+    return { id: v.cid, n: myName(), x: s.xp, l: lv.l, wk: w.id, wx: w.c.xp || 0, s: G.streak(), e: best, g: s.profile.goal || "", t: Date.now() };
+  };
+  const cardOk = d => d && typeof d.id === "string" && d.id.length <= 16 && d.n != null;
+  V.addCard = d => {
+    if (!cardOk(d)) return "cl.errBad";
+    const v = st(); if (d.id === v.cid) return "cl.errSelf";
+    const m = { id: clean(d.id, 16), n: clean(d.n) || "?", x: num(d.x, 0, 1e8), l: num(d.l, 0, 999), wk: clean(d.wk, 9), wx: num(d.wx, 0, 1e7), s: num(d.s, 0, 9999), e: Math.max(0, Math.min(20, Number(d.e) || 0)), g: clean(d.g, 8), t: num(d.t, 0, 9e12) };
+    const old = v.club.members[m.id];
+    if (old && (old.t || 0) > m.t) return "cl.errOld";
+    if (!old && Object.keys(v.club.members).length >= 80) return "cl.errFull";
+    v.club.members[m.id] = m; AA.store.save(); return "";
+  };
+
+  /* ---------- Duel à distance ---------- */
+  const duelPool = wid => C.questions.filter(q => q.world === wid && q.lvl !== 2 && q.c && q.c.length >= 2 && !String(q.id).startsWith("pc-"));
+  V.duelWorlds = () => C.worlds.filter(w => !w.soon && duelPool(w.id).length >= 12);
+  V.startDuel = (wid, from) => {
+    let qs, payload;
+    if (from) {
+      qs = (from.q || []).map(id => C.qById[id]).filter(Boolean);
+      if (qs.length < Math.min(5, (from.q || []).length)) { fx.toast(t("cl.errVerT"), t("cl.errVer"), "info"); return; }
+      payload = from;
+    } else {
+      const pool = duelPool(wid); qs = u.shuffle(pool).slice(0, 10);
+      payload = { v: 1, i: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), w: wid, q: qs.map(q => q.id), d: u.today() };
+    }
+    Q.start("rduel", qs, { title: t("cl.rduel"), back: "club", rd: payload, role: from ? "b" : "a", onResult: duelDone });
+  };
+  const duelDone = (c, good, n) => {
+    const v = st(), secs = Math.round((Date.now() - c.t0) / 1000), me = { n: myName(), r: good, s: secs };
+    if (!c.rdSaved) {
+      c.rdSaved = true; v.rduel++; bump("duel");
+      const p = c.rd, entry = { i: p.i, role: c.role, w: p.w, n: (p.q || []).length, d: u.today(), me, opp: c.role === "b" ? p.a : null };
+      v.duels = v.duels.filter(x => !(x.i === entry.i && x.role === entry.role)).concat([entry]).slice(-60);
+      c.rdCode = V.encode("AAD1", c.role === "b" ? Object.assign({}, p, { b: me }) : Object.assign({}, p, { a: me }));
+      AA.store.save(); G.checkBadges();
+    }
+    const entry = v.duels.find(x => x.i === c.rd.i && x.role === c.role);
+    return `<div class="card cl-code stack">${entry && entry.opp ? duelVs(entry) : ""}
+      <p class="eyebrow">${t(c.role === "b" ? "cl.replyT" : "cl.sendT")}</p><p class="small" style="margin:0">${t(c.role === "b" ? "cl.replyS" : "cl.sendS", { n: entry && entry.opp ? u.esc(entry.opp.n) : "" })}</p>
+      ${codeBox(c.rdCode, "d")}</div>`;
+  };
+  const duelVs = e => {
+    const a = e.me, b = e.opp, win = a.r > b.r || (a.r === b.r && a.s < b.s) ? 1 : a.r === b.r && a.s === b.s ? 0 : -1;
+    return `<div class="cl-vs ${win > 0 ? "win" : win < 0 ? "lose" : ""}"><div><b>${u.esc(a.n)}</b><span class="big2">${a.r}/${e.n}</span><span class="xs muted">${u.mmss(a.s)}</span></div><span class="cl-x">${AA.icon("swords")}</span><div><b>${u.esc(b.n)}</b><span class="big2">${b.r}/${e.n}</span><span class="xs muted">${u.mmss(b.s)}</span></div></div>
+      <p class="center"><b>${t(win > 0 ? "cl.youWin" : win < 0 ? "cl.youLose" : "cl.draw")}</b></p>`;
+  };
+  const codeBox = (code, kind) => `<div class="cl-box"><textarea class="input mono cl-ta" readonly rows="3" aria-label="${t("cl.code")}">${u.esc(code)}</textarea>
+    <div class="row" style="gap:var(--sp-2)"><button class="btn gold grow" data-clshare="${kind}" data-code="${u.esc(code)}">${AA.icon("share")} ${t("cl.share")}</button><button class="btn ghost" data-clcopy data-code="${u.esc(code)}">${AA.icon("save")} ${t("cl.copy")}</button></div><p class="xs muted cl-msg" role="status" style="margin:0"></p></div>`;
+  document.addEventListener("click", async e => {
+    const b = e.target.closest("[data-clshare],[data-clcopy]"); if (!b) return;
+    const code = b.dataset.code, msg = b.closest(".cl-box") && u.$(".cl-msg", b.closest(".cl-box")), say = k => msg && (msg.textContent = t(k));
+    const kind = b.dataset.clshare, link = kind && canLink() ? linkFor(kind, code) : "";
+    const text = kind ? t(kind === "d" ? "cl.shareDuel" : "cl.shareCard", { n: myName() }) + "\n" + (link || code) : code;
+    if (kind && navigator.share) { try { await navigator.share({ title: t("app.name"), text }); say("club.shared"); return; } catch (err) { if (err && err.name === "AbortError") return; } }
+    try { await navigator.clipboard.writeText(kind ? text : code); say("club.copied"); }
+    catch (err) { const ta = b.closest(".cl-box") && u.$("textarea", b.closest(".cl-box")); if (ta) { ta.focus(); ta.select(); } say("cl.selectCopy"); }
+  });
+
+  /* Importer un code (collé ou reçu par lien). Renvoie le HTML du message. */
+  const handleCode = (txt, el) => {
+    const r = V.decode(txt), out = u.$("#clout", el);
+    const show = h => { if (out) { out.innerHTML = h; out.scrollIntoView({ block: "nearest", behavior: "smooth" }); } };
+    if (!r.ok) { fx.sfx.bad(); show(`<div class="callout trap"><span class="eyebrow">${t("cl.errT")}</span>${t(r.err)}</div>`); return; }
+    if (r.kind === "card") {
+      const err = V.addCard(r.data);
+      if (err) { show(`<div class="callout trap"><span class="eyebrow">${t("cl.errT")}</span>${t(err)}</div>`); return; }
+      fx.sfx.up(); show(`<div class="callout check"><span class="eyebrow">${t("cl.cardOk")}</span>${t("cl.cardOkS", { n: u.esc(clean(r.data.n)) })}</div>`);
+      setTimeout(() => AA.router.go("club"), 900); return;
+    }
+    const d = r.data, v = st();
+    if (!d.i || !Array.isArray(d.q) || !d.a) { show(`<div class="callout trap"><span class="eyebrow">${t("cl.errT")}</span>${t("cl.errBad")}</div>`); return; }
+    d.a = { n: clean(d.a.n) || "?", r: num(d.a.r, 0, 99), s: num(d.a.s, 0, 99999) };
+    if (d.b) d.b = { n: clean(d.b.n) || "?", r: num(d.b.r, 0, 99), s: num(d.b.s, 0, 99999) };
+    const mine = v.duels.find(x => x.i === d.i && x.role === "a");
+    if (mine && d.b) { mine.opp = d.b; AA.store.save(); fx.sfx.up(); show(`<div class="card stack">${duelVs(mine)}</div>`); return; }
+    if (mine) { show(`<div class="callout info"><span class="eyebrow">${t("cl.ownT")}</span>${t("cl.own")}</div>`); return; }
+    const played = v.duels.find(x => x.i === d.i && x.role === "b");
+    if (played) { show(`<div class="card stack">${duelVs(played)}<p class="small muted center" style="margin:0">${t("cl.already")}</p></div>`); return; }
+    const w = C.worldById[d.w];
+    show(`<div class="card stack cl-chal"><p class="eyebrow">${t("cl.chalT")}</p><h3>${t("cl.chal", { n: u.esc(d.a.n) })}</h3><p class="small muted" style="margin:0">${t("cl.chalS", { n: d.q.length, w: w ? u.esc(w.short) : "?" })}</p><button class="btn block" id="clplay">${AA.icon("play")} ${t("cl.accept")}</button></div>`);
+    u.$("#clplay", el).onclick = () => V.startDuel(d.w, d);
+  };
+
+  /* ---------- Écran Club ---------- */
+  const RANK_K = { x: "cl.rkXp", wx: "cl.rkWeek", e: "cl.rkExam" };
+  AA.view("club", {
+    tab: "profile", depth: 30,
+    render(el, [kind, code]) {
+      const s = S(), v = st(), me = V.myCard(), wk = V.week().id;
+      const sortK = AA.ctx.clSort && RANK_K[AA.ctx.clSort] ? AA.ctx.clSort : "x";
+      const rows = Object.values(v.club.members).map(m => Object.assign({}, m, { wx: m.wk === wk ? m.wx : 0 })).concat([Object.assign({ me: 1 }, me)]).sort((a, b) => (b[sortK] || 0) - (a[sortK] || 0) || (b.x || 0) - (a.x || 0));
+      const worlds = V.duelWorlds(), dw = AA.ctx.clWorld && worlds.some(w => w.id === AA.ctx.clWorld) ? AA.ctx.clWorld : (worlds.find(w => w.id === Q.examWorld()) || worlds[0] || {}).id;
+      const recent = v.duels.slice(-5).reverse();
+      const best = (s.exams || []).filter(e => e.full).reduce((m, e) => Math.max(m, e.score), 0);
+      const lv = G.levelOf(s.xp), share = t("club.shareText", { l: lv.l, rank: lv.rank, xp: s.xp, best, apnee: s.apnee });
+      el.innerHTML = `${ui.head(t("prof.club"), "profile", AA.helpBtn("club"))}
+        <div class="cl-grid">
+        <section class="card stack cl-rank"><div class="row" style="gap:var(--sp-3);flex-wrap:nowrap"><span class="medal">${AA.icon("trophy")}</span><div class="grow"><h3>${v.club.name ? u.esc(v.club.name) : t("cl.rankT")}</h3><p class="small muted" style="margin:0">${t("cl.rankS")}</p></div></div>
+          <div class="ex-worlds cl-seg" role="tablist">${Object.keys(RANK_K).map(k => `<button class="chip ex-w ${k === sortK ? "on" : ""}" style="--wc:var(--gold)" data-sort="${k}" role="tab" aria-selected="${k === sortK}">${t(RANK_K[k])}</button>`).join("")}</div>
+          <ol class="cl-list">${rows.map((m, i) => `<li class="${m.me ? "me" : ""}"><span class="cl-pos">${i < 3 ? ["🥇", "🥈", "🥉"][i] : i + 1}</span><span class="cl-nm"><b>${u.esc(m.n)}${m.me ? ` <span class="chip cl-you">${t("cl.you")}</span>` : ""}</b><span class="xs muted">${t("cl.lv", { l: m.l })}${m.s ? " · " + t("cl.streak", { n: m.s }) : ""}${!m.me && m.t ? " · " + t("cl.upd", { d: new Date(m.t).toLocaleDateString(AA.i18n ? AA.i18n.locale : "fr-FR", { day: "numeric", month: "short" }) }) : ""}</span></span>
+            <span class="cl-val mono">${sortK === "e" ? (m.e ? u.num(m.e, 1) + "/20" : "—") : u.num(m[sortK] || 0, 0) + " XP"}</span>${m.me ? "" : `<button class="btn ghost sm" data-rm="${u.esc(m.id)}" aria-label="${t("common.remove")} ${u.esc(m.n)}">${AA.icon("x")}</button>`}</li>`).join("")}</ol>
+          ${rows.length < 2 ? `<p class="small muted" style="margin:0">${t("cl.empty")}</p>` : ""}
+          <details class="cl-more"><summary>${t("cl.myCard")}</summary><p class="small muted">${t("cl.myCardS")}</p>${codeBox(V.encode("AAC1", me), "c")}
+            <label class="small" style="display:block;margin-top:var(--sp-3)">${t("cl.clubName")}<input class="input" id="clname" maxlength="30" value="${u.esc(v.club.name)}" placeholder="${t("cl.clubNameP")}"></label></details>
+        </section>
+        <div class="stack-lg">
+        <section class="card stack"><div class="row" style="gap:var(--sp-3);flex-wrap:nowrap"><span class="medal">${AA.icon("swords")}</span><div class="grow"><h3>${t("cl.rduel")}</h3><p class="small muted" style="margin:0">${t("cl.rduelS")}</p></div></div>
+          <div class="ex-worlds">${worlds.map(w => `<button class="chip ex-w ${w.id === dw ? "on" : ""}" data-dw="${w.id}" style="--wc:var(${w.color})" aria-pressed="${w.id === dw}">${u.esc(w.short)}</button>`).join("")}</div>
+          <button class="btn block" id="clnew" ${dw ? "" : "disabled"}>${AA.icon("play")} ${t("cl.newDuel")}</button>
+          ${recent.length ? `<div class="cl-recent">${recent.map(e => `<div class="cl-r"><span class="small"><b>${e.opp ? u.esc(e.opp.n) : t("cl.waiting")}</b> · ${u.esc((C.worldById[e.w] || {}).short || "")}</span><span class="mono small">${e.me.r}${e.opp ? " – " + e.opp.r : ""}/${e.n}</span>${e.opp ? `<span class="chip ${e.me.r > e.opp.r || (e.me.r === e.opp.r && e.me.s < e.opp.s) ? "ok" : e.me.r === e.opp.r && e.me.s === e.opp.s ? "" : "warn"}">${t(e.me.r > e.opp.r || (e.me.r === e.opp.r && e.me.s < e.opp.s) ? "cl.w" : e.me.r === e.opp.r && e.me.s === e.opp.s ? "cl.d" : "cl.l")}</span>` : `<span class="chip">${t("cl.pending")}</span>`}</div>`).join("")}</div>` : ""}</section>
+        <section class="card stack"><h3>${t("cl.pasteT")}</h3><p class="small muted" style="margin:0">${t("cl.pasteS")}</p>
+          <textarea class="input mono" id="clin" rows="3" placeholder="AAD1.… / AAC1.…" aria-label="${t("cl.pasteT")}">${code ? u.esc(code) : ""}</textarea>
+          <button class="btn block" id="clgo">${AA.icon("download")} ${t("cl.read")}</button><div id="clout"></div></section>
+        <section class="card stack"><div class="row" style="gap:var(--sp-3);flex-wrap:nowrap"><span class="medal">${AA.icon("users")}</span><div class="grow"><h3>${t("mode.duel")}</h3><p class="small muted" style="margin:0">${t("club.duelS")}</p></div></div>
+          <div class="calc-grid"><input class="input" id="p1" placeholder="${t("club.p1")}" maxlength="20" value="${u.esc(s.profile.name)}" aria-label="${t("club.p1")}"><input class="input" id="p2" placeholder="${t("club.p2")}" maxlength="20" aria-label="${t("club.p2")}"></div>
+          <button class="btn ghost block" id="duel">${AA.icon("play")} ${t("club.start")}</button></section>
+        <section class="card stack"><h3>${t("club.shareT")}</h3><p class="small muted" style="margin:0">${t("club.shareS")}</p>
+          <div class="out" id="sharetxt">${u.esc(share)}</div><button class="btn ghost block" id="share">${AA.icon("share")} ${t("club.share")}</button><p class="small muted" id="sharemsg" role="status"></p></section>
+        </div></div>
+        <p class="xs muted" style="margin-top:var(--sp-4)">${t("cl.privacy")}</p>`;
+      u.$$("[data-sort]", el).forEach(b => b.onclick = () => { AA.ctx.clSort = b.dataset.sort; fx.sfx.tap(); AA.router.refresh(); });
+      u.$$("[data-dw]", el).forEach(b => b.onclick = () => { AA.ctx.clWorld = b.dataset.dw; fx.sfx.tap(); AA.router.refresh(); });
+      u.$$("[data-rm]", el).forEach(b => b.onclick = () => { delete v.club.members[b.dataset.rm]; AA.store.save(); AA.router.refresh(); });
+      u.$("#clnew").onclick = () => dw && V.startDuel(dw);
+      u.$("#clgo").onclick = () => handleCode(u.$("#clin").value, el);
+      const nm = u.$("#clname"); nm.onchange = () => { v.club.name = clean(nm.value, 30); AA.store.save(); AA.router.refresh(); };
+      u.$("#duel").onclick = () => AA.quiz.duel(u.$("#p1").value.trim() || t("club.p1"), u.$("#p2").value.trim() || t("club.p2"));
+      u.$("#share").onclick = async () => {
+        const m = u.$("#sharemsg"), url = /^https?:/.test(location.href) && !AA.BUNDLED ? location.origin + location.pathname : "";
+        if (navigator.share) { try { await navigator.share({ title: t("app.name"), text: share, url: url || undefined }); m.textContent = t("club.shared"); } catch (e) {} }
+        else if (navigator.clipboard) navigator.clipboard.writeText(share + (url ? " " + url : "")).then(() => (m.textContent = t("club.copied")), () => (m.textContent = t("club.copyFail")));
+        else m.textContent = t("club.copyFail");
+      };
+      /* Lien reçu : #/club/d/<code> ou #/club/c/<code> */
+      if ((kind === "d" || kind === "c") && code && !AA.ctx.clDone) { AA.ctx.clDone = code; setTimeout(() => handleCode(code, el), 50); }
+    }
+  });
+  /* Un nouveau lien reçu doit être relu. */
+  addEventListener("hashchange", () => { if (!/^#\/club\/[dc]\//.test(location.hash)) AA.ctx && (AA.ctx.clDone = ""); });
+
+  /* Démarrage : totaux de référence (pas de défi validé par l'historique). */
+  setTimeout(() => { try { if (AA.S) V.resetTotals(); } catch (e) {} }, 0);
+})();
+
 /* locales/fr.js */
 /* =====================================================================
    Abysse Academy · textes de l'interface en français
@@ -6298,7 +6895,7 @@ AA.i18n.add("fr", {
 
   /* Résultats */
   "result.done": "{title} · terminé", "result.air0": "Panne d’air, remontée !",
-  "result.score": { one: "{good} bonne réponse sur {n}.", other: "{good} bonnes réponses sur {n}." },
+  "result.score": v => v.good > 1 ? `${v.good} bonnes réponses sur ${v.n}.` : `${v.good} bonne réponse sur ${v.n}.`,
   "result.air0Tip": "Relis le cours et replonge avec 200 bar.", "result.s3": "Parfait, thème maîtrisé.", "result.s1": "Étape suivante ouverte. Vise les 3 étoiles.", "result.s0": "Il faut 50 % pour ouvrir l’étape suivante.",
   "result.combo": "meilleur combo ×{n}", "result.redive": "Replonger", "result.again": "Recommencer", "result.reread": "Relire le cours", "result.continue": "Continuer",
   "result.review": "Correction", "result.reviewHint": "Les erreurs reviennent dans « Sauvetage ».", "result.yours": "Ta réponse :", "result.toLesson": "Revoir « {title} »",
@@ -6737,6 +7334,111 @@ AA.i18n.add("fr", {
   "oral.title": "Lecture du cours", "oral.listen": "Écouter", "oral.prev": "Paragraphe précédent", "oral.next": "Paragraphe suivant", "oral.play": "Lecture ou pause", "oral.stop": "Arrêter la lecture",
   "oral.noT": "Lecture vocale indisponible", "oral.auto": "Lire les questions à voix haute", "oral.autoS": "Chaque question et ses réponses sont lues, puis la correction.", "oral.autoOn": "Les questions seront lues à voix haute.",
   "oral.ok": "Bonne réponse.", "oral.bad": "Pas tout à fait. La bonne réponse était :"
+});
+
+/* 1.9 : briefing, plongées successives, défis de la semaine, club */
+AA.i18n.add("fr", {
+  "br.title": "Briefing de palanquée", "br.tileS": "Prépare le briefing d’une plongée, comme un guide", "br.okN": { one: "{n} réussi", other: "{n} réussis" },
+  "br.intro": "Une plongée tirée au hasard : un site, des conditions, une palanquée. À toi de préparer le briefing, puis de répondre aux questions des plongeurs.",
+  "br.gp": "Je guide la palanquée", "br.gpS": "Objectif guide de palanquée : tu encadres des N1 et N2",
+  "br.auto": "Nous sommes deux N2 autonomes", "br.autoS": "Le briefing entre binômes, avant une plongée en autonomie",
+  "br.stats": { one: "{n} briefing réussi pour l’instant.", other: "{n} briefings réussis pour l’instant." },
+  "br.step": "étape {i}/{n}", "br.dive": "La plongée", "br.fDp": "Fixé par le DP", "br.fSite": "Le site", "br.fSiteV": "descend jusqu’à {d} m", "br.fCond": "Conditions", "br.fTank": "Blocs", "br.fTeam": "Palanquée",
+  "br.teamAuto": "toi et un autre N2, en autonomie", "br.teamGp": "toi (guide) avec : {list}",
+  "br.p1": "Que dois-tu dire au briefing ?", "br.p1S": "Touche tout ce qui doit en faire partie, et seulement ça.", "br.check": "Vérifier",
+  "br.p1R": "{g} points essentiels sur {n}", "br.p1Bad": { one: "{n} hors sujet", other: "{n} hors sujet" },
+  "br.p2": "Dans quel ordre ?", "br.p2S": "Touche les parties dans l’ordre où tu les présentes.", "br.undo": "Annuler", "br.pos": "plutôt en {n}",
+  "br.p2Note": "C’est un plan courant, il en existe d’autres. L’important : ne rien oublier et rester clair. À faire valider par ton moniteur.",
+  "br.p3": "Les questions de la palanquée", "br.asks": "Un plongeur te demande :",
+  "br.qDepth": "Le DP vous a fixé {dp} m. Le site descend jusqu’à {site} m. Palanquée : {team}. Quelle profondeur maxi annonces-tu ?",
+  "br.eDepthLim": "{m} m : la palanquée est limitée par le plongeur le moins qualifié ({lim} m), même si le DP a fixé plus.",
+  "br.eDepthSite": "{m} m : c’est le fond du site, on ne peut pas descendre plus.",
+  "br.eDepthDp": "{m} m : c’est la limite fixée par le DP, et les prérogatives de chacun la permettent.",
+  "br.qMid": "Blocs de {v} L gonflés à {p} bar. À quelle pression chacun annonce-t-il la mi-pression ?",
+  "br.eMid": "La moitié de la pression de départ : environ {m} bar. On fait le signe au guide (ou au binôme), qui prévoit le demi-tour.",
+  "br.qSite": "« Il y a un danger particulier sur {site} ? »", "br.eSite": "Chaque site a ses pièges : on les annonce au briefing pour que personne ne les découvre sous l’eau.",
+  "br.qNew": "Le N1 débutant a très peu de plongées. Où le places-tu ?", "br.aNew": "Près de toi, à portée de main, et tu vérifies souvent son air", "br.wNew1": "Derrière, en serre-file, pour qu’il voie tout le monde", "br.wNew2": "Où il veut, il est N1", "br.wNew3": "Devant, seul, pour qu’il ouvre la route",
+  "br.eNew": "Le plongeur le moins expérimenté reste près du guide : tu vois tout de suite s’il a un souci, et tu peux l’aider vite.",
+  "br.ok": "Briefing réussi : clair, complet, et tu as su répondre à ta palanquée.", "br.ko": "Pas encore : relis le briefing modèle ci-dessous, puis recommence avec une nouvelle plongée.",
+  "br.sc1": "Contenu", "br.sc2": "Ordre", "br.sc3": "Réponses", "br.again": "Nouvelle plongée", "br.other": "Changer de rôle",
+  "br.model": "Le briefing modèle", "br.modelS": "à dire en 3 minutes",
+  "br.plan1": "Site et conditions", "br.plan2": "Paramètres", "br.plan3": "Organisation", "br.plan4": "Mise à l’eau et déroulement", "br.plan5": "Signes et incidents", "br.plan6": "Remontée et retour",
+  "br.m1": "On plonge sur {site}. On pourra voir : {see}. Aujourd’hui : {cond}. Attention : {hz}",
+  "br.m2": "Profondeur maxi {max} m, durée {dur} min. Mi-pression à {mid} bar, réserve à 50 bar : on l’annonce, et on remonte ensemble.",
+  "br.m3gp": "Je guide devant. Palanquée : {team}. Le moins expérimenté reste près de moi, chacun garde son binôme en vue.",
+  "br.m3auto": "On reste côte à côte, à portée de main. On décide ensemble qui oriente, et chacun surveille l’air de l’autre.",
+  "br.m4": "Mise à l’eau à mon signal, regroupement en surface, descente ensemble. On suit le relief, demi-tour à mi-pression ou à mi-durée.",
+  "br.m4cur": "Mise à l’eau à mon signal, regroupement au bout de mouillage, descente le long du bout. On part face au courant, demi-tour à mi-pression ou à mi-durée.",
+  "br.m5": "Rappel des signes : OK, problème, mi-pression, réserve, froid, on remonte. Perte de palanquée : une minute de recherche, puis remontée en respectant la vitesse et le palier.",
+  "br.m6": "Remontée lente, palier de sécurité à 3 à 5 m, ou les paliers de l’ordinateur. En surface : OK au bateau, on attend son tour pour remonter à l’échelle.",
+  "su.title": "Plongées successives", "su.tileS": "La méthode pas à pas, avec de nombreux cas",
+  "su.okN": { one: "{n} sans faute", other: "{n} sans faute" },
+  "su.intro": "Deux plongées dans la même journée : consécutive, successive ou isolée ? Chaque cas te fait dérouler la méthode complète, puis te demande ce que fait ton ordinateur.",
+  "su.methodT": "La méthode avec la table",
+  "su.method": ["<b>Type</b> : selon l’intervalle de surface, la 2e plongée est consécutive, successive ou isolée.", "<b>Sortie de la 1re</b> : sur la ligne profondeur et durée, tu relèves la lettre du groupe de plongée successive (GPS).", "<b>Intervalle</b> : avec le GPS et l’intervalle, le tableau 2 donne l’azote résiduel.", "<b>Majoration</b> : avec l’azote résiduel et la profondeur de la 2e plongée, le tableau 3 donne une majoration en minutes.", "<b>2e plongée</b> : tu lis les paliers à la profondeur réelle de la 2e plongée, avec la durée réelle + la majoration."],
+  "su.start": "Un nouveau cas", "su.startS": "6 à 8 étapes, un cas différent à chaque fois",
+  "su.noteT": "Valeurs d’exercice",
+  "su.case": "Le cas", "su.caseS": "1re plongée {p1} m pendant {t1} min. Intervalle en surface : {i}. 2e plongée prévue à {p2} m pendant {t2} min.",
+  "su.svg": "Profil des deux plongées et de l’intervalle",
+  "su.qType": "Intervalle de {i} entre les deux plongées. C’est une plongée…", "su.tConsec": "Consécutive", "su.tSucc": "Successive", "su.tIsol": "Isolée (comme une première plongée)",
+  "su.eType": "Intervalle de {i}. Moins de 15 min : consécutive. De 15 min à 12 h : successive. Plus de 12 h : isolée.",
+  "su.qConsecHow": "Plongée consécutive : comment calcules-tu les paramètres pour la table ?", "su.aConsecHow": "Comme une seule plongée : profondeur la plus grande, durées additionnées",
+  "su.wConsec1": "Avec une majoration, comme une successive", "su.wConsec2": "Chaque plongée séparément", "su.wConsec3": "Profondeur moyenne, durée de la 2e",
+  "su.eConsecHow": "Avec moins de 15 min en surface, l’azote n’a pas eu le temps de partir : on fait comme si c’était une seule plongée.",
+  "su.qConsecV": "Quels paramètres utilises-tu pour lire la table ?", "su.pt": "{p} m pendant {t} min",
+  "su.eConsecV": "Profondeur la plus grande : {p} m. Durée : {t1} + {t2} = {t} min. L’intervalle ne compte pas.",
+  "su.qIsol": "Plus de 12 h entre les deux. Comment traites-tu la 2e plongée ?", "su.aIsol": "Comme une plongée isolée, sans majoration",
+  "su.wIsol1": "Avec la majoration maximale", "su.wIsol2": "Comme une consécutive", "su.wIsol3": "Interdite le même jour",
+  "su.eIsol": "Au-delà de 12 h, la table considère que l’azote en excès a été éliminé : on repart à zéro.",
+  "su.qGps": "À la sortie de la 1re plongée ({p} m, {t} min), que relèves-tu dans ta table ?", "su.aGps": "La lettre du groupe de plongée successive (GPS)",
+  "su.wGps1": "Seulement la durée du palier à 3 m", "su.wGps2": "La profondeur moyenne", "su.wGps3": "Rien, la 1re plongée est terminée",
+  "su.eGps": "Le GPS est une lettre lue sur la même ligne que les paliers. Il résume l’azote que tu gardes en sortant de l’eau.",
+  "su.qN2": "Avec ce GPS et l’intervalle de {i}, que lis-tu ensuite ?", "su.aN2": "L’azote résiduel (tableau 2)",
+  "su.wN21": "Directement la durée des paliers", "su.wN22": "La vitesse de remontée", "su.wN23": "La profondeur maximale autorisée",
+  "su.eN2": "Plus l’intervalle est long, plus l’azote résiduel est faible : le tableau 2 croise le GPS et l’intervalle.",
+  "su.qMaj": "Avec cet azote résiduel et la profondeur de la 2e plongée ({p} m), que lis-tu ?", "su.aMaj": "La majoration, en minutes (tableau 3)",
+  "su.wMaj1": "Le nouveau GPS", "su.wMaj2": "Une profondeur à ajouter", "su.wMaj3": "La durée de l’intervalle minimum",
+  "su.eMaj": "La majoration représente l’azote déjà présent, converti en minutes de plongée à la profondeur de la 2e plongée.",
+  "su.qDur": "Admettons que ta table donne une majoration de {m} min (valeur d’exercice). La 2e plongée dure {t} min. Quelle durée utilises-tu pour lire les paliers ?",
+  "su.eDur": "Durée réelle + majoration : {t} + {m} = {d} min. C’est avec cette durée que tu lis les paliers de la 2e plongée.",
+  "su.qDepth": "Et à quelle profondeur lis-tu la 2e plongée ?", "su.eDepth": "À la profondeur réelle de la 2e plongée : {p} m. Seule la durée est majorée.",
+  "su.qInv": "Ta 2e plongée ({p2} m) est plus profonde que la 1re ({p1} m). Qu’en penses-tu ?", "su.aInv": "C’est déconseillé : on fait la plus profonde en premier",
+  "su.wInv1": "C’est mieux, on finit en beauté", "su.wInv2": "Ça ne change rien", "su.wInv3": "C’est obligatoire pour une successive",
+  "su.eInv": "Le profil inversé augmente le risque d’ADD. On organise la journée avec la plongée la plus profonde le matin.",
+  "su.qPc": "Et ton ordinateur entre les deux plongées ?", "su.aPc": "Je garde le même, sans le remettre à zéro : il tient compte de l’azote résiduel",
+  "su.wPc1": "Je prends celui d’un copain, le mien est déchargé", "su.wPc2": "Je le remets à zéro pour repartir propre", "su.wPc3": "Je suis la table et l’ordinateur à tour de rôle",
+  "su.ePc": "L’ordinateur garde la mémoire de la 1re plongée. Changer ou réinitialiser l’ordinateur lui fait oublier l’azote résiduel : il devient trop optimiste.",
+  "su.perfect": "Sans faute : tu maîtrises la méthode sur ce cas.", "su.retry": "Relis les corrections, puis essaie un nouveau cas.",
+  "su.next": "Un autre cas", "su.back": "Retour à l’atelier", "su.lesson": "Revoir le cours sur la décompression",
+  "wk.title": "Défis de la semaine", "wk.see": "Tout voir", "wk.claim": "À récupérer",
+  "wk.ends": { one: "Nouveaux défis demain", other: "Nouveaux défis dans {n} jours" },
+  "wk.sub": { one: "3 défis, renouvelés demain. 50 XP chacun.", other: "3 défis, renouvelés dans {n} jours. 50 XP chacun." },
+  "wk.bonus": "Les 3 défis réussis : +100 XP", "wk.bonusS": "Réussis les 3 défis pour gagner un bonus de 100 XP.", "wk.allDone": "Semaine parfaite !",
+  "ev.now": "Événement de saison", "ev.soon": "Prochain événement", "ev.from": "À partir du {d}", "ev.done": "Terminé ✓",
+  "ev.left": { one: "dernier jour", other: "encore {n} jours" }, "ev.last": "dernier jour",
+  "cl.me": "Moi", "cl.you": "toi", "cl.lv": "niveau {l}", "cl.streak": { one: "{n} jour de suite", other: "{n} jours de suite" }, "cl.upd": "mis à jour le {d}",
+  "cl.rankT": "Classement du club", "cl.rankS": "Ajoute les cartes de score des copains du club. Rien ne passe par un serveur.",
+  "cl.rkXp": "XP total", "cl.rkWeek": "Cette semaine", "cl.rkExam": "Meilleur examen",
+  "cl.empty": "Pour l’instant, tu es seul : partage ta carte, et colle celles que tu reçois.",
+  "cl.myCard": "Ma carte de score", "cl.myCardS": "Envoie-la au groupe du club. Renvoie-la de temps en temps pour mettre ton score à jour.",
+  "cl.clubName": "Nom du club (facultatif)", "cl.clubNameP": "ex. : Club de plongée de la Baie",
+  "cl.rduel": "Duel à distance", "cl.rduelS": "10 questions du niveau choisi. Tu joues, tu envoies le code, ton ami joue les mêmes questions.",
+  "cl.newDuel": "Lancer un défi", "cl.waiting": "En attente", "cl.pending": "en attente", "cl.w": "gagné", "cl.l": "perdu", "cl.d": "égalité",
+  "cl.pasteT": "Coller un code reçu", "cl.pasteS": "Défi, réponse à ton défi ou carte de score : colle le message entier, l’appli trouve le code.", "cl.read": "Lire le code",
+  "cl.code": "Code à envoyer", "cl.share": "Envoyer", "cl.copy": "Copier", "cl.selectCopy": "Copie impossible ici : le code est sélectionné, copie-le à la main.",
+  "cl.shareDuel": "{n} te défie sur Abysse Academy ! Ouvre le lien, ou colle ce code dans Profil › Club :", "cl.shareCard": "Carte de score de {n} pour le classement du club (Abysse Academy, Profil › Club) :",
+  "cl.sendT": "Envoie ton défi", "cl.sendS": "Ton ami ouvre le lien (ou colle le code dans Club) et joue les mêmes questions. Il te renvoie ensuite son code de réponse.",
+  "cl.replyT": "Renvoie ta réponse", "cl.replyS": "Envoie ce code à {n} : il verra le résultat du duel.",
+  "cl.youWin": "Tu gagnes le duel !", "cl.youLose": "Perdu, de peu ? Revanche !", "cl.draw": "Égalité parfaite.",
+  "cl.chalT": "Défi reçu", "cl.chal": "{n} te défie !", "cl.chalS": "{n} questions de {w}. Son score reste caché jusqu’à la fin.", "cl.accept": "Relever le défi",
+  "cl.already": "Tu as déjà joué ce défi.", "cl.ownT": "C’est ton défi", "cl.own": "Ce code est celui que tu as envoyé. Attends le code de réponse de ton ami.",
+  "cl.cardOk": "Carte ajoutée", "cl.cardOkS": "{n} est dans le classement du club.",
+  "cl.errT": "Code non reconnu", "cl.errNone": "Aucun code trouvé. Il commence par AAD1 (duel) ou AAC1 (carte de score).",
+  "cl.errSum": "Le code est incomplet ou a été modifié pendant la copie. Demande à ton ami de le renvoyer.",
+  "cl.errBad": "Ce code ne contient pas les informations attendues.", "cl.errSelf": "C’est ta propre carte : elle est déjà dans le classement.",
+  "cl.errOld": "Tu as déjà une carte plus récente de ce plongeur.", "cl.errFull": "Le classement est complet (80 plongeurs). Retire quelqu’un pour en ajouter un.",
+  "cl.errVerT": "Questions introuvables", "cl.errVer": "Ce défi vient d’une autre version de l’appli. Mettez-la à jour tous les deux.",
+  "cl.privacy": "Les codes contiennent ton prénom et tes scores, rien d’autre. Ils sont vérifiés à la lecture pour repérer une erreur de copie, mais ce n’est pas une protection contre la triche : le classement reste entre copains."
 });
 
 /* content/fr/worlds.js */
@@ -10838,6 +11540,133 @@ Object.assign(AA.content.help, {
   Object.assign(C.exampleGens = C.exampleGens || {}, { "d-materiel": ["autonomie"], "d-bapteme": ["n1vol"], "n1-accidents": ["n1vol"], pa20: ["conso", "autonomie"], accidents: ["ballon"], physio: ["co"],
     "n3-cadre": ["n3prof"], "n3-physio": ["n3narc"], "n3-accidents": ["remontee"], "n3-materiel": ["n3air"], "n4-deco": ["remontee"], "n4-physio": ["n3narc"], "n4-assistance": ["n4pal"], "n4-orga": ["ro2"],
     "nx-pratique": ["nxmod", "nxbest"], "r-cas": ["ro2"], "r-alerte": ["ro2"], regles: ["prof"] });
+})();
+
+/* content/fr/v19.js */
+/* Abysse Academy · contenu FR · 1.9
+   Briefing de palanquée simulé, atelier plongées successives, nouveaux cas
+   du mode ordinateur, défis de la semaine, événements de saison.
+   Rien ici ne reproduit de valeurs de table : les majorations de l’atelier
+   sont des valeurs d’exercice inventées. */
+(function () {
+  const C = AA.content;
+
+  /* ---------- Briefing de palanquée ---------- */
+  C.brief = {
+    sites: [
+      { id: "tombant", n: "Tombant des Gorgones", deep: 45, hz: "Le tombant plonge vite : on surveille la profondeur en permanence, et on ne dépasse pas le maximum annoncé.", see: "gorgones rouges, corb, langoustes dans les failles" },
+      { id: "epave", n: "Épave du vieux chalutier", deep: 32, hz: "On ne rentre pas dans l’épave. Attention aux tôles coupantes et aux bouts de filet.", see: "congres, rascasses, bancs de sars autour de la coque" },
+      { id: "plateau", n: "Plateau des posidonies", deep: 22, hz: "Fond plat et sans repère : on dérive vite loin de la palanquée sans s’en rendre compte. On reste groupés.", see: "herbier, seiches, hippocampes avec de la chance" },
+      { id: "sec", n: "Sec du large", deep: 38, hz: "Courant possible : descente le long du bout, début de plongée face au courant, retour au mouillage.", see: "barracudas, dentis, anémones encroûtantes" },
+      { id: "calanque", n: "Calanque abritée", deep: 25, hz: "Trafic de bateaux en surface : remontée près de la paroi, et parachute de palier si on remonte loin du bateau.", see: "poulpes, nudibranches, mérous juvéniles" }
+    ],
+    /* conditions : texte affiché, et question propre à la condition */
+    conds: [
+      { id: "courant", n: "Courant moyen en surface", q: "Il y a du courant. Comment descendez-vous ?", c: ["Le long du bout de mouillage, en commençant la plongée face au courant", "Chacun descend où il veut et on se retrouve au fond", "Dos au courant, pour aller plus loin sans effort", "Sans descendre au bout : on se laisse porter"], e: "Face au courant à l’aller, le retour se fait courant dans le dos, quand on a moins d’air. Le bout évite de se faire emporter pendant la descente." },
+      { id: "visi", n: "Visibilité réduite, 3 à 5 m", q: "La visibilité est de 3 à 5 m. Que précises-tu ?", c: ["On se rapproche, on garde le contact visuel en permanence, les binômes sont bien définis", "Rien de spécial, chacun suit le guide de loin", "On s’écarte pour mieux voir chacun", "On plonge plus profond, l’eau y est plus claire"], e: "Avec peu de visibilité, une palanquée se perd en quelques secondes. Distance courte, contact visuel, et une lampe aide à se repérer." },
+      { id: "froid", n: "Eau à 14 °C", q: "L’eau est à 14 °C. Quel point ajoutes-tu ?", c: ["Le signe « j’ai froid », et on écourte la plongée si quelqu’un le fait", "Rien : le froid ne change rien", "On reste plus longtemps pour se réchauffer en palmant", "On descend plus vite pour finir plus tôt"], e: "Le froid fatigue, augmente la consommation d’air et favorise l’ADD. On le signale, et on écourte sans hésiter." },
+      { id: "calme", n: "Mer calme, bonne visibilité", q: "Mer calme et belle visibilité. Que rappelles-tu quand même ?", c: ["De rester groupés : avec une belle visibilité, on a tendance à s’écarter", "Rien, tout va bien", "Que chacun peut faire sa propre plongée", "Qu’on peut dépasser la durée prévue"], e: "Les bonnes conditions rendent la palanquée moins vigilante : les écarts augmentent. Le rappel reste utile." }
+    ],
+    /* ce que doit contenir un briefing (k : clé, t : texte, w : pourquoi) */
+    items: [
+      { k: "site", t: "Le site : relief, intérêts, dangers", w: "Chacun sait où il va et ce qu’il faut éviter." },
+      { k: "param", t: "Les paramètres fixés par le DP : profondeur maxi et durée", w: "Ce sont les limites communes de la palanquée." },
+      { k: "air", t: "La gestion de l’air : mi-pression, réserve, à qui on l’annonce", w: "L’air est la première cause de fin de plongée : on fixe les seuils avant." },
+      { k: "orga", t: "L’organisation : qui guide, les positions, les binômes", w: "Chacun sait qui suivre et qui surveiller." },
+      { k: "deroul", t: "Le déroulement : descente, itinéraire, demi-tour, remontée", w: "Pas de surprise sous l’eau, chacun anticipe." },
+      { k: "signes", t: "Le rappel des signes utilisés", w: "Les signes varient un peu selon les clubs : on se met d’accord." },
+      { k: "incident", t: "La conduite à tenir en cas de perte de palanquée ou de problème", w: "En cas de souci, chacun réagit pareil, sans improviser." },
+      { k: "secu", t: "La remontée : vitesse, palier de sécurité ou obligatoire", w: "C’est le moment le plus à risque pour l’ADD." },
+      { k: "eau", t: "La mise à l’eau et le retour au bateau", w: "Évite les bousculades et les plongeurs isolés en surface." }
+    ],
+    wrong: [
+      { t: "Le récit de ta plus belle plongée", w: "Sympa au bar, mais ça allonge le briefing et on retient moins l’essentiel." },
+      { t: "Laisser chacun choisir sa profondeur maxi", w: "Les paramètres sont communs : fixés par le DP, et limités par le plongeur le moins qualifié." },
+      { t: "Promettre qu’on verra un mérou", w: "On présente ce qu’on peut voir, sans promesse : on ne veut pas que quelqu’un parte le chercher seul." },
+      { t: "Le prix des plongées de la semaine", w: "Hors sujet : le briefing sert la sécurité et la plongée." },
+      { t: "Dire qu’on improvisera l’itinéraire en bas", w: "L’itinéraire et le demi-tour se décident avant : sous l’eau on communique mal." }
+    ],
+    /* plan courant, dans l’ordre */
+    plan: [
+      { k: "site", t: "Site et conditions" },
+      { k: "param", t: "Paramètres : profondeur, durée, air" },
+      { k: "orga", t: "Organisation de la palanquée" },
+      { k: "deroul", t: "Mise à l’eau et déroulement" },
+      { k: "incident", t: "Signes et incidents" },
+      { k: "eau", t: "Remontée et retour au bateau" }
+    ],
+    lost: { q: "« Et si on se perd ? »", c: ["On cherche environ une minute en tournant sur soi et en regardant les bulles, puis on remonte en respectant la vitesse et le palier, et on se retrouve en surface", "On continue la visite seul et on se retrouve au bateau", "On attend au fond que le guide revienne", "On remonte le plus vite possible pour prévenir le bateau"], e: "C’est la procédure la plus répandue. La durée de recherche varie selon les clubs : vérifie celle du tien." },
+    who: { q: "Un plongeur demande qui décide de la profondeur et de la durée.", c: ["Le directeur de plongée (DP), dans la limite des prérogatives de chacun", "Le guide, seul", "Le plongeur le plus expérimenté", "Chacun, selon sa forme du jour"], e: "Le DP fixe les paramètres de chaque palanquée. Le guide les annonce et les fait respecter." },
+    note: "Prérogatives FFESSM : N1 encadré jusqu’à 20 m, N2 encadré jusqu’à 40 m et autonome jusqu’à 20 m. Mi-pression et réserve : règles courantes, vérifie celles de ton club. À faire valider par ton moniteur."
+  };
+
+  /* ---------- Atelier plongées successives ---------- */
+  C.succNote = "Les majorations de cet atelier sont des valeurs d’exercice, inventées. Pour une vraie plongée, lis toujours ta table officielle ou suis ton ordinateur. Règles de la MN90 : intervalle de moins de 15 min = consécutive, de 15 min à 12 h = successive, plus de 12 h = isolée. À faire valider par ton moniteur.";
+
+  /* ---------- Défis de la semaine (3 tirés chaque lundi) ---------- */
+  C.weekly = [
+    { id: "w-ans", k: "ans", n: 150, t: "Répondre à 150 questions", ic: "exam", go: "train" },
+    { id: "w-ok", k: "ok", n: 100, t: "Donner 100 bonnes réponses", ic: "check", go: "train" },
+    { id: "w-calc", k: "calcOk", n: 20, t: "Réussir 20 calculs", ic: "calc", go: "train" },
+    { id: "w-flash", k: "flash", n: 60, t: "Revoir 60 cartes mémo", ic: "cards", go: "flash" },
+    { id: "w-days", k: "days", n: 5, t: "Venir 5 jours différents", ic: "calendar", go: "daily" },
+    { id: "w-exam", k: "exam", n: 1, t: "Passer un examen blanc", ic: "exam", go: "examen" },
+    { id: "w-brief", k: "brief", n: 2, t: "Réussir 2 briefings de palanquée", ic: "chat", go: "brief" },
+    { id: "w-succ", k: "succ", n: 3, t: "Résoudre 3 plongées successives sans faute", ic: "table", go: "succ" },
+    { id: "w-pc", k: "pc", n: 2, t: "Faire 2 séries du mode ordinateur", ic: "watch", go: "pc" },
+    { id: "w-duel", k: "duel", n: 1, t: "Jouer un duel, sur place ou à distance", ic: "swords", go: "club" },
+    { id: "w-xp", k: "xp", n: 600, t: "Gagner 600 XP", ic: "bolt", go: "train" },
+    { id: "w-srs", k: "srs", n: 30, t: "Répondre à 30 questions à revoir (révisions espacées)", ic: "brain", go: "srs" }
+  ];
+
+  /* ---------- Événements de saison (dates MM-JJ, chaque année) ---------- */
+  C.events = [
+    { id: "fosse", from: "11-01", to: "11-30", ic: "dive", color: "--primary", title: "Saison des fosses", text: "L’hiver, on s’entraîne en fosse et on révise la théorie. Réponds à 200 questions avant la fin du mois.", goal: { k: "ans", n: 200 }, xp: 150 },
+    { id: "avent", from: "12-01", to: "12-24", ic: "calendar", color: "--gold", title: "Calendrier de l’Avent des abysses", text: "Une case par jour : viens au moins 12 jours d’ici le 24 décembre pour ouvrir le coffre.", goal: { k: "days", n: 12 }, xp: 200 },
+    { id: "hiver", from: "01-02", to: "02-28", ic: "calc", color: "--world-e2", title: "Défi d’hiver : les calculs", text: "Pendant l’hiver, réussis 60 calculs : Mariotte, flottabilité, consommation, tables.", goal: { k: "calcOk", n: 60 }, xp: 200 },
+    { id: "reprise", from: "03-01", to: "04-30", ic: "chat", color: "--ok", title: "Reprise de saison", text: "Avant les premières plongées en mer, réussis 4 briefings de palanquée.", goal: { k: "brief", n: 4 }, xp: 180 },
+    { id: "printemps", from: "05-01", to: "06-20", ic: "watch", color: "--primary", title: "Printemps des ordinateurs", text: "Fais 5 séries du mode ordinateur et 5 plongées successives pour préparer les sorties.", goal: { k: "succ", n: 5 }, xp: 180 },
+    { id: "grandbleu", from: "06-21", to: "08-31", ic: "sun", color: "--accent", title: "Le grand bleu", text: "L’été, garde le rythme : passe 3 examens blancs pour arriver prêt à la rentrée.", goal: { k: "exam", n: 3 }, xp: 200 },
+    { id: "rentree", from: "09-01", to: "10-15", ic: "users", color: "--gold", title: "Rentrée du club", text: "Défie les copains du club : joue 3 duels, sur place ou à distance.", goal: { k: "duel", n: 3 }, xp: 150 },
+    { id: "abysses", from: "10-16", to: "10-31", ic: "fish", color: "--world-e2", title: "Nuit des abysses", text: "Revois 80 cartes mémo avant la fin du mois.", goal: { k: "flash", n: 80 }, xp: 150 }
+  ];
+
+  /* ---------- Trophées ---------- */
+  C.addBadges([
+    { id: "brief1", icon: "chat", name: "Briefeur", desc: "Réussir un briefing de palanquée", test: { k: "v19", f: "brief", n: 1 } },
+    { id: "succ1", icon: "table", name: "Maître des successives", desc: "Résoudre 5 plongées successives sans faute", test: { k: "v19", f: "succ", n: 5 } },
+    { id: "week1", icon: "trophy", name: "Semaine parfaite", desc: "Terminer les 3 défis d’une semaine", test: { k: "v19", f: "weeks", n: 1 } },
+    { id: "event1", icon: "sparkle", name: "De saison", desc: "Terminer un événement de saison", test: { k: "v19", f: "events", n: 1 } },
+    { id: "rduel1", icon: "swords", name: "Duel à distance", desc: "Jouer un duel à distance avec un code", test: { k: "v19", f: "rduel", n: 1 } }
+  ]);
+
+  /* ---------- Mode ordinateur : nouveaux cas (ajoutés à la fin) ---------- */
+  C.addComputer([
+    { scr: { d: "0.0", max: "24.0", t: "0", alarm: "DESAT 14h", bar: 0, tank: 200 }, q: "En surface après la plongée, l’écran affiche « DESAT 14h ». Qu’est-ce que ça veut dire ?", c: ["Il faudra environ 14 h pour éliminer l’azote en excès", "Tu dois faire 14 h de palier", "Ta batterie tient encore 14 h", "Tu ne peux plus plonger pendant 14 jours"], a: 0, e: "C’est le temps de désaturation estimé : ton corps garde de l’azote. Une 2e plongée reste possible, mais elle sera plus courte sans palier." },
+    { scr: { d: "0.0", max: "30.0", t: "0", alarm: "NO FLY 22h", bar: 0, tank: 200 }, q: "Ton avion décolle dans 16 h. L’écran affiche « NO FLY 22h ».", c: ["Tu pars quand même, la cabine est pressurisée", "Tu décales le vol, ou tu aurais dû arrêter de plonger plus tôt", "Tu fais un palier en surface pour gagner du temps", "Tu éteins l’ordinateur pour effacer l’alerte"], a: 1, e: "En cabine, la pression est plus faible qu’au niveau de la mer : voler trop tôt augmente le risque d’ADD. Respecte l’interdiction de vol affichée et les consignes de ton club." },
+    { scr: { d: "20.1", max: "20.4", t: "9", ndl: "18", bar: 1, tank: 170 }, q: "2e plongée de la journée, à 20 m. Ce matin, à la même profondeur, ton NDL était bien plus long. Pourquoi ?", c: ["L’ordinateur est en panne", "L’eau est plus froide, c’est tout", "Il reste de l’azote de la 1re plongée : l’ordinateur en tient compte", "Tu respires trop vite"], a: 2, e: "C’est l’azote résiduel : l’ordinateur raccourcit la durée sans palier. C’est l’équivalent de la majoration quand tu utilises la table." },
+    { scr: { d: "0.0", max: "0.0", t: "0", alarm: "BATT LOW", bar: 0, tank: 200 }, q: "Sur le bateau, avant de t’équiper : « BATT LOW ».", c: ["Tu plonges, ça tiendra bien une heure", "Tu l’éteins pendant la plongée pour économiser", "Tu le prêtes à ton binôme", "Tu changes ou recharges la batterie avant, sinon tu préviens le DP"], a: 3, e: "Un ordinateur qui s’éteint en plongée te prive de la profondeur, de la durée et des paliers. On règle le problème avant de se mettre à l’eau." },
+    { scr: { d: "0.0", max: "0.0", t: "0", bar: 0, tank: 200, dual: { ndl2: "0 plongée en mémoire" } }, q: "Ton binôme a remis son ordinateur à zéro entre les deux plongées.", c: ["Son ordinateur ignore la 1re plongée : il ne doit pas s’y fier pour la 2e, on prévient le DP", "C’est mieux, il repart à neuf", "Il suffit de descendre un peu moins", "On fera la moyenne de vos deux ordinateurs"], a: 0, e: "Remis à zéro, l’ordinateur croit que tu n’as pas plongé : il est trop optimiste. La palanquée suit le plus pénalisant, et le DP décide." },
+    { scr: { d: "20.6", max: "20.8", t: "14", ndl: "25", bar: 0, alarm: "MAX DEPTH", tank: 150 }, q: "Tu plonges en autonomie, 20 m maxi. L’alarme de profondeur que tu as réglée à 20 m sonne.", c: ["Tu la coupes et tu continues", "Tu remontes de quelques mètres et tu préviens ton binôme", "Tu descends voir plus bas puisque tout va bien", "Tu remontes directement en surface"], a: 1, e: "Régler l’alarme sur sa profondeur maxi est une bonne habitude. Quand elle sonne, on corrige calmement, sans remontée brutale." },
+    { scr: { d: "8.0", max: "22.0", t: "27", ndl: "35", bar: 0, tank: 110 }, q: "Vous êtes remontés de 22 à 8 m pour chercher le bateau. Ton binôme veut redescendre à 20 m.", c: ["Bonne idée, le NDL est large", "Oui, si on redescend vite", "Non : ces allers-retours (profil en yoyo) augmentent le risque d’ADD", "Oui, si l’ordinateur ne bipe pas"], a: 2, e: "Le profil en yoyo favorise la formation de bulles. On organise la plongée pour ne pas redescendre après être remonté." },
+    { scr: { d: "9.2", max: "38.0", t: "30", stop: "6 m · 2'", deco: true, bar: 2, tank: 90 }, q: "L’écran affiche un palier obligatoire « 6 m · 2' ».", c: ["Tu fais tout à 3 m, c’est plus confortable", "Tu t’arrêtes à 6 m, juste en dessous, pendant 2 min, puis tu suis le palier suivant", "Tu fais 2 min n’importe où entre 0 et 10 m", "Tu le sautes et tu rallonges celui de 3 m"], a: 1, e: "Le palier se fait à la profondeur indiquée, juste en dessous si besoin, jamais au-dessus. L’ordinateur affiche ensuite le palier suivant." },
+    { scr: { d: "0.0", max: "34.0", t: "0", alarm: "LOCK 24h", bar: 0, tank: 70 }, q: "Après une remontée trop rapide et un palier omis, l’ordinateur est verrouillé pour 24 h.", c: ["Tu plonges l’après-midi avec l’ordinateur d’un copain", "Tu replonges pour refaire le palier", "Pas d’autre plongée, tu surveilles l’apparition de signes et tu préviens le DP", "Tu le remets à zéro"], a: 2, e: "Le verrouillage signale un profil dangereux. Surveille fatigue, douleurs ou fourmillements : oxygène et alerte au moindre signe." },
+    { scr: { d: "3.0", max: "35.0", t: "38", stop: "3 m · 6'", deco: true, bar: 1, tank: 40, alarm: "TANK" }, q: "Palier obligatoire de 6 min à 3 m, et il te reste 40 bar.", c: ["Tu sors sans finir le palier", "Tu préviens ton binôme, tu restes près de lui et tu fais le palier, avec son octopus si besoin", "Tu fais le palier à 6 m, ça ira plus vite", "Tu finis seul pour ne pas déranger"], a: 1, e: "Le palier obligatoire reste prioritaire. Ton binôme peut te donner de l’air : c’est pour ça qu’on remonte ensemble et qu’on fixe la réserve au briefing." },
+    { scr: { d: "0.0", max: "25.0", t: "0", alarm: "SURF 0:45", bar: 0, tank: 200 }, q: "Sur le bateau, l’écran indique « SURF 0:45 ».", c: ["Le temps restant avant d’avoir le droit de replonger", "Le temps passé en surface depuis la sortie, c’est ton intervalle", "Ta durée de plongée", "Ta réserve d’air"], a: 1, e: "C’est l’intervalle de surface. Avec la table, c’est lui qui sert à lire l’azote résiduel avant une plongée successive." },
+    { scr: { d: "28.0", max: "28.5", t: "22", stop: "3 m · 1'", deco: true, bar: 0, tank: 120 }, q: "Un palier obligatoire vient d’apparaître alors que la plongée était prévue sans palier.", c: ["Tu restes pour voir s’il disparaît", "Tu l’ignores, il n’était pas prévu", "Tu préviens la palanquée, vous remontez et vous faites ce palier", "Tu descends un peu pour le faire disparaître"], a: 2, e: "Tu as dépassé la courbe de sécurité. On n’essaie pas d’« effacer » le palier : on remonte calmement et on le fait." }
+  ]);
+
+  /* ---------- Aide ---------- */
+  Object.assign(C.help, {
+    brief: { t: "Le briefing de palanquée", ic: "chat", go: "brief", goL: "Faire un briefing",
+      html: `<p>Avant chaque plongée, le guide (ou le binôme en autonomie) fait un briefing. Ici, tu prépares celui d’une plongée tirée au hasard : site, conditions, palanquée.</p><p>En 3 étapes : choisir ce qu’il faut dire, le mettre dans l’ordre, puis répondre aux questions de la palanquée. À la fin, tu obtiens un briefing modèle à relire.</p>` },
+    succ: { t: "L’atelier plongées successives", ic: "table", go: "succ", goL: "Ouvrir l’atelier",
+      html: `<p>Chaque cas te fait dérouler la méthode, étape par étape : type de plongée, groupe de plongée successive (GPS), azote résiduel, majoration, durée et profondeur pour lire la 2e plongée.</p><p>Les majorations sont des valeurs d’exercice : la vraie valeur se lit toujours dans ta table.</p>` },
+    week: { t: "Défis de la semaine et événements", ic: "trophy", go: "quests", goL: "Voir les défis",
+      html: `<p>Chaque lundi, 3 nouveaux défis. Chacun rapporte 50 XP, et les 3 réussis donnent un bonus de 100 XP.</p><p>Selon la période de l’année, un événement de saison propose un objectif plus long et une récompense.</p>` },
+    club: { t: "Le club : duels et classement", ic: "users", go: "club", goL: "Ouvrir le club",
+      html: `<p><b>Duel sur place</b> : à deux sur le même téléphone. <b>Duel à distance</b> : tu joues 10 questions, puis tu envoies le code (ou le lien) à un ami. Il joue les mêmes questions et te renvoie son code de réponse.</p><p><b>Classement du club</b> : chacun partage sa carte de score. Rien ne passe par un serveur : tout reste sur les téléphones.</p>` }
+  });
 })();
 
 /* js/app.js */

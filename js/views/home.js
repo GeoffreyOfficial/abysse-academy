@@ -154,6 +154,7 @@
           return ok ? `<a class="dq done dq-go" href="#/quests"><span class="ck">${AA.icon("check")}</span><span><b class="small">${u.esc(q.t)}</b>${AA.ui.bar(1)}</span>${cl ? `<span class="chip ok">✓</span>` : `<span class="chip gold">${t("home.claim")}</span>`}</a>`
             : `<button class="dq dq-go" data-go="${u.esc(go || "")}"><span class="ck"></span><span><b class="small">${u.esc(q.t)}</b>${AA.ui.bar(v / n)}</span><span class="dq-do">${t("home.doIt")} ${AA.icon("next")}</span></button>`; }).join("")}
           ${ns ? `<a class="questline" href="#/quests"><span class="eyebrow">${t("home.questNow")}</span><b>${u.esc(ns.st.t)}</b><span class="small muted">${u.esc(ns.c.title)}</span></a>` : ""}</section>
+        ${AA.weekCard ? AA.weekCard() : ""}
         ${qod ? `<div class="section-title"><h3>${t("home.qod")} ${AA.helpBtn("qod")}</h3><span class="chip">${u.esc(C.moduleTitle(qod.m))}</span></div>
         <section class="card" id="qod"><p class="qtext" style="margin-bottom:var(--sp-4)">${u.esc(qod.q)}</p><div class="choices">${qodOrder(qod).map((i, k) => `<button class="choice" data-qi="${i}"><span class="k">${"ABCD"[k]}</span><span>${u.esc(qod.c[i])}</span><span class="mk"></span></button>`).join("")}</div><div id="qodx"></div></section>` : ""}
         </aside></div>
