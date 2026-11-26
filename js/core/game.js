@@ -29,6 +29,9 @@
     if (typeof w === "string") w = C.worldById[w];
     if (!w || w.soon) return false;
     if (S().unlockAll || !w.unlock) return true;
+    /* Un monde déjà commencé reste ouvert (jamais de retour en arrière). */
+    if (C.inWorld(w.id).some(m => S().themes[m.id])) return true;
+    if (w.unlock.boss) return !!(S().boss[w.unlock.world] || {}).won;
     const list = C.inWorld(w.unlock.world);
     if (w.unlock.all) return list.length > 0 && list.every(m => G.stars(m.id) >= 1);
     return G.worldStars(w.unlock.world) >= (w.unlock.count || 1);
@@ -41,14 +44,19 @@
     if (i <= 0) return G.worldOpen(m.world);
     return G.stars(list[i - 1].id) >= 1;
   };
+  G.worldLockReason = w => {
+    const src = C.worldById[w.unlock.world];
+    if (w.unlock.boss) return AA.t("lock.worldBoss", { boss: src.boss ? src.boss.name : "", world: src.short });
+    return w.unlock.all ? AA.t("lock.worldAll", { world: src.short }) : AA.t("lock.worldCount", { n: w.unlock.count, world: src.short });
+  };
   G.lockReason = m => {
     const list = C.inWorld(m.world), i = list.indexOf(m), w = C.worldById[m.world];
-    if (i <= 0 && w.unlock) {
-      const src = C.worldById[w.unlock.world];
-      return w.unlock.all ? AA.t("lock.worldAll", { world: src.short }) : AA.t("lock.worldCount", { n: w.unlock.count, world: src.short });
-    }
+    if (i <= 0 && w.unlock) return G.worldLockReason(w);
     return AA.t("lock.prev", { title: list[i - 1].title });
   };
+  /* Boss de fin de monde : ouvert quand tous les thèmes du monde ont 1 étoile. */
+  G.bossOpen = wid => { const w = C.worldById[wid]; if (!w || !w.boss || !G.worldOpen(w)) return false; if (S().unlockAll) return true; const l = C.inWorld(wid); return l.length > 0 && l.every(m => G.stars(m.id) >= 1); };
+  G.bossLeft = wid => C.inWorld(wid).filter(m => G.stars(m.id) < 1);
 
   /* ---------- Suivi des réponses ---------- */
   G.dayc = () => {
@@ -63,8 +71,11 @@
     let n = 0; while (set.has(u.dstr(d))) { n++; d.setDate(d.getDate() - 1); }
     return n;
   };
-  G.record = (q, ok, doubt) => {
+  /* picked : index du choix donné (sert à la page « Mes erreurs fréquentes »). */
+  G.record = (q, ok, doubt, picked) => {
     const s = S(), st = s.stats[q.id] || { n: 0, ok: 0 };
+    if (!ok && picked != null && !q.calc && C.qById[q.id]) { const w = s.wrong[q.id] || {}; w[picked] = (w[picked] || 0) + 1; w.d = u.today(); s.wrong[q.id] = w; }
+    if (!ok && q.calc && q.gen) { const k = "gen:" + q.gen, w = s.wrong[k] || {}; w.n = (w.n || 0) + 1; w.d = u.today(); s.wrong[k] = w; }
     st.n++; if (ok) st.ok++; s.stats[q.id] = st;
     s.seen[q.id] = ok && !doubt ? 1 : 0;
     if (C.qById[q.id]) s.last[q.id] = u.today();
@@ -136,6 +147,16 @@
       case "day": return [dc[c.f] || 0, c.n];
       case "dailyDone": return [s.daily[u.today()] != null ? 1 : 0, 1];
       case "keepToday": return [s.keepDay === u.today() ? 1 : 0, 1];
+      case "boss": return [(s.boss[c.w] || {}).won ? 1 : 0, 1];
+      case "bossAny": return [Object.values(s.boss).filter(b => b.won).length, c.n || 1];
+      case "story": return [c.id ? ((s.story[c.id] || {}).done ? 1 : 0) : Object.values(s.story).filter(x => x.done).length, c.id ? 1 : c.n];
+      case "five": return [s.five, c.n];
+      case "gloss": return [Object.keys(s.glossSeen).length, c.n];
+      case "aqua": return [Object.keys(s.aqua).length, c.n];
+      case "xp": return [s.xp, c.n];
+      case "answers": return [Object.values(s.stats).reduce((a, v) => a + v.n, 0), c.n];
+      case "accuracy": { const tot = Object.values(s.stats).reduce((a, v) => [a[0] + v.n, a[1] + v.ok], [0, 0]); return [tot[0] >= (c.min || 30) ? Math.round(tot[1] / tot[0] * 100) : 0, c.n]; }
+      case "boxes": return [G.boxes().slice(c.box || 3).reduce((a, b) => a + b, 0), c.n];
       default: return [0, 1];
     }
   };
@@ -143,6 +164,13 @@
 
   G.checkBadges = () => {
     const s = S();
+    /* Aquarium : nouvelles espèces débloquées. */
+    (C.creatures || []).forEach(f => {
+      if (!s.aqua[f.id] && G.met(f.test)) {
+        s.aqua[f.id] = u.today(); AA.store.save();
+        AA.fx.toast(AA.t("aqua.newT", { name: f.name }), AA.t("aqua.newS"), "fish", () => AA.router.go("aquarium/" + f.id));
+      }
+    });
     C.badges.forEach(b => {
       if (!s.badges[b.id] && G.met(b.test)) {
         s.badges[b.id] = u.today(); AA.store.save();

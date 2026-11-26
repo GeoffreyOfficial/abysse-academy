@@ -77,7 +77,21 @@
     /* jeu */
     star: S('<path d="M12 2.5l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.7l-6.1 3.4 1.4-6.8-5.1-4.7 6.9-.8z"/>', true),
     flame: S('<path d="M12 2c1 4 6 6 6 12a6 6 0 01-12 0c0-3 2-5 3-6 0 2 1 3 2 3 0-4-1-6 1-9z"/>', true),
-    bolt: S('<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>', true)
+    bolt: S('<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>', true),
+    /* 1.1 */
+    search: S('<circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/>'),
+    swords: S('<path d="M14.5 17.5L3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2M9.5 6.5L13 3h3v3l-3.5 3.5M5 14l4 4M7 17l-3 3"/>'),
+    scroll: S('<path d="M8 21h11a2 2 0 002-2v-1H10v1a2 2 0 01-4 0V5a2 2 0 00-2-2h12a2 2 0 012 2v13M4 3a2 2 0 00-2 2v2h4M10 8h5M10 12h5"/>'),
+    save: S('<path d="M5 3h11l5 5v11a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z"/><path d="M7 3v5h8V3M7 21v-7h10v7"/>'),
+    brain: S('<path d="M9 4a3 3 0 00-3 3 3 3 0 00-2 5 3 3 0 002 5 3 3 0 006 1V5a2 2 0 00-3-1zM15 4a3 3 0 013 3 3 3 0 012 5 3 3 0 01-2 5 3 3 0 01-6 1"/>'),
+    hand: S('<path d="M8 13V5a1.5 1.5 0 013 0v6M11 11V3.5a1.5 1.5 0 013 0V11M14 11V5a1.5 1.5 0 013 0v8c0 4-2.5 8-7 8-3 0-4.5-1.5-6-4l-2-3.5a1.5 1.5 0 012.5-1.5L8 15"/>'),
+    text: S('<path d="M4 20l5-14 5 14M6 15h6M15 20l3-8 3 8M16 18h4"/>'),
+    eye: S('<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),
+    stop: S('<rect x="6" y="6" width="12" height="12" rx="2"/>', true),
+    transfer: S('<path d="M7 7h13l-4-4M17 17H4l4 4"/>'),
+    shell: S('<path d="M12 21c-5 0-9-3-9-8 0-4 4-9 9-9s9 5 9 9c0 5-4 8-9 8zM12 21V8M7 18l3-9M17 18l-3-9M4 14l5-4M20 14l-5-4"/>'),
+    offline: S('<path d="M2 8.5a16 16 0 0120 0M5 12a11 11 0 0114 0M8.5 15.5a6 6 0 017 0M12 19h.01M3 3l18 18"/>'),
+    quote: S('<path d="M7 7h4v4c0 3-1 5-4 6M14 7h4v4c0 3-1 5-4 6"/>')
   });
   AA.icon = name => I[name] || I.sparkle;
   /* Étoile de score : classes star-on / star-off (couleurs du thème). */

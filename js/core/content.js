@@ -46,6 +46,16 @@
   C.addDailyQuests = list => C.dailyQuests.push(...list);
   C.setRoadmap = list => (C.roadmap = list);
   C.setValidate = list => (C.validate = list);
+  /* 1.1 : aquarium, glossaire, mode histoire, pièges fréquents, décors. */
+  C.creatures = []; C.glossary = []; C.glossById = {}; C.stories = []; C.storyById = {}; C.pitfalls = []; C.decor = [];
+  C.addCreatures = list => C.creatures.push(...list);
+  C.addDecor = list => C.decor.push(...list);
+  /* Terme : {id, t (terme), alt [synonymes], d (définition), m (module), art (illustration), see [ids]} */
+  C.addGlossary = list => { list.forEach(g => { if (C.glossById[g.id]) Object.assign(C.glossById[g.id], g); else { C.glossary.push(g); C.glossById[g.id] = g; } }); C.glossary.sort((a, b) => a.t.localeCompare(b.t, "fr")); };
+  /* Histoire : {id, title, sub, world, unlock (condition), start, nodes:{id:{depth, text, choices:[{t, go, ok, e, m}] | end}}} */
+  C.addStory = s => { C.stories.push(s); C.storyById[s.id] = s; };
+  /* Piège : {id, title, why, fix, m [modules], gen [générateurs], re (expression sur la question)} */
+  C.addPitfalls = list => C.pitfalls.push(...list);
 
   C.inWorld = wid => C.modules.filter(m => m.world === wid);
 

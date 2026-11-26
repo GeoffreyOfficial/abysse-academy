@@ -23,22 +23,45 @@
     if (ctx !== undefined) AA.ctx = ctx || {};
     const url = "#/" + path;
     if (location.hash === url) R.render();
-    else if (replace) { history.replaceState(null, "", url); R.render(); }
+    else if (replace) { history.replaceState(null, "", url); stack[stack.length - 1] = url; R.render("tab"); }
     else location.hash = url;
   };
   R.back = fallback => { if (history.length > 1 && R.prev) history.back(); else R.go(fallback || "home"); };
-  R.render = () => {
+  /* Sens de navigation (pour l'animation) : retour si l'on revient à l'écran précédent. */
+  const stack = [];
+  const direction = () => {
+    const h = location.hash || "#/home";
+    if (stack[stack.length - 2] === h) { stack.pop(); return "back"; }
+    if (stack[stack.length - 1] !== h) stack.push(h);
+    if (stack.length > 50) stack.shift();
+    return "fwd";
+  };
+  /* Changement d'écran animé : View Transitions si dispo, sinon animation CSS. */
+  const onHash = () => {
+    const dir = direction(), v = views[R.parse().name], tabSwitch = v && current && v.tab && current.tab && v.tab !== current.tab && !v.immersive && !current.immersive;
+    const kind = tabSwitch ? "tab" : dir;
+    const root = document.documentElement;
+    const reduce = AA.a11y && AA.a11y.reduced();
+    if (document.startViewTransition && !reduce) {
+      root.dataset.vt = kind;
+      try { const tr = document.startViewTransition(() => R.render(kind, true)); [tr.ready, tr.updateCallbackDone].forEach(p => p.catch(() => {})); tr.finished.catch(() => {}).then(() => delete root.dataset.vt); return; } catch (e) {}
+    }
+    R.render(kind);
+  };
+  R.render = (kind, vt) => {
+    if (typeof kind !== "string") kind = "";
     const { name, args } = R.parse();
     let v = views[name];
     if (!v) { R.go("home", undefined, true); return; }
     if (v.guard && !v.guard(args)) { R.go(v.fallback || "home", undefined, true); return; }
-    if (!AA.S.profile.onboarded && name !== "welcome") { R.go("welcome", undefined, true); return; }
+    if (!AA.S.profile.onboarded && !["welcome", "import", "backup"].includes(name)) { R.go("welcome", undefined, true); return; }
     if (current && current.leave) try { current.leave(); } catch (e) {}
     R.prev = current; current = v; R.name = name;
     AA.ui.frame(v);
     const el = document.getElementById("view");
-    el.innerHTML = ""; el.className = "view-enter";
+    el.innerHTML = ""; el.className = kind && !vt ? "view-enter view-" + kind : "";
     v.render(el, args);
+    if (AA.scene) AA.scene.set(typeof v.depth === "function" ? v.depth(args) : v.depth != null ? v.depth : 5);
     AA.ui.hud();
     requestAnimationFrame(() => { window.scrollTo(0, (v.keepScroll && R.scroll[location.hash]) || 0); });
     const h = el.querySelector("h1,h2"); if (h && !v.immersive) { h.setAttribute("tabindex", "-1"); }
@@ -46,5 +69,5 @@
   R.scroll = {};
   R.refresh = () => { const y = window.scrollY; R.render(); requestAnimationFrame(() => window.scrollTo(0, y)); };
   addEventListener("scroll", () => { R.scroll[location.hash] = window.scrollY; }, { passive: true });
-  R.start = () => { addEventListener("hashchange", R.render); R.render(); };
+  R.start = () => { addEventListener("hashchange", onHash); direction(); R.render("tab"); };
 })();

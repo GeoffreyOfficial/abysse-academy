@@ -33,7 +33,7 @@ HEAD = """<!doctype html>
 <meta name="apple-mobile-web-app-title" content="Abysse">
 {links}
 <script>/* Thème appliqué avant l'affichage pour éviter un flash de couleurs. */
-try{{var s=JSON.parse(localStorage.getItem("abysse-academy")||"null");if(s&&s.profile&&s.profile.theme)document.documentElement.dataset.aaTheme=s.profile.theme;}}catch(e){{}}</script>
+try{{var s=JSON.parse(localStorage.getItem("abysse-academy")||"null"),r=document.documentElement;if(s&&s.profile){{if(s.profile.theme)r.dataset.aaTheme=s.profile.theme;if(s.profile.textSize)r.style.setProperty("--ts",s.profile.textSize);if(s.profile.cvd)r.dataset.aaCvd="1";}}}}catch(e){{}}</script>
 {styles}
 </head>
 <body>

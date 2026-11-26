@@ -21,6 +21,13 @@
           ${ui.tile("doubt", "doubt", "var(--world-e2)", t("mode.doubt"), t("train.doubtS"), doubts ? [String(doubts), "pri"] : null)}
           ${ui.tile("calcs", "calc", "var(--gold)", t("mode.calcs"), t("train.calcsS"))}
         </div>
+        <div class="section-title"><h3>${t("train.play")}</h3></div>
+        <div class="tiles">
+          ${ui.tile("five", "timer", "var(--primary)", t("mode.five"), t("train.fiveS"), S.five ? [t("train.fiveN", { n: S.five }), "pri"] : null)}
+          ${ui.tile("story", "scroll", "var(--world-e2)", t("story.title"), t("train.storyS"), [t("train.storyN", { n: Object.values(S.story).filter(x => x.done).length, tot: C.stories.length }), "pri"])}
+          ${ui.tile("mistakes", "brain", "var(--accent)", t("mist.short"), t("train.mistS"))}
+          ${ui.tile("boss", "swords", "var(--bad)", t("train.boss"), t("train.bossS"), C.worlds.some(w => w.boss && G.bossOpen(w.id) && !(S.boss[w.id] || {}).won) ? [t("boss.readyShort"), "warn"] : null)}
+        </div>
         <div class="section-title"><h3>${t("train.tests")}</h3></div>
         <div class="tiles">
           ${ui.tile("examfull", "exam", "var(--accent)", t("mode.examFull"), t("train.examFullS"), best != null ? [t("home.best", { s: u.num(best, 1) }), "gold"] : null)}
@@ -35,7 +42,9 @@
         ({
           daily: AA.quiz.daily, flash: () => AA.router.go("flash"), errors: AA.quiz.errors, stale: () => G.staleList().length ? AA.quiz.stale() : fx.toast(t("train.noStaleT"), t("train.noStaleS"), "refresh"),
           doubt: () => { const qs = Object.keys(AA.S.doubt).map(id => C.qById[id]).filter(Boolean); qs.length ? AA.quiz.start("errors", u.shuffle(qs).slice(0, 10), { title: t("mode.doubt"), back: "train" }) : fx.toast(t("train.noDoubtT"), t("train.noDoubtS"), "doubt"); },
-          calcs: () => AA.quiz.calcs(null, 10, t("mode.calcs")), examfull: () => AA.quiz.exam(true), examquick: () => AA.quiz.exam(false), apnee: AA.quiz.apnee, duel: () => AA.router.go("club")
+          calcs: () => AA.quiz.calcs(null, 10, t("mode.calcs")),
+          five: AA.quiz.five, story: () => AA.router.go("story"), mistakes: () => AA.router.go("mistakes"),
+          boss: () => { const w = C.worlds.find(x => x.boss && G.bossOpen(x.id) && !(AA.S.boss[x.id] || {}).won) || C.worlds.find(x => x.boss && G.worldOpen(x)) || C.worlds[0]; AA.router.go("boss/" + w.id); }, examfull: () => AA.quiz.exam(true), examquick: () => AA.quiz.exam(false), apnee: AA.quiz.apnee, duel: () => AA.router.go("club")
         })[b.dataset.t]();
       });
     }

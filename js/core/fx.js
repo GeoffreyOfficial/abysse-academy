@@ -5,8 +5,7 @@
   "use strict";
   const AA = window.AA, u = AA.u;
   const fx = (AA.fx = {});
-  const RM = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+  
   /* ---------- Son (synthétisé, aucun fichier) ---------- */
   let ac = null;
   function tone(seq) {
@@ -36,41 +35,11 @@
   };
 
   /* ---------- Vibrations ---------- */
-  fx.buzz = pattern => { if (AA.S.profile.haptics && navigator.vibrate) try { navigator.vibrate(pattern); } catch (e) {} };
+  fx.buzz = pattern => { if (AA.S.profile.haptics && navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(pattern); } catch (e) {} };
 
-  /* ---------- Bulles d'ambiance et éclats ---------- */
-  let cv, cx, B = [], running = false;
-  fx.initBubbles = () => {
-    cv = document.getElementById("bubbles"); if (!cv) return;
-    cx = cv.getContext("2d");
-    const size = () => { cv.width = innerWidth * devicePixelRatio; cv.height = innerHeight * devicePixelRatio; };
-    size(); addEventListener("resize", size);
-    if (!RM()) for (let i = 0; i < 14; i++) B.push(amb(true));
-    if (!running) { running = true; requestAnimationFrame(frame); }
-  };
-  const amb = init => ({ x: Math.random(), y: init ? Math.random() : 1.05, r: 1.5 + Math.random() * 4, s: .0006 + Math.random() * .0012, w: Math.random() * 6, a: .5, amb: true });
-  function color() { return getComputedStyle(document.documentElement).getPropertyValue("--bubble").trim() || "rgba(191,243,247,.5)"; }
-  let col = null, colT = 0;
-  function frame(t) {
-    if (!cx) return;
-    if (t - colT > 1000) { col = color(); colT = t; }
-    const W = cv.width, H = cv.height, d = devicePixelRatio;
-    cx.clearRect(0, 0, W, H);
-    B.forEach(b => {
-      b.y -= b.s; b.x += Math.sin(t / 900 + b.w) * .0004;
-      if (!b.amb) b.life -= 1;
-      cx.beginPath(); cx.arc(b.x * W, b.y * H, b.r * d, 0, 7);
-      cx.strokeStyle = b.c || col; cx.globalAlpha = b.amb ? .55 : Math.max(0, b.life / 60); cx.lineWidth = 1.2 * d; cx.stroke();
-    });
-    cx.globalAlpha = 1;
-    B = B.filter(b => b.amb ? b.y > -0.05 : b.life > 0 && b.y > -0.05);
-    while (!RM() && B.filter(b => b.amb).length < 14) B.push(amb(false));
-    requestAnimationFrame(frame);
-  }
-  fx.burst = (x, y, n, c) => {
-    if (RM() || !cv) return;
-    for (let i = 0; i < n; i++) B.push({ x: (x + (Math.random() - .5) * 120) / innerWidth, y: (y + (Math.random() - .5) * 40) / innerHeight, r: 2 + Math.random() * 7, s: .003 + Math.random() * .006, w: Math.random() * 6, life: 40 + Math.random() * 40, c });
-  };
+  /* ---------- Bulles et éclats : dessinés par le fond marin (js/ui/scene.js) ---------- */
+  fx.initBubbles = () => AA.scene && AA.scene.init();
+  fx.burst = (x, y, n, c) => AA.scene && AA.scene.burst(x, y, n, c);
   fx.burstAt = (el, n, c) => { const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0 }; fx.burst(r.left + r.width / 2, r.top, n || 20, c); };
   fx.float = (txt, el, cssColor) => {
     const r = el ? el.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0 };

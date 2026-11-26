@@ -2,9 +2,12 @@
    Pour ajouter un monde : un AA.content.world({...}), puis un fichier de
    modules avec world:"<id>". soon:true affiche le monde comme « bientôt ».
    color : nom d'un jeton CSS (tokens.css). */
-AA.content.world({ id: "n2", order: 1, short: "N2", title: "Niveau 2 · La descente", sub: "Écrit N2 et autonomie PA20 : de la surface à −40 m.", icon: "dive", color: "--world-n2", unlock: null, surface: "Surface · 0 m" });
-AA.content.world({ id: "rifap", order: 2, short: "RIFAP", title: "RIFAP · Les récifs", sub: "Réagir face à un accident de plongée.", icon: "buoy", color: "--world-rifap", unlock: { world: "n2", count: 5 } });
-AA.content.world({ id: "e1", order: 3, short: "E1", title: "Initiateur · Les îles", sub: "Apprendre à transmettre, sans perdre tes bases.", icon: "teach", color: "--world-e1", unlock: { world: "rifap", all: true } });
+AA.content.world({ id: "n2", order: 1, short: "N2", title: "Niveau 2 · La descente", sub: "Écrit N2 et autonomie PA20 : de la surface à −40 m.", icon: "dive", color: "--world-n2", unlock: null, surface: "Surface · 0 m",
+  boss: { name: "Le Gardien des 40 mètres", depth: "−45 m", creature: "grouper", intro: "Un mérou immense garde l’entrée du grand bleu. Pour passer, prouve que tu maîtrises tout le N2 : physique, physiologie, calculs, règles et autonomie.", win: "Le Gardien s’écarte lentement. Le monde RIFAP est ouvert.", n: 22, hp: 16 } });
+AA.content.world({ id: "rifap", order: 2, short: "RIFAP", title: "RIFAP · Les récifs", sub: "Réagir face à un accident de plongée.", icon: "buoy", color: "--world-rifap", unlock: { world: "n2", boss: true },
+  boss: { name: "La Murène du récif", depth: "Récif 5", creature: "moray", intro: "Au fond du récif, la murène attend. Alerte, oxygène, gestes : montre que tu sais réagir sans hésiter.", win: "La murène retourne dans son trou. Le monde Initiateur est ouvert.", n: 16, hp: 12 } });
+AA.content.world({ id: "e1", order: 3, short: "E1", title: "Initiateur · Les îles", sub: "Apprendre à transmettre, sans perdre tes bases.", icon: "teach", color: "--world-e1", unlock: { world: "rifap", boss: true },
+  boss: { name: "La Raie des îles", depth: "Île 6", creature: "ray", intro: "Une raie manta tourne autour de l’île. Prouve que tu sais préparer, conduire et sécuriser une séance.", win: "La raie t’ouvre le passage vers les abysses. Prochaine extension : N3, N4, E2.", n: 16, hp: 12 } });
 AA.content.world({ id: "abysses", order: 4, short: "N3 → E2", title: "Les abysses · N3, N4, E2", sub: "Décompression avancée, guide de palanquée, enseignement jusqu’à 20 m. Prochaine extension.", icon: "compass", color: "--world-e2", soon: true });
 
 /* Parcours réel affiché dans le profil. here:true = étape en cours. */

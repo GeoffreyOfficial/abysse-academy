@@ -6,8 +6,13 @@
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "1.0.0";
+  AA.VERSION = "1.1.0";
   AA.NAME = "Abysse Academy";
+
+  /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
+     (console.cloud.google.com), pour la synchronisation Google Drive. Même identifiant que l'appli Budget :
+     l'origine https://geoffreyofficial.github.io y est déjà autorisée. Voir README. */
+  AA.CONFIG = { googleClientId: "846329946315-b0akqn39adk8t9ufn7o99iqmu11les54.apps.googleusercontent.com" };
 
   /* Thèmes visuels : l'id correspond à [data-aa-theme] dans css/tokens.css.
      Les couleurs de l'aperçu servent aux pastilles des réglages. */

@@ -5,41 +5,63 @@
   "use strict";
   const AA = window.AA, u = AA.u, t = AA.t, G = AA.game, C = AA.content, fx = AA.fx;
 
-  /* ---------- Carte ---------- */
+  /* ---------- Carte ----------
+     Plongée verticale : la corde relie les thèmes, un plongeur descend
+     jusqu'au thème en cours, les décors défilent en parallaxe et le fond
+     s'assombrit avec la profondeur lue au centre de l'écran. */
   AA.view("map", {
     tab: "map", keepScroll: true,
+    depth: ([wid]) => { const w = C.worldById[wid] || C.worldById[G.goalWorld()]; const l = C.inWorld(w.id); return l.length ? AA.scene.depthOf(l[0]) * .5 : 0; },
     render(el, [wid]) {
       const w = C.worldById[wid] || C.worldById[G.goalWorld()];
       const list = C.inWorld(w.id), open = G.worldOpen(w);
       const starsGot = u.sum(list.map(m => G.stars(m.id))), starsMax = list.length * 3;
       const cur = list.findIndex(m => G.unlocked(m) && G.stars(m.id) < 1);
+      const boss = w.boss && !w.soon, bossOpen = boss && G.bossOpen(w.id), bossRec = (AA.S.boss || {})[w.id];
       el.innerHTML = `<h1 class="sr">${t("tab.map")}</h1>
         <div class="seg" role="tablist" aria-label="${t("map.worlds")}">${C.worlds.map(x => `<button role="tab" data-w="${x.id}" aria-pressed="${x.id === w.id}" aria-selected="${x.id === w.id}">${!G.worldOpen(x) ? "🔒 " : ""}${u.esc(x.short)}</button>`).join("")}</div>
         <section class="worldhead" style="--wc:var(${w.color});margin-top:var(--sp-4)">
           <p class="eyebrow">${t("map.world")} ${C.worlds.indexOf(w) + 1}</p><h2>${u.esc(w.title)}</h2><p class="muted" style="margin:6px 0 12px">${u.esc(w.sub)}</p>
           ${w.soon ? "" : `<div class="row between small"><span>${AA.icon("star")} ${starsGot} / ${starsMax}</span><span class="muted">${t("map.done", { n: list.filter(m => G.stars(m.id) >= 1).length, tot: list.length })}</span></div>${AA.ui.bar(starsGot / Math.max(1, starsMax))}`}
-          ${!open && !w.soon ? `<p class="chip warn" style="margin-top:12px">${AA.icon("lock")} ${u.esc(G.lockReason(list[0]))}</p>` : ""}
+          ${!open && !w.soon ? `<p class="chip warn" style="margin-top:12px">${AA.icon("lock")} ${u.esc(G.worldLockReason(w))}</p>` : ""}
         </section>
-        ${w.soon ? soon(w) : `${w.surface ? `<div class="surface-line">${u.esc(w.surface)}</div>` : ""}<div class="map" style="--wc:var(${w.color})"><svg class="rope" aria-hidden="true"></svg>
+        ${w.soon ? soon(w) : `${w.surface ? `<div class="surface-line">${u.esc(w.surface)}</div>` : ""}<div class="map" data-world="${w.id}" style="--wc:var(${w.color})">
+          <div class="para far" data-k=".22" aria-hidden="true"></div><div class="para mid" data-k=".1" aria-hidden="true"></div>
+          <svg class="rope" aria-hidden="true"></svg>
           ${list.map((m, i) => {
             const ok = G.unlocked(m), st = G.stars(m.id), stale = G.isStale(m.id), cls = !ok ? "lock" : st >= 1 ? "done" : "";
             const info = i === cur ? `<span style="color:var(--wc)">${t("map.next")}</span>` : stale ? `<span style="color:var(--accent)">${t("map.stale")}</span>` : u.esc(m.sub);
-            return `<div class="spot ${i % 2 ? "r" : ""}"><button class="node ${cls} ${i === cur ? "cur" : ""}" data-id="${m.id}" aria-label="${u.esc(m.title)}${ok ? "" : " · " + t("map.locked")}">${AA.icon(ok ? m.icon : "lock")}${stale ? `<span class="stale" aria-hidden="true">!</span>` : ""}</button>
+            return `<div class="spot ${i % 2 ? "r" : ""}" data-depth="${AA.scene.depthOf(m)}" data-label="${u.esc(m.depth)}"><button class="node ${cls} ${i === cur ? "cur" : ""}" data-id="${m.id}" aria-label="${u.esc(m.title)}${ok ? "" : " · " + t("map.locked")}">${AA.icon(ok ? m.icon : "lock")}${stale ? `<span class="stale" aria-hidden="true">!</span>` : ""}</button>
               <div class="info"><small>${u.esc(m.depth)}</small><b>${u.esc(m.title)}</b><span>${info}</span><br>${AA.stars(st)}</div></div>`;
-          }).join("")}</div>`}`;
+          }).join("")}
+          ${boss ? `<div class="spot bossspot" data-depth="${AA.scene.depthOf(list[list.length - 1]) + 5}" data-label="${u.esc(w.boss.depth || "")}"><button class="node boss ${bossRec && bossRec.won ? "done" : bossOpen ? "cur" : "lock"}" id="bossnode" aria-label="${u.esc(w.boss.name)}">${AA.icon(bossOpen || (bossRec && bossRec.won) ? "swords" : "lock")}</button>
+            <div class="info"><small>${t("boss.eyebrow")}</small><b>${u.esc(w.boss.name)}</b><span>${bossRec && bossRec.won ? t("boss.beaten", { n: bossRec.best }) : bossOpen ? `<span style="color:var(--accent)">${t("boss.ready")}</span>` : t("boss.lockedS")}</span></div></div>` : ""}
+          <button class="diver" id="diver" aria-label="${t("map.diver")}" hidden>${diverSvg()}</button>
+        </div>`}
+        ${w.soon ? "" : `<div class="depthchip" id="depthchip" aria-hidden="true">${AA.icon("gauge")}<b>${u.esc(list[0] ? list[0].depth : "")}</b></div>`}`;
       u.$$("[data-w]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.router.go("map/" + b.dataset.w, undefined, true); });
-      u.$$(".node", el).forEach(b => b.onclick = () => {
+      u.$$(".node[data-id]", el).forEach(b => b.onclick = () => {
         const m = C.byId[b.dataset.id];
         if (!G.unlocked(m)) { fx.sfx.bad(); fx.buzz(30); b.classList.add("shake"); setTimeout(() => b.classList.remove("shake"), 400); fx.toast(t("map.locked"), G.lockReason(m), "lock", () => AA.router.go("lesson/" + m.id)); return; }
         fx.sfx.tap(); AA.router.go("lesson/" + m.id);
       });
-      requestAnimationFrame(() => u.$$(".map", el).forEach(rope));
+      const bn = u.$("#bossnode"); if (bn) bn.onclick = () => { fx.sfx.tap(); AA.router.go("boss/" + w.id); };
+      const dv = u.$("#diver"); if (dv) dv.onclick = () => { const m = list[cur >= 0 ? cur : list.length - 1]; if (m) AA.router.go("lesson/" + m.id); };
+      requestAnimationFrame(() => u.$$(".map", el).forEach(m => { rope(m); decor(m); placeDiver(m, w, list, cur); onScroll(); }));
     }
   });
   function soon(w) {
     return `<section class="card soft stack" style="margin-top:var(--sp-4)"><h3>${t("map.soonT")}</h3><p class="muted">${t("map.soonS")}</p>
       <ul class="path">${AA.i18n.raw("map.soonList").map(x => `<li><span></span><span><b>${x[0]}</b><span>${x[1]}</span></span></li>`).join("")}</ul></section>`;
   }
+  /* Le plongeur (vue de profil, tête vers la droite). */
+  const diverSvg = () => `<svg viewBox="0 0 64 40" aria-hidden="true"><g class="dv-body">
+    <rect x="18" y="9" width="22" height="8" rx="4" class="dv-tank"/>
+    <path d="M14 20c4-5 18-6 30-3l6 2c3 1 3 5 0 6l-8 1c-10 1-22 1-28-1z" class="dv-suit"/>
+    <circle cx="50" cy="19" r="6" class="dv-head"/><rect x="51" y="15" width="7" height="5" rx="2" class="dv-mask"/>
+    <path d="M14 21L3 16M14 25L2 28" class="dv-fin"/><path d="M5 13l-4 4 6 1zM4 26l-3 5 6-1z" class="dv-fins"/></g>
+    <g class="dv-bub"><circle cx="58" cy="9" r="2"/><circle cx="61" cy="3" r="1.4"/></g></svg>`;
+  let ropePath = null, ropeStops = [];
   function rope(map) {
     const svg = u.$(".rope", map); const mr = map.getBoundingClientRect();
     const pts = u.$$(".node", map).map(n => { const r = n.getBoundingClientRect(); return [r.left - mr.left + r.width / 2, r.top - mr.top + r.height / 2]; });
@@ -47,14 +69,65 @@
     svg.setAttribute("viewBox", `0 0 ${mr.width} ${mr.height}`);
     let d = `M${pts[0][0]} -14 L${pts[0][0]} ${pts[0][1]}`;
     for (let i = 1; i < pts.length; i++) { const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], my = (y0 + y1) / 2; d += ` C${x0} ${my} ${x1} ${my} ${x1} ${y1}`; }
-    svg.innerHTML = `<path d="${d}"/>`;
+    svg.innerHTML = `<path d="${d}"/><path class="rope-done" d="${d}"/>`;
+    ropePath = u.$("path", svg);
+    /* Longueur de corde à chaque nœud (pour faire descendre le plongeur). */
+    const L = ropePath.getTotalLength(); ropeStops = [];
+    let k = 0;
+    for (let l = 0; l <= L && k < pts.length; l += 2) { const p = ropePath.getPointAtLength(l); if (Math.hypot(p.x - pts[k][0], p.y - pts[k][1]) < 3) { ropeStops.push(l); k++; } }
+    while (ropeStops.length < pts.length) ropeStops.push(L);
   }
-  addEventListener("resize", u.debounce(() => { if (AA.router.name === "map") u.$$(".map").forEach(rope); }, 150));
+  /* Décors en parallaxe : falaises, algues, coraux. Tirage stable par monde. */
+  function decor(map) {
+    const H = map.offsetHeight, wid = map.dataset.world, r = u.seeded(u.seedOf(wid + "deco"));
+    const cliff = (side, amp, step) => { let d = side ? `M100 0` : `M0 0`; for (let y = 0; y <= H; y += step) { const x = amp * (.4 + r() * .6); d += ` L${side ? 100 - x : x} ${y}`; } return d + (side ? ` L100 ${H}Z` : ` L0 ${H}Z`); };
+    const kelp = (x, y, h) => `<path class="kelp" d="M${x} ${y} q${-3 + r() * 6} ${-h / 3} ${r() * 3} ${-h / 2} t${-2 + r() * 4} ${-h / 2}" style="animation-delay:${(-r() * 4).toFixed(2)}s"/>`;
+    const coral = (x, y) => `<g class="coral" transform="translate(${x} ${y})"><path d="M0 0v-14M0 -6l-5 -6M0 -9l5 -5M-5 -12v-4M5 -14v-3"/></g>`;
+    let far = `<svg viewBox="0 0 100 ${H}" preserveAspectRatio="none"><path class="cliff" d="${cliff(0, 9, 60)}"/><path class="cliff" d="${cliff(1, 9, 70)}"/></svg>`;
+    let mid = `<svg viewBox="0 0 100 ${H}" preserveAspectRatio="none">`;
+    for (let y = 120; y < H; y += 170 + r() * 120) { const left = r() < .5, x = left ? 2 + r() * 6 : 92 + r() * 6; mid += r() < .6 ? kelp(x, y, 50 + r() * 50) : coral(x, y); }
+    mid += `</svg>`;
+    u.$(".para.far", map).innerHTML = far; u.$(".para.mid", map).innerHTML = mid;
+  }
+  function pointAt(l) { const p = ropePath.getPointAtLength(l), q = ropePath.getPointAtLength(Math.max(0, l - 6)); return { x: p.x, y: p.y, a: Math.atan2(p.y - q.y, p.x - q.x) * 180 / Math.PI }; }
+  function placeDiver(map, w, list, cur) {
+    const dv = u.$("#diver", map); if (!dv || !ropePath) return;
+    const target = cur >= 0 ? cur : list.length - 1, key = "aa-diver-" + w.id;
+    let from = -1; try { const v = sessionStorage.getItem(key); from = v == null ? -1 : +v; } catch (e) {}
+    try { sessionStorage.setItem(key, target); } catch (e) {}
+    const stop = i => Math.max(0, (ropeStops[Math.min(i, ropeStops.length - 1)] || 0) - 52), l0 = from < 0 ? 0 : stop(from), l1 = stop(target);
+    dv.hidden = false;
+    /* Corde parcourue : surlignée jusqu'au plongeur. */
+    const done = u.$(".rope-done", map), L = ropePath.getTotalLength();
+    const put = l => { const p = pointAt(l), ang = Math.max(-40, Math.min(110, p.a)); dv.style.transform = `translate(${p.x - 32}px, ${p.y - 20}px) rotate(${(ang - 90) * .35}deg)`; if (done) { done.style.strokeDasharray = `${l} ${L}`; } };
+    if (AA.a11y.reduced() || l0 === l1) { put(l1); return; }
+    const t0 = performance.now(), dur = Math.min(2600, 700 + Math.abs(l1 - l0) * 1.2);
+    put(l0);
+    const step = t => { const k = Math.min(1, (t - t0) / dur), e = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2; put(l0 + (l1 - l0) * e); if (k < 1 && AA.router.name === "map") requestAnimationFrame(step); else dv.classList.add("idle"); };
+    requestAnimationFrame(step);
+  }
+  /* Parallaxe et profondimètre liés au défilement. */
+  function onScroll() {
+    if (AA.router.name !== "map") return;
+    const map = u.$(".map"); if (!map) return;
+    const mr = map.getBoundingClientRect(), y = innerHeight * .5;
+    u.$$(".para", map).forEach(p => { p.style.transform = `translate3d(0, ${(-mr.top * +p.dataset.k).toFixed(1)}px, 0)`; });
+    const spots = u.$$(".spot", map); if (!spots.length) return;
+    const cs = spots.map(s => { const r = s.getBoundingClientRect(); return { c: r.top + r.height / 2, d: +s.dataset.depth, l: s.dataset.label }; });
+    let d = cs[0].d * (y < cs[0].c ? Math.max(0, 1 - (cs[0].c - y) / 400) : 1), lab = cs[0].l;
+    for (let i = 0; i < cs.length - 1; i++) if (y >= cs[i].c && y < cs[i + 1].c) { const k = (y - cs[i].c) / (cs[i + 1].c - cs[i].c); d = cs[i].d + (cs[i + 1].d - cs[i].d) * k; lab = k < .5 ? cs[i].l : cs[i + 1].l; }
+    if (y >= cs[cs.length - 1].c) { d = cs[cs.length - 1].d; lab = cs[cs.length - 1].l; }
+    AA.scene.set(d);
+    const chip = u.$("#depthchip b"); if (chip) chip.textContent = /\d/.test(lab) ? "−" + Math.round(d) + " m" : lab;
+  }
+  addEventListener("scroll", () => requestAnimationFrame(onScroll), { passive: true });
+  addEventListener("resize", u.debounce(() => { if (AA.router.name === "map") u.$$(".map").forEach(m => { rope(m); decor(m); const dv = u.$("#diver", m); if (dv) dv.hidden = true; }); }, 150));
 
   /* ---------- Cours ---------- */
   const TABS = ["essentiel", "approfondir", "memo", "moniteur"];
   AA.view("lesson", {
     tab: "map",
+    depth: ([id]) => AA.scene.depthOf(C.byId[id]),
     guard: ([id]) => !!C.byId[id],
     fallback: "map",
     render(el, [id, tabArg]) {
@@ -82,6 +155,7 @@
             ${acc != null ? `<span class="chip">${AA.icon("target")} ${Math.round(acc * 100)} %</span>` : ""}
             ${note.ok ? `<span class="chip gold">${AA.icon("check")} ${t("lesson.coachOk")}</span>` : ""}
             ${G.isStale(m.id) ? `<span class="chip warn">${AA.icon("refresh")} ${t("map.stale")}</span>` : ""}
+            <span class="grow"></span>${tab !== "moniteur" ? AA.a11y.button(".lesson-body", t("a11y.listenLesson")) : ""}
           </div>
         </header>
         ${!ok ? `<div class="callout trap"><span class="eyebrow">${t("map.locked")}</span>${u.esc(G.lockReason(m))} ${t("lesson.lockedRead")}</div>` : ""}
@@ -93,6 +167,8 @@
           ${gens ? `<button class="btn gold sm" id="calc" ${ok ? "" : "disabled"} aria-label="${t("lesson.calcs")}">${AA.icon("calc")}</button>` : ""}
         </div></div>`;
       u.$$("[data-diagram]", el).forEach(f => { const d = C.diagrams[f.dataset.diagram]; if (d) f.outerHTML = d(); });
+      u.$$(".prose", el).forEach(p => AA.gloss.link(p));
+      if (AA.ctx.hl) { const first = AA.search.mark(u.$(".lesson-body", el), AA.ctx.hl); AA.ctx.hl = null; if (first) setTimeout(() => first.scrollIntoView({ block: "center", behavior: AA.a11y.reduced() ? "auto" : "smooth" }), 120); }
       u.$$("[data-tab]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); AA.router.go("lesson/" + m.id + "/" + b.dataset.tab, undefined, true); });
       u.$("#dive").onclick = () => AA.quiz.module(m, tab === "approfondir" && deepQ > 0);
       const cb = u.$("#calc"); if (cb) cb.onclick = () => AA.quiz.calcs(m.id, 6, t("quiz.calcsOf", { title: m.title }));

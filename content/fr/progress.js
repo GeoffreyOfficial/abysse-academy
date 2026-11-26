@@ -71,3 +71,16 @@ AA.content.addDailyQuests([
   { id: "read", t: "Lire ou relire un cours", test: { k: "day", f: "read", n: 1 } },
   { id: "keep", t: "Réviser un thème « À réviser » ou ton plus ancien", test: { k: "keepToday" } }
 ]);
+
+/* 1.1 : trophées des nouveaux modes */
+AA.content.addBadges([
+  { id: "boss-n2", icon: "swords", name: "Gardien vaincu", desc: "Battre le boss du monde N2", test: { k: "boss", w: "n2" } },
+  { id: "boss-all", icon: "trophy", name: "Chasseur de boss", desc: "Battre les 3 boss", test: { k: "bossAny", n: 3 } },
+  { id: "story1", icon: "scroll", name: "Conteur des fonds", desc: "Finir une aventure", test: { k: "story", n: 1 } },
+  { id: "five5", icon: "timer", name: "Plongeur pressé", desc: "Finir 5 sessions « 5 minutes »", test: { k: "five", n: 5 } },
+  { id: "gloss20", icon: "book", name: "Dictionnaire vivant", desc: "Ouvrir 20 mots du glossaire", test: { k: "gloss", n: 20 } },
+  { id: "aqua10", icon: "fish", name: "Aquariophile", desc: "10 espèces dans ton aquarium", test: { k: "aqua", n: 10 } }
+]);
+AA.content.addDailyQuests([
+  { id: "dq-five", t: "Faire une session « 5 minutes »", test: { k: "day", f: "five", n: 1 } }
+]);

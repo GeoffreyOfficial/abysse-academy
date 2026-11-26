@@ -32,7 +32,8 @@ AA.content.module({
     {"q":"Le RIFAP couvre…","c":["uniquement les gestes dans l’eau","l’eau et la prise en charge hors de l’eau jusqu’aux secours","seulement l’alerte","la mécanique des détendeurs"],"a":1,"e":"De la détection sous l’eau à la transmission aux secours."},
     {"q":"Quel produit est au cœur du RIFAP ?","c":["L’aspirine","L’oxygène","Le café","Le sucre"],"a":1,"e":"L’oxygène est le premier traitement d’un accident de plongée."},
     {"q":"Dans quel ordre agir ?","c":["Alerter, puis protéger","Protéger, examiner, alerter, secourir, surveiller","Secourir puis protéger","Surveiller seulement"],"a":1,"e":"On évite le suraccident d’abord, puis on évalue, on alerte et on agit."},
-    {"q":"Pourquoi le RIFAP est-il utile avant l’initiateur ?","c":["Pour le tampon sur le carnet","Un enseignant doit savoir porter secours à ses élèves","Ce n’est pas utile","Pour plonger plus profond"],"a":1,"e":"Encadrer, c’est aussi être capable d’intervenir. Prérequis exacts à confirmer."}
+    {"q":"Pourquoi le RIFAP est-il utile avant l’initiateur ?","c":["Pour le tampon sur le carnet","Un enseignant doit savoir porter secours à ses élèves","Ce n’est pas utile","Pour plonger plus profond"],"a":1,"e":"Encadrer, c’est aussi être capable d’intervenir. Prérequis exacts à confirmer."},
+    {"q":"Un plongeur remonte en surface et ne répond plus. Avant de foncer, tu…","c":["vérifies qu’intervenir ne te met pas en danger et tu donnes l’alerte","plonges le chercher sans prévenir","attends qu’il se reprenne","appelles ton binôme pour en discuter"],"a":0,"e":"Protéger d’abord (éviter un deuxième accident), alerter tôt, puis agir.","lvl":1}
   ]
 });
 
@@ -63,7 +64,8 @@ AA.content.module({
     {"q":"Qui raccroche en premier ?","c":["Toi, pour gagner du temps","Le secours, quand il te le dit","Personne","Peu importe"],"a":1,"e":"Le régulateur peut avoir des questions ou des consignes."},
     {"q":"Que dire dans l’alerte ?","c":["Seulement « venez vite »","Qui, où, quoi, état de la victime, gestes déjà faits","Le prix du bateau","Ton niveau de plongée"],"a":1,"e":"Un message complet fait gagner du temps."},
     {"q":"La fiche d’évacuation contient…","c":["les paramètres de plongée et l’heure des signes","le menu du midi","la licence uniquement","rien d’utile"],"a":0,"e":"Le médecin du caisson en a besoin."},
-    {"q":"À terre, tu appelles…","c":["le 15 ou le 112","le 196","le 3615","la mairie"],"a":0,"e":"SAMU (15) ou numéro d’urgence européen (112)."}
+    {"q":"À terre, tu appelles…","c":["le 15 ou le 112","le 196","le 3615","la mairie"],"a":0,"e":"SAMU (15) ou numéro d’urgence européen (112)."},
+    {"q":"Avant la sortie, il est utile de savoir…","c":["où sont l’oxygène, la trousse et la radio, et quels numéros appeler","le nom du bateau voisin","la marque des blocs","rien, le DP s’en occupe"],"a":0,"e":"En urgence, on ne cherche pas le matériel : on sait où il est. Le protocole exact est celui du club."}
   ]
 });
 
@@ -135,6 +137,7 @@ AA.content.module({
     {"q":"Victime inconsciente qui ne respire pas :","c":["PLS et attente","Alerte et réanimation cardio-pulmonaire, défibrillateur au plus vite","Lui donner à boire","La mettre dans l’eau"],"a":1,"e":"Chaque minute compte."},
     {"q":"Pour vérifier la respiration, on prend environ…","c":["1 seconde","10 secondes","1 minute","5 minutes"],"a":1,"e":"Regarder, écouter, sentir pendant une dizaine de secondes."},
     {"q":"Chez un noyé, la cause principale de l’arrêt est souvent…","c":["un problème cardiaque pur","le manque d’oxygène","le froid seul","la narcose"],"a":1,"e":"D’où l’importance des insufflations dans les protocoles noyade."},
-    {"q":"Où apprend-on vraiment ces gestes ?","c":["Dans une appli","Sur mannequin avec un formateur","En lisant une fois","En regardant une vidéo"],"a":1,"e":"L’appli aide à mémoriser. La validation est pratique."}
+    {"q":"Où apprend-on vraiment ces gestes ?","c":["Dans une appli","Sur mannequin avec un formateur","En lisant une fois","En regardant une vidéo"],"a":1,"e":"L’appli aide à mémoriser. La validation est pratique."},
+    {"q":"Une victime consciente se plaint d’une douleur articulaire après la plongée : tu…","c":["lui donnes de l’oxygène, tu alertes et tu la surveilles","lui dis de se reposer et de voir demain","la fais replonger un peu","lui masses l’articulation"],"a":0,"e":"Une douleur après plongée peut être un accident de désaturation : oxygène, alerte, surveillance."}
   ]
 });

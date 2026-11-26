@@ -1,0 +1,15 @@
+{
+  "name": "abysse-academy",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Apprendre la plongée en jouant : N2, PA20, RIFAP, initiateur.",
+  "scripts": {
+    "build": "python3 build.py",
+    "test": "npm run test:content && npm run test:e2e",
+    "test:content": "node tests/content.test.js",
+    "test:e2e": "node tests/e2e.test.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.47.0"
+  }
+}

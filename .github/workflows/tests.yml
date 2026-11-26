@@ -1,0 +1,21 @@
+# Tests automatiques à chaque envoi sur GitHub : contenu + navigateur.
+name: Tests
+on:
+  push:
+  pull_request:
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Construction
+        run: python3 build.py && git diff --exit-code -- index.html sw.js || (echo "Lance python3 build.py avant d'envoyer" && exit 1)
+      - name: Tests du contenu
+        run: node tests/content.test.js
+      - name: Installer le navigateur de test
+        run: npm install --no-save playwright && npx playwright install --with-deps chromium
+      - name: Tests dans le navigateur
+        run: node tests/e2e.test.js

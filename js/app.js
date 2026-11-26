@@ -19,11 +19,15 @@
     AA.i18n.set(lang.id);
     AA.content.build();
     AA.ui.applyTheme();
+    AA.a11y.apply();
     AA.fx.initBubbles();
     AA.router.start();
     AA.game.checkBadges();
-    AA.store.loadAsync().then(changed => { if (changed) { AA.ui.applyTheme(); AA.router.refresh(); } });
+    AA.store.loadAsync().then(changed => { if (changed) { AA.ui.applyTheme(); AA.a11y.apply(); AA.router.refresh(); } AA.sync.init(); });
     AA.pwa.init();
+    /* Indicateur hors ligne discret. */
+    const net = () => document.documentElement.classList.toggle("offline", !navigator.onLine);
+    addEventListener("online", net); addEventListener("offline", net); net();
     document.documentElement.classList.add("ready");
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();

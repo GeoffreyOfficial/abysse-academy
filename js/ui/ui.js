@@ -33,6 +33,7 @@
       ${dx != null && dx >= 0 ? `<span class="pill cd" title="${t("hud.exam")}">${AA.icon("calendar")}J−${dx}</span>` : ""}
       <span class="pill fire" title="${t("hud.streak")}">${AA.icon("flame")}${st}</span>
       <a class="pill xp" href="#/profile" title="${t("hud.level", { l: lv.l })}">${AA.icon("bolt")}${S.xp}</a>
+      <a class="iconbtn" href="#/search" aria-label="${t("search.title")}">${AA.icon("search")}</a>
       <a class="iconbtn" href="#/settings" aria-label="${t("nav.settings")}">${AA.icon("gear")}</a>`;
     const dot = G.claimable(); const pt = u.$('[data-tab="profile"]');
     if (pt) { let d = u.$(".dot", pt); if (dot && !d) { d = document.createElement("i"); d.className = "dot"; pt.appendChild(d); } else if (!dot && d) d.remove(); }
@@ -69,6 +70,27 @@
     document.addEventListener("keydown", esc);
     document.body.appendChild(d); u.$("[data-ok]", d).focus();
   };
+  /* Feuille du bas générique (glossaire, détails…). Renvoie une fonction de fermeture. */
+  ui.sheet = (html, label) => {
+    const d = document.createElement("div"); d.className = "sheet-wrap";
+    d.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="${u.esc(label || "")}"><button class="closebtn sheet-x" data-no aria-label="${t("nav.back")}">${AA.icon("close")}</button>${html}</div>`;
+    const prev = document.activeElement;
+    const close = () => { d.remove(); document.removeEventListener("keydown", esc); prev && prev.focus && prev.focus({ preventScroll: true }); };
+    const esc = e => { if (e.key === "Escape") close(); };
+    d.addEventListener("click", e => { if (e.target === d || e.target.closest("[data-no]")) close(); else if (e.target.closest("a[href^='#/']")) close(); });
+    document.addEventListener("keydown", esc);
+    document.body.appendChild(d); u.$(".sheet-x", d).focus({ preventScroll: true });
+    return close;
+  };
+
+  /* Micro-animation : onde au toucher sur les boutons (désactivée si animations réduites). */
+  document.addEventListener("pointerdown", e => {
+    const b = e.target.closest(".btn,.choice,.tile,.quick,.node,.tab,.continue,.chip[id],.aq-fish,.st-choice"); if (!b || b.disabled || (AA.a11y && AA.a11y.reduced())) return;
+    const r = b.getBoundingClientRect(), s = Math.max(r.width, r.height) * 2.2, i = document.createElement("span");
+    i.className = "rip"; i.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX - r.left - s / 2}px;top:${e.clientY - r.top - s / 2}px`;
+    b.appendChild(i); setTimeout(() => i.remove(), 600);
+  }, { passive: true });
+
   /* Petit utilitaire : branche data-go="route" sur des boutons. */
   ui.wireGo = el => u.on(el, "click", "[data-go]", (e, b) => { AA.fx.sfx.tap(); AA.router.go(b.dataset.go); });
 })();

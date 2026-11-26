@@ -34,6 +34,8 @@
         <div class="tiles" style="margin-top:var(--sp-4)">
           ${ui.tile("quests", "flag", "var(--gold)", t("prof.quests"), t("prof.questsS"), claim ? [t("prof.claim", { n: claim }), "gold"] : null)}
           ${ui.tile("club", "users", "var(--primary)", t("prof.club"), t("prof.clubS"))}
+          ${ui.tile("aquarium", "fish", "var(--primary)", t("aqua.title"), t("home.aquaS", { n: Object.keys(S.aqua).length, tot: C.creatures.length }))}
+          ${ui.tile("backup", "save", "var(--ok)", t("bk.title"), AA.sync.linked() ? t("bk.driveOn") : t("prof.backupS"))}
         </div>
         ${weak.length ? `<div class="section-title"><h3>${t("prof.weak")}</h3></div><div class="row">${weak.map(w => `<a class="btn ghost sm" href="#/lesson/${w.m.id}">${u.esc(w.m.title)} · ${Math.round(w.a * 100)} %</a>`).join("")}</div>` : ""}
         <div class="section-title"><h3>${t("prof.byModule")}</h3><span class="xs muted">${t("prof.byModuleS")}</span></div>
@@ -112,16 +114,21 @@
           <div class="field" style="margin-top:var(--sp-3)"><label for="exd">${t("set.exam")}</label><input class="input" type="date" id="exd" value="${u.esc(p.examDate)}"></div>
           <div class="field" style="margin-top:var(--sp-3)"><label>${t("set.goal")}</label><div class="seg">${C.worlds.filter(w => !w.soon).map(w => `<button data-goal="${w.id}" aria-pressed="${p.goal === w.id}">${u.esc(w.short)}</button>`).join("")}</div></div>
           <div class="field" style="margin-top:var(--sp-3)"><label>${t("set.daily")}</label><div class="seg">${[10, 20, 40].map(n => `<button data-daily="${n}" aria-pressed="${p.dailyGoal === n}">${t("onb.dailyN", { n })}</button>`).join("")}</div></div></section>
+        <section class="card" style="margin-top:var(--sp-4)" id="a11y"><h3>${t("set.a11y")}</h3>
+          <div class="field" style="margin-top:var(--sp-3)"><label>${t("set.textSize")}</label><div class="seg textsize">${AA.a11y.SIZES.map((z, i) => `<button data-ts="${z}" aria-pressed="${(p.textSize || 1) === z}" style="font-size:${.8 + i * .12}rem" aria-label="${Math.round(z * 100)} %">Aa</button>`).join("")}</div>
+            <p class="small muted" style="margin:6px 0 0">${t("set.textSizeS")}</p></div>
+          ${sw("cvd", p.cvd, t("set.cvd"), t("set.cvdS"))}
+          <div class="cvd-demo" aria-hidden="true"><span class="chip ok">${AA.icon("check")} ${t("set.cvdOk")}</span><span class="chip bad">${AA.icon("x")} ${t("set.cvdBad")}</span></div>
+          ${sw("mot", p.motion !== false, t("set.motion"), t("set.motionS"))}${sw("scn", p.scene !== false, t("set.scene"), t("set.sceneS"))}${sw("gst", p.gestures !== false, t("set.gestures"), t("set.gesturesS"))}
+          ${AA.a11y.canSpeak ? `<div class="field" style="margin-top:var(--sp-3)"><label>${t("set.voice")}</label><div class="seg">${[[.8, "slow"], [1, "normal"], [1.2, "fast"]].map(([r, k]) => `<button data-vr="${r}" aria-pressed="${(p.voiceRate || 1) === r}">${t("set.voice." + k)}</button>`).join("")}</div>
+            <div class="row" style="margin-top:8px"><button class="btn ghost sm" id="vtest">${AA.icon("sound")} ${t("set.voiceTest")}</button></div></div>` : `<p class="small muted">${t("set.noVoice")}</p>`}</section>
         <section class="card" style="margin-top:var(--sp-4)"><h3>${t("set.comfort")}</h3>
           ${sw("snd", p.sound, t("set.sound"), t("set.soundS"))}${sw("hap", p.haptics, t("set.haptics"), t("set.hapticsS"))}${sw("unl", S.unlockAll, t("set.unlock"), t("set.unlockS"))}</section>
+        <a class="card linkcard" href="#/backup" style="margin-top:var(--sp-4)"><span class="medal">${AA.icon("save")}</span><span class="grow"><b>${t("bk.title")}</b><span class="small muted">${t("set.backupS")}</span></span>${AA.icon("next")}</a>
         <section class="card" style="margin-top:var(--sp-4)" id="install"><h3>${t("set.install")}</h3><p class="small muted">${t("set.installS")}</p>
-          <div class="stack"><button class="btn block" id="dlapp">${AA.icon("install")} ${t("set.installBtn")}</button>
-          <button class="btn ghost block" id="dlsave">${AA.icon("download")} ${t("set.export")}</button>
-          <label class="btn ghost block" for="imp">${AA.icon("upload")} ${t("set.import")}</label><input type="file" id="imp" accept=".json,application/json" hidden></div>
+          <div class="stack"><button class="btn block" id="dlapp">${AA.icon("install")} ${t("set.installBtn")}</button></div>
           <p class="small" id="dlmsg" role="status"></p>
-          <details><summary class="small muted">${t("set.codeT")}</summary><textarea class="input mono xs" id="code" readonly rows="3" style="margin-top:8px"></textarea>
-            <div class="row" style="margin-top:8px"><button class="btn ghost sm" id="copy">${t("set.copy")}</button></div>
-            <textarea class="input mono xs" id="pastebox" rows="3" placeholder="${t("set.pastePh")}" style="margin-top:8px"></textarea><button class="btn ghost sm" id="paste" style="margin-top:8px">${t("set.restore")}</button></details></section>
+          <p class="xs muted"><span class="chip ${navigator.onLine ? "ok" : "warn"}">${AA.icon(navigator.onLine ? "check" : "offline")} ${navigator.onLine ? t("set.online") : t("set.offline")}</span> ${t("set.offlineS")}</p></section>
         <section class="card" style="margin-top:var(--sp-4)" id="valider"><h3>${t("set.validate")}</h3><p class="small muted">${t("set.validateS")}</p>
           <div class="memo">${C.validate.map(([a, b]) => `<div><b>${u.esc(a)}</b><span class="small muted">${u.esc(b)}</span></div>`).join("")}</div></section>
         <section class="card" style="margin-top:var(--sp-4)"><h3>${t("set.danger")}</h3><button class="btn ghost block" id="reset">${t("set.reset")}</button></section>
@@ -137,11 +144,14 @@
       u.$("#unl").onchange = e => { S.unlockAll = e.target.checked; AA.store.save(); };
       const msg = s => (u.$("#dlmsg").textContent = s);
       AA.pwa.wireSettings(msg);
-      u.$("#dlsave").onclick = () => AA.pwa.saveFile("abysse-academy-sauvegarde-" + u.today() + ".json", AA.store.exportText(), msg);
-      u.$("#imp").onchange = e => { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = () => { if (AA.store.importText(r.result)) { msg(t("set.restored", { xp: AA.S.xp })); ui.applyTheme(); ui.hud(); } else msg(t("set.invalid")); }; r.readAsText(f); };
-      const code = u.$("#code"); u.$("details", el).addEventListener("toggle", () => { code.value = AA.store.toCode(); });
-      u.$("#copy").onclick = () => { code.value = AA.store.toCode(); if (navigator.clipboard) navigator.clipboard.writeText(code.value).then(() => msg(t("set.copied")), () => { code.select(); msg(t("set.selectCopy")); }); else { code.select(); msg(t("set.selectCopy")); } };
-      u.$("#paste").onclick = () => { const v = u.$("#pastebox").value.trim(); if (!v) return; if (AA.store.fromCode(v)) { msg(t("set.restored", { xp: AA.S.xp })); ui.applyTheme(); ui.hud(); } else msg(t("set.invalid")); };
+      const A = AA.a11y;
+      u.$$("[data-ts]", el).forEach(b => b.onclick = () => { p.textSize = +b.dataset.ts; AA.store.save(); A.apply(); fx.sfx.tap(); AA.router.refresh(); });
+      u.$("#cvd").onchange = e => { p.cvd = e.target.checked; AA.store.save(); A.apply(); };
+      u.$("#mot").onchange = e => { p.motion = e.target.checked; AA.store.save(); A.apply(); };
+      u.$("#scn").onchange = e => { p.scene = e.target.checked; AA.store.save(); AA.scene.apply(); };
+      u.$("#gst").onchange = e => { p.gestures = e.target.checked; AA.store.save(); };
+      u.$$("[data-vr]", el).forEach(b => b.onclick = () => { p.voiceRate = +b.dataset.vr; AA.store.save(); u.$$("[data-vr]", el).forEach(x => x.setAttribute("aria-pressed", x === b)); A.speak(t("set.voiceSample")); });
+      const vt = u.$("#vtest"); if (vt) vt.onclick = () => A.speak(t("set.voiceSample"));
       u.$("#reset").onclick = () => ui.confirm(t("set.resetQ"), t("set.resetYes"), () => { AA.store.reset(); msg(t("set.resetDone")); ui.hud(); AA.router.go("home"); });
       if (anchor) { const a = u.$("#" + anchor); if (a) setTimeout(() => a.scrollIntoView({ behavior: "smooth" }), 60); }
     }
