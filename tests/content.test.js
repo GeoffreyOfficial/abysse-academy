@@ -40,6 +40,26 @@ C.questions.forEach(q => {
 C.modules.forEach(m => ok(m.quiz.length >= 6, m.id + " : au moins 6 questions"));
 ok(new Set(C.questions.map(q => q.id)).size === C.questions.length, "identifiants de questions uniques");
 
+section("QCM sans indice (2.2.4)");
+{
+  /* Une question ne doit pas se deviner sans rien connaître : la bonne
+     réponse ne doit pas être systématiquement la plus longue, ni écraser
+     les autres en longueur, et aucun distracteur ne doit être absurde. */
+  const ABSURDE = /couleur (du|des|de son) (bloc|masque|palmes|écran)|le club s.en charge|(^|\s)à rien( du tout)?$|pour (la )?d[ée]cor|faire joli|au hasard|n.importe (où|quoi|comment)|ce n.est pas utile|sans raison|^rien( du tout)?$|barbecue|appareil photo|explose|go[ûu]te|menu du|le prix|la facture|son maillot|(^|\s)crier|huile d.olive|se transforme en eau|par habitude|par tradition|t.énerves|le grondes|l.humilies|dans son dos|3615|la mairie|le café|du café/i;
+  const len = s => String(s).length;
+  let longest = 0, crushing = [];
+  C.questions.forEach(q => {
+    q.c.forEach((s, i) => { if (i !== q.a) ok(!ABSURDE.test(String(s)), `${q.id} : choix absurde « ${s} »`); });
+    const a = len(q.c[q.a]), o = Math.max(...q.c.filter((_, i) => i !== q.a).map(len));
+    if (a > o) longest++;
+    if (a > o * 1.3 && a - o > 8) crushing.push(q.id);
+  });
+  const share = longest / C.questions.length;
+  ok(share <= 0.45, `la bonne réponse est la plus longue dans ${(share * 100).toFixed(0)} % des questions (maxi 45 %)`);
+  ok(crushing.length <= C.questions.length * 0.03, `bonne réponse nettement plus longue que les autres dans ${crushing.length} questions : ${crushing.slice(0, 12).join(", ")}`);
+  console.log(`  plus longue : ${(share * 100).toFixed(1)} %, nettement plus longue : ${crushing.length}`);
+}
+
 section("Ordre des questions (progression)");
 const FP = path.join(__dirname, "question-ids.json");
 const now = {}; C.questions.forEach(q => (now[q.id] = crypto.createHash("sha1").update(q.q).digest("hex").slice(0, 10)));

@@ -13,7 +13,7 @@ var AA_FILES = {
     "locales/fr.js",
     "content/fr/worlds.js", "content/fr/decouverte.js", "content/fr/n1.js", "content/fr/n2.js", "content/fr/rifap.js", "content/fr/e1.js", "content/fr/n3.js", "content/fr/n4.js", "content/fr/cards.js", "content/fr/computer.js",
     "content/fr/scenarios.js", "content/fr/generators.js", "content/fr/generators-plus.js", "content/fr/diagrams.js", "content/fr/progress.js",
-    "content/fr/aquarium.js", "content/fr/companions.js", "content/fr/methods.js", "content/fr/glossary.js", "content/fr/story.js", "content/fr/pitfalls.js", "content/fr/help.js", "content/fr/lessons-plus.js", "content/fr/cursus.js", "content/fr/deep-n3.js", "content/fr/deep-n4.js", "content/fr/deep-rifap-e1.js", "content/fr/diagrams-plus.js", "content/fr/deep-audit.js", "content/fr/v19.js", "content/fr/v20.js", "content/fr/v20-art.js", "content/fr/search2.js", "content/fr/v22.js", "content/fr/v22b.js",
+    "content/fr/aquarium.js", "content/fr/companions.js", "content/fr/methods.js", "content/fr/glossary.js", "content/fr/story.js", "content/fr/pitfalls.js", "content/fr/help.js", "content/fr/lessons-plus.js", "content/fr/cursus.js", "content/fr/deep-n3.js", "content/fr/deep-n4.js", "content/fr/deep-rifap-e1.js", "content/fr/diagrams-plus.js", "content/fr/deep-audit.js", "content/fr/v19.js", "content/fr/v20.js", "content/fr/v20-art.js", "content/fr/search2.js", "content/fr/v22.js", "content/fr/v22b.js", "content/fr/qcm-audit.js",
     "js/app.js"
   ]
 };
