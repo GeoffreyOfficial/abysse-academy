@@ -36,7 +36,8 @@
       cv.parentNode.insertBefore(wrap, cv);
     }
     wrap = document.getElementById("scene"); rays = u.$(".rays", wrap); tint = u.$(".tint", wrap);
-    const size = () => { D = Math.min(devicePixelRatio || 1, 2); W = innerWidth; H = innerHeight; cv.width = W * D; cv.height = H * D; };
+    /* Résolution du dessin plafonnée à ~2,2 millions de pixels : sur grand écran ou 4K, le fond reste fluide. */
+    const size = () => { W = innerWidth; H = innerHeight; D = Math.max(.5, Math.min(devicePixelRatio || 1, 2, Math.sqrt(2.2e6 / Math.max(1, W * H)))); cv.width = Math.round(W * D); cv.height = Math.round(H * D); };
     size(); addEventListener("resize", size);
     for (let i = 0; i < 14; i++) bubbles.push(bubble(true));
     sc.apply();
@@ -55,7 +56,7 @@
     if (!wrap) return;
     const on = enabled(), d = sc.depth, k = d / 60;
     wrap.hidden = !on;
-    document.documentElement.style.setProperty("--depth", k.toFixed(3));
+    /* (plus de variable CSS --depth sur la racine : la changer à chaque image recalculait les styles de toute la page) */
     if (rays) rays.style.opacity = on ? Math.max(0, 1 - d / 22).toFixed(3) : 0;
     if (tint) tint.style.opacity = on ? Math.min(1, k * 1.15).toFixed(3) : 0;
   };
@@ -91,6 +92,10 @@
   function frame(t) {
     if (!cx) { running = false; return; }
     if (document.hidden) { running = false; return; }
+    /* Fond d'ambiance dessiné à ~30 images/s (largement suffisant pour des bulles) ;
+       pleine cadence seulement pendant un éclat de réussite. */
+    const burst = bubbles.some(b => !b.amb);
+    if (!burst && t - last < 30) { requestAnimationFrame(frame); return; }
     const dt = Math.min(64, t - last); last = t;
     if (!pal || t - palT > 1500) { pal = palette(); palT = t; }
     if (Math.abs(sc.depth - sc.target) > .05) { sc.depth += (sc.target - sc.depth) * Math.min(1, dt / 600); sc.apply(); }

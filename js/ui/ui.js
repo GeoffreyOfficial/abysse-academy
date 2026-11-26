@@ -67,7 +67,8 @@
   /* Fenêtre de confirmation maison (pas de confirm() du navigateur). */
   ui.confirm = (msg, okLabel, onOk, skip) => {
     if (skip) return onOk();
-    const d = document.createElement("div"); d.className = "sheet-wrap";
+    if (document.querySelector(".sheet-wrap.cf")) return; /* double clic : une seule confirmation */
+    const d = document.createElement("div"); d.className = "sheet-wrap cf";
     d.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="${u.esc(msg)}"><p class="sheet-msg">${u.esc(msg)}</p><div class="stack"><button class="btn accent block" data-ok>${u.esc(okLabel)}</button><button class="btn ghost block" data-no>${t("common.cancel")}</button></div></div>`;
     const close = () => { d.remove(); document.removeEventListener("keydown", esc); removeEventListener("hashchange", close); };
     const esc = e => { if (e.key === "Escape") close(); };
@@ -77,6 +78,8 @@
   };
   /* Feuille du bas générique (glossaire, détails…). Renvoie une fonction de fermeture. */
   ui.sheet = (html, label) => {
+    /* Un seul panneau à la fois (double clic, clics rapides) : l'ancien se ferme. */
+    document.querySelectorAll(".sheet-wrap").forEach(x => (x._close ? x._close() : x.remove()));
     const d = document.createElement("div"); d.className = "sheet-wrap";
     d.innerHTML = `<div class="sheet" role="dialog" aria-modal="true" aria-label="${u.esc(label || "")}"><button class="closebtn sheet-x" data-no aria-label="${t("nav.back")}">${AA.icon("close")}</button>${html}</div>`;
     const prev = document.activeElement;
@@ -84,6 +87,7 @@
     const esc = e => { if (e.key === "Escape") close(); };
     d.addEventListener("click", e => { if (e.target === d || e.target.closest("[data-no]")) close(); else if (e.target.closest("a[href^='#/']")) close(); });
     document.addEventListener("keydown", esc); addEventListener("hashchange", close);
+    d._close = close;
     document.body.appendChild(d); u.$(".sheet-x", d).focus({ preventScroll: true });
     return close;
   };

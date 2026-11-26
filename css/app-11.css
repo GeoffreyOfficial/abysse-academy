@@ -996,3 +996,22 @@ svg[viewBox="0 0 24 24"]{max-width:6rem;max-height:6rem}
 .cl-code{text-align:left;margin-top:var(--sp-3)}
 @media (max-width:360px){.cl-list li{grid-template-columns:1.5rem minmax(0,1fr) auto}.cl-list li .btn{grid-column:3}.cl-val{grid-column:2}.br-sc div{grid-template-columns:minmax(0,1fr) 2.6rem}.br-sc div .bar{grid-column:1/-1;grid-row:2}}
 .cl-you{font-size:.7rem;padding:1px 8px;vertical-align:middle;margin-left:4px}
+
+/* =====================================================================
+   1.9.1 · robustesse : très petits écrans avec grand texte, contenus longs
+   ===================================================================== */
+@media (max-width:340px){html{font-size:calc(min(var(--ts,1),1.2) * 100%)}}
+.diagram{min-width:0;max-width:100%}
+#view .prose,#view .card,#view section,#view .grow,#view .stack,#view .stack-lg,#view .tiles>*,#view .col-main,#view .col-side{min-width:0}
+#view .row.between{flex-wrap:wrap;row-gap:6px}
+h1,h2,h3,.pagetitle{overflow-wrap:break-word}
+/* Une grille à une colonne ne doit jamais s'élargir au-delà de son conteneur. */
+.stack,.stack-lg,.example-card,.cl-grid{grid-template-columns:minmax(0,1fr)}
+@media (min-width:900px){.cl-grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}}
+.sim b{overflow-wrap:anywhere}
+.prose .gl{white-space:normal;overflow-wrap:anywhere;text-align:inherit}
+@media (max-width:420px){h1,h2,h3,h4,.pagetitle{overflow-wrap:anywhere}}
+.qtag{flex-wrap:wrap;max-width:100%}
+#view .chip{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+/* Barre du haut sur très petit écran : le logo seul, pour laisser la place aux compteurs. */
+@media (max-width:340px){#topbar .brand>b{display:none}}

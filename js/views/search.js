@@ -154,7 +154,8 @@
         <div class="searchbox"><span>${AA.icon("search")}</span><input class="input" id="gq" type="search" placeholder="${t("gloss.ph")}" value="${u.esc(st.q)}" aria-label="${t("gloss.ph")}"></div>
         <nav class="az" id="az" aria-label="${t("gloss.az")}"></nav><div id="glist"></div>`;
       const draw = () => {
-        const q = norm(u.$("#gq").value.trim()); st.q = u.$("#gq").value;
+        const gq = el.querySelector("#gq"); if (!gq || !el.querySelector("#glist")) return; /* écran déjà quitté */
+        const q = norm(gq.value.trim()); st.q = gq.value;
         const list = C.glossary.filter(g => !q || norm(g.t + " " + (g.alt || []).join(" ") + " " + g.d).includes(q));
         const groups = {}; list.forEach(g => { const L = norm(g.t)[0].toUpperCase(); (groups[L] = groups[L] || []).push(g); });
         u.$("#az").innerHTML = Object.keys(groups).map(L => `<a href="#gl-${L}" data-az="${L}">${L}</a>`).join("");

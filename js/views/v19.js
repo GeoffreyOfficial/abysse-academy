@@ -463,7 +463,7 @@
       const err = V.addCard(r.data);
       if (err) { show(`<div class="callout trap"><span class="eyebrow">${t("cl.errT")}</span>${t(err)}</div>`); return; }
       fx.sfx.up(); show(`<div class="callout check"><span class="eyebrow">${t("cl.cardOk")}</span>${t("cl.cardOkS", { n: u.esc(clean(r.data.n)) })}</div>`);
-      setTimeout(() => AA.router.go("club"), 900); return;
+      setTimeout(() => { if (AA.router.name === "club") AA.router.go("club"); }, 900); return;
     }
     const d = r.data, v = st();
     if (!d.i || !Array.isArray(d.q) || !d.a) { show(`<div class="callout trap"><span class="eyebrow">${t("cl.errT")}</span>${t("cl.errBad")}</div>`); return; }
@@ -535,6 +535,24 @@
   });
   /* Un nouveau lien reçu doit être relu. */
   addEventListener("hashchange", () => { if (!/^#\/club\/[dc]\//.test(location.hash)) AA.ctx && (AA.ctx.clDone = ""); });
+
+  /* Plusieurs onglets ou fenêtres ouverts : quand un autre onglet enregistre,
+     on fusionne sa progression ici (rien n'est perdu, quel que soit l'onglet
+     qui enregistre en dernier). Réinitialisation dans l'autre onglet : on recharge. */
+  let syncTm = null;
+  addEventListener("storage", e => {
+    if (e.key !== AA.store.KEY || !e.newValue) return;
+    let o; try { o = JSON.parse(e.newValue); } catch (x) { return; }
+    if (!o || typeof o !== "object" || !o.profile) return;
+    if (!o.profile.onboarded && !o.xp && AA.S.profile.onboarded) { location.reload(); return; }
+    try { const m = AA.store.merge(AA.S, o); if (m && m.profile) AA.S = m; } catch (x) { return; }
+    clearTimeout(syncTm);
+    syncTm = setTimeout(() => {
+      try { AA.ui.applyTheme(); AA.a11y.apply(); } catch (x) {}
+      const n = AA.router && AA.router.name;
+      if (n && !/^(quiz|sim|brief|succ|scen|examen|story|boss)$/.test(n) && !document.querySelector(".sheet-wrap") && !/INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || "")) AA.router.refresh();
+    }, 250);
+  });
 
   /* Démarrage : totaux de référence (pas de défi validé par l'historique). */
   setTimeout(() => { try { if (AA.S) V.resetTotals(); } catch (e) {} }, 0);

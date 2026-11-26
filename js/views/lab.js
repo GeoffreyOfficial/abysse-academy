@@ -262,8 +262,9 @@
           <section class="card"><h3>${t("calc.charles")}</h3>${F("k-p", t("calc.p1"), 200)}${F("k-t1", t("calc.t1"), 40)}${F("k-t2", t("calc.t2"), 15)}<div class="out" id="o5"></div></section>
           <section class="card"><h3>${t("calc.oxy")}</h3>${F("x-v", t("calc.vol"), 5)}${F("x-p", t("calc.p0"), 200)}${F("x-q", t("calc.flow"), 15)}<div class="out" id="o6"></div></section>
         </div>`;
-      const v = id => parseFloat(u.$("#" + id).value) || 0, f = (x, d = 2) => u.num(x, d), set = (id, s) => (u.$("#" + id).textContent = s);
+      const v = id => { const e = el.querySelector("#" + id); return e ? parseFloat(e.value) || 0 : 0; }, f = (x, d = 2) => u.num(x, d), set = (id, s) => { const e = el.querySelector("#" + id); if (e) e.textContent = s; };
       function upd() {
+        if (!el.querySelector("#o1")) return; /* écran déjà quitté */
         const d = v("c-d"), pa = v("c-pa"), o = v("c-o2") / 100, P = pa + d / 10;
         set("o1", `P abs = ${f(pa)} + ${f(d)}/10 = ${f(P)} bar\nPp O₂ = ${f(P)} × ${f(o)} = ${f(P * o)} bar${P * o > 1.6 ? "  ⚠ > 1,6" : ""}\nPp N₂ = ${f(P)} × ${f(1 - o)} = ${f(P * (1 - o))} bar${P * (1 - o) >= 3.2 ? "  ⚠ " + t("calc.narc") : ""}\n${t("calc.volRatio", { r: f(P / (pa || 1)) })}`);
         const V = v("a-v"), Pd = v("a-p"), Rr = v("a-r"), Cs = v("a-c"), D = v("a-d"), Pa = 1 + D / 10, air = V * (Pd - Rr), cf = Cs * Pa;

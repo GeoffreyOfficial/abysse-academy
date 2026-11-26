@@ -7,7 +7,12 @@
     "build": "python3 build.py",
     "test": "npm run test:content && npm run test:e2e",
     "test:content": "node tests/content.test.js",
-    "test:e2e": "node tests/e2e.test.js"
+    "test:e2e": "node tests/e2e.test.js",
+    "test:scenarios": "node tests/scenarios.test.js",
+    "test:sweep": "node tests/sweep.test.js",
+    "test:stress": "node tests/stress.test.js",
+    "test:perf": "node tests/perf.test.js",
+    "test:all": "npm run test && npm run test:scenarios && npm run test:sweep && npm run test:stress"
   },
   "devDependencies": {
     "playwright": "^1.47.0"
