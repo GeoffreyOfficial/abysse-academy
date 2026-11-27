@@ -241,3 +241,22 @@ h1,h2,.pagetitle{text-wrap:balance}
 .pr-ic svg{width:20px;height:20px}
 .pr-all{margin-top:8px}
 .pr-hero .eyebrow svg{width:16px;height:16px;vertical-align:-3px;margin-right:4px}
+
+/* 2.6 · ambiance plongée et verdict toujours visible */
+.verdict{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 72px);transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:var(--r-pill);font-weight:700;background:var(--surface);border:2px solid var(--line);box-shadow:var(--shadow);pointer-events:none;animation:dv-vd 1.2s ease forwards;white-space:nowrap}
+.verdict svg{width:18px;height:18px}
+.verdict.ok{border-color:var(--ok);color:var(--ok)}
+.verdict.bad{border-color:var(--bad);color:var(--bad)}
+.verdict.dk{color:var(--muted)}
+@keyframes dv-vd{0%{opacity:0;transform:translate(-50%,-8px)}12%{opacity:1;transform:translate(-50%,0)}75%{opacity:1}100%{opacity:0}}
+.reduce-motion .verdict{animation:dv-vdr 1.2s linear forwards}
+@keyframes dv-vdr{0%,80%{opacity:1}100%{opacity:0}}
+.float.bub{padding:3px 10px;border-radius:var(--r-pill);background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.45),rgba(130,225,255,.22) 45%,rgba(130,225,255,.08));border:1px solid rgba(160,235,255,.65);color:var(--ink);animation:dv-bub 1s ease-out forwards}
+@keyframes dv-bub{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:1;transform:translate(-3px,-14px) scale(1)}50%{transform:translate(4px,-34px)}100%{opacity:0;transform:translate(-2px,-64px) scale(1.08)}}
+.sonar-ring{position:fixed;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2px solid rgba(120,230,255,.85);box-shadow:0 0 12px rgba(120,230,255,.5);pointer-events:none;z-index:55;animation:dv-sonar 1s ease-out forwards}
+@keyframes dv-sonar{0%{transform:scale(.4);opacity:1}100%{transform:scale(8);opacity:0}}
+#qc.silt{animation:dv-silt .7s ease}
+@keyframes dv-silt{0%{filter:none}30%{filter:sepia(.45) blur(1px) brightness(.85)}100%{filter:none}}
+.reduce-motion .sonar-ring{display:none}
+.reduce-motion #qc.silt{animation:none}
+.numin{grid-template-columns:minmax(0,1fr)}.numin>*{min-width:0}.numin label{overflow-wrap:anywhere}.numrow input{width:100%}.ord{grid-template-columns:minmax(0,1fr)}

@@ -23,6 +23,8 @@
       });
     } catch (e) {}
   }
+  /* Accès au synthé pour les sons d'ambiance (js/views/v26.js). */
+  fx.audio = () => { if (!AA.S.profile.sound) return null; try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); return ac; } catch (e) { return null; } };
   fx.sfx = {
     ok: () => tone([[660, .12, 0], [990, .18, .09]]),
     bad: () => tone([[200, .26, 0, "triangle"], [150, .3, .12, "triangle"]]),

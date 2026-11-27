@@ -198,6 +198,36 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(await p.evaluate(() => { const q = { calc: true, c: ["12 min", "15 min", "9 min", "20 min"], a: 0 }; return AA.quiz.canType(q) && AA.quiz.numOf("12,0") === 12 && AA.quiz.numOf("1 234,5 L") === 1234.5 && AA.quiz.numTol(q) >= .5 && AA.quiz.numTol(q) < 1.5; }), "calcul à taper : tolérance et lecture des nombres");
       await ctx.close(); }
 
+    console.log("• Son et image disent la même chose (2.6)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
+      await p.evaluate(() => { window.__snd = []; ["ok", "bad", "flip"].forEach(k => { const f = AA.fx.sfx[k]; AA.fx.sfx[k] = () => { window.__snd.push(k); f(); }; }); });
+      const qs = await p.evaluate(() => AA.content.inWorld("n2")[0].quiz.slice(0, 4).map(q => q.id));
+      const answerCi = good => p.evaluate(g => { const q = AA.ctx.items[AA.ctx.idx].q; return g ? q.a : (q.a + 1) % q.c.length; }, good);
+      /* Brevet blanc : ni son ni image ne trahissent la réponse. */
+      await p.evaluate(ids => AA.quiz.start("exam", ids.map(id => AA.content.qById[id]), { full: true, world: "n2", timeLeft: 600, title: "Examen" }), qs); await p.waitForTimeout(250);
+      await p.click(`.choice[data-ci="${await answerCi(true)}"]`); await p.waitForTimeout(80);
+      const ex1 = await p.evaluate(() => ({ s: window.__snd.slice(), v: !!document.querySelector(".verdict"), f: !!document.querySelector(".float") }));
+      await p.click(`.choice[data-ci="${await answerCi(false)}"]`); await p.waitForTimeout(80);
+      const ex2 = await p.evaluate(() => window.__snd.slice());
+      ok(ex1.s.join() === "flip" && !ex1.v && !ex1.f && ex2.join() === "flip,flip", "brevet blanc : même son neutre et rien à l’écran, bonne ou mauvaise réponse");
+      /* Apnée (passage immédiat) : le verdict s'affiche avec le son. */
+      await p.evaluate(ids => { window.__snd = []; AA.quiz.start("apnee", ids.map(id => AA.content.qById[id]), { title: "Apnée", time: 60 }); }, qs); await p.waitForTimeout(250);
+      await p.click(`.choice[data-ci="${await answerCi(true)}"]`); await p.waitForTimeout(60);
+      const ap1 = await p.evaluate(() => ({ s: window.__snd.slice(), v: !!document.querySelector(".verdict.ok") }));
+      await p.click(`.choice[data-ci="${await answerCi(false)}"]`); await p.waitForTimeout(60);
+      const ap2 = await p.evaluate(() => ({ s: window.__snd.slice(), v: !!document.querySelector(".verdict.bad") }));
+      ok(ap1.s.includes("ok") && ap1.v && ap2.s.includes("bad") && ap2.v, "apnée : « Bonne réponse » ou « Raté » affiché en même temps que le son");
+      /* Quiz de thème : correction à l'écran avec le son. */
+      await p.evaluate(ids => { window.__snd = []; AA.quiz.start("errors", ids.map(id => AA.content.qById[id]), { title: "Q" }); }, qs); await p.waitForTimeout(250);
+      await p.click(`.choice[data-ci="${await answerCi(true)}"]`); await p.waitForTimeout(60);
+      ok(await p.evaluate(() => window.__snd.includes("ok") && !!document.querySelector(".feedback.ok")), "quiz : correction affichée avec le son");
+      /* Ambiance : profondeur du combo, réglage, coupure. */
+      await p.click("#nextq"); await p.waitForTimeout(150); await p.click(`.choice[data-ci="${await answerCi(true)}"]`); await p.waitForTimeout(80);
+      ok(await p.evaluate(() => /−6 m/.test((document.querySelector(".combo") || {}).textContent || "")), "ambiance : le combo se lit en profondeur");
+      await p.goto(URL + "#/settings"); await p.waitForTimeout(300); await p.click('[data-amb="off"]'); await p.waitForTimeout(80);
+      ok(await p.evaluate(() => AA.S.profile.amb === "off" && AA.fx.dive.level() === 0 && AA.fx.dive.comboLabel(4) !== "−12 m"), "ambiance : réglable et coupable dans les paramètres");
+      await ctx.close(); }
+
     console.log("• Briefing, successives, défis, club (1.9)");
     { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
       ok(await p.evaluate(() => AA.content.computer.length >= 19 && AA.content.qById["pc-" + (AA.content.computer.length - 1)]), "mode ordinateur : nouveaux cas ajoutés à la fin");

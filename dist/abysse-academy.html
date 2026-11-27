@@ -2413,6 +2413,25 @@ h1,h2,.pagetitle{text-wrap:balance}
 .pr-all{margin-top:8px}
 .pr-hero .eyebrow svg{width:16px;height:16px;vertical-align:-3px;margin-right:4px}
 
+/* 2.6 · ambiance plongée et verdict toujours visible */
+.verdict{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 72px);transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:8px;padding:8px 16px;border-radius:var(--r-pill);font-weight:700;background:var(--surface);border:2px solid var(--line);box-shadow:var(--shadow);pointer-events:none;animation:dv-vd 1.2s ease forwards;white-space:nowrap}
+.verdict svg{width:18px;height:18px}
+.verdict.ok{border-color:var(--ok);color:var(--ok)}
+.verdict.bad{border-color:var(--bad);color:var(--bad)}
+.verdict.dk{color:var(--muted)}
+@keyframes dv-vd{0%{opacity:0;transform:translate(-50%,-8px)}12%{opacity:1;transform:translate(-50%,0)}75%{opacity:1}100%{opacity:0}}
+.reduce-motion .verdict{animation:dv-vdr 1.2s linear forwards}
+@keyframes dv-vdr{0%,80%{opacity:1}100%{opacity:0}}
+.float.bub{padding:3px 10px;border-radius:var(--r-pill);background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.45),rgba(130,225,255,.22) 45%,rgba(130,225,255,.08));border:1px solid rgba(160,235,255,.65);color:var(--ink);animation:dv-bub 1s ease-out forwards}
+@keyframes dv-bub{0%{opacity:0;transform:translate(0,0) scale(.6)}20%{opacity:1;transform:translate(-3px,-14px) scale(1)}50%{transform:translate(4px,-34px)}100%{opacity:0;transform:translate(-2px,-64px) scale(1.08)}}
+.sonar-ring{position:fixed;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:2px solid rgba(120,230,255,.85);box-shadow:0 0 12px rgba(120,230,255,.5);pointer-events:none;z-index:55;animation:dv-sonar 1s ease-out forwards}
+@keyframes dv-sonar{0%{transform:scale(.4);opacity:1}100%{transform:scale(8);opacity:0}}
+#qc.silt{animation:dv-silt .7s ease}
+@keyframes dv-silt{0%{filter:none}30%{filter:sepia(.45) blur(1px) brightness(.85)}100%{filter:none}}
+.reduce-motion .sonar-ring{display:none}
+.reduce-motion #qc.silt{animation:none}
+.numin{grid-template-columns:minmax(0,1fr)}.numin>*{min-width:0}.numin label{overflow-wrap:anywhere}.numrow input{width:100%}.ord{grid-template-columns:minmax(0,1fr)}
+
 </style>
 </head>
 <body>
@@ -2435,7 +2454,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.5.0";
+  AA.VERSION = "2.6.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -3351,6 +3370,8 @@ window.AA={BUNDLED:true};
       });
     } catch (e) {}
   }
+  /* Accès au synthé pour les sons d'ambiance (js/views/v26.js). */
+  fx.audio = () => { if (!AA.S.profile.sound) return null; try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); return ac; } catch (e) { return null; } };
   fx.sfx = {
     ok: () => tone([[660, .12, 0], [990, .18, .09]]),
     bad: () => tone([[200, .26, 0, "triangle"], [150, .3, .12, "triangle"]]),
@@ -5028,7 +5049,7 @@ window.AA={BUNDLED:true};
     if (c.mode === "exam" || c.mode === "five") h += `<div class="timer" id="tmr" aria-live="off">${u.mmss(Math.max(0, c.timeLeft))}</div>`;
     else if (c.mode === "apnee") h += `<div class="timer" id="tmr">${c.time}</div>`;
     else {
-      if (c.combo > 1) h += `<div class="combo">×${c.combo}<small>${t("quiz.combo")}</small></div>`;
+      if (c.combo > 1) h += `<div class="combo">×${c.combo}<small>${fx.dive && fx.dive.comboLabel ? fx.dive.comboLabel(c.combo) : t("quiz.combo")}</small></div>`;
       if (c.air != null) h += AA.ui.gauge(c.air);
     }
     return h;
@@ -5207,14 +5228,21 @@ window.AA={BUNDLED:true};
         c.combo++; c.maxCombo = Math.max(c.maxCombo, c.combo); S.bestCombo = Math.max(S.bestCombo, c.combo);
         let gain = G.answerXp(q, prev, c);
         if (c.mode === "errors" && wasErr) { gain += 5; S.rescued++; }
-        c.xp += gain; G.addXp(gain, btn);
+        /* Brevet blanc : pas de « +XP » à l'écran, il trahirait la bonne réponse. */
+        c.xp += gain; G.addXp(gain, c.mode === "exam" ? null : btn);
       }
     } else if (ok) { c.combo++; }
+    /* 2.6 : son et image disent toujours la même chose. Au brevet blanc, ni l'un
+       ni l'autre ne révèle la réponse (son neutre plus bas) ; ailleurs, le verdict
+       s'affiche en même temps que le son, même quand on passe tout de suite à la suite. */
     if (ok) {
-      fx.sfx.ok(); fx.buzz(15); fx.burstAt(btn, 18, "rgba(61,220,151,.85)");
-      if (c.combo > 1 && c.combo % 5 === 0 && !NOFB(c.mode)) fx.toast(t("toast.combo", { n: c.combo }), t("toast.comboS"), "bolt");
+      if (c.mode !== "exam") {
+        fx.sfx.ok(); fx.buzz(15); fx.burstAt(btn, 18, "rgba(61,220,151,.85)");
+        if (fx.dive && fx.dive.ok) fx.dive.ok(btn, c);
+        if (c.combo > 1 && !NOFB(c.mode)) { if (fx.dive && fx.dive.combo) fx.dive.combo(c); else if (c.combo % 5 === 0) fx.toast(t("toast.combo", { n: c.combo }), t("toast.comboS"), "bolt"); }
+      }
     } else {
-      c.combo = 0; if (c.mode !== "exam") { if (ci < 0) fx.sfx.flip(); else { fx.sfx.bad(); fx.buzz([40, 40, 40]); } }
+      c.combo = 0; if (c.mode !== "exam") { if (ci < 0) fx.sfx.flip(); else { fx.sfx.bad(); fx.buzz([40, 40, 40]); if (fx.dive && fx.dive.bad) fx.dive.bad(c); } }
       if (c.air != null) c.air = Math.max(0, c.air - (c.airLoss || 50));
       if (c.mode === "apnee") { c.time = Math.max(0, c.time - 5); fx.float("−5 s", btn, "var(--bad)"); }
     }
@@ -5225,6 +5253,7 @@ window.AA={BUNDLED:true};
       if (c.mode === "duel" && c.idx >= c.items.length) return duelNext(c);
       AA.router.refresh();
       if (!ok && c.mode === "apnee") { const qc = u.$("#qc"); qc && qc.classList.add("shake"); }
+      if (c.mode !== "exam" && fx.verdict) fx.verdict(ok, ci < 0);
       return;
     }
     AA.router.refresh();
@@ -10297,6 +10326,134 @@ window.AA={BUNDLED:true};
   });
 })();
 
+/* js/views/v26.js */
+/* =====================================================================
+   Abysse Academy 2.6 · ambiance plongée
+   - Verdict visuel toujours affiché en même temps que le son (fx.verdict).
+   - Sons « sous l'eau » : bulles, sonar, remontée.
+   - Combos = descente (−3 m par bonne réponse) avec paliers nommés,
+     « +XP » en bulle, flamme des jours d'affilée en immersion.
+   - Réglage : Complète / Discrète / Coupée (profil.amb). « Réduire les
+     animations » coupe tout ce qui bouge, jamais le verdict.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, fx = AA.fx, V = AA.views;
+  if (!fx) return;
+  const P = () => (AA.S && AA.S.profile) || {};
+  const level = () => (P().amb === "off" ? 0 : P().amb === "calm" ? 1 : 2);
+  const RM = () => !!(AA.a11y && AA.a11y.reduced());
+  const full = () => level() === 2;
+  const moving = () => full() && !RM();
+  const dive = (fx.dive = { level });
+
+  /* ---------- Sons : glissandos synthétisés (aucun fichier) ---------- */
+  function glide(seq) {
+    const ac = fx.audio && fx.audio(); if (!ac) return;
+    try {
+      const t0 = ac.currentTime;
+      seq.forEach(([f0, f1, d, st, type, vol]) => {
+        const o = ac.createOscillator(), g = ac.createGain();
+        o.type = type || "sine";
+        o.frequency.setValueAtTime(f0, t0 + st); o.frequency.exponentialRampToValueAtTime(f1, t0 + st + d);
+        g.gain.setValueAtTime(0.0001, t0 + st);
+        g.gain.exponentialRampToValueAtTime(vol || 0.14, t0 + st + Math.min(.03, d / 3));
+        g.gain.exponentialRampToValueAtTime(0.0001, t0 + st + d);
+        o.connect(g).connect(ac.destination); o.start(t0 + st); o.stop(t0 + st + d + .05);
+      });
+    } catch (e) { /* audio indisponible */ }
+  }
+  const base = Object.assign({}, fx.sfx);
+  const SND = {
+    /* Deux bulles qui montent, puis un petit carillon. */
+    ok: () => glide([[340, 760, .09, 0, "sine", .13], [480, 1080, .08, .08, "sine", .11], [1320, 1320, .22, .15, "sine", .05]]),
+    /* Choc sourd et lointain, comme un sonar qui ne trouve rien. */
+    bad: () => glide([[240, 110, .32, 0, "sine", .16], [180, 90, .3, .1, "triangle", .08]]),
+    /* Remontée : un chapelet de bulles. */
+    up: () => glide([[300, 600, .08, 0], [400, 800, .08, .08], [520, 1040, .08, .16], [660, 1320, .1, .24], [880, 1760, .28, .34, "sine", .1]]),
+    ping: () => glide([[1480, 1460, .9, 0, "sine", .09], [1480, 1460, .6, .38, "sine", .035]])
+  };
+  ["ok", "bad", "up"].forEach(k => { fx.sfx[k] = () => (full() ? SND[k]() : base[k]()); });
+  fx.sfx.ping = () => (full() ? SND.ping() : base.badge());
+
+  /* ---------- Verdict : toujours visible, même quand on passe tout de suite à la suite ---------- */
+  fx.verdict = (ok, dk) => {
+    const old = document.querySelector(".verdict"); if (old) old.remove();
+    const d = document.createElement("div");
+    d.className = "verdict " + (dk ? "dk" : ok ? "ok" : "bad"); d.setAttribute("role", "status");
+    d.innerHTML = `${AA.icon(dk ? "doubt" : ok ? "check" : "x")}<span>${t(dk ? "dv.dk" : ok ? "dv.ok" : "dv.bad")}</span>`;
+    document.body.appendChild(d); setTimeout(() => d.remove(), 1200);
+  };
+
+  addEventListener("hashchange", () => { const v = document.querySelector(".verdict"); if (v) v.remove(); });
+
+  /* ---------- Bonne réponse, erreur ---------- */
+  dive.ok = btn => { if (moving()) fx.burstAt(btn, 14, "rgba(150,235,255,.9)"); };
+  dive.bad = () => { if (!moving()) return; setTimeout(() => { const qc = u.$("#qc"); if (qc) { qc.classList.remove("silt"); void qc.offsetWidth; qc.classList.add("silt"); } }, 0); };
+
+  /* ---------- Combos : on descend de 3 m par bonne réponse ---------- */
+  const STEPS = [[3, "bulles"], [5, "thermo"], [8, "sonar"], [10, "bleu"], [15, "tombant"], [20, "abysses"], [30, "fosse"]];
+  dive.depth = n => n * 3;
+  dive.comboLabel = n => (full() ? t("dv.depth", { m: dive.depth(n) }) : t("quiz.combo"));
+  const ring = () => {
+    if (!moving()) return;
+    const qc = u.$("#qc"), r = qc ? qc.getBoundingClientRect() : { left: innerWidth / 2, top: innerHeight / 2, width: 0, height: 0 };
+    const d = document.createElement("div"); d.className = "sonar-ring";
+    d.style.left = (r.left + r.width / 2) + "px"; d.style.top = (r.top + Math.min(r.height / 2, 160)) + "px";
+    document.body.appendChild(d); setTimeout(() => d.remove(), 1100);
+  };
+  dive.combo = c => {
+    const n = c.combo;
+    if (!full()) { if (n % 5 === 0) fx.toast(t("toast.combo", { n }), t("toast.comboS"), "bolt"); return; }
+    const st = STEPS.find(s => s[0] === n) || (n > 30 && n % 10 === 0 ? [n, "legende"] : null);
+    if (!st) return;
+    setTimeout(() => { fx.sfx.ping(); ring(); }, 120);
+    fx.toast(t("dv.c." + st[1] + ".t", { n }), t("dv.comboS", { n, m: dive.depth(n), s: t("dv.c." + st[1] + ".s") }), "dive");
+  };
+
+  /* ---------- « +XP » en bulle ---------- */
+  const fl0 = fx.float;
+  fx.float = (txt, el, color) => {
+    fl0(txt, el, color);
+    if (!full() || color) return;
+    const f = document.body.lastElementChild; if (f && f.classList.contains("float")) f.classList.add("bub");
+  };
+
+  /* ---------- Jours d'affilée : toujours en immersion ; passage de niveau : remontée ---------- */
+  const toast0 = fx.toast;
+  fx.toast = (title, sub, icon, onClick) => {
+    if (full() && icon === "flame") {
+      const n = +((String(title).match(/\d+/) || [])[0] || 0);
+      if (n) sub = t("dv.streak", { n }) + " " + (sub || "");
+      setTimeout(() => { fx.sfx.ping(); if (moving()) fx.burst(innerWidth / 2, innerHeight - 90, 26, "rgba(255,190,110,.85)"); }, 200);
+    }
+    return toast0(title, sub, icon, onClick);
+  };
+  const up0 = fx.sfx.up;
+  fx.sfx.up = () => { up0(); if (moving()) fx.burst(innerWidth / 2, innerHeight - 60, 40, "rgba(150,235,255,.9)"); };
+
+  /* ---------- Réglage dans Paramètres ---------- */
+  if (V.settings) {
+    const r0 = V.settings.render;
+    V.settings.render = function (el, args) {
+      const out = r0.call(this, el, args);
+      try {
+        const snd = u.$("#snd", el), row = snd && snd.closest(".setting"); if (!row) return out;
+        const cur = P().amb || "full";
+        row.insertAdjacentHTML("beforebegin", `<div class="field dv-set" style="margin-top:var(--sp-3)"><label>${t("dv.set")}</label>
+          <div class="seg">${["full", "calm", "off"].map(k => `<button data-amb="${k}" aria-pressed="${cur === k}">${t("dv.set." + k)}</button>`).join("")}</div>
+          <p class="small muted" style="margin:6px 0 0">${t("dv.setS")}</p></div>`);
+        u.$$("[data-amb]", el).forEach(b => b.onclick = () => {
+          P().amb = b.dataset.amb; AA.store.save();
+          u.$$("[data-amb]", el).forEach(x => x.setAttribute("aria-pressed", x === b));
+          fx.sfx.ok(); if (b.dataset.amb === "full" && !RM()) fx.burstAt(b, 16, "rgba(150,235,255,.9)");
+        });
+      } catch (e) { /* écran des réglages modifié */ }
+      return out;
+    };
+  }
+})();
+
 /* locales/fr.js */
 /* =====================================================================
    Abysse Academy · textes de l'interface en français
@@ -10549,7 +10706,7 @@ AA.i18n.add("fr", {
   "boss.toWorld": "Découvrir le monde {world}", "boss.retry": "Réessayer", "boss.study": "Voir mes erreurs fréquentes", "boss.toReview": "À revoir",
 
   "story.title": "Aventures", "story.intro": "De vraies histoires de plongée, pour chaque niveau et chaque rôle : encadré, autonome, guide, initiateur, moniteur, secouriste. Chaque choix a des conséquences. Un bon choix du premier coup = 1 point.",
-  "story.len": "{n} décisions", "story.toBoss": "Affronter {name}", "story.bossChip": "mène au boss", "bq.need": "Vis d’abord l’aventure « {t} » : c’est elle qui te mène jusqu’au boss.", "bq.also": "Il te faudra aussi vivre l’aventure « {t} », qui mène jusqu’à lui.", "bq.go": "Vivre l’aventure", "bq.story": "Ton aventure t’a mené jusqu’ici", "bq.epi": "La suite de l’histoire", "ord.chip": "Gestes dans l’ordre", "ord.help": "Touche les gestes dans l’ordre où tu les fais ({n} bons gestes, les autres sont des pièges). Touche un geste choisi pour le retirer.", "ord.yours": "Ton enchaînement", "ord.pool": "Gestes possibles", "ord.empty": "Ton enchaînement apparaîtra ici.", "ord.go": "Valider mon enchaînement ({n})", "ord.score": "{g} geste(s) bien placé(s) sur {n}", "ord.right": "Le bon enchaînement :", "ord.free": "ordre libre", "ord.extraT": "Gestes à ne pas faire que tu as choisis :", "num.chip": "Réponse à taper", "num.label": "Tape ta réponse (l’unité est déjà indiquée) :", "num.ph": "ex. 2,5", "num.go": "Valider", "num.qcm": "Voir des propositions", "num.yours": "Ta réponse :", "num.badT": "Il faut un nombre", "num.badS": "Tape seulement le nombre, par exemple 2,5 ou 12.", "pr.title": "Procédures d’urgence", "pr.tileS": "Remets les bons gestes dans l’ordre", "pr.count": "{n} / {tot} réussies", "pr.eyebrow": "Les bons gestes, dans le bon ordre", "pr.intro": "Pour chaque niveau, des situations d’urgence réelles : un camarade qui ne se sent pas bien, une panne d’air, une victime en surface… Tu choisis les bons gestes parmi une longue liste et tu les remets dans l’ordre.", "pr.how": "Certains gestes de la liste sont des pièges. Quand deux gestes peuvent se faire dans n’importe quel ordre, la correction l’indique. Les procédures varient selon les structures : fais-les valider par ton moniteur.", "pr.steps": "{n} gestes parmi {x}", "pr.all": "Enchaîner les {n} procédures {w}", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
+  "story.len": "{n} décisions", "story.toBoss": "Affronter {name}", "story.bossChip": "mène au boss", "bq.need": "Vis d’abord l’aventure « {t} » : c’est elle qui te mène jusqu’au boss.", "bq.also": "Il te faudra aussi vivre l’aventure « {t} », qui mène jusqu’à lui.", "bq.go": "Vivre l’aventure", "bq.story": "Ton aventure t’a mené jusqu’ici", "bq.epi": "La suite de l’histoire", "dv.ok": "Bonne réponse", "dv.bad": "Raté", "dv.dk": "Passée", "dv.depth": "−{m} m", "dv.comboS": "Combo ×{n} · tu descends à −{m} m. {s}", "dv.streak": { one: "Toujours en immersion : {n} jour d’affilée.", other: "Toujours en immersion : {n} jours d’affilée." }, "dv.set": "Ambiance plongée", "dv.set.full": "Complète", "dv.set.calm": "Discrète", "dv.set.off": "Coupée", "dv.setS": "Bulles, sonar et profondeur pendant les quiz, les combos et les jours d’affilée. « Discrète » garde les sons classiques sans effets ; le verdict (bonne réponse ou raté) reste toujours affiché.", "dv.c.bulles.t": "Bulles en rafale", "dv.c.bulles.s": "Bien lancé, continue.", "dv.c.thermo.t": "Thermocline franchie", "dv.c.thermo.s": "L’eau fraîchit, tes réponses aussi.", "dv.c.sonar.t": "Sonar verrouillé", "dv.c.sonar.s": "Plus rien ne t’échappe.", "dv.c.bleu.t": "Grand bleu", "dv.c.bleu.s": "Plus de fond en vue, que du bleu.", "dv.c.tombant.t": "Le long du tombant", "dv.c.tombant.s": "Une série digne d’un N3.", "dv.c.abysses.t": "Abysses", "dv.c.abysses.s": "Même les poissons-lanternes applaudissent.", "dv.c.fosse.t": "Fosse océane", "dv.c.fosse.s": "Série légendaire.", "dv.c.legende.t": "Légende des abysses", "dv.c.legende.s": "Tu ne remontes plus.", "ord.chip": "Gestes dans l’ordre", "ord.help": "Touche les gestes dans l’ordre où tu les fais ({n} bons gestes, les autres sont des pièges). Touche un geste choisi pour le retirer.", "ord.yours": "Ton enchaînement", "ord.pool": "Gestes possibles", "ord.empty": "Ton enchaînement apparaîtra ici.", "ord.go": "Valider mon enchaînement ({n})", "ord.score": "{g} geste(s) bien placé(s) sur {n}", "ord.right": "Le bon enchaînement :", "ord.free": "ordre libre", "ord.extraT": "Gestes à ne pas faire que tu as choisis :", "num.chip": "Réponse à taper", "num.label": "Tape ta réponse (l’unité est déjà indiquée) :", "num.ph": "ex. 2,5", "num.go": "Valider", "num.qcm": "Voir des propositions", "num.yours": "Ta réponse :", "num.badT": "Il faut un nombre", "num.badS": "Tape seulement le nombre, par exemple 2,5 ou 12.", "pr.title": "Procédures d’urgence", "pr.tileS": "Remets les bons gestes dans l’ordre", "pr.count": "{n} / {tot} réussies", "pr.eyebrow": "Les bons gestes, dans le bon ordre", "pr.intro": "Pour chaque niveau, des situations d’urgence réelles : un camarade qui ne se sent pas bien, une panne d’air, une victime en surface… Tu choisis les bons gestes parmi une longue liste et tu les remets dans l’ordre.", "pr.how": "Certains gestes de la liste sont des pièges. Quand deux gestes peuvent se faire dans n’importe quel ordre, la correction l’indique. Les procédures varient selon les structures : fais-les valider par ton moniteur.", "pr.steps": "{n} gestes parmi {x}", "pr.all": "Enchaîner les {n} procédures {w}", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
   "story.locked": "Termine l’aventure précédente pour l’ouvrir.", "story.lockedT": "Aventure fermée", "story.resume": "Reprendre",
   "story.best": "Meilleur : {n} / {tot}", "story.step": "scène {n}/{tot}", "story.surface": "Surface",
   "story.good": "Bon réflexe", "story.bad": "Pas tout à fait", "story.retry": "Essaie un autre choix.", "story.continue": "Continuer",

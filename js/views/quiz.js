@@ -168,7 +168,7 @@
     if (c.mode === "exam" || c.mode === "five") h += `<div class="timer" id="tmr" aria-live="off">${u.mmss(Math.max(0, c.timeLeft))}</div>`;
     else if (c.mode === "apnee") h += `<div class="timer" id="tmr">${c.time}</div>`;
     else {
-      if (c.combo > 1) h += `<div class="combo">×${c.combo}<small>${t("quiz.combo")}</small></div>`;
+      if (c.combo > 1) h += `<div class="combo">×${c.combo}<small>${fx.dive && fx.dive.comboLabel ? fx.dive.comboLabel(c.combo) : t("quiz.combo")}</small></div>`;
       if (c.air != null) h += AA.ui.gauge(c.air);
     }
     return h;
@@ -347,14 +347,21 @@
         c.combo++; c.maxCombo = Math.max(c.maxCombo, c.combo); S.bestCombo = Math.max(S.bestCombo, c.combo);
         let gain = G.answerXp(q, prev, c);
         if (c.mode === "errors" && wasErr) { gain += 5; S.rescued++; }
-        c.xp += gain; G.addXp(gain, btn);
+        /* Brevet blanc : pas de « +XP » à l'écran, il trahirait la bonne réponse. */
+        c.xp += gain; G.addXp(gain, c.mode === "exam" ? null : btn);
       }
     } else if (ok) { c.combo++; }
+    /* 2.6 : son et image disent toujours la même chose. Au brevet blanc, ni l'un
+       ni l'autre ne révèle la réponse (son neutre plus bas) ; ailleurs, le verdict
+       s'affiche en même temps que le son, même quand on passe tout de suite à la suite. */
     if (ok) {
-      fx.sfx.ok(); fx.buzz(15); fx.burstAt(btn, 18, "rgba(61,220,151,.85)");
-      if (c.combo > 1 && c.combo % 5 === 0 && !NOFB(c.mode)) fx.toast(t("toast.combo", { n: c.combo }), t("toast.comboS"), "bolt");
+      if (c.mode !== "exam") {
+        fx.sfx.ok(); fx.buzz(15); fx.burstAt(btn, 18, "rgba(61,220,151,.85)");
+        if (fx.dive && fx.dive.ok) fx.dive.ok(btn, c);
+        if (c.combo > 1 && !NOFB(c.mode)) { if (fx.dive && fx.dive.combo) fx.dive.combo(c); else if (c.combo % 5 === 0) fx.toast(t("toast.combo", { n: c.combo }), t("toast.comboS"), "bolt"); }
+      }
     } else {
-      c.combo = 0; if (c.mode !== "exam") { if (ci < 0) fx.sfx.flip(); else { fx.sfx.bad(); fx.buzz([40, 40, 40]); } }
+      c.combo = 0; if (c.mode !== "exam") { if (ci < 0) fx.sfx.flip(); else { fx.sfx.bad(); fx.buzz([40, 40, 40]); if (fx.dive && fx.dive.bad) fx.dive.bad(c); } }
       if (c.air != null) c.air = Math.max(0, c.air - (c.airLoss || 50));
       if (c.mode === "apnee") { c.time = Math.max(0, c.time - 5); fx.float("−5 s", btn, "var(--bad)"); }
     }
@@ -365,6 +372,7 @@
       if (c.mode === "duel" && c.idx >= c.items.length) return duelNext(c);
       AA.router.refresh();
       if (!ok && c.mode === "apnee") { const qc = u.$("#qc"); qc && qc.classList.add("shake"); }
+      if (c.mode !== "exam" && fx.verdict) fx.verdict(ok, ci < 0);
       return;
     }
     AA.router.refresh();
