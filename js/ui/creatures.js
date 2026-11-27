@@ -9,7 +9,7 @@
 (function () {
   "use strict";
   const AA = window.AA;
-  const eye = (x, y, r = 3) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff"/><circle cx="${x + r * .25}" cy="${y}" r="${r * .55}" fill="#061018"/>`;
+  const eye = (x, y, r = 3) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff"/><circle cx="${x + r * .25}" cy="${y}" r="${r * .55}" fill="#061018"/><circle cx="${x + r * .45}" cy="${y - r * .4}" r="${r * .22}" fill="#fff" opacity=".9"/>`;
   const tail = (x, y, h, c) => `<path class="cr-tail" d="M${x} ${y}l-16 ${-h}q4 ${h} 0 ${h * 2}z" fill="${c}"/>`;
   const F = {
     fish: ([a, b, c]) => `${tail(30, 40, 14, c)}<path d="M28 40c8-18 52-22 72-4 3 3 3 6 0 9-20 16-64 13-72-5z" fill="${a}"/><path d="M50 26c6-8 18-10 26-6l-6 8z" fill="${c}"/><path d="M46 30v22M60 27v27M74 28v24" stroke="${b}" stroke-width="5" opacity=".8"/>${eye(88, 37)}`,
@@ -32,6 +32,23 @@
     crab: ([a, b, c]) => `<ellipse cx="60" cy="46" rx="24" ry="14" fill="${a}"/>${[-1, 1].map(s => `<path d="M${60 + s * 20} 40c${s * 10}-12 ${s * 18}-12 ${s * 22}-4" stroke="${c}" stroke-width="4" fill="none"/><path d="M${60 + s * 42} 36l${s * 6}-6 ${-s * 2} 10z" fill="${c}"/><path d="M${60 + s * 16} 56l${s * 8} 12M${60 + s * 22} 52l${s * 10} 10" stroke="${c}" stroke-width="3"/>`).join("")}<path d="M54 34v-8M66 34v-8" stroke="${b}" stroke-width="2"/><circle cx="54" cy="25" r="2.5" fill="#061018"/><circle cx="66" cy="25" r="2.5" fill="#061018"/>`,
     sponge: ([a, b, c]) => `<path d="M34 76c-2-20 0-44 8-60 6 0 10 0 12 4-2 20-2 40 0 56zM56 76c0-24 4-44 12-56 6 0 10 2 10 6-6 16-8 32-6 50zM80 76c0-14 4-28 10-36 6 0 8 4 8 8-4 8-6 18-4 28z" fill="${a}"/><ellipse cx="48" cy="18" rx="5" ry="2" fill="${b}"/><ellipse cx="73" cy="22" rx="5" ry="2" fill="${b}"/><ellipse cx="94" cy="42" rx="4" ry="1.6" fill="${c}"/>`
   };
-  AA.creature = (shape, colors, cls) => `<svg class="creature ${cls || ""}" viewBox="0 0 120 80" aria-hidden="true">${(F[shape] || F.fish)(colors || ["var(--primary)", "var(--accent)", "var(--gold)"])}</svg>`;
+  /* 2.9 · rendu « premium » (aquarium) : dos plus clair et ventre plus sombre, reflet,
+     écailles discrètes, nageoire pectorale qui bat, queue qui ondule. Le dessin de base
+     sert de masque : les effets restent dans la silhouette de chaque espèce. */
+  const FINNED = { fish: [80, 44, 1], wrasse: [84, 42, .8], grouper: [80, 46, 1.1], bream: [78, 42, 1], damsel: [74, 42, .8], barracuda: [88, 41, .7], scorpion: [80, 48, 1], sunfish: [84, 46, .9] };
+  let uid = 0;
+  const premium = (shape, colors) => {
+    const k = "cp" + (++uid), base = (F[shape] || F.fish)(colors), fin = FINNED[shape];
+    const sil = base.replace(/fill="[^"]*"/g, 'fill="#fff"').replace(/stroke="[^"]*"/g, 'stroke="#fff"').replace(/opacity="[^"]*"/g, "");
+    return `<defs><linearGradient id="${k}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".62" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#001018" stop-opacity=".5"/></linearGradient>
+      <radialGradient id="${k}h" cx=".62" cy=".3" r=".35"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <pattern id="${k}s" width="6" height="5" patternUnits="userSpaceOnUse"><path d="M0 5a3 3 0 0 1 6 0" fill="none" stroke="#fff" stroke-width=".5" opacity=".22"/></pattern>
+      <mask id="${k}m" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="80"><rect width="120" height="80" fill="#000"/>${sil}</mask></defs>
+      <g class="cr-base">${base}</g>
+      <g mask="url(#${k}m)" class="cr-fx" pointer-events="none"><rect width="120" height="80" fill="url(#${k}s)"/><rect width="120" height="80" fill="url(#${k}g)"/><rect width="120" height="80" fill="url(#${k}h)"/></g>
+      ${fin ? `<path class="cr-fin" d="M${fin[0]} ${fin[1]}c-6 2-12 7-14 13 6-1 12-5 14-13z" fill="${colors[2]}" opacity=".75" transform="scale(${fin[2]})" style="transform-origin:${fin[0]}px ${fin[1]}px"/>` : ""}`;
+  };
+  AA.creature = (shape, colors, cls) => { const c = colors || ["var(--primary)", "var(--accent)", "var(--gold)"], pr = /\bpremium\b/.test(cls || "");
+    return `<svg class="creature ${cls || ""}" viewBox="0 0 120 80" aria-hidden="true">${pr ? premium(shape, c) : (F[shape] || F.fish)(c)}</svg>`; };
   AA.creatureShapes = Object.keys(F);
 })();

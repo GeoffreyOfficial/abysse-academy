@@ -2567,6 +2567,112 @@ details.dg-row>summary .grow{min-width:0}
 .dcalc.bubbleup .dc-res{animation:dcpop .35s ease-out}@keyframes dcpop{50%{transform:scale(1.08)}}
 .reduce-motion .dc-fish,.reduce-motion .dc-b{animation:none}
 @media (min-width:900px){.dcalc{right:24px;bottom:24px}}
+/* 2.9 · poissons premium */
+.tank .aq-fish.aq-live{filter:drop-shadow(0 10px 8px rgba(0,8,20,.35)) drop-shadow(0 0 1px rgba(255,255,255,.15))}
+.tank .aq-fish.aq-live.far{filter:drop-shadow(0 6px 5px rgba(0,8,20,.25)) saturate(.75) brightness(.85);opacity:.88}
+.creature.premium .cr-tail{animation-duration:var(--wag,1.1s)}
+.creature.premium .cr-fin{animation:finflap calc(var(--wag,1.1s) * .8) ease-in-out infinite alternate}
+@keyframes finflap{from{transform:rotate(-14deg) scaleY(.85)}to{transform:rotate(18deg) scaleY(1.1)}}
+.aq-caustics{position:absolute;inset:-20%;pointer-events:none;z-index:1;opacity:.22;mix-blend-mode:screen;
+  background:radial-gradient(ellipse 14% 7% at 20% 30%,#fff,transparent 70%),radial-gradient(ellipse 10% 6% at 60% 20%,#fff,transparent 70%),radial-gradient(ellipse 12% 6% at 80% 45%,#fff,transparent 70%),radial-gradient(ellipse 9% 5% at 40% 55%,#fff,transparent 70%),radial-gradient(ellipse 11% 6% at 70% 75%,#fff,transparent 70%);
+  -webkit-mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.5) 60%,transparent 90%);mask-image:linear-gradient(180deg,#000 0,rgba(0,0,0,.5) 60%,transparent 90%);animation:caust 9s ease-in-out infinite alternate}
+@keyframes caust{from{transform:translate(-3%,-2%) scale(1)}to{transform:translate(4%,3%) scale(1.08)}}
+.reduce-motion .aq-caustics,.reduce-motion .creature.premium .cr-fin{animation:none}
+
+/* ===================== 2.9 · confort, ambiance, mises en situation ===================== */
+/* Transitions et rebonds */
+.view-enter{animation:viewIn29 .38s cubic-bezier(.2,.8,.2,1)}
+@keyframes viewIn29{from{opacity:0;transform:translateY(12px) scale(.992)}to{opacity:1;transform:none}}
+.btn,.choice,.gm-tile,.chip{transition:transform .15s var(--ease),background-color .2s,border-color .2s,box-shadow .2s}
+.btn:active:not(:disabled),.gm-tile:active,.choice:active:not(:disabled){transform:scale(.96)}
+.bump{animation:bump29 .4s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bump29{0%{transform:scale(1)}30%{transform:scale(.93)}65%{transform:scale(1.05)}100%{transform:scale(1)}}
+.choice.good{animation:good29 .55s cubic-bezier(.3,1.6,.5,1)}
+@keyframes good29{0%{transform:scale(1)}40%{transform:scale(1.04) translateY(-2px)}100%{transform:none}}
+.card{transition:border-color .25s,box-shadow .25s,transform .25s}
+/* Récupération */
+.rec-sheet{text-align:center}.rec-ic{display:grid;place-items:center;width:56px;height:56px;margin:0 auto;border-radius:50%;background:var(--primary-soft);color:var(--primary)}.rec-ic svg{width:28px;height:28px}
+/* Salle d'examen */
+.exam-amb{position:relative;isolation:isolate}
+.ex-hall{position:fixed;inset:auto 0 0 0;height:min(38vh,320px);pointer-events:none;z-index:-1;overflow:hidden;opacity:.55}
+.ex-hall .exf{position:absolute;left:-30vw;width:clamp(48px,9vw,96px);animation:exswim 26s linear infinite}
+.ex-hall .exf svg{width:100%;height:auto;display:block}
+.ex-hall .exf0{bottom:12%;animation-duration:31s}.ex-hall .exf1{bottom:44%;animation-duration:24s;animation-delay:-9s;width:clamp(36px,6vw,64px)}
+.ex-hall .exf2{bottom:26%;animation-duration:38s;animation-delay:-20s;animation-direction:reverse}.ex-hall .exf2 svg{transform:scaleX(-1)}
+.ex-hall .exf3{bottom:64%;animation-duration:29s;animation-delay:-14s;width:clamp(30px,5vw,52px)}
+@keyframes exswim{from{transform:translateX(0) translateY(0)}25%{transform:translateX(40vw) translateY(-8px)}50%{transform:translateX(80vw) translateY(6px)}to{transform:translateX(165vw) translateY(0)}}
+.ex-hall .exb{position:absolute;bottom:-10px;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--bubble,rgba(191,243,247,.6));animation:exbub 9s linear infinite}
+.ex-hall .b1{left:18%}.ex-hall .b2{left:56%;animation-delay:-3s;width:6px;height:6px}.ex-hall .b3{left:83%;animation-delay:-6s}
+@keyframes exbub{to{transform:translateY(-340px) translateX(12px);opacity:0}}
+.ex-tbar{position:relative;height:22px;margin:var(--sp-2) 0;border-radius:999px;background:var(--surface-3);overflow:hidden;display:grid;align-items:center}
+.ex-tbar>i{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--primary),color-mix(in srgb,var(--primary) 60%,var(--gold)));transition:width 1s linear;border-radius:inherit}
+.ex-tbar.low>i{background:linear-gradient(90deg,var(--bad),var(--accent))}
+.ex-tbar>span{position:relative;padding:0 12px;color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-shadow:0 1px 2px var(--surface)}
+.ex-intro{position:fixed;inset:0;z-index:60;display:grid;place-items:center;pointer-events:none;background:radial-gradient(circle at 50% 40%,color-mix(in srgb,var(--primary) 30%,transparent),color-mix(in srgb,var(--bg,#001) 80%,transparent));animation:exin .45s ease;transition:opacity .55s}
+.ex-intro.out{opacity:0}
+.ex-intro-in{max-width:min(92vw,520px);padding:var(--sp-5);border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line);text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.35);animation:bump29 .6s}
+.ex-intro-in h2{margin:4px 0;overflow-wrap:anywhere}
+@keyframes exin{from{opacity:0}}
+.cert{position:relative;overflow:hidden;text-align:center;border:3px double color-mix(in srgb,var(--gold) 70%,var(--line));background:radial-gradient(circle at 50% 0,color-mix(in srgb,var(--gold) 16%,var(--surface)),var(--surface) 70%)}
+.cert-top{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}.cert-seal{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--gold);color:#3a2a00;box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 25%,transparent)}.cert-seal svg{width:28px;height:28px}
+.cert-k{margin:0;font:700 var(--fs-xs) var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--primary)}.cert-h{margin:2px 0;font-family:var(--font-display,inherit)}
+.cert-line{margin:var(--sp-3) 0 0;overflow-wrap:anywhere}.cert-lv{margin:4px 0}.cert-score b{font:800 clamp(2.2rem,8vw,3.2rem) var(--font-display,inherit)}.cert-score span{color:var(--muted);margin-left:4px}
+.cert-m{font-weight:700;color:var(--primary);margin:4px 0}.cert-m.m-no{color:var(--accent)}.cert-date,.cert-foot{font-size:var(--fs-xs);color:var(--muted);margin:4px 0}
+.cert-fish{display:flex;justify-content:center;gap:clamp(8px,3vw,24px);margin:var(--sp-2) 0}.cert-fish svg{width:clamp(44px,14vw,80px);height:auto;animation:certfish 3.5s ease-in-out infinite}.cert-fish svg:nth-child(2){animation-delay:-1.2s}.cert-fish svg:nth-child(3){animation-delay:-2.3s}
+@keyframes certfish{50%{transform:translateY(-6px) rotate(-3deg)}}
+.cert-acts{justify-content:center;margin-top:var(--sp-3);flex-wrap:wrap}
+/* Cursus : carte marine */
+.road.chart{padding:var(--sp-4) var(--sp-3) var(--sp-4);border-radius:var(--r-lg);border:1px solid color-mix(in srgb,var(--primary) 30%,var(--line));
+  background:repeating-radial-gradient(ellipse at 110% -10%,transparent 0 34px,color-mix(in srgb,var(--primary) 14%,transparent) 34px 35px),
+    linear-gradient(180deg,color-mix(in srgb,var(--primary) 6%,var(--surface)) 0%,color-mix(in srgb,var(--primary) 18%,var(--surface)) 55%,color-mix(in srgb,var(--primary) 34%,var(--surface)) 100%)}
+.road.chart .rd-step{margin-left:calc(var(--i,0) * min(2.6vw,16px))}
+.road.chart .rd-step:not(:last-child)::after{background:repeating-linear-gradient(180deg,var(--line) 0 6px,transparent 6px 11px)}
+.road.chart .rd-step.st-got:not(:last-child)::after{background:repeating-linear-gradient(180deg,var(--ok) 0 6px,transparent 6px 11px)}
+.road.chart .rd-node{background:color-mix(in srgb,var(--surface) 82%,transparent)}
+.rd-legend{display:flex;gap:8px;align-items:center;color:var(--primary);margin:0 0 var(--sp-2);list-style:none}.rd-rose{width:40px;height:40px;flex:none}
+.rd-sound{display:inline-flex;gap:4px;align-items:center;font:600 var(--fs-xs) var(--font-mono,monospace);color:var(--primary);font-style:italic}.rd-sound svg{width:12px;height:12px}
+/* Mises en situation */
+.g29-sec{margin-top:var(--sp-5)}
+.g29-tile .medal{background:color-mix(in srgb,var(--primary) 18%,var(--surface-2))}
+.g29-hall{opacity:.4}
+.g29-intro{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-4);align-items:start;margin-top:var(--sp-3)}
+.g29-intro h2{margin:0}.g29-rules{margin:0;padding-left:1.2em;display:grid;gap:4px}.g29-fict{padding:8px 10px;border-radius:var(--r-md);background:var(--gold-soft,color-mix(in srgb,var(--gold) 15%,transparent));margin:0}
+.g29-valid{display:flex;gap:6px;align-items:flex-start;margin-top:var(--sp-4)}.g29-valid svg{flex:none;width:14px;height:14px;margin-top:2px}
+.g29-learn{margin-top:var(--sp-4)}.g29-learn ul,.g29-learn ol{margin:6px 0;padding-left:1.2em;display:grid;gap:4px}
+.g29-opt.choice{grid-template-columns:minmax(0,1fr);min-height:48px}
+.pl-wrap{display:grid;grid-template-columns:clamp(70px,22vw,120px) minmax(0,1fr);gap:var(--sp-3);margin-top:var(--sp-3)}
+.pl-col{position:relative;min-height:320px;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:linear-gradient(180deg,color-mix(in srgb,var(--primary) 18%,var(--surface)) 0%,color-mix(in srgb,var(--primary) 55%,#001018) 100%)}
+.pl-ceil{position:absolute;inset:0 0 auto 0;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--bad) 45%,transparent) 0 6px,color-mix(in srgb,var(--bad) 20%,transparent) 6px 12px);border-bottom:2px solid var(--bad);transition:height .3s}
+.pl-mk{position:absolute;left:0;right:0;border-top:1px dashed color-mix(in srgb,#fff 25%,transparent);font-style:normal}.pl-mk b{position:absolute;right:4px;top:0;font:600 10px var(--font-mono,monospace);color:#fff;opacity:.7}
+.pl-stopln{position:absolute;left:0;right:0;border-top:2px solid var(--gold)}
+.pl-diver{position:absolute;left:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--surface);color:var(--primary);box-shadow:0 0 0 3px var(--primary);transition:top .25s linear}
+.pl-diver svg{width:20px;height:20px}.pl-diver.up{box-shadow:0 0 0 3px var(--gold)}
+.pl-pc{display:grid;gap:var(--sp-3);align-content:start}
+.pl-lcd{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:10px;border-radius:var(--r-md);background:#0d1f17;color:#9cf7c4;font-family:var(--font-mono,monospace);box-shadow:inset 0 0 0 2px #24493a}
+.pl-lcd div{display:grid;gap:2px;min-width:0}.pl-lcd span{opacity:.7}.pl-lcd b{font-size:clamp(.9rem,3.6vw,1.25rem);white-space:nowrap}
+.pl-lcd.warn{background:#2a0f0f;color:#ffb4a8;box-shadow:inset 0 0 0 2px #7a2b22;animation:plwarn 1s steps(2) infinite}
+@keyframes plwarn{50%{box-shadow:inset 0 0 0 2px #ff6a55}}
+.pl-status{grid-column:1/-1;margin:0;font-size:var(--fs-sm)}
+.pl-gauge{display:grid;gap:4px}.pl-gauge .bar{height:10px}.pl-gauge .bar>i.mid{background:var(--gold)}.pl-gauge .bar>i.low{background:var(--bad)}.pl-gauge .bar>i.okc{background:var(--ok)}
+.pl-btns{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,9rem),1fr));gap:8px}
+.g29-scene{margin-top:var(--sp-3)}.g29-artw{margin:calc(-1 * var(--sp-3)) calc(-1 * var(--sp-3)) var(--sp-2);border-radius:var(--r-lg) var(--r-lg) 0 0;overflow:hidden}.g29-art{display:block;width:100%;height:auto;max-height:160px}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr));gap:var(--sp-2);margin-top:var(--sp-3)}
+.ch-it{display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:start;text-align:left;padding:10px 12px;border-radius:var(--r-md);border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font:inherit}
+.ch-it:hover:not(:disabled){border-color:var(--primary)}.ch-ic{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--surface-2)}.ch-ic svg{width:16px;height:16px}
+.ch-it small{grid-column:2;color:var(--muted)}.ch-it.hit{border-color:var(--ok);background:var(--ok-soft)}.ch-it.hit .ch-ic{background:var(--ok);color:#03231a}.ch-it.miss{border-color:var(--bad);background:var(--bad-soft)}.ch-it.miss .ch-ic{background:var(--bad);color:#fff}
+.sg-card{margin-top:var(--sp-3);text-align:center}.sg-diver{display:grid;place-items:center;width:64px;height:64px;margin:0 auto var(--sp-2);border-radius:50%;background:var(--primary-soft);color:var(--primary);animation:certfish 3s ease-in-out infinite}.sg-diver svg{width:32px;height:32px}
+.sg-q{font-size:clamp(1.05rem,3.4vw,1.3rem);font-weight:600;overflow-wrap:anywhere}
+.sg-opts{display:grid;gap:var(--sp-2);margin-top:var(--sp-3)}
+@media (min-width:760px){.sg-opts{grid-template-columns:1fr 1fr}}
+.sv-done{display:grid;gap:6px;margin:var(--sp-3) 0;padding-left:1.6em}.sv-done li{padding:6px 10px;border-radius:var(--r-md);background:var(--ok-soft);border:1px solid color-mix(in srgb,var(--ok) 40%,transparent)}
+.sv-done li.sv-next{background:none;border-style:dashed;border-color:var(--line);color:var(--muted)}
+.sv-pool{display:grid;gap:var(--sp-2);grid-template-columns:repeat(auto-fill,minmax(min(100%,15rem),1fr));margin-bottom:var(--sp-3)}
+.in-gauges{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));gap:var(--sp-3);margin-top:var(--sp-3)}
+.in-scene{margin-top:var(--sp-3)}
+@media (prefers-reduced-motion:reduce){.ex-hall .exf,.ex-hall .exb,.cert-fish svg,.sg-diver,.pl-lcd.warn{animation:none}}
+.reduce-motion .ex-hall .exf,.reduce-motion .ex-hall .exb,.reduce-motion .bump,.reduce-motion .cert-fish svg,.reduce-motion .sg-diver{animation:none}
+.pagehead .chip{white-space:nowrap}
+.pl-lcd span{font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 </style>
 </head>
@@ -2590,7 +2696,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.8.0";
+  AA.VERSION = "2.9.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -3116,7 +3222,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = window.AA;
-  const eye = (x, y, r = 3) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff"/><circle cx="${x + r * .25}" cy="${y}" r="${r * .55}" fill="#061018"/>`;
+  const eye = (x, y, r = 3) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#fff"/><circle cx="${x + r * .25}" cy="${y}" r="${r * .55}" fill="#061018"/><circle cx="${x + r * .45}" cy="${y - r * .4}" r="${r * .22}" fill="#fff" opacity=".9"/>`;
   const tail = (x, y, h, c) => `<path class="cr-tail" d="M${x} ${y}l-16 ${-h}q4 ${h} 0 ${h * 2}z" fill="${c}"/>`;
   const F = {
     fish: ([a, b, c]) => `${tail(30, 40, 14, c)}<path d="M28 40c8-18 52-22 72-4 3 3 3 6 0 9-20 16-64 13-72-5z" fill="${a}"/><path d="M50 26c6-8 18-10 26-6l-6 8z" fill="${c}"/><path d="M46 30v22M60 27v27M74 28v24" stroke="${b}" stroke-width="5" opacity=".8"/>${eye(88, 37)}`,
@@ -3139,7 +3245,24 @@ window.AA={BUNDLED:true};
     crab: ([a, b, c]) => `<ellipse cx="60" cy="46" rx="24" ry="14" fill="${a}"/>${[-1, 1].map(s => `<path d="M${60 + s * 20} 40c${s * 10}-12 ${s * 18}-12 ${s * 22}-4" stroke="${c}" stroke-width="4" fill="none"/><path d="M${60 + s * 42} 36l${s * 6}-6 ${-s * 2} 10z" fill="${c}"/><path d="M${60 + s * 16} 56l${s * 8} 12M${60 + s * 22} 52l${s * 10} 10" stroke="${c}" stroke-width="3"/>`).join("")}<path d="M54 34v-8M66 34v-8" stroke="${b}" stroke-width="2"/><circle cx="54" cy="25" r="2.5" fill="#061018"/><circle cx="66" cy="25" r="2.5" fill="#061018"/>`,
     sponge: ([a, b, c]) => `<path d="M34 76c-2-20 0-44 8-60 6 0 10 0 12 4-2 20-2 40 0 56zM56 76c0-24 4-44 12-56 6 0 10 2 10 6-6 16-8 32-6 50zM80 76c0-14 4-28 10-36 6 0 8 4 8 8-4 8-6 18-4 28z" fill="${a}"/><ellipse cx="48" cy="18" rx="5" ry="2" fill="${b}"/><ellipse cx="73" cy="22" rx="5" ry="2" fill="${b}"/><ellipse cx="94" cy="42" rx="4" ry="1.6" fill="${c}"/>`
   };
-  AA.creature = (shape, colors, cls) => `<svg class="creature ${cls || ""}" viewBox="0 0 120 80" aria-hidden="true">${(F[shape] || F.fish)(colors || ["var(--primary)", "var(--accent)", "var(--gold)"])}</svg>`;
+  /* 2.9 · rendu « premium » (aquarium) : dos plus clair et ventre plus sombre, reflet,
+     écailles discrètes, nageoire pectorale qui bat, queue qui ondule. Le dessin de base
+     sert de masque : les effets restent dans la silhouette de chaque espèce. */
+  const FINNED = { fish: [80, 44, 1], wrasse: [84, 42, .8], grouper: [80, 46, 1.1], bream: [78, 42, 1], damsel: [74, 42, .8], barracuda: [88, 41, .7], scorpion: [80, 48, 1], sunfish: [84, 46, .9] };
+  let uid = 0;
+  const premium = (shape, colors) => {
+    const k = "cp" + (++uid), base = (F[shape] || F.fish)(colors), fin = FINNED[shape];
+    const sil = base.replace(/fill="[^"]*"/g, 'fill="#fff"').replace(/stroke="[^"]*"/g, 'stroke="#fff"').replace(/opacity="[^"]*"/g, "");
+    return `<defs><linearGradient id="${k}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".42"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/><stop offset=".62" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#001018" stop-opacity=".5"/></linearGradient>
+      <radialGradient id="${k}h" cx=".62" cy=".3" r=".35"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <pattern id="${k}s" width="6" height="5" patternUnits="userSpaceOnUse"><path d="M0 5a3 3 0 0 1 6 0" fill="none" stroke="#fff" stroke-width=".5" opacity=".22"/></pattern>
+      <mask id="${k}m" maskUnits="userSpaceOnUse" x="0" y="0" width="120" height="80"><rect width="120" height="80" fill="#000"/>${sil}</mask></defs>
+      <g class="cr-base">${base}</g>
+      <g mask="url(#${k}m)" class="cr-fx" pointer-events="none"><rect width="120" height="80" fill="url(#${k}s)"/><rect width="120" height="80" fill="url(#${k}g)"/><rect width="120" height="80" fill="url(#${k}h)"/></g>
+      ${fin ? `<path class="cr-fin" d="M${fin[0]} ${fin[1]}c-6 2-12 7-14 13 6-1 12-5 14-13z" fill="${colors[2]}" opacity=".75" transform="scale(${fin[2]})" style="transform-origin:${fin[0]}px ${fin[1]}px"/>` : ""}`;
+  };
+  AA.creature = (shape, colors, cls) => { const c = colors || ["var(--primary)", "var(--accent)", "var(--gold)"], pr = /\bpremium\b/.test(cls || "");
+    return `<svg class="creature ${cls || ""}" viewBox="0 0 120 80" aria-hidden="true">${pr ? premium(shape, c) : (F[shape] || F.fish)(c)}</svg>`; };
   AA.creatureShapes = Object.keys(F);
 })();
 
@@ -3616,7 +3739,7 @@ window.AA={BUNDLED:true};
     wrap.hidden = !on;
     /* (plus de variable CSS --depth sur la racine : la changer à chaque image recalculait les styles de toute la page) */
     if (rays) rays.style.opacity = on ? Math.max(0, 1 - d / 22).toFixed(3) : 0;
-    if (tint) tint.style.opacity = on ? Math.min(1, k * 1.15).toFixed(3) : 0;
+    if (tint) tint.style.opacity = on ? Math.min(1, k * 1.35).toFixed(3) : 0;
   };
 
   function palette() {
@@ -3634,7 +3757,7 @@ window.AA={BUNDLED:true};
     const dir = Math.random() < .5 ? 1 : -1;
     fish.push({ x: dir > 0 ? -.15 : 1.15, y: rnd(.2, .75), dir, size: rnd(18, 30) * scale(), col: 3, sp: rnd(.012, .022), ph: Math.random() * 6, kind: sc.depth > 30 ? "deep" : "big" });
   }
-  const want = () => { const d = sc.depth; return { schools: d < 12 ? 2 : d < 28 ? 1 : 0, big: d < 8 ? 0 : d < 35 ? 1 : 1, snow: d < 12 ? 0 : Math.round(Math.min(60, (d - 12) * 1.6)), glow: d < 28 ? 0 : Math.round(Math.min(14, (d - 28) / 2)) }; };
+  const want = () => { const d = sc.depth; return { schools: d < 12 ? 2 : d < 28 ? 1 : 0, big: d < 8 ? 0 : d < 35 ? 1 : 1, snow: d < 5 ? 0 : Math.round(Math.min(80, (d - 5) * 1.8)), glow: d < 28 ? 0 : Math.round(Math.min(14, (d - 28) / 2)) }; };
 
   function drawFish(f, t, alpha) {
     const x = f.x * W * D, y = (f.y * H + Math.sin(t / 700 + f.ph) * 4) * D, s = f.size * D, wag = Math.sin(t / (f.kind === "small" ? 90 : 260) + f.ph) * .35;
@@ -11145,6 +11268,7 @@ window.AA={BUNDLED:true};
     stop();
     const W0 = tank.clientWidth, H0 = tank.clientHeight; if (!W0 || !H0) return;
     const reduced = AA.a11y && AA.a11y.reduced(), cur = !!(AA.S.aquaCfg || {}).current;
+    if (!u.$(".aq-caustics", tank)) tank.insertAdjacentHTML("afterbegin", `<div class="aq-caustics" aria-hidden="true"></div>`);
     const layer = document.createElement("div"); layer.className = "aq-food2"; layer.setAttribute("aria-hidden", "true"); tank.appendChild(layer);
     tank.classList.add("live");
     const homes = u.$$(".aq-dec", tank).map(d => parseFloat(d.style.left) / 100 + (parseFloat(d.style.width) || 10) / 200).filter(x => x > 0 && x < 1);
@@ -11153,8 +11277,12 @@ window.AA={BUNDLED:true};
       const f = C.creatures.find(x => x.id === el.dataset.f) || { shape: "fish" }, role = ROLE[f.shape] || "school", p = P[role];
       el.classList.remove("aq-swim", "aq-float", "aq-bottom", "l", "r"); el.classList.add("aq-live", "r-" + role);
       el.style.left = "0"; el.style.top = "0"; el.style.animation = "none";
-      const w = el.offsetWidth || 70, h = w * 2 / 3, cr = el.firstElementChild;
-      const o = { el, cr, f, role, p, w, h, i, x: rnd(w, W0 - w), y: H0 * rnd(p.band[0], p.band[1]), vx: 0, vy: 0, dir: Math.random() < .5 ? 1 : -1, tilt: 0,
+      /* 2.9 : rendu premium et profondeur (les plus lointains sont plus petits et plus pâles). */
+      if (f.c) el.innerHTML = AA.creature(f.shape, f.c, "premium");
+      const z = role === "crawl" || role === "fixed" || role === "lurk" ? rnd(.95, 1.1) : u.pick([rnd(.72, .86), rnd(.9, 1.05), rnd(.95, 1.15)]);
+      el.style.zIndex = String(2 + Math.round(z * 10)); el.classList.toggle("far", z < .87);
+      const ew = el.offsetWidth || 70, w = ew * z, h = w * 2 / 3, cr = el.firstElementChild;
+      const o = { el, cr, f, role, p, w, h, i, z, ew, x: rnd(w, W0 - w), y: H0 * rnd(p.band[0], p.band[1]), vx: 0, vy: 0, dir: Math.random() < .5 ? 1 : -1, tilt: 0,
         tx: 0, ty: 0, next: 0, pause: 0, sat: 0, ate: 0, ph: Math.random() * 6.28, spd: rnd(.75, 1.25), ox: rnd(-40, 40), oy: rnd(-22, 22),
         home: homes.length ? u.pick(homes) : rnd(.15, .85), chomp: 0 };
       if (role === "school") groups[f.shape] = groups[f.shape] || { x: 0, y: 0, next: 0 };
@@ -11268,9 +11396,12 @@ window.AA={BUNDLED:true};
     const now = performance.now();
     E.fish.forEach(o => {
       const bob = o.role === "crawl" || o.role === "fixed" || E.reduced ? 0 : Math.sin(o.ph) * (o.role === "hover" ? 3 : 1.6);
-      o.el.style.transform = `translate3d(${(o.x - o.w / 2).toFixed(1)}px,${(o.y - o.h / 2 + bob).toFixed(1)}px,0)`;
+      o.el.style.transform = `translate3d(${(o.x - (o.ew || o.w) / 2).toFixed(1)}px,${(o.y - (o.ew || o.w) / 3 + bob).toFixed(1)}px,0)`;
       const sq = o.chomp > now ? (o.role === "drift" ? " scale(1.08,.9)" : " scale(1.1,.94)") : "";
-      if (o.cr) o.cr.style.transform = `scaleX(${o.dir})rotate(${(o.tilt * o.dir).toFixed(1)}deg)${sq}`;
+      if (o.cr) o.cr.style.transform = `scale(${(o.z || 1).toFixed(3)})scaleX(${o.dir})rotate(${(o.tilt * o.dir).toFixed(1)}deg)${sq}`;
+      /* La queue bat plus vite quand le poisson accélère. */
+      const sp = Math.hypot(o.vx, o.vy), wag = sp > 1 ? Math.max(.28, Math.min(1.4, 22 / (sp + 8))) : 1.6;
+      if (Math.abs((o.wag || 0) - wag) > .08) { o.wag = wag; o.el.style.setProperty("--wag", wag.toFixed(2) + "s"); }
     });
     E.food.forEach(g => { g.el.style.transform = `translate3d(${g.x.toFixed(1)}px,${g.y.toFixed(1)}px,0)`; });
   }
@@ -11560,6 +11691,579 @@ window.AA={BUNDLED:true};
     if (q && Q.needsCalc(q)) { const h = u.$(".bt-q, h2, h3", box); (h || box.firstElementChild || box).insertAdjacentHTML("afterend", `<div class="qactions dc-row">${btn()}</div>`); u.$("#dcopen", box).onclick = () => AA.calc.open(); }
   }).observe(document.documentElement, { childList: true, subtree: true });
   addEventListener("hashchange", () => { if (!/^#\/(quiz|boss|gardien)/.test(location.hash)) AA.calc.close(); });
+})();
+
+/* js/views/v29.js */
+/* =====================================================================
+   Abysse Academy 2.9 · confort et ambiance
+   - Sauvegarde : copie locale aussi en quittant l'appli, rappel d'export
+     hebdomadaire (si Google Drive n'est pas lié), mode récupération
+     quand les données de l'appareil sont abîmées.
+   - Transitions plus douces, boutons qui rebondissent à la validation.
+   - Brevet blanc : salle d'examen (annonce, temps qui file, poissons),
+     certificat imprimable à la fin.
+   - Cursus en carte marine : sondes, profondeur qui augmente par niveau.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, ui = AA.ui, fx = AA.fx, V = AA.views, st = AA.store, C = AA.content;
+
+  /* ---------- Mode récupération ---------- */
+  const RAWK = "abysse-academy-corrupt";
+  const ls0 = st.loadSync;
+  st.loadSync = () => {
+    let raw = null; try { raw = localStorage.getItem(st.KEY); } catch (e) {}
+    let r; try { r = ls0(); } catch (e) { AA.S = st.FRESH(); r = "fresh"; }
+    if (raw && r === "fresh") { st.bad = raw; hold = true; try { localStorage.setItem(RAWK, raw); } catch (e) {} }
+    return r;
+  };
+  /* Tant que la copie de l'appareil (IndexedDB) n'a pas été lue, on n'écrit rien : un état vierge
+     ne doit jamais écraser la bonne copie. */
+  let hold = false;
+  const save0 = st.save;
+  st.save = function () { if (hold) return; return save0.apply(this, arguments); };
+  const la0 = st.loadAsync;
+  st.loadAsync = async () => {
+    let changed = false; hold = false;
+    try { changed = await la0(); } catch (e) {}
+    if (st.bad) {
+      if (changed && AA.S.xp > 0) { done(); setTimeout(() => fx.toast(t("rec.okT"), t("rec.okS", { xp: AA.S.xp }), "save"), 600); }
+      else setTimeout(() => AA.recover.sheet(), 500);
+    }
+    return changed;
+  };
+  const done = () => { st.bad = null; try { localStorage.removeItem(RAWK); } catch (e) {} };
+  const rawText = () => { if (st.bad) return st.bad; try { return localStorage.getItem(RAWK) || ""; } catch (e) { return ""; } };
+  AA.recover = {
+    sheet() {
+      const close = ui.sheet(`<div class="stack rec-sheet"><div class="rec-ic">${AA.icon("shield")}</div><h3>${t("rec.t")}</h3><p class="small">${t("rec.s")}</p>
+        <div class="stack" id="recsnaps"><p class="xs muted">${t("rec.looking")}</p></div>
+        <a class="btn ghost block" href="#/backup" id="recimp">${AA.icon("upload")} ${t("rec.import")}</a>
+        <button class="btn ghost block" id="recraw">${AA.icon("download")} ${t("rec.raw")}</button>
+        <button class="btn ghost block" id="recfresh">${AA.icon("refresh")} ${t("rec.fresh")}</button>
+        <p class="xs muted">${t("rec.note")}</p></div>`, t("rec.t"));
+      const box = u.$("#recsnaps");
+      st.snapshots().then(list => {
+        if (!box) return;
+        box.innerHTML = list.length ? list.map(s => `<button class="btn block" data-snap="${u.esc(s.key)}">${AA.icon("refresh")} ${t("rec.snap", { d: u.esc(s.date), xp: s.xp })}</button>`).join("") : `<p class="xs muted">${t("rec.noSnap")}</p>`;
+        u.$$("[data-snap]", box).forEach(b => b.onclick = async () => {
+          const ok = await st.restoreSnapshot(b.dataset.snap);
+          if (ok) { done(); close(); AA.ui.applyTheme && AA.ui.applyTheme(); AA.router.refresh(); fx.toast(t("rec.okT"), t("rec.okS", { xp: AA.S.xp }), "save"); }
+          else fx.toast(t("rec.failT"), t("rec.failS"), "info");
+        });
+      }).catch(() => { if (box) box.innerHTML = `<p class="xs muted">${t("rec.noSnap")}</p>`; });
+      u.$("#recimp").onclick = () => close();
+      u.$("#recraw").onclick = () => AA.pwa.saveFile("abysse-academy-donnees-abimees-" + u.today() + ".txt", rawText(), m => fx.toast(t("rec.rawT"), m, "download"));
+      u.$("#recfresh").onclick = () => ui.confirm(t("rec.freshQ"), t("rec.freshYes"), () => { done(); close(); });
+    },
+    pending: () => !!st.bad
+  };
+  /* Copie locale aussi quand on quitte l'appli (une par jour, les 5 dernières). */
+  document.addEventListener("visibilitychange", () => { if (document.hidden && AA.S && AA.S.xp) { try { st.snapshot().catch(() => {}); } catch (e) {} } });
+
+  /* ---------- Rappel d'export hebdomadaire ---------- */
+  const exportDue = () => {
+    const S = AA.S, P = S.profile, today = u.today();
+    if (!S.xp || (AA.sync && AA.sync.linked && AA.sync.linked())) return false;
+    if (P.exportNag && P.exportNag > today) return false;
+    const ref = P.backupAt || S.createdAt || today;
+    return ref <= u.addDays(-7);
+  };
+  AA.exportDue = exportDue;
+  const exportNow = msgEl => {
+    const S = AA.S, txt = st.exportText(), name = "abysse-academy-" + (S.profile.name ? S.profile.name.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" : "") + u.today() + ".json";
+    S.profile.backupAt = u.today(); st.save();
+    AA.pwa.saveFile(name, txt, m => { if (msgEl) msgEl.textContent = m; });
+  };
+  AA.exportNow = exportNow;
+  if (V.home) {
+    const r0 = V.home.render;
+    V.home.render = function (el, args) {
+      const out = r0.call(this, el, args);
+      if (!u.$("#drivecard", el) && !u.$("#expcard", el) && exportDue()) {
+        const P = AA.S.profile, h = u.$(".hello", el);
+        const html = `<section class="card drive-card exp-card" id="expcard"><div class="drive-ic">${AA.icon("save")}</div><div class="stack" style="gap:6px">
+          <b class="h4">${t("exw.t")}</b><p class="small" style="margin:0">${t(P.backupAt ? "exw.s" : "exw.never", { d: P.backupAt ? (u.fmtDate ? u.fmtDate(P.backupAt) : P.backupAt) : "" })}</p>
+          <div class="row"><button class="btn sm" id="expnow">${AA.icon("download")} ${t("exw.now")}</button><button class="btn ghost sm" id="explater">${t("dr.later")}</button></div><p class="xs muted" id="expmsg" style="margin:0"></p></div></section>`;
+        if (h) h.insertAdjacentHTML("afterend", html); else el.insertAdjacentHTML("afterbegin", html);
+        u.$("#expnow", el).onclick = () => { exportNow(u.$("#expmsg", el)); fx.sfx.ok(); setTimeout(() => { const c = u.$("#expcard"); if (c) c.remove(); }, 1600); };
+        u.$("#explater", el).onclick = () => { P.exportNag = u.addDays(3); st.save(); fx.toast(t("dr.snoozeT"), t("dr.snoozeS", { n: 3 }), "calendar"); const c = u.$("#expcard"); if (c) c.remove(); };
+      }
+      return out;
+    };
+  }
+
+  /* ---------- Boutons qui rebondissent ---------- */
+  const motionOk = () => AA.S.profile.motion !== false && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.addEventListener("click", e => {
+    const b = e.target.closest(".btn, .choice, .chip[data-ew], .gm-tile, .g29-opt"); if (!b || !motionOk()) return;
+    b.classList.remove("bump"); void b.offsetWidth; b.classList.add("bump");
+    setTimeout(() => b.classList.remove("bump"), 420);
+  }, true);
+
+  /* ---------- Brevet blanc : salle d'examen et certificat ---------- */
+  const mention = s => s >= 16 ? "tb" : s >= 14 ? "b" : s >= 12 ? "ab" : s >= 10 ? "ok" : "no";
+  const hallFish = () => {
+    const sh = ["fish", "wrasse", "bream", "damsel", "seahorse", "turtle"];
+    return `<div class="ex-hall" aria-hidden="true">${[0, 1, 2, 3].map(i => `<span class="exf exf${i}">${AA.creature(sh[(i * 2 + new Date().getDate()) % sh.length])}</span>`).join("")}<i class="exb b1"></i><i class="exb b2"></i><i class="exb b3"></i></div>`;
+  };
+  AA.hallFish = hallFish;
+  const certData = c => {
+    const S = AA.S, last = (S.exams || [])[S.exams.length - 1] || {}, w = C.worldById[c.world || "n2"] || {};
+    return { name: S.profile.name || t("home.diver"), score: last.score != null ? last.score : 0, date: last.date || u.today(), lv: w.title || "", short: w.short || "", full: !!c.full };
+  };
+  const certHtml = d => {
+    const m = mention(d.score);
+    return `<div class="cert-in"><div class="cert-top"><span class="cert-seal">${AA.icon("trophy")}</span><div><p class="cert-k">${t("cert.kicker")}</p><h3 class="cert-h">${t(m === "no" ? "cert.partT" : "cert.title")}</h3></div></div>
+      <p class="cert-line">${t("cert.line", { name: u.esc(d.name) })}</p>
+      <p class="cert-lv"><b>${u.esc(d.lv)}</b> · ${t(d.full ? "mode.examFull" : "mode.examQuick")}</p>
+      <div class="cert-score"><b>${u.num(d.score, 1)}</b><span>/ 20</span></div>
+      <p class="cert-m m-${m}">${t("cert.m." + m)}</p>
+      <p class="cert-date">${t("cert.date", { d: u.fmtDate ? u.fmtDate(d.date) : d.date })}</p>
+      <div class="cert-fish" aria-hidden="true">${AA.creature("fish", ["#12a7b0", "#ff7a59", "#f2c14e"])}${AA.creature("seahorse", ["#f2a541", "#e0603a", "#ffe08a"])}${AA.creature("turtle", ["#3a9a6a", "#8fd19e", "#e8c26a"])}</div>
+      <p class="cert-foot">${t("cert.foot")}</p></div>`;
+  };
+  const CERT_CSS = `*{box-sizing:border-box}body{margin:0;padding:12mm;font:12pt/1.4 Georgia,serif;color:#0b2a3a;background:#fff}
+    .cert-in{border:3px double #0b7f86;border-radius:6mm;padding:10mm;text-align:center;background:linear-gradient(#f4fbfc,#e2f2f4)}
+    .cert-top{display:flex;gap:4mm;align-items:center;justify-content:center}.cert-seal svg{width:16mm;height:16mm;color:#c59500}
+    .cert-k{margin:0;font:700 9pt system-ui;letter-spacing:.15em;text-transform:uppercase;color:#0b7f86}.cert-h{margin:1mm 0;font-size:22pt}
+    .cert-line{font-size:14pt}.cert-score b{font-size:34pt}.cert-score span{font-size:14pt;color:#555}.cert-m{font:700 13pt system-ui;color:#0b7f86}
+    .cert-fish{display:flex;justify-content:center;gap:6mm;margin:4mm 0}.cert-fish svg{width:22mm;height:auto}.cert-foot,.cert-date{font-size:9pt;color:#555}@page{margin:10mm}`;
+  const certDoc = d => `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${u.esc(t("cert.title"))}</title><style>${CERT_CSS}</style></head><body>${certHtml(d)}</body></html>`;
+  AA.cert = { html: certHtml, doc: certDoc, mention };
+  if (V.quiz) {
+    const q0 = V.quiz.render;
+    V.quiz.render = function (el, args) {
+      const out = q0.call(this, el, args), c = AA.ctx;
+      if (!c || c.mode !== "exam") return out;
+      el.classList.add("exam-amb");
+      if (!u.$(".ex-hall", el)) el.insertAdjacentHTML("beforeend", hallFish());
+      if (c.timeTotal == null) c.timeTotal = c.timeLeft;
+      if (!c.done) {
+        const tm = u.$("#tmr", el);
+        if (tm && !u.$(".ex-tbar", el)) {
+          const card = u.$(".qcard", el) || el.firstElementChild;
+          if (card) card.insertAdjacentHTML("beforebegin", `<div class="ex-tbar" role="progressbar" aria-label="${t("cert.timeLeft")}" aria-valuemin="0" aria-valuemax="100"><i></i><span class="xs">${t("cert.hall")}</span></div>`);
+        }
+        const upd = () => { const b = u.$(".ex-tbar", el); if (!b || !AA.ctx || AA.ctx !== c) return false; const p = Math.max(0, Math.min(1, c.timeLeft / (c.timeTotal || 1))); b.firstElementChild.style.width = (p * 100).toFixed(1) + "%"; b.classList.toggle("low", p < .15); b.setAttribute("aria-valuenow", Math.round(p * 100)); return true; };
+        upd(); clearInterval(c.tbar); c.tbar = setInterval(() => { if (!upd() || c.done) clearInterval(c.tbar); }, 1000);
+        if (!c.introShown) {
+          c.introShown = true;
+          const ov = document.createElement("div"); ov.className = "ex-intro"; ov.setAttribute("role", "status");
+          ov.innerHTML = `<div class="ex-intro-in"><p class="eyebrow">${t("cert.kicker")}</p><h2>${u.esc(c.title || "")}</h2><p>${t("cert.intro", { n: c.items.length, m: Math.round((c.timeTotal || 0) / 60) })}</p><p class="small">${t("cert.intro2")}</p></div>`;
+          document.body.appendChild(ov);
+          setTimeout(() => ov.classList.add("out"), 2300); setTimeout(() => ov.remove(), 2900);
+        }
+      } else if (!u.$(".cert", el)) {
+        const d = certData(c), rep = u.$(".ex-report", el);
+        const html = `<section class="card cert">${certHtml(d)}<div class="row cert-acts"><button class="btn sm" id="certp">${AA.icon("download")} ${t("cert.print")}</button><button class="btn ghost sm" id="certd">${AA.icon("save")} ${t("cert.dl")}</button></div></section>`;
+        if (rep) rep.insertAdjacentHTML("beforebegin", html); else el.insertAdjacentHTML("beforeend", html);
+        const dl = () => AA.pwa.saveFile("abysse-certificat-" + d.date + ".html", certDoc(d), m => fx.toast(t("cert.dlT"), m, "save"));
+        u.$("#certd", el).onclick = dl;
+        u.$("#certp", el).onclick = () => { try { const f = document.createElement("iframe"); f.className = "print-frame"; f.setAttribute("aria-hidden", "true"); document.body.appendChild(f); f.srcdoc = certDoc(d); f.onload = () => { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) { dl(); } setTimeout(() => f.remove(), 60000); }; } catch (e) { dl(); } };
+        if (mention(d.score) !== "no") try { fx.burstAt(u.$(".cert-seal", el), 30, "rgba(242,193,78,.9)"); } catch (e) {}
+      }
+      return out;
+    };
+  }
+
+  /* ---------- Cursus en carte marine ---------- */
+  const SOUND = { decouverte: "0–6 m", n1: "0–20 m", n2: "0–40 m", n3: "0–60 m", n4: "rd.guide", e2: "rd.teach", mf: "rd.train" };
+  const ROSE = `<svg class="rd-rose" viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="26" fill="none" stroke="currentColor" stroke-opacity=".35"/><circle cx="30" cy="30" r="18" fill="none" stroke="currentColor" stroke-opacity=".2" stroke-dasharray="2 3"/><path d="M30 4 34 30 30 56 26 30Z" fill="currentColor" fill-opacity=".55"/><path d="M4 30 30 26 56 30 30 34Z" fill="currentColor" fill-opacity=".3"/><text x="30" y="13" text-anchor="middle" font-size="8" fill="currentColor">N</text></svg>`;
+  if (V.cursus) {
+    const c0 = V.cursus.render;
+    V.cursus.render = function (el, args) {
+      const out = c0.call(this, el, args), r = u.$(".road", el);
+      if (r && !r.classList.contains("chart")) {
+        r.classList.add("chart");
+        r.insertAdjacentHTML("afterbegin", `<li class="rd-legend" aria-hidden="true">${ROSE}<span class="xs">${t("rd.chart")}</span></li>`);
+        u.$$(":scope > .rd-step", r).forEach((li, i) => {
+          li.style.setProperty("--i", i);
+          const id = (u.$(".rd-node", li) || {}).dataset ? u.$(".rd-node", li).dataset.id : "";
+          const s = SOUND[id]; if (!s) return;
+          const dot = u.$(":scope > .rd-node .rd-txt", li);
+          if (dot) dot.insertAdjacentHTML("beforeend", `<span class="rd-sound">${AA.icon("dive")} ${/^rd\./.test(s) ? t(s) : s}</span>`);
+        });
+      }
+      return out;
+    };
+  }
+})();
+
+/* js/views/games29.js */
+/* =====================================================================
+   Abysse Academy 2.9 · cinq mises en situation dans l'espace Jeux
+   - Palier en direct : remonter au bon rythme, respecter le plafond et
+     faire ses paliers. Modèle de saturation FICTIF et pédagogique (un seul
+     compartiment) : ce n'est ni MN90 ni un algorithme d'ordinateur.
+   - Chasse aux erreurs : trouver 5 dangers cachés dans une scène.
+   - Signes sous l'eau : reconnaître les signes de plongée, en temps limité.
+   - Sauvetage chrono : remettre une procédure d'urgence dans l'ordre.
+   - Incident en direct : décider vite, étape par étape.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, ui = AA.ui, fx = AA.fx, V = AA.views, esc = u.esc;
+  const games = () => { const s = AA.S; s.games = s.games || {}; return s.games; };
+  const here = r => (location.hash.replace(/^#\/?/, "").split("/")[0] || "home") === r;
+  const hall = () => (AA.hallFish ? AA.hallFish().replace('class="ex-hall"', 'class="ex-hall g29-hall"') : "");
+  const shake = el => { if (!el) return; el.classList.remove("shake"); void el.offsetWidth; el.classList.add("shake"); };
+  /* Score enregistré, XP pour les 3 premières parties du jour. */
+  const record = (id, score, better, xp) => {
+    const g = games()[id] = games()[id] || { n: 0 }, today = u.today(), dn = g.d === today ? (g.dn || 0) : 0;
+    const rec = g.best == null || better(score, g.best);
+    g.n = (g.n || 0) + 1; if (rec) g.best = score; g.d = today; g.dn = dn + 1;
+    const gain = dn < 3 ? xp : 0; if (gain) G.addXp(gain);
+    AA.store.save(true); G.checkBadges && G.checkBadges();
+    return { rec, gain };
+  };
+  const endCard = (icon, title, big, sub, res, again, extra) => `<section class="card center gm-end g29-end"><div class="medal" style="margin:0 auto">${AA.icon(icon)}</div><h2>${title}</h2>${big != null ? `<div class="big gm-big">${big}</div>` : ""}<p class="muted">${sub}</p>
+    ${res.rec ? `<p class="chip gold">${AA.icon("trophy")} ${t("g29.record")}</p>` : ""}<p>${res.gain ? `<span class="chip gold">+${res.gain} XP</span>` : `<span class="xs muted">${t("g29.noXp")}</span>`}</p>
+    <div class="stack"><button class="btn block" id="${again}">${AA.icon("refresh")} ${t("gm.again")}</button><a class="btn ghost block" href="#/jeux">${t("gm.backHub")}</a></div></section>${extra || ""}`;
+  const validNote = () => `<p class="xs muted g29-valid">${AA.icon("info")} ${t("g29.valid")}</p>`;
+
+  /* =================================================================
+     1. Palier en direct
+     ================================================================= */
+  const PL = {
+    HL: 12, R: 1.7, N2: .79, SCALE: 1 / 3, SLOW: 9, FAST: 18,
+    tol: d => PL.R * (1 + d / 10),
+    ceil: L => { const c = (L / PL.R - 1) * 10; return c < 1 ? 0 : c; },
+    stop: c => c <= 0.05 ? 0 : Math.ceil(c / 3 - 1e-9) * 3,
+    DIVES: [{ d: 30, bt: 25 }, { d: 25, bt: 30 }, { d: 35, bt: 20 }, { d: 20, bt: 40 }, { d: 18, bt: 20 }],
+    make(i, air) {
+      const D = PL.DIVES[i != null ? i % PL.DIVES.length : Math.floor(Math.random() * PL.DIVES.length)];
+      const pn = PL.N2 * (1 + D.d / 10), L = PL.N2 + (pn - PL.N2) * (1 - Math.pow(2, -D.bt / PL.HL));
+      return { dive: D, d: D.d, L, air: air != null ? air : 110 + Math.round(Math.random() * 30), v: 0, t: 0, fastT: 0, fastN: 0, safeT: 0, stopT: 0, maxCeil: PL.ceil(L), over: false, out: false, done: false, ff: 1 };
+    },
+    /* Avance de dt minutes (simulées). */
+    step(s, dt) {
+      if (s.done) return s;
+      const d0 = s.d; s.d = Math.max(0, s.d - s.v * dt); const dm = (d0 + s.d) / 2;
+      const pn = PL.N2 * (1 + dm / 10); s.L = pn + (s.L - pn) * Math.pow(2, -dt / PL.HL);
+      s.air -= 20 * (1 + dm / 10) / 12 * dt; s.t += dt;
+      if (s.v >= PL.FAST) { if (!s.fastOn) s.fastN++; s.fastOn = true; s.fastT += dt; } else s.fastOn = false;
+      if (s.v === 0 && s.d > 0) s.stopT += dt;
+      if (s.d >= 2.5 && s.d <= 6.5 && s.v === 0) s.safeT += dt;
+      const c = PL.ceil(s.L);
+      if (s.d < c - .3) { s.over = true; s.done = true; }
+      else if (s.air <= 0) { s.air = 0; s.out = true; s.done = true; }
+      else if (s.d <= 0) { s.done = true; }
+      return s;
+    },
+    score(s) {
+      if (s.over || s.out) return 0;
+      let p = 100 - Math.min(40, s.fastN * 15) - (s.air < 50 ? 20 : 0) - (s.safeT >= 3 ? 0 : 15);
+      return Math.max(10, p);
+    }
+  };
+  AA.g29 = { palier: PL };
+  let PS = null;
+  AA.view("palier", {
+    tab: "train", depth: (() => PS && !PS.done ? Math.max(4, PS.d) : 12),
+    render(el) {
+      const g = games().palier || {};
+      const stopLoop = () => { if (PS && PS.raf) { cancelAnimationFrame(PS.raf); PS.raf = null; } };
+      const intro = () => {
+        stopLoop(); PS = null;
+        el.innerHTML = `${ui.head(t("g29.pl.t"), "jeux")}${hall()}<section class="card g29-intro"><div class="medal">${AA.icon("gauge")}</div><div class="stack"><h2>${t("g29.pl.t")}</h2><p>${t("g29.pl.rules")}</p>
+          <ul class="small g29-rules"><li>${t("g29.pl.r1")}</li><li>${t("g29.pl.r2")}</li><li>${t("g29.pl.r3")}</li><li>${t("g29.pl.r4")}</li></ul>
+          <p class="xs g29-fict">${AA.icon("info")} ${t("g29.pl.fict")}</p>${g.best != null ? `<p class="chip gold">${t("gm.bestScore", { n: g.best })}</p>` : ""}
+          <button class="btn block" id="plGo">${AA.icon("play")} ${t("g29.start")}</button></div></section>`;
+        u.$("#plGo", el).onclick = () => { fx.sfx.up(); PS = PL.make(); draw(); loop(); };
+      };
+      const lcd = () => {
+        const c = PL.ceil(PS.L), stp = PL.stop(c), sat = Math.min(1.2, PS.L / PL.tol(PS.d)), near = PS.d < c + .8 && c > 0;
+        const status = PS.v >= PL.FAST ? t("g29.pl.fastS") : near ? t("g29.pl.near") : stp ? t("g29.pl.stopAt", { d: stp }) : PS.safeT < 3 ? t("g29.pl.safe") : t("g29.pl.free");
+        return { c, stp, sat, near, status };
+      };
+      const col = () => {
+        const max = Math.max(PS.dive.d, 9), y = d => (d / max * 100).toFixed(2) + "%", L = lcd(), marks = [];
+        for (let m = 3; m <= max; m += 3) marks.push(`<i class="pl-mk" style="top:${y(m)}"><b>${m}</b></i>`);
+        return `<div class="pl-col" aria-hidden="true"><div class="pl-ceil" style="height:${y(L.c)}"></div>${marks.join("")}${L.stp ? `<i class="pl-stopln" style="top:${y(L.stp)}"></i>` : ""}<span class="pl-diver ${PS.v ? "up" : ""}" style="top:${y(PS.d)}">${AA.icon("dive")}</span></div>`;
+      };
+      const draw = () => {
+        if (!here("palier") || !PS) return;
+        if (PS.done) return end();
+        const L = lcd(), satP = Math.round(L.sat * 100), airP = Math.max(0, Math.min(100, PS.air / 2));
+        el.innerHTML = `${ui.head(t("g29.pl.t"), "jeux", `<span class="chip mono">${u.mmss(Math.round(PS.t * 60))}</span>`)}${hall()}
+          <div class="pl-wrap">${col()}
+            <div class="pl-pc card"><div class="pl-lcd ${L.near ? "warn" : ""}" role="status" aria-live="polite">
+              <div><span class="xs">${t("g29.pl.depth")}</span><b class="mono" id="plD">${u.num(PS.d, 1)} m</b></div>
+              <div><span class="xs">${t("g29.pl.ceil")}</span><b class="mono" id="plC">${L.c > 0 ? u.num(L.c, 1) + " m" : "—"}</b></div>
+              <div><span class="xs">${t("g29.pl.stop")}</span><b class="mono">${L.stp ? L.stp + " m" : PS.safeT < 3 ? t("g29.pl.safeShort") : "OK"}</b></div>
+              <p class="pl-status" id="plS">${L.status}</p></div>
+              <div class="pl-gauge"><span class="xs">${t("g29.pl.sat")}</span><div class="bar"><i id="plSat" class="${satP >= 92 ? "low" : satP >= 75 ? "mid" : ""}" style="width:${Math.min(100, satP)}%"></i></div></div>
+              <div class="pl-gauge"><span class="xs">${t("g29.pl.air")} · <b class="mono" id="plA">${Math.round(PS.air)} bar</b></span><div class="bar"><i class="${PS.air < 50 ? "low" : ""}" style="width:${airP}%"></i></div></div>
+              <div class="pl-btns">
+                <button class="btn ${PS.v === 0 ? "" : "ghost"} g29-opt" data-v="0" aria-pressed="${PS.v === 0}">${AA.icon("pause")} ${t("g29.pl.hold")}</button>
+                <button class="btn ${PS.v === PL.SLOW ? "" : "ghost"} g29-opt" data-v="${PL.SLOW}" aria-pressed="${PS.v === PL.SLOW}">${AA.icon("next")} ${t("g29.pl.slow")}</button>
+                <button class="btn ${PS.v === PL.FAST ? "accent" : "ghost"} g29-opt" data-v="${PL.FAST}" aria-pressed="${PS.v === PL.FAST}">${AA.icon("bolt")} ${t("g29.pl.fast")}</button>
+                <button class="btn ghost g29-opt" id="plFF" aria-pressed="${PS.ff > 1}" ${PS.v ? "disabled" : ""}>${AA.icon("timer")} ${t("g29.pl.ff")}</button>
+              </div></div></div>${validNote()}`;
+        u.$$("[data-v]", el).forEach(b => b.onclick = () => { PS.v = +b.dataset.v; if (PS.v) PS.ff = 1; fx.sfx.tap(); draw(); });
+        u.$("#plFF", el).onclick = () => { PS.ff = PS.ff > 1 ? 1 : 4; fx.sfx.tap(); draw(); };
+      };
+      const refresh = () => {
+        const L = lcd(), q = s => u.$(s, el);
+        if (!q("#plD")) return draw();
+        q("#plD").textContent = u.num(PS.d, 1) + " m"; q("#plC").textContent = L.c > 0 ? u.num(L.c, 1) + " m" : "—"; q("#plS").textContent = L.status;
+        q("#plA").textContent = Math.round(PS.air) + " bar"; const sb = q("#plSat"); sb.style.width = Math.min(100, Math.round(L.sat * 100)) + "%"; sb.className = L.sat >= .92 ? "low" : L.sat >= .75 ? "mid" : "";
+        const c = q(".pl-col"); if (c) c.outerHTML = col();
+        const lc = q(".pl-lcd"); if (lc) lc.classList.toggle("warn", L.near);
+        if (AA.scene && AA.scene.set) AA.scene.set(Math.max(3, PS.d));
+      };
+      let last = 0, acc = 0, beeped = 0;
+      const loop = () => {
+        const f = ts => {
+          if (!here("palier") || !PS) return stopLoop();
+          if (!last) last = ts; const dt = Math.min(.1, (ts - last) / 1000); last = ts;
+          PL.step(PS, dt * PL.SCALE * PS.ff);
+          if (PS.done) { fx.sfx[PS.over || PS.out ? "alarm" : "up"](); return end(); }
+          const L = lcd(); if ((L.near || PS.v >= PL.FAST) && ts - beeped > 2500) { beeped = ts; fx.sfx.ping && fx.sfx.ping(); }
+          acc += dt; if (acc > .2) { acc = 0; refresh(); }
+          PS.raf = requestAnimationFrame(f);
+        };
+        last = 0; PS.raf = requestAnimationFrame(f);
+      };
+      const end = () => {
+        stopLoop(); if (!PS) return intro();
+        const sc = PL.score(PS);
+        if (!PS.res) PS.res = record("palier", sc, (a, b) => a > b, sc >= 70 ? 30 : sc ? 15 : 5);
+        const why = PS.over ? t("g29.pl.over") : PS.out ? t("g29.pl.out") : [PS.fastN ? t("g29.pl.fastN", { n: PS.fastN }) : t("g29.pl.speedOk"), PS.air < 50 ? t("g29.pl.lowAir", { b: Math.round(PS.air) }) : t("g29.pl.airOk", { b: Math.round(PS.air) }), PS.safeT >= 3 ? t("g29.pl.safeOk") : t("g29.pl.safeNo")].join(" · ");
+        el.innerHTML = `${ui.head(t("g29.pl.t"), "jeux")}${hall()}${endCard(PS.over || PS.out ? "x" : "gauge", t(PS.over ? "g29.pl.overT" : PS.out ? "g29.pl.outT" : "g29.pl.doneT"), sc, why, PS.res, "plAgain",
+          `<section class="card g29-learn"><p class="eyebrow">${t("g29.learn")}</p><ul class="small"><li>${t("g29.pl.l1")}</li><li>${t("g29.pl.l2")}</li><li>${t("g29.pl.l3")}</li></ul><a class="small" href="#/lesson/deco">${t("g29.toLesson")}</a></section>${validNote()}`)}`;
+        u.$("#plAgain", el).onclick = () => { fx.sfx.tap(); PS = PL.make(); draw(); loop(); };
+      };
+      if (PS && !PS.done) { draw(); if (!PS.raf) loop(); } else if (PS && PS.done) end(); else intro();
+    },
+    leave() { if (PS && PS.raf) { cancelAnimationFrame(PS.raf); PS.raf = null; } }
+  });
+
+  /* =================================================================
+     2. Chasse aux erreurs
+     ================================================================= */
+  const ART = {
+    boat: `<svg viewBox="0 0 320 120" class="g29-art" aria-hidden="true"><rect width="320" height="70" fill="var(--sky,#9fd8f0)" opacity=".35"/><path d="M0 70 Q40 62 80 70 T160 70 T240 70 T320 70 V120 H0Z" fill="var(--primary)" opacity=".35"/><path d="M60 58 H250 L230 82 H82Z" fill="var(--surface-3,#ccd)" stroke="var(--ink)" stroke-opacity=".4"/><rect x="120" y="30" width="60" height="28" rx="3" fill="var(--surface-2,#eef)" stroke="var(--ink)" stroke-opacity=".3"/><path d="M200 58 V18 L226 26 L200 34" fill="var(--accent)" opacity=".8"/><circle cx="95" cy="50" r="5" fill="var(--ink)" opacity=".5"/><rect x="88" y="54" width="14" height="5" fill="var(--gold)"/></svg>`,
+    reef: `<svg viewBox="0 0 320 120" class="g29-art" aria-hidden="true"><rect width="320" height="120" fill="var(--primary)" opacity=".18"/><path d="M0 120 V96 Q30 80 60 94 T120 88 T180 98 T240 84 T320 92 V120Z" fill="var(--accent)" opacity=".35"/><path d="M40 96 v-26 M40 80 l-10 -8 M40 76 l10 -10 M250 88 v-30 M250 70 l12 -9 M250 64 l-9 -8" stroke="var(--accent)" stroke-width="4" stroke-linecap="round" opacity=".7"/><circle cx="150" cy="40" r="3" fill="var(--bubble,#fff)" opacity=".6"/><circle cx="156" cy="28" r="2" fill="var(--bubble,#fff)" opacity=".6"/></svg>`,
+    ascent: `<svg viewBox="0 0 320 120" class="g29-art" aria-hidden="true"><defs><linearGradient id="g29a" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--primary)" stop-opacity=".1"/><stop offset="1" stop-color="var(--primary)" stop-opacity=".45"/></linearGradient></defs><rect width="320" height="120" fill="url(#g29a)"/><path d="M0 8 Q40 2 80 8 T160 8 T240 8 T320 8" stroke="var(--primary)" fill="none" opacity=".6"/><path d="M160 110 V20" stroke="var(--gold)" stroke-dasharray="4 5" opacity=".7"/><circle cx="160" cy="60" r="4" fill="var(--bubble,#fff)" opacity=".6"/><circle cx="166" cy="44" r="3" fill="var(--bubble,#fff)" opacity=".6"/></svg>`
+  };
+  let CH = null;
+  const chNew = () => { const L = C.games29.scenes, last = CH && CH.sc.id, pool = L.filter(s => s.id !== last), sc = u.pick(pool.length ? pool : L);
+    return { sc, items: u.shuffle(sc.items.map((x, i) => ({ i, t: x[0], bad: !!x[1], e: x[2], m: x[3] }))), found: new Set(), miss: [], lives: 3, t0: Date.now(), done: false, open: null }; };
+  AA.view("chasse", {
+    tab: "train", depth: () => CH && CH.sc.id === "fond" ? 18 : CH && CH.sc.id === "remontee" ? 8 : 2,
+    render(el) {
+      if (!CH || CH.shown) CH = chNew();
+      const nBad = () => CH.items.filter(x => x.bad).length;
+      const draw = () => {
+        if (!here("chasse")) return;
+        if (CH.done) return end();
+        el.innerHTML = `${ui.head(t("g29.ch.t"), "jeux", `<span class="chip">${AA.icon("heart")} ${CH.lives}</span>`)}${hall()}
+          <section class="card g29-scene"><div class="g29-artw">${ART[CH.sc.art] || ""}</div><p class="eyebrow">${esc(CH.sc.title)}</p><p class="small muted">${esc(CH.sc.sub)}</p>
+            <p class="small"><b>${t("g29.ch.goal", { n: nBad() })}</b> · ${t("g29.ch.found", { n: CH.found.size, tot: nBad() })}</p></section>
+          <div class="ch-grid">${CH.items.map((x, k) => { const st = CH.found.has(x.i) ? "hit" : CH.miss.includes(x.i) ? "miss" : ""; return `<button class="ch-it g29-opt ${st}" data-k="${k}" ${st ? "disabled" : ""}><span class="ch-ic">${AA.icon(st === "hit" ? "check" : st === "miss" ? "x" : "eye")}</span><span>${esc(x.t)}</span>${st ? `<small>${esc(x.e)}</small>` : ""}</button>`; }).join("")}</div>${validNote()}`;
+        u.$$(".ch-it", el).forEach(b => b.onclick = () => pick(+b.dataset.k, b));
+      };
+      const pick = (k, b) => {
+        const x = CH.items[k]; if (CH.done || CH.found.has(x.i) || CH.miss.includes(x.i)) return;
+        if (x.bad) { CH.found.add(x.i); fx.sfx.ok(); fx.burstAt(b, 14, "rgba(61,220,151,.85)"); if (CH.found.size === nBad()) { CH.done = true; CH.win = true; CH.t1 = Date.now(); } }
+        else { CH.miss.push(x.i); CH.lives--; fx.sfx.bad(); fx.buzz && fx.buzz(30); shake(b); if (CH.lives <= 0) { CH.done = true; CH.win = false; CH.t1 = Date.now(); } }
+        setTimeout(draw, x.bad ? 250 : 500);
+      };
+      const end = () => {
+        CH.shown = true; const sec = Math.round((CH.t1 - CH.t0) / 1000);
+        if (!CH.res) CH.res = CH.win ? record("chasse", sec, (a, b) => a < b, CH.lives === 3 ? 30 : 20) : record("chasse-x", 0, () => false, 5);
+        el.innerHTML = `${ui.head(t("g29.ch.t"), "jeux")}${hall()}${endCard(CH.win ? "eye" : "x", t(CH.win ? "g29.ch.win" : "g29.ch.lose"), CH.win ? sec + " s" : null, CH.win ? t("g29.ch.winS", { l: CH.lives }) : t("g29.ch.loseS"), CH.res, "chAgain",
+          `<div class="section-title"><h3>${t("g29.ch.all")}</h3></div><div class="review gm-rv">${CH.items.filter(x => x.bad).map(x => `<div class="rv"><b>${esc(x.t)}</b><span class="small">${esc(x.e)}</span><a class="small" href="#/lesson/${x.m}">${esc((C.byId[x.m] || {}).title || "")}</a></div>`).join("")}</div>${validNote()}`)}`;
+        u.$("#chAgain", el).onclick = () => { fx.sfx.tap(); CH = chNew(); draw(); };
+      };
+      draw();
+    }
+  });
+
+  /* =================================================================
+     3. Signes sous l'eau
+     ================================================================= */
+  let SG = null;
+  const SG_N = 10, SG_T = 12;
+  const sgNew = () => { const L = C.games29.signs, order = u.shuffle(L.map((_, i) => i)).slice(0, SG_N);
+    return { rounds: order.map((i, k) => { const rev = k % 3 === 2, wrong = u.shuffle(L.map((_, j) => j).filter(j => j !== i)).slice(0, 3), opts = u.shuffle([i].concat(wrong));
+      return { i, rev, opts }; }), k: 0, good: 0, mist: [], phase: "ready", left: SG_T }; };
+  AA.view("signes", {
+    tab: "train", depth: 6,
+    render(el) {
+      if (!SG || SG.shown) SG = sgNew();
+      const L = C.games29.signs, g = games().signes || {};
+      const stop = () => { clearInterval(SG.timer); SG.timer = null; };
+      const draw = () => {
+        if (!here("signes")) return stop();
+        if (SG.phase === "ready") {
+          el.innerHTML = `${ui.head(t("g29.sg.t"), "jeux")}${hall()}<section class="card g29-intro"><div class="medal">${AA.icon("hand")}</div><div class="stack"><h2>${t("g29.sg.t")}</h2><p>${t("g29.sg.rules", { n: SG_N, s: SG_T })}</p>${g.best != null ? `<p class="chip gold">${t("gm.bestScore", { n: g.best + " / " + SG_N })}</p>` : ""}<button class="btn block" id="sgGo">${AA.icon("play")} ${t("g29.start")}</button></div></section>${validNote()}`;
+          u.$("#sgGo", el).onclick = () => { fx.sfx.up(); SG.phase = "play"; tick(); draw(); };
+          return;
+        }
+        if (SG.phase === "end") return end();
+        const r = SG.rounds[SG.k], ask = r.rev ? L[r.i][1] : L[r.i][0];
+        el.innerHTML = `${ui.head(t("g29.sg.t"), "jeux", `<span class="chip mono">${SG.k + 1} / ${SG_N}</span>`)}${hall()}
+          <div class="bar vf-bar"><i id="sgBar" style="width:${SG.left / SG_T * 100}%"></i></div>
+          <section class="card sg-card"><div class="sg-diver" aria-hidden="true">${AA.icon("hand")}</div><p class="eyebrow">${t(r.rev ? "g29.sg.askGesture" : "g29.sg.askMeaning")}</p><p class="sg-q">${esc(ask)}</p><div id="sgFb" class="small" aria-live="polite"></div></section>
+          <div class="sg-opts">${r.opts.map(j => `<button class="choice g29-opt" data-j="${j}"><span>${esc(r.rev ? L[j][0] : L[j][1])}</span></button>`).join("")}</div>`;
+        u.$$("[data-j]", el).forEach(b => b.onclick = () => pick(+b.dataset.j, b));
+      };
+      const tick = () => { stop(); SG.left = SG_T; SG.timer = setInterval(() => { if (!here("signes")) return stop(); SG.left = Math.max(0, SG.left - .2); const b = u.$("#sgBar", el); if (b) b.style.width = SG.left / SG_T * 100 + "%"; if (SG.left <= 0) pick(-1); }, 200); };
+      const pick = (j, b) => {
+        if (SG.lock || SG.phase !== "play") return; SG.lock = true; stop();
+        const r = SG.rounds[SG.k], ok = j === r.i;
+        if (ok) { SG.good++; fx.sfx.ok(); if (b) b.classList.add("good"); }
+        else { SG.mist.push(r.i); fx.sfx.bad(); if (b) { b.classList.add("wrong"); shake(b); } const gb = u.$(`[data-j="${r.i}"]`, el); if (gb) gb.classList.add("good");
+          const fb = u.$("#sgFb", el); if (fb) fb.textContent = j < 0 ? t("g29.sg.late") : t("g29.sg.was", { a: L[r.i][1] }); }
+        setTimeout(() => { SG.lock = false; SG.k++; if (SG.k >= SG_N) { SG.phase = "end"; } else tick(); draw(); }, ok ? 500 : 1500);
+      };
+      const end = () => {
+        SG.shown = true; stop();
+        if (!SG.res) SG.res = record("signes", SG.good, (a, b) => a > b, SG.good >= 8 ? 25 : 10);
+        el.innerHTML = `${ui.head(t("g29.sg.t"), "jeux")}${hall()}${endCard("hand", t("g29.sg.end"), SG.good + " / " + SG_N, t(SG.good >= 9 ? "g29.sg.top" : SG.good >= 6 ? "g29.sg.mid" : "g29.sg.low"), SG.res, "sgAgain",
+          `${SG.mist.length ? `<div class="section-title"><h3>${t("g29.sg.mist")}</h3></div><div class="review gm-rv">${SG.mist.map(i => `<div class="rv"><b>${esc(L[i][1])}</b><span class="small">${esc(L[i][0])}</span></div>`).join("")}</div>` : ""}${validNote()}`)}`;
+        u.$("#sgAgain", el).onclick = () => { fx.sfx.tap(); SG = sgNew(); SG.phase = "play"; tick(); draw(); };
+      };
+      draw();
+    },
+    leave() { if (SG && SG.timer) { clearInterval(SG.timer); SG.timer = null; if (SG.phase === "play") SG.lock = false; } }
+  });
+
+  /* =================================================================
+     4. Sauvetage chrono
+     ================================================================= */
+  let SV = null;
+  const procs = () => (C.procs || []).filter(p => p.steps && p.steps.flat().length >= 4);
+  const svNew = id => {
+    const L = procs(), p = (id && L.find(x => x.id === id)) || u.pick(L.filter(x => !SV || x.id !== SV.p.id)) || L[0];
+    const groups = p.steps.map(s => [].concat(s)), extra = u.shuffle((p.extra || []).slice()).slice(0, 2);
+    const pool = u.shuffle(groups.flatMap((g, gi) => g.map(txt => ({ txt, gi }))).concat(extra.map(txt => ({ txt, gi: -1 }))));
+    return { p, groups, pool, placed: [], gi: 0, left: groups[0].slice(), pen: 0, errs: 0, t0: 0, done: false };
+  };
+  AA.view("sauvetage", {
+    tab: "train", depth: 10,
+    render(el, [pid]) {
+      if (!SV || SV.shown || (pid && SV.p.id !== pid)) SV = svNew(pid);
+      const g = games().sauvetage || {}, best = (g.by || {})[SV.p.id];
+      const stop = () => { clearInterval(SV.timer); SV.timer = null; };
+      const secs = () => SV.t0 ? Math.round(((SV.t1 || Date.now()) - SV.t0) / 1000) + SV.pen : 0;
+      const draw = () => {
+        if (!here("sauvetage")) return stop();
+        if (SV.done) return end();
+        const total = SV.groups.flat().length;
+        el.innerHTML = `${ui.head(t("g29.sv.t"), "jeux", `<span class="chip mono" id="svT">${secs()} s</span>`)}${hall()}
+          <section class="card g29-scene"><p class="eyebrow">${esc(SV.p.title)}${best ? " · " + t("g29.sv.best", { s: best }) : ""}</p><p>${esc(SV.p.q)}</p>
+            <p class="xs muted">${t("g29.sv.rules")}</p></section>
+          <ol class="sv-done">${SV.placed.map(x => `<li>${esc(x)}</li>`).join("")}${SV.placed.length < total ? `<li class="sv-next">${t("g29.sv.next", { n: SV.placed.length + 1, tot: total })}</li>` : ""}</ol>
+          <div class="sv-pool">${SV.pool.map((x, k) => x.used ? "" : `<button class="choice g29-opt sv-it" data-k="${k}"><span>${esc(x.txt)}</span></button>`).join("")}</div>
+          <div class="row"><button class="btn ghost sm" id="svOther">${AA.icon("refresh")} ${t("g29.sv.other")}</button></div>${validNote()}`;
+        u.$$(".sv-it", el).forEach(b => b.onclick = () => pick(+b.dataset.k, b));
+        u.$("#svOther", el).onclick = () => { stop(); SV = svNew(); draw(); };
+      };
+      const pick = (k, b) => {
+        const x = SV.pool[k]; if (SV.done || x.used) return;
+        if (!SV.t0) { SV.t0 = Date.now(); SV.timer = setInterval(() => { if (!here("sauvetage")) return stop(); const e = u.$("#svT", el); if (e) e.textContent = secs() + " s"; }, 500); }
+        if (x.gi === SV.gi && SV.left.includes(x.txt)) {
+          x.used = true; SV.placed.push(x.txt); SV.left.splice(SV.left.indexOf(x.txt), 1); fx.sfx.ok();
+          if (!SV.left.length) { SV.gi++; if (SV.gi >= SV.groups.length) { SV.done = true; SV.t1 = Date.now(); stop(); fx.sfx.up(); } else SV.left = SV.groups[SV.gi].slice(); }
+          draw();
+        } else {
+          SV.errs++; SV.pen += x.gi < 0 ? 8 : 5; fx.sfx.bad(); fx.buzz && fx.buzz(30); shake(b);
+          if (x.gi < 0) { x.used = true; fx.toast(t("g29.sv.trapT"), t("g29.sv.trapS"), "x"); setTimeout(draw, 500); }
+          else fx.float && fx.float("+5 s", b, "var(--bad)");
+        }
+      };
+      const end = () => {
+        SV.shown = true; const s = secs(), gg = games().sauvetage = games().sauvetage || { n: 0 }; gg.by = gg.by || {};
+        if (!SV.res) { const prev = gg.by[SV.p.id]; SV.res = record("sauvetage", s, (a, b) => a < b, SV.errs === 0 ? 25 : 15); SV.res.rec = !prev || s < prev; if (SV.res.rec) gg.by[SV.p.id] = s; AA.store.save(true); }
+        el.innerHTML = `${ui.head(t("g29.sv.t"), "jeux")}${hall()}${endCard("timer", t("g29.sv.end"), s + " s", t("g29.sv.endS", { e: SV.errs, p: SV.pen }), SV.res, "svAgain",
+          `<section class="card g29-learn"><p class="eyebrow">${esc(SV.p.title)}</p><ol class="small">${SV.groups.map(gr => `<li>${gr.map(esc).join(` <span class="muted">${t("g29.sv.or")}</span> `)}</li>`).join("")}</ol><p class="small">${esc(SV.p.e)}</p></section>${validNote()}`)}`;
+        u.$("#svAgain", el).onclick = () => { fx.sfx.tap(); SV = svNew(); draw(); };
+      };
+      draw();
+    },
+    leave() { if (SV && SV.timer) { clearInterval(SV.timer); SV.timer = null; } }
+  });
+
+  /* =================================================================
+     5. Incident en direct
+     ================================================================= */
+  let IN = null;
+  const IN_T = 15;
+  const inNew = id => { const L = C.games29.incidents, inc = (id && L.find(x => x.id === id)) || u.pick(L.filter(x => !IN || x.id !== IN.inc.id)) || L[0];
+    return { inc, k: 0, stress: 30, good: 0, log: [], left: IN_T, phase: "ready", order: inc.steps.map(s => u.shuffle(s.c.map((_, i) => i))) }; };
+  AA.view("incident", {
+    tab: "train", depth: () => { if (!IN) return 15; const s = IN.inc.steps[Math.min(IN.k, IN.inc.steps.length - 1)]; return s.d != null ? Math.max(2, s.d) : IN.inc.depth; },
+    render(el, [iid]) {
+      if (!IN || IN.shown || (iid && IN.inc.id !== iid)) IN = inNew(iid);
+      const stop = () => { clearInterval(IN.timer); IN.timer = null; };
+      const gauges = () => `<div class="in-gauges"><div class="pl-gauge"><span class="xs">${t("g29.in.stress")}</span><div class="bar"><i class="${IN.stress >= 70 ? "low" : IN.stress >= 45 ? "mid" : "okc"}" style="width:${IN.stress}%"></i></div></div>
+        <div class="pl-gauge"><span class="xs">${t("g29.in.air")} · <b class="mono">${IN.inc.steps[Math.min(IN.k, IN.inc.steps.length - 1)].air} bar</b></span><div class="bar"><i style="width:${IN.inc.steps[Math.min(IN.k, IN.inc.steps.length - 1)].air / 2}%"></i></div></div></div>`;
+      const draw = () => {
+        if (!here("incident")) return stop();
+        if (IN.phase === "ready") {
+          el.innerHTML = `${ui.head(t("g29.in.t"), "jeux")}${hall()}<section class="card g29-intro"><div class="medal">${AA.icon("bolt")}</div><div class="stack"><h2>${esc(IN.inc.title)}</h2><p>${esc(IN.inc.sub)}</p><p class="small">${t("g29.in.rules", { s: IN_T })}</p>
+            <div class="row">${C.games29.incidents.map(x => `<a class="chip ${x.id === IN.inc.id ? "on" : ""}" href="#/incident/${x.id}" aria-pressed="${x.id === IN.inc.id}">${esc(x.title)}</a>`).join("")}</div>
+            <button class="btn block" id="inGo">${AA.icon("play")} ${t("g29.start")}</button></div></section>${validNote()}`;
+          u.$("#inGo", el).onclick = () => { fx.sfx.up(); IN.phase = "play"; tick(); draw(); };
+          return;
+        }
+        if (IN.phase === "end") return end();
+        const s = IN.inc.steps[IN.k];
+        el.innerHTML = `${ui.head(esc(IN.inc.title), "jeux", `<span class="chip mono">${IN.k + 1} / ${IN.inc.steps.length}</span>`)}${hall()}
+          <div class="bar vf-bar"><i id="inBar" style="width:${IN.left / IN_T * 100}%"></i></div>${gauges()}
+          <section class="card in-scene"><p class="eyebrow">${s.d != null ? s.d + " m" : IN.inc.depth + " m"}</p><p>${esc(s.scene)}</p><p><b>${esc(s.q)}</b></p><div id="inFb" class="small" aria-live="polite"></div></section>
+          <div class="sg-opts">${IN.order[IN.k].map(i => `<button class="choice g29-opt" data-i="${i}"><span>${esc(s.c[i].t)}</span></button>`).join("")}</div>`;
+        u.$$("[data-i]", el).forEach(b => b.onclick = () => pick(+b.dataset.i, b));
+      };
+      const tick = () => { stop(); IN.left = IN_T; IN.timer = setInterval(() => { if (!here("incident")) return stop(); IN.left = Math.max(0, IN.left - .2); const b = u.$("#inBar", el); if (b) b.style.width = IN.left / IN_T * 100 + "%"; if (IN.left <= 0) pick(-1); }, 200); };
+      const pick = (i, b) => {
+        if (IN.lock || IN.phase !== "play") return; IN.lock = true; stop();
+        const s = IN.inc.steps[IN.k], c = s.c[i], ok = !!(c && c.ok), right = s.c.find(x => x.ok);
+        if (ok) { IN.good++; IN.stress = Math.max(0, IN.stress - 10); fx.sfx.ok(); b && b.classList.add("good"); }
+        else { IN.stress = Math.min(100, IN.stress + (c ? c.s : 30)); fx.sfx.bad(); if (b) { b.classList.add("wrong"); shake(b); } const gi = s.c.indexOf(right), gb = u.$(`[data-i="${gi}"]`, el); if (gb) gb.classList.add("good"); }
+        IN.log.push({ q: s.q, ok, t: c ? c.t : t("g29.in.late"), e: c ? c.e : t("g29.in.lateE"), right: right.t, re: right.e });
+        const fb = u.$("#inFb", el); if (fb) fb.innerHTML = `${ok ? AA.icon("check") : AA.icon("x")} ${esc(c ? c.e : t("g29.in.lateE"))}`;
+        setTimeout(() => { IN.lock = false; IN.k++; if (IN.stress >= 100 || IN.k >= IN.inc.steps.length) IN.phase = "end"; else tick(); draw(); }, ok ? 1300 : 2400);
+      };
+      const end = () => {
+        IN.shown = true; stop(); const n = IN.inc.steps.length, lost = IN.stress >= 100;
+        const lvl = lost ? "lost" : IN.good === n ? "top" : IN.good >= 3 ? "mid" : "low";
+        if (!IN.res) IN.res = record("incident", lost ? 0 : IN.good, (a, b) => a > b, lvl === "top" ? 30 : lvl === "mid" ? 15 : 5);
+        el.innerHTML = `${ui.head(esc(IN.inc.title), "jeux")}${hall()}${endCard(lost ? "x" : "shield", t("g29.in.end." + lvl), IN.good + " / " + n, t("g29.in.endS." + lvl), IN.res, "inAgain",
+          `<section class="card g29-learn"><p class="eyebrow">${t("g29.learn")}</p><ul class="small">${IN.inc.learn.map(x => `<li>${esc(x)}</li>`).join("")}</ul></section>
+           <div class="section-title"><h3>${t("g29.in.replay")}</h3></div><div class="review gm-rv">${IN.log.map(x => `<div class="rv"><b>${esc(x.q)}</b><span class="small">${x.ok ? AA.icon("check") : AA.icon("x")} ${esc(x.t)}</span>${x.ok ? "" : `<span class="small">${AA.icon("check")} ${esc(x.right)}</span>`}<span class="xs muted">${esc(x.ok ? x.e : x.re)}</span></div>`).join("")}</div>
+           <a class="small" href="#/lesson/${IN.inc.m}">${t("g29.toLesson")}</a>${validNote()}`)}`;
+        u.$("#inAgain", el).onclick = () => { fx.sfx.tap(); IN = inNew(); draw(); };
+      };
+      draw();
+    },
+    leave() { if (IN && IN.timer) { clearInterval(IN.timer); IN.timer = null; IN.lock = false; } }
+  });
+
+  /* ---------- Tuiles dans l'espace Jeux ---------- */
+  const TILES = [["palier", "gauge", "g29.pl.t", "g29.pl.s", g => g.best != null ? t("gm.bestScore", { n: g.best }) : ""],
+    ["chasse", "eye", "g29.ch.t", "g29.ch.s", g => g.best != null ? t("gm.bestScore", { n: g.best + " s" }) : ""],
+    ["signes", "hand", "g29.sg.t", "g29.sg.s", g => g.best != null ? t("gm.bestScore", { n: g.best + " / " + SG_N }) : ""],
+    ["sauvetage", "timer", "g29.sv.t", "g29.sv.s", g => g.n ? t("g29.sv.played", { n: g.n }) : ""],
+    ["incident", "bolt", "g29.in.t", "g29.in.s", g => g.best != null ? t("gm.bestScore", { n: g.best + " / 5" }) : ""]];
+  AA.g29.tiles = TILES.map(x => x[0]);
+  AA.g29.state = { chasse: () => CH, signes: () => SG, sauvetage: () => SV, incident: () => IN, palier: () => PS };
+  if (V.jeux) {
+    const j0 = V.jeux.render;
+    V.jeux.render = function (el, args) {
+      const out = j0.call(this, el, args), m = u.$(".gm-minis", el);
+      if (m && !u.$(".g29-tiles", el)) {
+        const gs = games();
+        m.insertAdjacentHTML("afterend", `<div class="section-title g29-sec"><h3>${t("g29.secT")}</h3><span class="xs muted">${t("g29.secS")}</span></div>
+          <section class="gm-minis g29-tiles">${TILES.map(([id, ic, tt, ss, b]) => `<a class="gm-tile g29-tile" href="#/${id}"><span class="medal">${AA.icon(ic)}</span><span class="grow"><b>${t(tt)}</b><span class="small muted">${t(ss)}</span><span class="xs">${b(gs[id] || {}) || t("gm.noBest")}</span></span></a>`).join("")}</section>`);
+      }
+      return out;
+    };
+  }
 })();
 
 /* locales/fr.js */
@@ -12258,6 +12962,54 @@ AA.i18n.add("fr", {
   "cl.errOld": "Tu as déjà une carte plus récente de ce plongeur.", "cl.errFull": "Le classement est complet (80 plongeurs). Retire quelqu’un pour en ajouter un.",
   "cl.errVerT": "Questions introuvables", "cl.errVer": "Ce défi vient d’une autre version de l’appli. Mettez-la à jour tous les deux.",
   "cl.privacy": "Les codes contiennent ton prénom et tes scores, rien d’autre. Ils sont vérifiés à la lecture pour repérer une erreur de copie, mais ce n’est pas une protection contre la triche : le classement reste entre copains."
+});
+
+/* 2.9 : sauvegarde, récupération, brevet blanc, carte marine, mises en situation */
+AA.i18n.add("fr", {
+  "rec.t": "Tes données semblent abîmées", "rec.s": "La sauvegarde de cet appareil n’a pas pu être lue. Rien n’est effacé : choisis comment repartir.",
+  "rec.looking": "Recherche des copies de secours…", "rec.snap": "Restaurer la copie du {d} ({xp} XP)", "rec.noSnap": "Aucune copie de secours sur cet appareil.",
+  "rec.import": "Importer un fichier de sauvegarde", "rec.raw": "Télécharger les données abîmées", "rec.rawT": "Données abîmées",
+  "rec.fresh": "Repartir de zéro", "rec.freshQ": "Repartir de zéro ? Télécharge d’abord les données abîmées si tu veux les garder.", "rec.freshYes": "Repartir de zéro",
+  "rec.note": "Si ton compte Google Drive est lié, ta progression reviendra aussi à la prochaine synchronisation.",
+  "rec.okT": "Progression récupérée", "rec.okS": "La copie de secours a été restaurée ({xp} XP).", "rec.failT": "Copie illisible", "rec.failS": "Essaie une autre copie ou un fichier.",
+  "exw.t": "Ta sauvegarde de la semaine", "exw.s": "Ta progression est sauvée sur cet appareil. Dernier export : {d}. Garde aussi une copie ailleurs, une fois par semaine.",
+  "exw.never": "Ta progression est sauvée sur cet appareil. Garde aussi une copie ailleurs (fichier), une fois par semaine.", "exw.now": "Exporter maintenant",
+  "cert.kicker": "Brevet blanc · Abysse Academy", "cert.title": "Certificat de réussite", "cert.partT": "Attestation de passage", "cert.line": "décerné à <b>{name}</b>",
+  "cert.date": "Le {d}", "cert.foot": "Examen d’entraînement : ce document n’est pas un diplôme fédéral.",
+  "cert.m.tb": "Mention très bien", "cert.m.b": "Mention bien", "cert.m.ab": "Mention assez bien", "cert.m.ok": "Admis", "cert.m.no": "Encore un effort : vise 10 / 20",
+  "cert.print": "Imprimer", "cert.dl": "Garder le certificat", "cert.dlT": "Certificat",
+  "cert.timeLeft": "Temps restant", "cert.hall": "Salle d’examen · silence, on plonge",
+  "cert.intro": "{n} questions · {m} minutes", "cert.intro2": "Téléphone en silencieux, calculatrice autorisée. Bonne plongée !",
+  "rd.chart": "Carte marine du cursus · la profondeur augmente à chaque niveau", "rd.guide": "Guider", "rd.teach": "Enseigner", "rd.train": "Former",
+  "g29.secT": "Mises en situation", "g29.secS": "Des réflexes de plongeur, en jouant",
+  "g29.start": "C’est parti", "g29.record": "Nouveau record", "g29.noXp": "XP déjà gagnés 3 fois aujourd’hui", "g29.learn": "À retenir", "g29.toLesson": "Revoir le cours",
+  "g29.valid": "Contenu pédagogique à faire valider par ton moniteur : les règles et signes peuvent varier selon les clubs.",
+  "g29.pl.t": "Palier en direct", "g29.pl.s": "Remonte au bon rythme et fais tes paliers",
+  "g29.pl.rules": "Tu termines ta plongée au fond. À toi de remonter : choisis quand t’arrêter et à quelle vitesse monter.",
+  "g29.pl.r1": "Ne passe jamais au-dessus du plafond (zone rouge).", "g29.pl.r2": "Monte lentement : « vite » déclenche l’alarme de vitesse.",
+  "g29.pl.r3": "Fais un palier de sécurité de 3 minutes entre 3 et 6 m.", "g29.pl.r4": "Arrive en surface avec au moins 50 bar.",
+  "g29.pl.fict": "Modèle de saturation fictif et simplifié, pour comprendre le principe. Ce n’est ni la table MN90 ni ton ordinateur : ne l’utilise jamais pour plonger.",
+  "g29.pl.depth": "Profondeur", "g29.pl.ceil": "Plafond", "g29.pl.stop": "Palier", "g29.pl.sat": "Saturation (modèle fictif)", "g29.pl.air": "Air",
+  "g29.pl.hold": "Stop", "g29.pl.slow": "Monter lentement", "g29.pl.fast": "Monter vite", "g29.pl.ff": "Accélérer ×4",
+  "g29.pl.fastS": "Alarme : vitesse trop rapide !", "g29.pl.near": "Plafond tout proche : arrête-toi !", "g29.pl.stopAt": "Palier obligatoire à {d} m", "g29.pl.safe": "Pas de palier obligatoire : pense au palier de sécurité", "g29.pl.safeShort": "Sécurité", "g29.pl.free": "Tu peux finir la remontée",
+  "g29.pl.overT": "Plafond franchi", "g29.pl.over": "Tu es passé au-dessus du plafond : dans une vraie plongée, c’est le risque d’accident de désaturation.",
+  "g29.pl.outT": "Panne d’air", "g29.pl.out": "Plus d’air avant la surface : surveille ton manomètre et garde ta réserve.", "g29.pl.doneT": "Surface !",
+  "g29.pl.fastN": "{n} remontée(s) trop rapide(s)", "g29.pl.speedOk": "Vitesse maîtrisée", "g29.pl.lowAir": "réserve entamée ({b} bar)", "g29.pl.airOk": "{b} bar en surface",
+  "g29.pl.safeOk": "palier de sécurité fait", "g29.pl.safeNo": "palier de sécurité oublié",
+  "g29.pl.l1": "Le plafond remonte pendant que tu désatures : on attend qu’il se lève avant de monter.", "g29.pl.l2": "Une remontée lente laisse le temps à l’azote de s’éliminer.", "g29.pl.l3": "Les vraies valeurs viennent de ta table ou de ton ordinateur, jamais de ce jeu.",
+  "g29.ch.t": "Chasse aux erreurs", "g29.ch.s": "Trouve les 5 dangers cachés dans la scène", "g29.ch.goal": "Touche les {n} dangers", "g29.ch.found": "{n} / {tot} trouvés",
+  "g29.ch.win": "Tous les dangers trouvés", "g29.ch.winS": "Il te restait {l} vie(s).", "g29.ch.lose": "Plus de vies", "g29.ch.loseS": "Relis les dangers ci-dessous, puis retente ta chance.", "g29.ch.all": "Les dangers de la scène",
+  "g29.sg.t": "Signes sous l’eau", "g29.sg.s": "Reconnais les signes avant la fin du chrono", "g29.sg.rules": "{n} signes, {s} secondes pour chacun. Parfois on te donne le geste, parfois le sens.",
+  "g29.sg.askMeaning": "Que veut dire ce signe ?", "g29.sg.askGesture": "Quel geste fais-tu pour dire :", "g29.sg.late": "Trop tard ! Sous l’eau, il faut répondre vite.", "g29.sg.was": "C’était : {a}",
+  "g29.sg.end": "Fin de la série", "g29.sg.top": "Tu parles couramment le langage des plongeurs.", "g29.sg.mid": "Pas mal ! Revois les signes manqués.", "g29.sg.low": "Revois les signes au cours N1, puis retente.", "g29.sg.mist": "Signes à revoir",
+  "g29.sv.t": "Sauvetage chrono", "g29.sv.s": "Remets les gestes d’urgence dans l’ordre, vite", "g29.sv.rules": "Touche les gestes dans l’ordre. Une erreur : +5 s. Un geste dangereux : +8 s.",
+  "g29.sv.next": "Geste {n} sur {tot}…", "g29.sv.other": "Autre situation", "g29.sv.trapT": "Geste dangereux", "g29.sv.trapS": "Ce geste ne fait pas partie de la procédure : +8 s.",
+  "g29.sv.end": "Procédure terminée", "g29.sv.endS": "{e} erreur(s), {p} s de pénalité", "g29.sv.or": "ou", "g29.sv.best": "record {s} s", "g29.sv.played": "{n} sauvetage(s) réussi(s)",
+  "g29.in.t": "Incident en direct", "g29.in.s": "Panne d’air ou courant fort : décide vite", "g29.in.rules": "Cinq décisions, {s} secondes pour chacune. Chaque erreur fait monter le stress de la palanquée.",
+  "g29.in.stress": "Stress de la palanquée", "g29.in.air": "Air", "g29.in.late": "Pas de réponse à temps", "g29.in.lateE": "Hésiter trop longtemps aggrave la situation : il faut agir.",
+  "g29.in.end.top": "Incident maîtrisé", "g29.in.end.mid": "Sortis d’affaire", "g29.in.end.low": "Sauvés de justesse", "g29.in.end.lost": "Incident aggravé",
+  "g29.in.endS.top": "Toutes les bonnes décisions, au bon moment.", "g29.in.endS.mid": "Quelques hésitations : revois les étapes ci-dessous.", "g29.in.endS.low": "Trop d’erreurs : la palanquée s’en sort, mais de peu.", "g29.in.endS.lost": "Le stress a tout emporté. Le directeur de plongée a dû intervenir.",
+  "g29.in.replay": "Tes décisions"
 });
 
 /* content/fr/worlds.js */
@@ -23139,6 +23891,210 @@ ${val("<p>Délais avant l’avion recommandés par la FFESSM et par le fabricant
   ];
   /* Mots en capitales qui ne sont pas des sigles (insistance, signes). */
   C.siglesOk = ["OK", "PAS", "ET", "NE", "NON", "OUI", "SAUF", "FAUX", "VRAI", "JAMAIS", "TOUJOURS", "NO", "FLY", "SAFETY", "STOP", "PA", "PE"];
+})();
+
+/* content/fr/games29.js */
+/* =====================================================================
+   Abysse Academy 2.9 · contenus des mises en situation (mini-jeux)
+   Chasse aux erreurs, signes sous l'eau, incidents en direct.
+   Personnages et sites inventés. Contenus « À faire valider » par ton
+   moniteur : les signes et les conduites à tenir peuvent varier selon
+   les clubs et les fédérations.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const C = AA.content;
+  const G = (C.games29 = {});
+
+  /* ---------- Chasse aux erreurs : [texte, danger ?, explication, module] ---------- */
+  G.scenes = [
+    { id: "pont", title: "Sur le bateau, avant la mise à l’eau", art: "boat", sub: "Palanquée autonome PA20 : toi, Jade et Paul.",
+      items: [
+        ["Le robinet du bloc de Paul n’est ouvert que d’un quart de tour.", 1, "Un robinet à peine ouvert peut limiter le débit en profondeur : on l’ouvre complètement avant la mise à l’eau.", "materiel"],
+        ["Jade a dormi trois heures après une soirée très arrosée.", 1, "Fatigue et alcool favorisent l’accident de désaturation et la narcose. Elle doit le dire au DP, qui décidera.", "accidents"],
+        ["Paul n’a pas d’ordinateur et compte suivre celui de Jade.", 1, "En autonomie, chacun doit pouvoir contrôler sa propre plongée et sa remontée (ordinateur, ou tables avec montre et profondimètre).", "regles"],
+        ["La palanquée n’a fixé aucune pression de demi-tour.", 1, "Sans pression de retour décidée avant, on rentre trop tard. On la fixe au briefing de palanquée.", "pa20"],
+        ["Personne n’a de parachute de palier dans la palanquée.", 1, "Sans moyen de se signaler, une palanquée qui fait surface loin du bateau est difficile à repérer.", "pa20"],
+        ["Le DP a annoncé le site, la profondeur maxi et l’heure de sortie.", 0, "C’est le rôle du directeur de plongée : tout va bien ici.", "regles"],
+        ["Ton masque est rincé et passé au produit désembuant.", 0, "Bonne préparation : un masque qui ne s’embue pas, c’est plus de confort et de sécurité.", "materiel"],
+        ["Le gilet de Jade gonfle et se purge normalement au test.", 0, "Le test du gilet avant de sauter fait partie des vérifications : rien à signaler.", "materiel"],
+        ["La mer est calme et le courant est annoncé faible.", 0, "Conditions favorables : rien de dangereux ici.", "environnement"],
+        ["Chacun a sa source de secours bien visible sur la poitrine.", 0, "La source de secours doit être accessible et repérable : c’est parfait.", "materiel"]
+      ] },
+    { id: "fond", title: "Au fond, à 18 m", art: "reef", sub: "Vous êtes trois en autonomie, limite fixée à 20 m.",
+      items: [
+        ["Ton manomètre affiche 70 bar et la palanquée s’éloigne encore.", 1, "La pression de retour est dépassée : il fallait déjà faire demi-tour pour garder la réserve.", "pa20"],
+        ["Jade est restée en arrière, hors de vue depuis une minute.", 1, "La palanquée se perd de vue : on s’arrête, on se regroupe, ou on applique la procédure de perte.", "regles"],
+        ["Tu palmes fort contre le courant et ton souffle s’accélère.", 1, "C’est le début de l’essoufflement : on s’arrête, on expire longuement, on s’abrite du courant.", "physio"],
+        ["Ton ordinateur affiche 24 m alors que la limite est de 20 m.", 1, "En PA20, la limite est de 20 m : on remonte au-dessus et on le signale à la palanquée.", "regles"],
+        ["Paul s’accroche au corail pour mieux se stabiliser.", 1, "Le corail est fragile et parfois urticant : on se stabilise au gilet et au poumon.", "environnement"],
+        ["Vous échangez le signe « ça va » toutes les quelques minutes.", 0, "Se surveiller régulièrement, c’est exactement ce qu’on attend d’une palanquée autonome.", "pa20"],
+        ["Ton gilet est un peu gonflé, tu restes bien équilibré.", 0, "Bonne flottabilité : pas d’effort inutile, pas de contact avec le fond.", "archimede"],
+        ["Un mérou vous observe de loin, sans s’approcher.", 0, "On l’observe sans le toucher ni le nourrir : aucune raison de s’inquiéter.", "environnement"],
+        ["Vous longez le tombant en gardant le bateau du bon côté.", 0, "Bonne orientation : vous savez où se trouve le mouillage.", "pa20"],
+        ["L’ordinateur indique encore quinze minutes sans palier.", 0, "Information normale : vous restez dans la courbe de sécurité.", "deco"]
+      ] },
+    { id: "remontee", title: "Pendant la remontée", art: "ascent", sub: "Fin de plongée en autonomie, il reste 80 bar.",
+      items: [
+        ["Tu remontes plus vite que tes plus petites bulles.", 1, "Vitesse trop rapide : on purge le gilet et on ralentit. L’ordinateur sonnerait aussi.", "deco"],
+        ["Tu bloques ta respiration sur les derniers mètres.", 1, "C’est là que le volume d’air change le plus : risque de surpression pulmonaire. On expire.", "accidents"],
+        ["L’ordinateur demande un palier et tu fais surface sans le faire.", 1, "Un palier obligatoire sauté expose à un accident de désaturation : on le fait jusqu’au bout.", "deco"],
+        ["Jade remonte seule pendant que tu termines ta photo.", 1, "La palanquée remonte ensemble : on ne laisse jamais son binôme seul.", "pa20"],
+        ["Ton gilet est gonflé à fond à 10 m pour monter plus vite.", 1, "Le gilet se dilate en montant : remontée incontrôlée assurée. On le purge au fur et à mesure.", "mariotte"],
+        ["Tu purges ton gilet régulièrement pour garder la vitesse.", 0, "C’est le bon geste : l’air du gilet se dilate pendant la remontée.", "mariotte"],
+        ["Vous faites trois minutes de palier de sécurité vers 5 m.", 0, "Le palier de sécurité est recommandé même sans palier obligatoire.", "deco"],
+        ["Tu regardes vers la surface et tournes sur toi-même en sortant.", 0, "Tour d’horizon avant de sortir : on repère bateaux et obstacles.", "pa20"],
+        ["Vous restez face à face pendant toute la remontée.", 0, "Face à face, chacun surveille l’autre : c’est parfait.", "pa20"],
+        ["Tu lèves un bras au-dessus de la tête sur les derniers mètres.", 0, "Le bras levé protège la tête d’une coque ou d’un obstacle en surface.", "pa20"]
+      ] }
+  ];
+
+  /* ---------- Signes sous l'eau : [geste, sens] ---------- */
+  G.signs = [
+    ["Pouce et index forment un anneau, les autres doigts tendus.", "Tout va bien"],
+    ["Main ouverte à plat, qui oscille de droite à gauche.", "Quelque chose ne va pas"],
+    ["Poing fermé, pouce tendu vers le haut.", "On remonte"],
+    ["Poing fermé, pouce tendu vers le bas.", "On descend"],
+    ["Poing fermé, montré devant le masque.", "Je suis sur la réserve"],
+    ["Tranchant de la main qui passe devant la gorge.", "Je n’ai plus d’air"],
+    ["Main à plat qui monte et descend devant la poitrine.", "Je suis essoufflé"],
+    ["Bras croisés, les mains frottent le haut des bras.", "J’ai froid"],
+    ["Index qui montre l’oreille, puis main qui oscille.", "J’ai un problème d’oreille"],
+    ["Main à plat, paume vers le bas, qui reste immobile.", "On reste à cette profondeur"],
+    ["En surface, bras en arc, la main posée sur la tête.", "Tout va bien en surface"],
+    ["En surface, bras tendu qui s’agite de haut en bas.", "Détresse : venez me chercher"],
+    ["De nuit, la lampe décrit un cercle lent.", "Tout va bien (de nuit)"],
+    ["De nuit, la lampe s’agite vite de gauche à droite.", "Problème (de nuit)"]
+  ];
+  G.signsModule = "n1-signes";
+
+  /* ---------- Incidents en direct ---------- */
+  const O = (t, e) => ({ t, ok: 1, e }), X = (t, e, s) => ({ t, ok: 0, e, s: s || 25 });
+  G.incidents = [
+    { id: "air", title: "Panne d’air à 18 m", m: "pa20", sub: "Palanquée autonome, toi et Jade. Ton manomètre : 120 bar.", depth: 18,
+      steps: [
+        { scene: "Jade arrive vers toi et fait le signe « plus d’air », les yeux écarquillés.", q: "Que fais-tu tout de suite ?", air: 120,
+          c: [X("Je lui montre la surface pour qu’elle remonte en expirant.", "Une remontée seule et sans air, c’est le risque de surpression et de panique. Tu as de l’air : partage-le.", 35),
+              O("Je lui présente ma source de secours et je la saisis par le gilet.", "La source de secours d’abord, et un contact solide pour ne pas vous séparer."),
+              X("Je regarde d’abord son manomètre pour comprendre la panne.", "Chaque seconde compte : on donne de l’air avant de chercher la cause.")] },
+        { scene: "Elle respire sur ton détendeur, vite et fort.", q: "Et maintenant ?", air: 112,
+          c: [X("Je lance la remontée tout de suite, il faut sortir d’ici.", "Remonter avec quelqu’un qui hyperventile, c’est risquer qu’il lâche le détendeur. On stabilise d’abord."),
+              X("Je lâche son gilet pour lui faire le signe « ça va ».", "Ne jamais lâcher la victime : le contact la rassure et évite la séparation."),
+              O("Je la tiens face à moi et j’attends que son souffle se calme.", "Face à face, tu vérifies qu’elle respire bien sur ta source avant d’annoncer la remontée.")] },
+        { scene: "Son souffle ralentit. Ton manomètre : 100 bar pour deux.", q: "Comment remontez-vous ?", air: 100, d: 18,
+          c: [O("Ensemble, en réglant la vitesse avec la purge des gilets.", "Une remontée à deux, contrôlée, en restant face à face."),
+              X("Je gonfle son gilet à fond pour qu’elle monte devant moi.", "Un gilet gonflé à fond, c’est une remontée en ballon et un détendeur arraché.", 35),
+              X("En palmant fort, chacun à son rythme vers la surface.", "Chacun à son rythme, vous vous séparez et elle n’a plus d’air.")] },
+        { scene: "À 5 m. Pas de palier obligatoire. Il reste 60 bar pour deux.", q: "Que décides-tu ?", air: 60, d: 5,
+          c: [X("On saute le palier : après une panne d’air, on sort tout de suite.", "Pas toujours : si l’air restant le permet, le palier de sécurité est une protection en plus."),
+              O("Un court palier de sécurité, si l’air restant le permet.", "Avec 60 bar à deux, quelques minutes à 5 m restent possibles. On surveille le manomètre."),
+              X("On reste dix minutes à 5 m pour bien désaturer.", "À deux sur une bouteille, l’air fond vite : un palier trop long t’expose à ta propre panne.")] },
+        { scene: "Surface. Le bateau est à 50 m.", q: "Que fais-tu ?", air: 45, d: 0,
+          c: [X("On nage vers le bateau sans prévenir, il n’est pas loin.", "On sécurise et on se signale d’abord : le bateau doit savoir qu’il y a eu un incident."),
+              X("J’enlève mon masque pour lui demander tout de suite ce qui s’est passé.", "Le débriefing viendra au bateau. En surface, flottabilité et signalement d’abord."),
+              O("Je gonfle son gilet, je reste près d’elle et j’alerte le bateau.", "Flottabilité, contact, alerte : le bateau vient vous chercher et le DP est informé.")] }
+      ],
+      learn: ["Donner de l’air d’abord, comprendre après.", "Contact solide et face à face pendant toute la remontée.", "Palier de sécurité seulement si l’air le permet."] },
+    { id: "courant", title: "Courant fort au retour", m: "environnement", sub: "Fin de plongée à 15 m, le mouillage est loin. Toi et Jade.", depth: 15,
+      steps: [
+        { scene: "Le courant forcit : vous palmez sans avancer. Jade respire vite.", q: "Ta première réaction ?", air: 90,
+          c: [X("On palme plus fort pour rejoindre le mouillage avant d’être épuisés.", "Lutter contre le courant mène tout droit à l’essoufflement. On s’arrête d’abord.", 35),
+              X("On monte tout de suite en pleine eau pour nager en surface.", "Une remontée improvisée sans palier ni plan, c’est ajouter un risque au premier."),
+              O("On s’arrête et on se plaque près du fond, à l’abri d’un rocher.", "Le courant est plus faible près du fond et derrière les reliefs : on souffle à l’abri.")] },
+        { scene: "À l’abri. Jade souffle encore fort.", q: "Comment l’aides-tu ?", air: 82,
+          c: [O("Je lui montre une longue expiration et je la tiens immobile.", "L’expiration longue fait baisser le gaz carbonique : c’est la clé de l’essoufflement."),
+              X("Je lui fais signe d’inspirer à fond pour se calmer.", "Inspirer à fond n’aide pas : c’est l’expiration longue qui fait sortir le gaz carbonique."),
+              X("Je lui fais signe de reprendre la route vers le mouillage.", "Repartir avant d’avoir récupéré, c’est relancer l’essoufflement.")] },
+        { scene: "Jade va mieux. Le mouillage est à 80 m, contre le courant. Ton manomètre : 70 bar.", q: "Que décidez-vous ?", air: 70,
+          c: [X("On attend ici que le courant faiblisse, même si l’air baisse.", "Le courant peut durer : attendre en consommant, c’est te priver de ta réserve."),
+              O("On remonte ensemble, à vitesse contrôlée, le parachute prêt.", "On renonce au mouillage : remontée normale, palier, et le bateau viendra vous chercher."),
+              X("On repart contre le courant en restant en pleine eau.", "En pleine eau, le courant est encore plus fort : épuisement garanti.")] },
+        { scene: "Pendant le palier, vous dérivez avec le courant.", q: "Que fais-tu ?", air: 55, d: 5,
+          c: [X("On finit le palier plus profond pour moins dériver.", "Le palier se fait à la profondeur prévue : la dérive n’est pas un danger si on est repérés."),
+              O("J’envoie le parachute de palier pour que le bateau nous suive.", "Le parachute signale votre position pendant toute la dérive : le bateau vous suit."),
+              X("On abrège le palier pour retrouver le bateau plus vite.", "Abréger le palier pour gagner du temps, c’est échanger un problème contre un accident.")] },
+        { scene: "Surface, loin du bateau. La mer s’est formée.", q: "Que faites-vous ?", air: 45, d: 0,
+          c: [O("Gilets gonflés, on reste ensemble et on se signale au bateau.", "Ensemble et visibles : le parachute levé, le bateau vous rejoint."),
+              X("On se sépare pour nager vers la côte et gagner du temps.", "Séparés, vous êtes deux fois plus difficiles à repérer et à secourir."),
+              X("On retire les blocs pour nager plus facilement vers lui.", "Le bloc et le gilet gonflé sont ta flottabilité : on garde tout et on attend le bateau.")] }
+      ],
+      learn: ["Courant fort : on s’arrête, on s’abrite, on ne lutte pas.", "Essoufflement : expiration longue, immobilité.", "Parachute de palier : on reste visible pendant la dérive."] }
+  ];
+})();
+
+/* content/fr/stories-29.js */
+/* Abysse Academy · contenu FR · Aventure 2.9 : la plongée guidée
+   Une plongée complète, du briefing à la sortie, encadrée par une guide
+   de palanquée jusqu'à 30 m (prérogative PE40 du N2). La profondeur de
+   chaque scène suit la plongée : la lumière baisse en descendant.
+   Personnages et site inventés. « À faire valider » auprès de ton moniteur. */
+(function () {
+  const C = AA.content;
+  const O = (t, e, m, go) => ({ t, ok: 1, e, m, go });
+  const X = (t, e, m, go) => (go ? { t, ok: 0, e, m, go } : { t, ok: 0, e, m });
+
+  C.addStory({
+    id: "n2-guidee", world: "n2", role: "Plongeur encadré à 30 m (N2)", icon: "dive", xp: 90, title: "La plongée guidée", sub: "Une plongée complète au Sec des Mérous avec Léa, guide de palanquée.",
+    unlock: null, start: "g1", cast: { lea: "Léa, guide de palanquée", tom: "Tom, ton binôme N2" },
+    nodes: {
+      g1: { depth: 0, scene: "Sur le bateau, 9 h. Mer belle, eau à 19 °C.", who: "lea", text: "Le Sec des Mérous : 30 m maximum, 45 minutes, retour au mouillage. Des questions ?", q: "Que fais-tu ?",
+        choices: [
+          X("Rien : elle connaît le site et je la suivrai de toute façon.", "Même encadré, tu dois connaître le plan : profondeur, durée, signes et conduite à tenir si on se perd.", "regles"),
+          O("Je lui fais préciser ce qu’on fait si on se perd de vue.", "La conduite en cas de perte se décide avant la plongée : sous l’eau, on communique mal.", "regles", "g2"),
+          X("Je demande si on pourra descendre un peu plus bas que prévu.", "La profondeur maximale est fixée par la guide selon vos niveaux et les conditions : elle ne se négocie pas.", "regles") ] },
+      g2: { depth: 0, scene: "Tom et toi vous équipez côte à côte.", who: "tom", text: "On fait les vérifications avant de sauter ?", q: "Que vérifiez-vous ensemble ?",
+        choices: [
+          X("Juste le manomètre : le reste a été contrôlé au club ce matin.", "Un robinet refermé ou un direct system débranché, ça arrive : on vérifie juste avant de sauter.", "materiel"),
+          X("Rien pour l’instant, on contrôlera le lestage à la descente.", "Les vérifications se font en surface, avant de descendre : sous l’eau, il est trop tard.", "materiel"),
+          O("Bloc ouvert, gilet qui gonfle et purge, détendeurs qui respirent.", "Robinet, gilet, détendeur principal et source de secours : la vérification croisée évite les mauvaises surprises.", "materiel", "g3") ] },
+      g3: { depth: 3, scene: "Descente le long du bout, à 3 m.", text: "Ton oreille droite coince, elle fait de plus en plus mal.", q: "Que fais-tu ?",
+        choices: [
+          O("Je m’arrête, je remonte d’un mètre et je réessaie doucement.", "En remontant un peu, l’écart de pression diminue et l’oreille se débloque plus facilement.", "accidents", "g4"),
+          X("Je souffle très fort, nez pincé, pour que ça passe d’un coup.", "Un Valsalva en force peut léser l’oreille. On remonte un peu au lieu de forcer.", "accidents", "g3bad"),
+          X("Je continue à suivre Léa, ça finira par passer en bas.", "Plus tu descends, plus l’écart augmente. Il faut s’arrêter et prévenir la guide.", "accidents") ] },
+      g3bad: { depth: 0, end: true, bad: true, retry: "g3", title: "Plongée annulée", text: "Une douleur vive, puis un vertige : Léa te ramène en surface. Le médecin parlera d’un barotraumatisme de l’oreille.",
+        why: "Forcer sur une oreille bloquée crée une surpression brutale. Il fallait s’arrêter, remonter un peu et réessayer doucement.", learn: ["On équilibre tôt et souvent, sans forcer.", "Oreille bloquée : on remonte d’un mètre et on prévient la guide."] },
+      g4: { depth: 20, scene: "20 m. Un gros mérou sous une roche.", who: "tom", text: "Tom s’approche et tend la main vers lui.", q: "Que fais-tu ?",
+        choices: [
+          X("Je le laisse faire : ce mérou a l’habitude des plongeurs.", "Toucher un animal le stresse et peut te blesser. On observe à distance.", "environnement"),
+          O("Je l’arrête d’un signe : on regarde sans toucher.", "Un bon plongeur ne touche ni la faune ni la flore : c’est aussi ta sécurité.", "environnement", "g5"),
+          X("Je m’approche aussi pour faire une photo de tout près.", "S’approcher trop près dérange l’animal et abîme les fonds avec les palmes.", "environnement") ] },
+      g5: { depth: 30, scene: "30 m, au pied du sec.", text: "Tu te sens léger et euphorique, tout te fait rire.", q: "Que fais-tu ?",
+        choices: [
+          X("J’en profite pour m’éloigner un peu et explorer le tombant.", "L’euphorie est un signe de narcose : s’éloigner seul est justement l’erreur qu’elle provoque.", "accidents"),
+          X("Je respire plus vite pour chasser cette sensation bizarre.", "Respirer vite augmente le gaz carbonique, qui renforce la narcose.", "accidents"),
+          O("Je le signale à Léa et on remonte de quelques mètres.", "La narcose diminue dès qu’on remonte un peu. On la signale toujours à la guide.", "accidents", "g6") ] },
+      g6: { depth: 25, scene: "25 m. Léa demande la pression à chacun.", text: "Ton manomètre affiche 100 bar.", q: "Que lui réponds-tu ?",
+        choices: [
+          O("Je lui montre ma pression avec le signe vu au briefing.", "La guide gère l’air de toute la palanquée : elle a besoin d’une réponse exacte.", "pa20", "g7"),
+          X("Je lui fais « ça va » : ma pression, c’est mon affaire.", "La guide décide du retour selon l’air de chacun : sans réponse précise, elle ne peut pas le faire.", "pa20"),
+          X("J’annonce 150 bar pour pouvoir continuer la balade.", "Mentir sur sa pression, c’est risquer la panne d’air de toute la palanquée.", "pa20") ] },
+      g7: { depth: 15, scene: "Retour vers le mouillage, 15 m.", text: "Tu te retournes : Tom n’est plus derrière toi.", q: "Que fais-tu ?",
+        choices: [
+          X("Je pars seul le chercher derrière la grosse roche.", "En partant seul, la palanquée se perd une deuxième fois. On prévient la guide.", "regles", "g7bad"),
+          O("Je préviens Léa tout de suite d’un signe.", "La guide est responsable de la palanquée : c’est elle qui organise la recherche.", "regles", "g8"),
+          X("Je continue derrière Léa, elle compte la palanquée.", "Chacun surveille ses équipiers : si tu as vu qu’il manque, tu le dis tout de suite.", "regles") ] },
+      g7bad: { depth: 0, end: true, bad: true, retry: "g7", title: "Deux plongeurs perdus", text: "Derrière la roche, personne. Tu te retrouves seul. Tu remontes et attends en surface. Tom, lui, avait retrouvé Léa : c’est toi qu’on cherche.",
+        why: "Partir seul transforme une perte en deux. Le bon réflexe : prévenir la guide, qui applique la procédure annoncée au briefing.", learn: ["Perte de palanquée : on applique la procédure du briefing.", "En plongée encadrée, on prévient la guide avant tout."] },
+      g8: { depth: 10, scene: "Léa lance la remontée.", text: "Ton ordinateur bipe : tu montes trop vite.", q: "Que fais-tu ?",
+        choices: [
+          X("Je gonfle un peu mon gilet pour rester au niveau de Léa.", "L’air du gilet se dilate en montant : tu accélères encore. Il faut purger.", "mariotte"),
+          O("Je purge mon gilet et je cale ma vitesse sur celle de Léa.", "En remontée, on purge au fur et à mesure : la vitesse reste maîtrisée.", "mariotte", "g9"),
+          X("Je palme vers le haut, Léa est déjà au-dessus de moi.", "Palmer vers la surface accélère la remontée. On reste avec la guide, à sa vitesse.", "deco") ] },
+      g9: { depth: 5, scene: "5 m. Léa annonce un palier de sécurité de trois minutes.", text: "La houle te fait un peu monter et descendre.", q: "Que fais-tu pendant le palier ?",
+        choices: [
+          X("Je monte à 2 m, c’est plus confortable avec la houle.", "Le palier se fait à la profondeur annoncée : à 2 m, il perd son intérêt.", "deco"),
+          X("Je dépasse Léa pour finir le palier au plus près de la surface.", "On ne dépasse pas la guide : la palanquée fait son palier ensemble.", "deco"),
+          O("Je reste stable face à Léa et Tom en surveillant mon ordinateur.", "Stable, ensemble, à la profondeur prévue : un palier réussi.", "deco", "g10") ] },
+      g10: { depth: 0, scene: "Surface. Le bateau est à 30 m.", text: "Le soleil, les vagues. Tom lève le pouce.", q: "Que fais-tu en arrivant ?",
+        choices: [
+          O("Gilet gonflé, détendeur en bouche, je reste avec la palanquée.", "On garde masque et détendeur jusqu’au bateau et on reste groupés : la mer peut surprendre.", "pa20", "end"),
+          X("J’enlève tout de suite mon masque pour mieux respirer.", "Masque et détendeur restent en place jusqu’au bateau : une vague peut arriver.", "pa20"),
+          X("Je nage seul vers l’échelle pour monter le premier.", "La palanquée reste groupée jusqu’au bateau, sous l’œil de la guide.", "pa20") ] },
+      end: { depth: 0, end: true, title: "Une plongée guidée réussie", text: "Au débriefing, Léa sourit : « Tu as tout signalé : ton oreille, la narcose, Tom. Tu as respecté le plan. Tu es prêt pour les plongées à 30 m. »",
+        learn: ["Connaître le plan, même encadré.", "Tout signaler à la guide : oreille, narcose, perte d’un équipier.", "Remontée : on purge le gilet, on garde la vitesse de la guide.", "En surface : gilet gonflé, détendeur en bouche, palanquée groupée."] }
+    }
+  });
 })();
 
 /* js/app.js */

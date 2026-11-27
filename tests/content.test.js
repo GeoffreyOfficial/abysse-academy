@@ -162,6 +162,28 @@ C.stories.forEach(s => {
   });
 });
 
+section("Mises en situation (2.9)");
+{
+  const G29 = C.games29 || {};
+  ok((G29.scenes || []).length >= 3, "chasse aux erreurs : au moins 3 scènes");
+  (G29.scenes || []).forEach(sc => {
+    ok(sc.items.length === 10 && sc.items.filter(x => x[1]).length === 5, `chasse ${sc.id} : 10 observations dont 5 dangers`);
+    sc.items.forEach(x => { ok(x[2] && x[2].length > 20, `chasse ${sc.id} : explication manquante`); ok(C.byId[x[3]], `chasse ${sc.id} : module ${x[3]} inconnu`); });
+    const L = k => sc.items.filter(x => !!x[1] === k).map(x => x[0].length), avg = l => l.reduce((a, b) => a + b, 0) / l.length;
+    ok(Math.abs(avg(L(true)) - avg(L(false))) < 12, `chasse ${sc.id} : dangers et observations sûres de longueur comparable`);
+  });
+  const sg = G29.signs || [];
+  ok(sg.length >= 12 && new Set(sg.map(x => x[1])).size === sg.length && new Set(sg.map(x => x[0])).size === sg.length, "signes : au moins 12, gestes et sens uniques");
+  ok(C.byId[G29.signsModule], "signes : module de cours existant");
+  (G29.incidents || []).forEach(inc => {
+    ok(C.byId[inc.m] && inc.steps.length === 5 && inc.learn && inc.learn.length, `incident ${inc.id} : 5 étapes, module et points à retenir`);
+    inc.steps.forEach((st, i) => { ok(st.c.length === 3 && st.c.filter(c => c.ok).length === 1 && st.c.every(c => c.e), `incident ${inc.id}/${i} : 3 choix, 1 bon, tous expliqués`);
+      const g = st.c.find(c => c.ok).t.length, o = Math.max(...st.c.filter(c => !c.ok).map(c => c.t.length)); ok(g <= o * 1.15, `incident ${inc.id}/${i} : la bonne réponse ne doit pas être nettement la plus longue`);
+      st.c.forEach(c => ok(!ABSURDE.test(c.t), `incident ${inc.id}/${i} : réaction absurde « ${c.t} »`)); });
+    ok(new Set(inc.steps.map(st => st.c.findIndex(c => c.ok))).size >= 2, `incident ${inc.id} : la bonne réponse change de place`);
+  });
+}
+
 section("Doublons d’énoncé (2.7.1)");
 {
   /* Même clé que AA.quiz.key : énoncé normalisé, chiffres masqués. Les doublons déjà publiés restent

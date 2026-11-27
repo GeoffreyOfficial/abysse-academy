@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 let fails = 0; const errs = [];
 const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console.error("  ✗ " + m); } };
 const WIDTHS = [[280, 653], [390, 844], [884, 1104], [1440, 900], [3840, 2160]];
-const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "club", "settings", "cours", "cours/n3", "progres", "moniteur", "search/palier", "jeux", "jeux/n2", "aquarium", "quests", "story", "boss/n2", "boss/n1", "gardien/pression", "paires", "vraifaux", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet", "examen", "examen/n3/quick", "fiches/n2", "fiches/e2/e2-evaluer", "brief", "brief/gp", "succ", "succ/go"];
+const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "club", "settings", "cours", "cours/n3", "progres", "moniteur", "search/palier", "jeux", "jeux/n2", "aquarium", "quests", "story", "boss/n2", "boss/n1", "gardien/pression", "paires", "vraifaux", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet", "examen", "examen/n3/quick", "fiches/n2", "fiches/e2/e2-evaluer", "brief", "brief/gp", "succ", "succ/go", "palier", "chasse", "signes", "sauvetage", "incident", "story/n2-guidee"];
 
 async function newPage(b, w, h, rich) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
@@ -455,6 +455,75 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       const ins = await p.evaluate(() => { const b = document.getElementById("dcins"); if (b && !b.hidden) b.click(); const n = document.getElementById("numv"); return { v: n && n.value, closed: !document.getElementById("divecalc") }; });
       ok(ins.v === "4" && ins.closed, "calculatrice : le résultat se met dans la réponse à taper");
       await p.evaluate(() => { window.AA_PLAIN = 1; AA.quiz.typeRate = .8; location.hash = "#/home"; }); await p.waitForTimeout(200);
+      await ctx.close(); }
+
+    console.log("• Sauvegarde, récupération, brevet blanc, mises en situation (2.9)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await ready(p);
+      await p.evaluate(() => { const S = AA.S; S.profile.onboarded = true; S.profile.name = "Test"; S.evoSeen = 9; S.profile.driveNag = "2099-01-01"; S.xp = 321; S.createdAt = "2026-01-01"; S.profile.backupAt = ""; AA.path.applyLevel("n1"); S.profile.goal = "n2"; AA.content.inWorld("n2").forEach(m => (S.read[m.id] = { e: AA.u.today() })); AA.store.save(true); });
+      await p.reload(); await ready(p); await p.evaluate(() => { location.hash = "#/home"; }); await p.waitForTimeout(400);
+      ok(await p.$("#expcard"), "rappel d’export : carte de la semaine sur l’accueil (Drive non lié, jamais exporté)");
+      await p.click("#explater"); await p.waitForTimeout(200);
+      ok(!(await p.$("#expcard")) && await p.evaluate(() => AA.S.profile.exportNag > AA.u.today()), "rappel d’export : « plus tard » le repousse de 3 jours");
+      /* Données locales abîmées, copie IndexedDB intacte : tout revient tout seul. */
+      await p.evaluate(() => { AA.store.save(true); }); await p.waitForTimeout(400);
+      await p.evaluate(() => localStorage.setItem(AA.store.KEY, "{abîmé")); await p.reload(); await ready(p); await p.waitForTimeout(900);
+      ok(await p.evaluate(() => AA.S.xp === 321 && !localStorage.getItem("abysse-academy-corrupt") && !document.querySelector(".rec-sheet")), "récupération : données locales abîmées, la copie de l’appareil est restaurée sans rien perdre");
+      /* Jeux : les 5 tuiles. */
+      await p.evaluate(() => { location.hash = "#/jeux"; }); await p.waitForTimeout(300);
+      ok((await p.$$(".g29-tile")).length === 5, "jeux : 5 mises en situation dans l’espace Jeux");
+      /* Palier en direct : moteur fictif. */
+      const pl = await p.evaluate(() => { const P = AA.g29.palier;
+        const a = P.make(0, 150); a.v = P.SLOW; let g = 0; while (!a.done && g++ < 50000) P.step(a, .02);
+        const s = P.make(0, 150); g = 0; while (!s.done && g++ < 50000) { const stp = P.stop(P.ceil(s.L)), tg = stp || (s.safeT < 3 ? 3 : 0); s.v = s.d > tg + .01 || tg === 0 ? P.SLOW : 0; P.step(s, .02); }
+        const f = P.make(0, 150); f.v = P.FAST; P.step(f, .1);
+        return { direct: a.over, ok: !s.over && !s.out && s.d === 0, sc: P.score(s), safe: s.safeT >= 3, fast: f.fastN, noStop: P.ceil(P.make(4, 150).L) === 0 }; });
+      ok(pl.direct, "palier en direct : remonter d’un trait franchit le plafond");
+      ok(pl.ok && pl.safe && pl.sc >= 90, `palier en direct : paliers respectés et palier de sécurité, score ${pl.sc}`);
+      ok(pl.fast === 1 && pl.noStop, "palier en direct : alarme de vitesse comptée, plongée courte sans palier obligatoire");
+      await p.evaluate(() => { location.hash = "#/palier"; }); await p.waitForTimeout(300); await p.click("#plGo"); await p.waitForTimeout(300);
+      ok(await p.$(".pl-lcd") && await p.$(".pl-col") && /fictif/.test(await p.textContent(".pl-gauge")), "palier en direct : ordinateur, colonne d’eau et jauge « modèle fictif »");
+      await p.click('[data-v="9"]'); await p.waitForTimeout(900);
+      ok(await p.evaluate(() => AA.g29.state.palier().d < AA.g29.state.palier().dive.d), "palier en direct : la remontée avance en temps réel");
+      /* Chasse aux erreurs. */
+      await p.evaluate(() => { location.hash = "#/chasse"; }); await p.waitForTimeout(300);
+      const bad = await p.evaluate(() => AA.g29.state.chasse().items.map((x, k) => x.bad ? k : -1).filter(k => k >= 0));
+      ok(bad.length === 5 && (await p.$$(".ch-it")).length === 10, "chasse aux erreurs : 10 observations, 5 dangers");
+      for (const k of bad) { await p.click(`.ch-it[data-k="${k}"]`); await p.waitForTimeout(300); }
+      await p.waitForTimeout(300);
+      ok(await p.$(".g29-end") && await p.evaluate(() => AA.S.games.chasse && AA.S.games.chasse.best >= 0), "chasse aux erreurs : victoire, temps enregistré, dangers expliqués");
+      /* Signes sous l'eau. */
+      await p.evaluate(() => { location.hash = "#/signes"; }); await p.waitForTimeout(300); await p.click("#sgGo"); await p.waitForTimeout(200);
+      for (let i = 0; i < 10; i++) { const j = await p.evaluate(() => { const s = AA.g29.state.signes(); return s.rounds[s.k].i; }); await p.click(`[data-j="${j}"]`); await p.waitForTimeout(650); }
+      ok(await p.$(".g29-end") && await p.evaluate(() => AA.S.games.signes.best === 10), "signes sous l’eau : 10 signes, score parfait enregistré");
+      /* Sauvetage chrono. */
+      await p.evaluate(() => { location.hash = "#/sauvetage/proc-n2-air"; }); await p.waitForTimeout(300);
+      ok(/Panne d’air/.test(await p.textContent(".g29-scene")), "sauvetage chrono : procédure choisie par lien");
+      const ex = await p.evaluate(() => AA.g29.state.sauvetage().pool.findIndex(x => x.gi < 0)); await p.click(`.sv-it[data-k="${ex}"]`); await p.waitForTimeout(600);
+      ok(await p.evaluate(() => AA.g29.state.sauvetage().pen === 8), "sauvetage chrono : un geste dangereux coûte 8 s");
+      for (let i = 0; i < 12; i++) { const k = await p.evaluate(() => { const s = AA.g29.state.sauvetage(); if (s.done) return -1; return s.pool.findIndex(x => !x.used && x.gi === s.gi && s.left.includes(x.txt)); }); if (k < 0) break; await p.click(`.sv-it[data-k="${k}"]`); await p.waitForTimeout(120); }
+      ok(await p.$(".g29-end") && await p.evaluate(() => AA.S.games.sauvetage.by["proc-n2-air"] > 0), "sauvetage chrono : procédure terminée, temps enregistré par situation");
+      /* Incident en direct. */
+      await p.evaluate(() => { location.hash = "#/incident/air"; }); await p.waitForTimeout(300); await p.click("#inGo"); await p.waitForTimeout(200);
+      for (let i = 0; i < 5; i++) { const k = await p.evaluate(() => { const s = AA.g29.state.incident(); return s.inc.steps[s.k].c.findIndex(c => c.ok); }); await p.click(`[data-i="${k}"]`); await p.waitForTimeout(1450); }
+      ok(/maîtrisé/.test(await p.textContent(".g29-end h2")) && await p.evaluate(() => AA.S.games.incident.best === 5), "incident en direct : 5 bonnes décisions, incident maîtrisé");
+      /* Brevet blanc : salle d'examen et certificat. */
+      await p.evaluate(() => { location.hash = "#/home"; }); await p.waitForTimeout(200);
+      await p.evaluate(() => AA.quiz.exam(false, "n2")); await p.waitForTimeout(400);
+      ok(await p.$(".ex-tbar") && await p.$(".ex-hall") && await p.$(".ex-intro"), "brevet blanc : annonce, temps qui file et poissons");
+      await p.evaluate(() => { const c = AA.ctx; c.items.forEach((it, i) => c.answers.push({ q: it.q, ok: i % 5 !== 0 })); c.done = true; AA.router.refresh(); }); await p.waitForTimeout(500);
+      ok(await p.$(".cert") && /Test/.test(await p.textContent(".cert")) && /16/.test(await p.textContent(".cert-score")) && /très bien/i.test(await p.textContent(".cert-m")), "brevet blanc : certificat au nom, note et mention");
+      ok(await p.evaluate(() => /<html/.test(AA.cert.doc({ name: "A", score: 9, date: "2026-11-27", lv: "N2", full: true })) && AA.cert.mention(9) === "no"), "brevet blanc : certificat imprimable, attestation sous 10");
+      /* Cursus en carte marine. */
+      await p.evaluate(() => { location.hash = "#/cursus"; }); await p.waitForTimeout(300);
+      ok(await p.$(".road.chart") && (await p.$$(".rd-sound")).length >= 6, "cursus : carte marine avec la profondeur par niveau");
+      ok(await p.evaluate(() => !!AA.content.storyById["n2-guidee"]), "aventure : la plongée guidée");
+      await ctx.close(); }
+    { /* Rien de lisible nulle part : on propose de choisir. */
+      const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await ready(p); await p.waitForTimeout(500);
+      await p.evaluate(() => localStorage.setItem(AA.store.KEY, "{abîmé")); await p.reload(); await ready(p); await p.waitForTimeout(1200);
+      ok(await p.$(".rec-sheet") && await p.evaluate(() => localStorage.getItem("abysse-academy-corrupt") === "{abîmé"), "récupération : écran de choix, données abîmées gardées de côté");
+      await p.click("#recfresh"); await p.waitForTimeout(200); await p.click(".sheet-wrap.cf [data-ok]"); await p.waitForTimeout(300);
+      ok(!(await p.$(".rec-sheet")) && await p.evaluate(() => !localStorage.getItem("abysse-academy-corrupt")), "récupération : repartir de zéro ferme l’écran");
       await ctx.close(); }
 
     console.log("• Briefing, successives, défis, club (1.9)");

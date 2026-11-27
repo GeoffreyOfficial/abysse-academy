@@ -37,6 +37,7 @@
     stop();
     const W0 = tank.clientWidth, H0 = tank.clientHeight; if (!W0 || !H0) return;
     const reduced = AA.a11y && AA.a11y.reduced(), cur = !!(AA.S.aquaCfg || {}).current;
+    if (!u.$(".aq-caustics", tank)) tank.insertAdjacentHTML("afterbegin", `<div class="aq-caustics" aria-hidden="true"></div>`);
     const layer = document.createElement("div"); layer.className = "aq-food2"; layer.setAttribute("aria-hidden", "true"); tank.appendChild(layer);
     tank.classList.add("live");
     const homes = u.$$(".aq-dec", tank).map(d => parseFloat(d.style.left) / 100 + (parseFloat(d.style.width) || 10) / 200).filter(x => x > 0 && x < 1);
@@ -45,8 +46,12 @@
       const f = C.creatures.find(x => x.id === el.dataset.f) || { shape: "fish" }, role = ROLE[f.shape] || "school", p = P[role];
       el.classList.remove("aq-swim", "aq-float", "aq-bottom", "l", "r"); el.classList.add("aq-live", "r-" + role);
       el.style.left = "0"; el.style.top = "0"; el.style.animation = "none";
-      const w = el.offsetWidth || 70, h = w * 2 / 3, cr = el.firstElementChild;
-      const o = { el, cr, f, role, p, w, h, i, x: rnd(w, W0 - w), y: H0 * rnd(p.band[0], p.band[1]), vx: 0, vy: 0, dir: Math.random() < .5 ? 1 : -1, tilt: 0,
+      /* 2.9 : rendu premium et profondeur (les plus lointains sont plus petits et plus pâles). */
+      if (f.c) el.innerHTML = AA.creature(f.shape, f.c, "premium");
+      const z = role === "crawl" || role === "fixed" || role === "lurk" ? rnd(.95, 1.1) : u.pick([rnd(.72, .86), rnd(.9, 1.05), rnd(.95, 1.15)]);
+      el.style.zIndex = String(2 + Math.round(z * 10)); el.classList.toggle("far", z < .87);
+      const ew = el.offsetWidth || 70, w = ew * z, h = w * 2 / 3, cr = el.firstElementChild;
+      const o = { el, cr, f, role, p, w, h, i, z, ew, x: rnd(w, W0 - w), y: H0 * rnd(p.band[0], p.band[1]), vx: 0, vy: 0, dir: Math.random() < .5 ? 1 : -1, tilt: 0,
         tx: 0, ty: 0, next: 0, pause: 0, sat: 0, ate: 0, ph: Math.random() * 6.28, spd: rnd(.75, 1.25), ox: rnd(-40, 40), oy: rnd(-22, 22),
         home: homes.length ? u.pick(homes) : rnd(.15, .85), chomp: 0 };
       if (role === "school") groups[f.shape] = groups[f.shape] || { x: 0, y: 0, next: 0 };
@@ -160,9 +165,12 @@
     const now = performance.now();
     E.fish.forEach(o => {
       const bob = o.role === "crawl" || o.role === "fixed" || E.reduced ? 0 : Math.sin(o.ph) * (o.role === "hover" ? 3 : 1.6);
-      o.el.style.transform = `translate3d(${(o.x - o.w / 2).toFixed(1)}px,${(o.y - o.h / 2 + bob).toFixed(1)}px,0)`;
+      o.el.style.transform = `translate3d(${(o.x - (o.ew || o.w) / 2).toFixed(1)}px,${(o.y - (o.ew || o.w) / 3 + bob).toFixed(1)}px,0)`;
       const sq = o.chomp > now ? (o.role === "drift" ? " scale(1.08,.9)" : " scale(1.1,.94)") : "";
-      if (o.cr) o.cr.style.transform = `scaleX(${o.dir})rotate(${(o.tilt * o.dir).toFixed(1)}deg)${sq}`;
+      if (o.cr) o.cr.style.transform = `scale(${(o.z || 1).toFixed(3)})scaleX(${o.dir})rotate(${(o.tilt * o.dir).toFixed(1)}deg)${sq}`;
+      /* La queue bat plus vite quand le poisson accélère. */
+      const sp = Math.hypot(o.vx, o.vy), wag = sp > 1 ? Math.max(.28, Math.min(1.4, 22 / (sp + 8))) : 1.6;
+      if (Math.abs((o.wag || 0) - wag) > .08) { o.wag = wag; o.el.style.setProperty("--wag", wag.toFixed(2) + "s"); }
     });
     E.food.forEach(g => { g.el.style.transform = `translate3d(${g.x.toFixed(1)}px,${g.y.toFixed(1)}px,0)`; });
   }

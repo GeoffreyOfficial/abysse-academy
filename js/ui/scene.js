@@ -58,7 +58,7 @@
     wrap.hidden = !on;
     /* (plus de variable CSS --depth sur la racine : la changer à chaque image recalculait les styles de toute la page) */
     if (rays) rays.style.opacity = on ? Math.max(0, 1 - d / 22).toFixed(3) : 0;
-    if (tint) tint.style.opacity = on ? Math.min(1, k * 1.15).toFixed(3) : 0;
+    if (tint) tint.style.opacity = on ? Math.min(1, k * 1.35).toFixed(3) : 0;
   };
 
   function palette() {
@@ -76,7 +76,7 @@
     const dir = Math.random() < .5 ? 1 : -1;
     fish.push({ x: dir > 0 ? -.15 : 1.15, y: rnd(.2, .75), dir, size: rnd(18, 30) * scale(), col: 3, sp: rnd(.012, .022), ph: Math.random() * 6, kind: sc.depth > 30 ? "deep" : "big" });
   }
-  const want = () => { const d = sc.depth; return { schools: d < 12 ? 2 : d < 28 ? 1 : 0, big: d < 8 ? 0 : d < 35 ? 1 : 1, snow: d < 12 ? 0 : Math.round(Math.min(60, (d - 12) * 1.6)), glow: d < 28 ? 0 : Math.round(Math.min(14, (d - 28) / 2)) }; };
+  const want = () => { const d = sc.depth; return { schools: d < 12 ? 2 : d < 28 ? 1 : 0, big: d < 8 ? 0 : d < 35 ? 1 : 1, snow: d < 5 ? 0 : Math.round(Math.min(80, (d - 5) * 1.8)), glow: d < 28 ? 0 : Math.round(Math.min(14, (d - 28) / 2)) }; };
 
   function drawFish(f, t, alpha) {
     const x = f.x * W * D, y = (f.y * H + Math.sin(t / 700 + f.ph) * 4) * D, s = f.size * D, wag = Math.sin(t / (f.kind === "small" ? 90 : 260) + f.ph) * .35;
