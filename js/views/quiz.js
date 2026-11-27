@@ -10,8 +10,30 @@
   const TIMED = m => m === "exam" || m === "apnee" || m === "five";
   const Q = (AA.quiz = {});
 
+  /* 2.7.1 · Jamais deux fois la même question dans une série : même identifiant, même énoncé
+     (doublons du contenu) ou même calcul généré (mêmes chiffres changés). Les places libérées
+     sont reprises par d'autres questions du même thème, puis du même niveau. */
+  const normQ = s => String(s || "").replace(/<[^>]+>/g, " ").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+  Q.key = q => q.gen ? "gen:" + q.gen : q.proc ? "proc:" + q.id : "q:" + normQ(q.q).replace(/\d+/g, "#");
+  Q.uniq = (qs, mode, opts) => {
+    if (mode === "gen" || mode === "apnee") return qs; /* calculs à la chaîne : même méthode, chiffres neufs, voulu */
+    const seen = new Set(), out = [], lost = [];
+    qs.forEach(q => { const k = Q.key(q); if (seen.has(k) || seen.has("id:" + q.id)) lost.push(q); else { seen.add(k); seen.add("id:" + q.id); out.push(q); } });
+    if (!lost.length || ["errors", "srs", "duel", "rduel", "pc"].includes(mode)) return out;
+    const ok = q => { const T = AA.tutor; return !seen.has(Q.key(q)) && !seen.has("id:" + q.id) && q.c && q.c.length > 1 && (!T || !T.qOk || ["place"].includes(mode) || T.qOk(q)); };
+    lost.forEach(q => {
+      const m = C.byId[q.m], w = m && m.world;
+      let r = null;
+      if (q.gen && w) { const k = u.shuffle(G.genKeys().filter(k => C.generators[k].m && C.byId[C.generators[k].m] && C.byId[C.generators[k].m].world === w && !seen.has("gen:" + k)))[0]; r = k ? G.gen(k) : null; }
+      if (!r && m) r = u.shuffle(m.quiz.filter(x => !x.lvl || x.lvl === q.lvl || mode !== "exam")).find(ok) || null;
+      if (!r && w) r = u.shuffle(C.questions.filter(x => x.world === w && x.lvl !== 2)).find(ok) || null;
+      if (r) { seen.add(Q.key(r)); seen.add("id:" + r.id); out.splice(Math.floor(Math.random() * (out.length + 1)), 0, r); }
+    });
+    return out;
+  };
   Q.start = (mode, qs, opts) => {
-    qs = qs.filter(Boolean);
+    const q0 = qs; qs = Q.uniq(qs.filter(Boolean), mode, opts);
+    if (opts && opts.qs === q0) opts.qs = qs;
     if (!qs.length) { fx.toast(t("quiz.emptyT"), t("quiz.emptyS"), "info"); return; }
     const ctx = Object.assign({
       mode, items: qs.map(q => ({ q, order: u.shuffle(q.c.map((_, i) => i)) })), idx: 0, answers: [], picked: null,

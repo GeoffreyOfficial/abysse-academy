@@ -308,3 +308,12 @@ details.dg-row>summary .grow{min-width:0}
 .mq-crit li.ok{color:var(--ok)}
 .mq-crit li svg{width:16px;height:16px;flex:none;margin-top:2px}
 .mq-o{width:12px;height:12px;border-radius:50%;border:2px solid currentColor;flex:none;margin:3px 2px 0}
+/* 2.7.1 · aquarium vivant */
+.tank .aq-fish.aq-live{left:0;top:0;bottom:auto;animation:none!important;will-change:transform;transition:none}
+.tank .aq-fish.aq-live .creature{animation:none!important;transform-origin:50% 50%;transition:transform .12s linear}
+.tank.live .aq-food{display:none}
+.aq-food2{position:absolute;inset:0;pointer-events:none;z-index:6}
+.aq-food2 i{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:2px;background:#E8B33A;box-shadow:0 0 0 1px rgba(120,70,0,.25)}
+.tank.live{touch-action:pan-y;cursor:pointer}
+.tank.current .aq-sway{animation-duration:2.2s!important}
+.aq-hint{margin:6px 2px 0}

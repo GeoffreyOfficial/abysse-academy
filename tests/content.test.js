@@ -162,6 +162,17 @@ C.stories.forEach(s => {
   });
 });
 
+section("Doublons d’énoncé (2.7.1)");
+{
+  /* Même clé que AA.quiz.key : énoncé normalisé, chiffres masqués. Les doublons déjà publiés restent
+     (on ne supprime pas de questions) mais ne peuvent plus revenir dans une même série. Tout NOUVEAU doublon bloque. */
+  const KNOWN = 22;
+  const normQ = s => String(s || "").replace(/<[^>]+>/g, " ").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim().replace(/\d+/g, "#");
+  const g = {}; C.questions.forEach(q => { const k = normQ(q.q); (g[k] = g[k] || []).push(q.id); });
+  const dups = Object.values(g).filter(l => l.length > 1);
+  ok(dups.length <= KNOWN, `nouveaux énoncés en double (${dups.length} groupes, ${KNOWN} connus) : ${dups.slice(KNOWN - 2).map(l => l.join("=")).join(" ; ")}`);
+}
+
 section("Pièges, aquarium, boss");
 C.pitfalls.forEach(p => {
   try { if (p.re) new RegExp(p.re, "i"); } catch (e) { ok(false, `piège ${p.id} : expression invalide`); }

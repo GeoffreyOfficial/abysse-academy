@@ -46,7 +46,9 @@
     const s = S(), gapN = new Set(T.gaps().map(g => g.id));
     const pr = q => (gapN.has(T.notionOf(q)) ? 0 : s.errors[q.id] ? 1 : s.seen[q.id] === undefined ? 2 : 3) + Math.random() * 1.5;
     const sorted = pool.slice().sort((a, b) => pr(a) - pr(b)); const out = [];
-    while (out.length < n && sorted.length) { out.push(...sorted.slice(0, n - out.length)); if (out.length < n) sorted.sort(() => Math.random() - .5); }
+    /* 2.7.1 : sans remise (avant, un petit thème faisait revenir les mêmes questions). */
+    const seen = new Set();
+    sorted.forEach(q => { const k = AA.quiz.key(q); if (out.length < n && !seen.has(k)) { seen.add(k); out.push(q); } });
     return u.shuffle(out);
   };
 
@@ -56,7 +58,10 @@
   const later = (fn, ms) => { const id = setTimeout(fn, reduced() ? Math.min(ms, 200) : ms); if (B) B.timers.push(id); return id; };
   GM.begin = def => {
     const mods = def.kind === "mini" ? [C.byId[def.mid]] : C.inWorld(def.wid).filter(m => T.isRead(m.id));
-    const pool = qsOf(mods); if (!pool.length) return T.needAny(def.wid);
+    let pool = qsOf(mods); if (!pool.length) return T.needAny(def.wid);
+    /* Gardien d'un petit thème : on complète avec les autres thèmes lus du niveau, sans répéter. */
+    const need = def.hp + def.lives + 3;
+    if (new Set(pool.map(AA.quiz.key)).size < need && def.kind === "mini") { const more = qsOf(C.inWorld(def.wid).filter(m => m.id !== def.mid && T.isRead(m.id))); pool = pool.concat(u.shuffle(more).slice(0, need * 2)); }
     clearT();
     B = { def, qs: pickQs(pool, def.hp + def.lives + 3), i: 0, hp: def.hp, lives: def.lives, combo: 0, phase: 1, answers: [], picked: null, done: false, won: false, xp: 0, timers: [], fresh: true };
     B.order = B.qs.map(q => u.shuffle(q.c.map((_, k) => k)));
@@ -226,6 +231,7 @@
   addEventListener("hashchange", () => { if (B && !/^#\/(gardien|boss)\//.test(location.hash)) { clearT(); if (!B.done && !B.paused) B = null; } });
   /* 2.6.2 : combat en cours (pour la garde de session et la reprise). */
   GM.battle = () => (B && !B.done ? { def: B.def, i: B.i, n: B.qs.length, hp: B.hp, lives: B.lives, paused: !!B.paused, started: B.answers.length > 0 || !B.fresh } : null);
+  GM.qs = () => (B ? B.qs.slice() : []);
   GM.pause = () => { if (B && !B.done) B.paused = true; };
   GM.drop = () => { clearT(); B = null; };
   GM.pairsLive = () => !!(P && !P.done && P.moves > 0);

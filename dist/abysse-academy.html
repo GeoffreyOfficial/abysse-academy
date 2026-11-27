@@ -2479,6 +2479,15 @@ details.dg-row>summary .grow{min-width:0}
 .mq-crit li.ok{color:var(--ok)}
 .mq-crit li svg{width:16px;height:16px;flex:none;margin-top:2px}
 .mq-o{width:12px;height:12px;border-radius:50%;border:2px solid currentColor;flex:none;margin:3px 2px 0}
+/* 2.7.1 · aquarium vivant */
+.tank .aq-fish.aq-live{left:0;top:0;bottom:auto;animation:none!important;will-change:transform;transition:none}
+.tank .aq-fish.aq-live .creature{animation:none!important;transform-origin:50% 50%;transition:transform .12s linear}
+.tank.live .aq-food{display:none}
+.aq-food2{position:absolute;inset:0;pointer-events:none;z-index:6}
+.aq-food2 i{position:absolute;left:-3px;top:-3px;width:6px;height:6px;border-radius:2px;background:#E8B33A;box-shadow:0 0 0 1px rgba(120,70,0,.25)}
+.tank.live{touch-action:pan-y;cursor:pointer}
+.tank.current .aq-sway{animation-duration:2.2s!important}
+.aq-hint{margin:6px 2px 0}
 
 </style>
 </head>
@@ -2502,7 +2511,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.7.0";
+  AA.VERSION = "2.7.1";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -4949,8 +4958,30 @@ window.AA={BUNDLED:true};
   const TIMED = m => m === "exam" || m === "apnee" || m === "five";
   const Q = (AA.quiz = {});
 
+  /* 2.7.1 · Jamais deux fois la même question dans une série : même identifiant, même énoncé
+     (doublons du contenu) ou même calcul généré (mêmes chiffres changés). Les places libérées
+     sont reprises par d'autres questions du même thème, puis du même niveau. */
+  const normQ = s => String(s || "").replace(/<[^>]+>/g, " ").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+  Q.key = q => q.gen ? "gen:" + q.gen : q.proc ? "proc:" + q.id : "q:" + normQ(q.q).replace(/\d+/g, "#");
+  Q.uniq = (qs, mode, opts) => {
+    if (mode === "gen" || mode === "apnee") return qs; /* calculs à la chaîne : même méthode, chiffres neufs, voulu */
+    const seen = new Set(), out = [], lost = [];
+    qs.forEach(q => { const k = Q.key(q); if (seen.has(k) || seen.has("id:" + q.id)) lost.push(q); else { seen.add(k); seen.add("id:" + q.id); out.push(q); } });
+    if (!lost.length || ["errors", "srs", "duel", "rduel", "pc"].includes(mode)) return out;
+    const ok = q => { const T = AA.tutor; return !seen.has(Q.key(q)) && !seen.has("id:" + q.id) && q.c && q.c.length > 1 && (!T || !T.qOk || ["place"].includes(mode) || T.qOk(q)); };
+    lost.forEach(q => {
+      const m = C.byId[q.m], w = m && m.world;
+      let r = null;
+      if (q.gen && w) { const k = u.shuffle(G.genKeys().filter(k => C.generators[k].m && C.byId[C.generators[k].m] && C.byId[C.generators[k].m].world === w && !seen.has("gen:" + k)))[0]; r = k ? G.gen(k) : null; }
+      if (!r && m) r = u.shuffle(m.quiz.filter(x => !x.lvl || x.lvl === q.lvl || mode !== "exam")).find(ok) || null;
+      if (!r && w) r = u.shuffle(C.questions.filter(x => x.world === w && x.lvl !== 2)).find(ok) || null;
+      if (r) { seen.add(Q.key(r)); seen.add("id:" + r.id); out.splice(Math.floor(Math.random() * (out.length + 1)), 0, r); }
+    });
+    return out;
+  };
   Q.start = (mode, qs, opts) => {
-    qs = qs.filter(Boolean);
+    const q0 = qs; qs = Q.uniq(qs.filter(Boolean), mode, opts);
+    if (opts && opts.qs === q0) opts.qs = qs;
     if (!qs.length) { fx.toast(t("quiz.emptyT"), t("quiz.emptyS"), "info"); return; }
     const ctx = Object.assign({
       mode, items: qs.map(q => ({ q, order: u.shuffle(q.c.map((_, i) => i)) })), idx: 0, answers: [], picked: null,
@@ -6039,9 +6070,17 @@ window.AA={BUNDLED:true};
     arch: [30, () => `<path d="M2 100V50C2 20 22 8 50 8s48 12 48 42v50H74V56c0-14-10-24-24-24S26 42 26 56v44z" fill="#4E5A62"/><path d="M8 60c6-20 18-30 36-34M70 30c10 4 18 12 22 24" stroke="#62707A" stroke-width="4" fill="none"/>`],
     statue: [14, () => `<path d="M20 100h60V86H20z" fill="#9AA6AE"/><path d="M30 86c0-20 8-30 20-30s20 10 20 30z" fill="#B8C2C8"/><circle cx="50" cy="38" r="16" fill="#B8C2C8"/><path d="M40 30c4-12 16-12 20 0" stroke="#9AA6AE" stroke-width="3" fill="none"/><path d="M44 40h3M53 40h3" stroke="#7E8A92" stroke-width="2.5"/>`],
     lighthouse: [9, () => `<path d="M30 100l8-70h24l8 70z" fill="#E8EEF2"/><path d="M33 76h34l2 12H31zM36 50h28l2 10H34z" fill="#D9402B"/><rect x="36" y="16" width="28" height="14" rx="3" fill="#FFD36E" class="aq-glow"/><path d="M34 16l16-12 16 12z" fill="#2A3A46"/>`],
+    fan: [16, () => `<g stroke="#9B5FD0" stroke-width="3" fill="none" stroke-linecap="round" ${sway(1, 5)}><path d="M50 100V70"/>${Array.from({ length: 11 }, (_, i) => { const a = (-75 + i * 15) * Math.PI / 180; return `<path d="M50 72Q${(50 + Math.sin(a) * 22).toFixed(1)} ${(72 - Math.cos(a) * 30).toFixed(1)} ${(50 + Math.sin(a) * 42).toFixed(1)} ${(72 - Math.cos(a) * 58).toFixed(1)}"/>`; }).join("")}<path d="M20 50c10-8 50-8 60 0M14 34c14-12 58-12 72 0" stroke-width="2" opacity=".7"/></g>`],
+    cave: [32, () => `<path d="M0 100C2 56 22 30 52 30s46 24 48 70z" fill="#4E5A62"/><path d="M26 100c0-24 10-40 26-40s24 16 24 40z" fill="#0E1820"/><path d="M12 70c8-18 20-28 34-30M66 42c12 6 20 16 24 30" stroke="#62707A" stroke-width="4" fill="none"/><circle cx="44" cy="84" r="2" fill="#FFD36E" opacity=".8"/><circle cx="56" cy="84" r="2" fill="#FFD36E" opacity=".8"/>`],
+    oyster: [11, () => `<path d="M8 100c4-20 20-30 42-30s38 10 42 30z" fill="#8C8C7A"/><path d="M10 84c10-30 28-46 44-46 14 0 30 12 36 30" fill="#A6A690" stroke="#7A7A68" stroke-width="2"/><circle cx="50" cy="86" r="8" fill="#F4F1EA"/><circle cx="47" cy="83" r="2.5" fill="#fff" class="glint"/>`],
+    castle: [20, () => `<path d="M14 100V44h8v-8h8v8h8v-8h8v8h8v-8h8v8h8v-8h8v8h4v56z" fill="#8A7E6A"/><path d="M40 100V74c0-8 20-8 20 0v26z" fill="#1E1812"/><rect x="24" y="56" width="8" height="12" rx="4" fill="#1E1812"/><rect x="68" y="56" width="8" height="12" rx="4" fill="#1E1812"/><path d="M14 60h72M14 82h22M64 82h22" stroke="#6E6454" stroke-width="2"/><path d="M80 44c6-10 4-22-2-30" stroke="#3F8F5A" stroke-width="4" fill="none" ${sway(2)}/>`],
+    sub: [18, () => `<g transform="rotate(-8 50 70)"><ellipse cx="50" cy="72" rx="40" ry="18" fill="#F2C230"/><rect x="40" y="42" width="22" height="18" rx="6" fill="#E0AE1E"/><path d="M52 42V30h8" stroke="#8A7A50" stroke-width="3" fill="none"/><circle cx="34" cy="72" r="7" fill="#9FD8E8" stroke="#B88A10" stroke-width="3"/><circle cx="54" cy="72" r="7" fill="#9FD8E8" stroke="#B88A10" stroke-width="3"/><path d="M90 72l8-10v20z" fill="#B88A10"/></g>`],
+    diver: [10, () => `<path d="M30 100h40l-4-8H34z" fill="#5E6B73"/><rect x="40" y="46" width="20" height="46" rx="8" fill="#2A3A46"/><rect x="58" y="50" width="10" height="30" rx="4" fill="#C9D2D8"/><circle cx="50" cy="36" r="12" fill="#2A3A46"/><rect x="42" y="30" width="16" height="9" rx="3" fill="#9FD8E8"/><path d="M40 56l-12 14M60 58l10-16" stroke="#2A3A46" stroke-width="6" stroke-linecap="round"/><path d="M44 92v-6M56 92v-6" stroke="#F2C230" stroke-width="6"/>`],
+    flag: [9, () => `<path d="M30 100V12" stroke="#C9D2D8" stroke-width="5"/><path d="M32 14h30v40H32z" fill="#F4F6F8"/><path d="M62 14h30l-14 20 14 20H62z" fill="#1F4FA8"/><ellipse cx="30" cy="98" rx="14" ry="4" fill="#5E6B73"/>`],
+    tank: [9, () => `<g transform="rotate(-70 50 80)"><rect x="34" y="24" width="32" height="70" rx="16" fill="#C9D2D8"/><rect x="34" y="40" width="32" height="8" fill="#F2C230"/><rect x="44" y="12" width="12" height="14" rx="3" fill="#7A8690"/><path d="M50 12V4h12" stroke="#4A5560" stroke-width="4" fill="none"/></g>`],
     bubbler: [6, () => `<ellipse cx="50" cy="94" rx="30" ry="8" fill="#5E6B73"/><rect x="38" y="80" width="24" height="12" rx="4" fill="#7A8890"/>`]
   };
-  const BUBBLY = { bubbler: 1, clam: 1 };
+  const BUBBLY = { bubbler: 1, clam: 1, diver: 1, tank: 1 };
   const decorOk = d => G.met(d.test);
   const cfg = () => { const c = AA.S.aquaCfg || (AA.S.aquaCfg = {}); c.dec = c.dec || {}; c.hide = c.hide || {}; c.nick = c.nick || {}; return c; };
   const defPos = (d, i) => ({ x: [8, 70, 30, 52, 86, 62, 18, 40, 76, 24, 92, 46, 12, 58, 34, 82, 4, 66, 28, 50][i % 20], y: [0, 2, 0, 1, 3, 0, 2, 1][i % 8], s: 1, f: 0 });
@@ -8994,7 +9033,9 @@ window.AA={BUNDLED:true};
     const s = S(), gapN = new Set(T.gaps().map(g => g.id));
     const pr = q => (gapN.has(T.notionOf(q)) ? 0 : s.errors[q.id] ? 1 : s.seen[q.id] === undefined ? 2 : 3) + Math.random() * 1.5;
     const sorted = pool.slice().sort((a, b) => pr(a) - pr(b)); const out = [];
-    while (out.length < n && sorted.length) { out.push(...sorted.slice(0, n - out.length)); if (out.length < n) sorted.sort(() => Math.random() - .5); }
+    /* 2.7.1 : sans remise (avant, un petit thème faisait revenir les mêmes questions). */
+    const seen = new Set();
+    sorted.forEach(q => { const k = AA.quiz.key(q); if (out.length < n && !seen.has(k)) { seen.add(k); out.push(q); } });
     return u.shuffle(out);
   };
 
@@ -9004,7 +9045,10 @@ window.AA={BUNDLED:true};
   const later = (fn, ms) => { const id = setTimeout(fn, reduced() ? Math.min(ms, 200) : ms); if (B) B.timers.push(id); return id; };
   GM.begin = def => {
     const mods = def.kind === "mini" ? [C.byId[def.mid]] : C.inWorld(def.wid).filter(m => T.isRead(m.id));
-    const pool = qsOf(mods); if (!pool.length) return T.needAny(def.wid);
+    let pool = qsOf(mods); if (!pool.length) return T.needAny(def.wid);
+    /* Gardien d'un petit thème : on complète avec les autres thèmes lus du niveau, sans répéter. */
+    const need = def.hp + def.lives + 3;
+    if (new Set(pool.map(AA.quiz.key)).size < need && def.kind === "mini") { const more = qsOf(C.inWorld(def.wid).filter(m => m.id !== def.mid && T.isRead(m.id))); pool = pool.concat(u.shuffle(more).slice(0, need * 2)); }
     clearT();
     B = { def, qs: pickQs(pool, def.hp + def.lives + 3), i: 0, hp: def.hp, lives: def.lives, combo: 0, phase: 1, answers: [], picked: null, done: false, won: false, xp: 0, timers: [], fresh: true };
     B.order = B.qs.map(q => u.shuffle(q.c.map((_, k) => k)));
@@ -9174,6 +9218,7 @@ window.AA={BUNDLED:true};
   addEventListener("hashchange", () => { if (B && !/^#\/(gardien|boss)\//.test(location.hash)) { clearT(); if (!B.done && !B.paused) B = null; } });
   /* 2.6.2 : combat en cours (pour la garde de session et la reprise). */
   GM.battle = () => (B && !B.done ? { def: B.def, i: B.i, n: B.qs.length, hp: B.hp, lives: B.lives, paused: !!B.paused, started: B.answers.length > 0 || !B.fresh } : null);
+  GM.qs = () => (B ? B.qs.slice() : []);
   GM.pause = () => { if (B && !B.done) B.paused = true; };
   GM.drop = () => { clearT(); B = null; };
   GM.pairsLive = () => !!(P && !P.done && P.moves > 0);
@@ -10957,6 +11002,216 @@ window.AA={BUNDLED:true};
   };
 })();
 
+/* js/views/aquarium2.js */
+/* =====================================================================
+   2.7.1 · Aquarium vivant.
+   Les habitants nagent en JavaScript (plus de trajets CSS en boucle) :
+   chaque espèce a son comportement (bancs, croiseurs, raies qui planent,
+   murènes et rascasses près des rochers, crabes et étoiles sur le fond,
+   méduses qui pulsent, hippocampes qui flottent), avec pauses, vitesses
+   variées, virages doux, évitement des bords et des autres poissons.
+   Nourrir : les granulés coulent, les poissons viennent les manger, puis
+   repartent rassasiés. Toucher l'eau dépose une pincée de nourriture,
+   glisser le doigt attire les curieux. Réduire les animations : aquarium
+   immobile. Courant : réglage d'ambiance (plantes et nage).
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, G = AA.game, C = AA.content, fx = AA.fx, V = AA.views;
+  if (!V || !V.aquarium) return;
+
+  const ROLE = { damsel: "school", wrasse: "school", bream: "school", fish: "school", barracuda: "cruise", grouper: "cruise", sunfish: "cruise", turtle: "cruise", ray: "glide", moray: "lurk", conger: "lurk", scorpion: "lurk", octopus: "lurk", star: "crawl", crab: "crawl", nudi: "crawl", sponge: "fixed", jelly: "drift", seahorse: "hover" };
+  /* v : vitesse de croisière (px/s pour un bac de 400 px), a : accélération, pause : chance de s'arrêter, band : couche d'eau (0 = surface, 1 = fond). */
+  const P = {
+    school: { v: 48, a: 110, pause: .04, band: [.1, .68], eat: 1 },
+    cruise: { v: 24, a: 34, pause: .18, band: [.2, .7], eat: 1 },
+    glide: { v: 20, a: 22, pause: .1, band: [.45, .8], eat: 1 },
+    lurk: { v: 15, a: 50, pause: .6, band: [.72, .86], eat: 1, low: 1 },
+    crawl: { v: 6, a: 20, pause: .55, band: [.93, .93], eat: 1, low: 1 },
+    fixed: { v: 0, a: 0, pause: 1, band: [.93, .93], eat: 0 },
+    drift: { v: 8, a: 10, pause: 0, band: [.1, .6], eat: 0 },
+    hover: { v: 9, a: 22, pause: .45, band: [.25, .72], eat: 1 }
+  };
+  const CURIOUS = { fish: 1, wrasse: 1, damsel: 1, grouper: 1, bream: 1 };
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  let E = null;
+
+  const stop = () => { if (E && E.raf) cancelAnimationFrame(E.raf); E = null; };
+
+  function start(tank) {
+    stop();
+    const W0 = tank.clientWidth, H0 = tank.clientHeight; if (!W0 || !H0) return;
+    const reduced = AA.a11y && AA.a11y.reduced(), cur = !!(AA.S.aquaCfg || {}).current;
+    const layer = document.createElement("div"); layer.className = "aq-food2"; layer.setAttribute("aria-hidden", "true"); tank.appendChild(layer);
+    tank.classList.add("live");
+    const homes = u.$$(".aq-dec", tank).map(d => parseFloat(d.style.left) / 100 + (parseFloat(d.style.width) || 10) / 200).filter(x => x > 0 && x < 1);
+    const groups = {};
+    const fish = u.$$(".aq-fish", tank).map((el, i) => {
+      const f = C.creatures.find(x => x.id === el.dataset.f) || { shape: "fish" }, role = ROLE[f.shape] || "school", p = P[role];
+      el.classList.remove("aq-swim", "aq-float", "aq-bottom", "l", "r"); el.classList.add("aq-live", "r-" + role);
+      el.style.left = "0"; el.style.top = "0"; el.style.animation = "none";
+      const w = el.offsetWidth || 70, h = w * 2 / 3, cr = el.firstElementChild;
+      const o = { el, cr, f, role, p, w, h, i, x: rnd(w, W0 - w), y: H0 * rnd(p.band[0], p.band[1]), vx: 0, vy: 0, dir: Math.random() < .5 ? 1 : -1, tilt: 0,
+        tx: 0, ty: 0, next: 0, pause: 0, sat: 0, ate: 0, ph: Math.random() * 6.28, spd: rnd(.75, 1.25), ox: rnd(-40, 40), oy: rnd(-22, 22),
+        home: homes.length ? u.pick(homes) : rnd(.15, .85), chomp: 0 };
+      if (role === "school") groups[f.shape] = groups[f.shape] || { x: 0, y: 0, next: 0 };
+      return o;
+    });
+    E = { tank, layer, fish, food: [], groups, last: performance.now(), reduced, cur, lure: null, W: W0, H: H0, eaten: 0 };
+    /* Pas encore nourris aujourd'hui : ils attendent près de la surface. */
+    const hungry = AA.S.fedOn !== u.today();
+    fish.forEach(o => { if (hungry && o.role === "school") o.y = E.H * rnd(.12, .3); pickTarget(o, 0, hungry); });
+    render();
+    if (!reduced) E.raf = requestAnimationFrame(loop);
+  }
+
+  function pickTarget(o, now, hungry) {
+    const { W, H } = E, p = o.p, m = Math.max(o.w * .6, 24);
+    o.next = now + rnd(2500, 7000) / o.spd;
+    if (Math.random() < p.pause && now) { o.pause = now + rnd(1200, 4500); }
+    switch (o.role) {
+      case "school": {
+        const g = E.groups[o.f.shape];
+        if (now >= g.next) { g.x = rnd(m, W - m); g.y = H * rnd(hungry ? .1 : p.band[0], hungry ? .3 : p.band[1]); g.next = now + rnd(3000, 8000); }
+        o.tx = g.x + o.ox; o.ty = g.y + o.oy; o.next = g.next; break;
+      }
+      case "lurk": {
+        const far = Math.random() < .2;
+        o.tx = far ? rnd(m, W - m) : u.clamp(o.home * W + rnd(-.12, .12) * W, m, W - m); o.ty = H * rnd(p.band[0], p.band[1]); break;
+      }
+      case "crawl": o.tx = u.clamp(o.x + rnd(-.25, .25) * W, m, W - m); o.ty = H * p.band[0] - o.h * .35; break;
+      case "fixed": o.tx = o.x; o.ty = H * p.band[0] - o.h * .35; break;
+      case "hover": o.tx = u.clamp(o.x + rnd(-.12, .12) * W, m, W - m); o.ty = H * rnd(p.band[0], p.band[1]); break;
+      case "drift": o.tx = u.clamp(o.x + rnd(-.2, .2) * W, m, W - m); o.ty = H * rnd(p.band[0], p.band[1]); break;
+      default: o.tx = rnd(m, W - m); o.ty = H * rnd(p.band[0], p.band[1]);
+    }
+  }
+
+  function loop(now) {
+    if (!E) return;
+    if (!document.body.contains(E.tank)) { stop(); return; }
+    const dt = Math.min(.05, (now - E.last) / 1000); E.last = now;
+    E.W = E.tank.clientWidth || E.W; E.H = E.tank.clientHeight || E.H;
+    step(now, dt); render();
+    E.raf = requestAnimationFrame(loop);
+  }
+
+  function step(now, dt) {
+    const { W, H, fish, food } = E, k = W / 400, floorY = H * .93;
+    /* Nourriture : elle coule en se balançant, se pose, puis se dissout. */
+    for (let i = food.length - 1; i >= 0; i--) {
+      const g = food[i];
+      if (!g.rest) { g.y += g.vy * dt; g.x += Math.sin(now / 400 + g.ph) * 8 * dt + (E.cur ? 6 * dt : 0); if (g.y >= floorY) { g.y = floorY; g.rest = now; } }
+      else if (now - g.rest > 12000) { g.el.remove(); food.splice(i, 1); }
+    }
+    fish.forEach(o => {
+      const p = o.p;
+      if (o.role === "fixed") { o.x = u.clamp(o.x, o.w / 2, W - o.w / 2); o.y = floorY - o.h * .35; return; }
+      let tx = o.tx, ty = o.ty, sp = p.v * k * o.spd, acc = p.a * k, feeding = false;
+      /* Manger : la granule la plus proche, si l'espèce s'en nourrit et n'est pas rassasiée. */
+      if (p.eat && food.length && now > o.sat) {
+        let best = null, bd = 1e9;
+        food.forEach(g => { if (p.low && g.y < H * .66) return; const d = Math.hypot(g.x - o.x, g.y - o.y); if (d < bd) { bd = d; best = g; } });
+        if (best) {
+          feeding = true; o.pause = 0;
+          const mx = o.x + o.dir * o.w * .38, my = o.y;
+          tx = best.x - o.dir * o.w * .38; ty = best.y; sp *= o.role === "crawl" ? 2.5 : 1.9; acc *= 2;
+          if (Math.hypot(best.x - mx, best.y - my) < Math.max(12, o.w * .22)) {
+            best.el.remove(); food.splice(food.indexOf(best), 1); E.eaten++; o.ate++; o.chomp = now + 260;
+            if (o.ate >= 3) { o.sat = now + rnd(20000, 30000); o.ate = 0; o.next = 0; }
+          }
+        }
+      }
+      /* Le doigt qui glisse attire les curieux. */
+      if (!feeding && E.lure && CURIOUS[o.f.shape] && now - E.lure.t < 1500) { tx = E.lure.x - o.dir * o.w * .6; ty = E.lure.y; sp *= 1.3; }
+      else if (!feeding && now >= o.next) pickTarget(o, now);
+      const paused = !feeding && now < o.pause;
+      /* Méduse : contractions vers le haut, puis elle se laisse couler. */
+      if (o.role === "drift") {
+        o.pt = (o.pt || 0) + dt; if (o.pt > 2.6 / o.spd) { o.pt = 0; o.vy -= 30 * k; o.chomp = now + 400; }
+        o.vy += 6 * k * dt; o.vx += Math.sign(tx - o.x) * 2 * k * dt; if (o.y < H * .08) o.vy = Math.abs(o.vy) * .3;
+        if (o.y > H * .7) o.vy -= 14 * k * dt;
+        o.vx *= 1 - .6 * dt; o.vy *= 1 - .9 * dt;
+      } else {
+        let dx = tx - o.x, dy = ty - o.y; const d = Math.hypot(dx, dy) || 1;
+        const arrive = paused ? 0 : Math.min(1, d / (60 * k));
+        let ax = (dx / d * sp * arrive - o.vx), ay = (dy / d * sp * arrive - o.vy) * (o.role === "crawl" ? 0 : 1);
+        /* Évitement des autres (même couche d'eau). */
+        fish.forEach(q => { if (q === o || q.role === "fixed") return; const ex = o.x - q.x, ey = o.y - q.y, r = (o.w + q.w) * .32, dd = Math.hypot(ex, ey); if (dd < r && dd > .1) { const f = (r - dd) / r * sp * 2.2; ax += ex / dd * f; ay += ey / dd * f * .6; } });
+        /* Évitement des bords : on tourne avant le verre. */
+        const mx = o.w * .55, top = H * .06, bot = o.role === "crawl" ? H : H * .88;
+        if (o.x < mx) ax += (mx - o.x) * 3; if (o.x > W - mx) ax -= (o.x - (W - mx)) * 3;
+        if (o.y < top + o.h / 2) ay += (top + o.h / 2 - o.y) * 3; if (o.y > bot - o.h / 2 && o.role !== "crawl") ay -= (o.y - (bot - o.h / 2)) * 3;
+        const am = Math.hypot(ax, ay), lim = acc * (paused ? 1.6 : 1);
+        if (am > lim) { ax = ax / am * lim; ay = ay / am * lim; }
+        o.vx += ax * dt; o.vy += ay * dt;
+        if (E.cur && o.role !== "crawl") o.vx += 5 * k * dt;
+        const vm = Math.hypot(o.vx, o.vy), cap = sp * 1.25; if (vm > cap) { o.vx = o.vx / vm * cap; o.vy = o.vy / vm * cap; }
+        if (o.role === "crawl") { o.vy = 0; o.y = floorY - o.h * .35; }
+      }
+      o.x += o.vx * dt; o.y += o.vy * dt;
+      o.x = u.clamp(o.x, o.w * .3, W - o.w * .3); o.y = u.clamp(o.y, o.h * .4, H - o.h * .3);
+      /* Sens de nage (avec une marge pour éviter les demi-tours nerveux), inclinaison douce. */
+      if (o.role !== "crawl" && o.role !== "drift") { if (o.vx > 3 * k) o.dir = 1; else if (o.vx < -3 * k) o.dir = -1; }
+      else if (o.f.shape !== "crab" && Math.abs(o.vx) > 1.5 * k) o.dir = Math.sign(o.vx);
+      const want = o.role === "school" || o.role === "cruise" || o.role === "glide" ? u.clamp(Math.atan2(o.vy, Math.abs(o.vx) + 1) * 57, -18, 18) : 0;
+      o.tilt += (want - o.tilt) * Math.min(1, dt * 4);
+      o.ph += dt * (1.5 + Math.hypot(o.vx, o.vy) / (12 * k));
+    });
+  }
+
+  function render() {
+    if (!E) return;
+    const now = performance.now();
+    E.fish.forEach(o => {
+      const bob = o.role === "crawl" || o.role === "fixed" || E.reduced ? 0 : Math.sin(o.ph) * (o.role === "hover" ? 3 : 1.6);
+      o.el.style.transform = `translate3d(${(o.x - o.w / 2).toFixed(1)}px,${(o.y - o.h / 2 + bob).toFixed(1)}px,0)`;
+      const sq = o.chomp > now ? (o.role === "drift" ? " scale(1.08,.9)" : " scale(1.1,.94)") : "";
+      if (o.cr) o.cr.style.transform = `scaleX(${o.dir})rotate(${(o.tilt * o.dir).toFixed(1)}deg)${sq}`;
+    });
+    E.food.forEach(g => { g.el.style.transform = `translate3d(${g.x.toFixed(1)}px,${g.y.toFixed(1)}px,0)`; });
+  }
+
+  /* Déposer de la nourriture : n granulés autour de x (0 à 1), en surface. */
+  function drop(n, x, y) {
+    if (!E) return;
+    const { W, H } = E;
+    for (let i = 0; i < n && E.food.length < 40; i++) {
+      const el = document.createElement("i"); E.layer.appendChild(el);
+      const g = { el, x: u.clamp((x == null ? rnd(.15, .85) : x) * W + rnd(-18, 18), 8, W - 8), y: (y == null ? H * .03 : y) - rnd(0, 20), vy: rnd(22, 34) * W / 400, ph: rnd(0, 6), rest: 0 };
+      if (E.reduced) { g.y = H * .93; g.rest = performance.now(); setTimeout(() => { el.remove(); const k = E && E.food.indexOf(g); if (k >= 0) E.food.splice(k, 1); }, 2500); }
+      E.food.push(g);
+    }
+    render();
+  }
+  AA.aquaLive = { state: () => E && { fish: E.fish.map(o => ({ id: o.f.id, role: o.role, x: o.x, y: o.y, vx: o.vx, vy: o.vy, dir: o.dir, sat: o.sat > performance.now() })), food: E.food.length, eaten: E.eaten, W: E.W, H: E.H, reduced: E.reduced, running: !!E.raf }, drop, stop };
+
+  /* Branchement sur la vue existante. */
+  const r0 = V.aquarium.render;
+  V.aquarium.render = function (el, args) {
+    const out = r0.call(this, el, args);
+    const tank = u.$("#tank", el), c = AA.S.aquaCfg || {};
+    /* Ambiance : courant, dans l'onglet Apparence. */
+    const look = u.$('[data-night="1"]', el);
+    if (look) look.closest(".seg").insertAdjacentHTML("afterend", `<p class="eyebrow">${t("aq3.current")}</p><div class="seg"><button data-cur="0" aria-pressed="${!c.current}">${t("aq3.calm")}</button><button data-cur="1" aria-pressed="${!!c.current}">${t("aq3.flow")}</button></div>`);
+    u.$$("[data-cur]", el).forEach(b => b.onclick = () => { AA.S.aquaCfg.current = b.dataset.cur === "1"; AA.store.save(); fx.sfx.tap(); AA.router.refresh(); });
+    if (tank && c.current) tank.classList.add("current");
+    if (!tank || AA.ctx.aqEdit) { stop(); return out; }
+    if (tank && !u.$(".aq-hint", el)) tank.insertAdjacentHTML("afterend", `<p class="xs muted aq-hint">${t("aq3.hint")}</p>`);
+    requestAnimationFrame(() => start(tank));
+    const fb = u.$("#aqfeed", el);
+    if (fb) { const f0 = fb.onclick; fb.onclick = e => { if (f0) f0.call(fb, e); drop(14); }; }
+    /* Toucher l'eau : une pincée de nourriture ; glisser : les curieux suivent. */
+    tank.addEventListener("pointerdown", e => {
+      if (!E || e.target.closest("button")) return;
+      const R = tank.getBoundingClientRect(); drop(3, (e.clientX - R.left) / R.width, e.clientY - R.top); fx.sfx.tap();
+    });
+    tank.addEventListener("pointermove", e => { if (!E) return; const R = tank.getBoundingClientRect(); E.lure = { x: e.clientX - R.left, y: e.clientY - R.top, t: performance.now() }; });
+    return out;
+  };
+  addEventListener("hashchange", () => { if (!/^#\/aquarium/.test(location.hash)) stop(); });
+})();
+
 /* locales/fr.js */
 /* =====================================================================
    Abysse Academy · textes de l'interface en français
@@ -11492,6 +11747,7 @@ AA.i18n.add("fr", {
   "mq.rulesT": "Comment la maîtrise est calculée",
   "mq.rules": "Une notion est solide seulement si : le cours est lu, tu as répondu au moins {n} fois, avec {a} % de bonnes réponses sur les 10 dernières, les {l} dernières justes, des réussites sur {d} jours différents et dans {f} formats différents, et une révision il y a moins de {r} jours. Tant qu’il manque une preuve, la notion reste sous 80 %. Un cours non lu divise le score par deux. Le pourcentage du niveau est la moyenne de toutes ses notions : non lue ou pas testée = 0 %. Pour un brevet déjà obtenu, chaque notion part à 50 % et {c} bonnes réponses d’affilée la confirment.",
   "mq.actT": "Prouver {n} notions en bonne voie", "mq.actS": "Tu les as réussies un autre jour : les réussir aujourd’hui les rapproche de « solide ».", "mq.actTitle": "Preuves du jour",
+  "aq3.current": "Courant", "aq3.calm": "Eau calme", "aq3.flow": "Léger courant", "aq3.hint": "Touche l’eau pour donner une pincée de nourriture. Glisse le doigt : les curieux te suivent.",
   "dg.none": "Rien d’urgent : continue ton parcours et tes révisions du jour.", "dg.how": "Le tuteur regarde tes dernières réponses notion par notion : les erreurs qui se répètent, les calculs, ce que tu n’as pas revu depuis longtemps. Il propose l’action la plus utile pour chaque cas.",
   "dg.actT": "Voir ton diagnostic", "dg.actS": "Tes points faibles notion par notion, avec la cause probable",
   "dg.s.confusion": "Erreurs répétées", "dg.s.calc": "Calculs à reprendre", "dg.s.fragile": "Encore fragile", "dg.s.forgot": "En train de s’oublier", "dg.s.stale": "Solide, mais à rafraîchir", "dg.s.untested": "Pas encore testé", "dg.s.unread": "Cours pas encore lu", "dg.s.solid": "Solide",
@@ -14094,7 +14350,16 @@ AA.content.addDecor([
   { id: "laminaires", kind: "kelp", name: "Laminaires géantes", how: "Niveau 7", test: { k: "level", n: 7 } },
   { id: "arche", kind: "arch", name: "Arche rocheuse", how: "Niveau 8", test: { k: "level", n: 8 } },
   { id: "statue", kind: "statue", name: "Statue engloutie", how: "Vaincre 2 boss", test: { k: "bossAny", n: 2 } },
-  { id: "phare", kind: "lighthouse", name: "Petit phare", how: "Niveau 9", test: { k: "level", n: 9 } }
+  { id: "phare", kind: "lighthouse", name: "Petit phare", how: "Niveau 9", test: { k: "level", n: 9 } },
+  /* 2.7.1 */
+  { id: "eventail", kind: "fan", name: "Gorgone éventail", how: "Lire 10 cours", test: { k: "read", n: 10 } },
+  { id: "caverne", kind: "cave", name: "Grotte (les murènes adorent)", how: "Finir 2 aventures", test: { k: "story", n: 2 } },
+  { id: "huitre", kind: "oyster", name: "Huître perlière", how: "Combo ×10", test: { k: "combo", n: 10 } },
+  { id: "tour", kind: "castle", name: "Tour engloutie", how: "7 sessions du jour", test: { k: "daily", n: 7 } },
+  { id: "sousmarin", kind: "sub", name: "Mini sous-marin", how: "500 réponses", test: { k: "answers", n: 500 } },
+  { id: "figurine", kind: "diver", name: "Figurine de plongeur", how: "Terminer 10 thèmes", test: { k: "modulesDone", n: 10 } },
+  { id: "pavillon", kind: "flag", name: "Pavillon Alpha", how: "7 jours d’affilée", test: { k: "streak", n: 7 } },
+  { id: "bloc", kind: "tank", name: "Vieux bloc de plongée", how: "14/20 ou plus à un examen", test: { k: "exam", min: 14 } }
 ]);
 
 /* Fonds d'aquarium et sols, débloqués avec le niveau. */

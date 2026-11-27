@@ -331,6 +331,55 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(d.crit > 0 && d.counts >= 2 && d.rules, "diagnostic : critères par notion, compteurs et règle de calcul affichés");
       await ctx.close(); }
 
+    console.log("• Aquarium vivant (2.7.1)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await ready(p);
+      await p.evaluate(() => { const S = AA.S; S.profile.onboarded = true; S.profile.name = "Test"; S.evoSeen = 9; S.profile.driveNag = "2099-01-01"; S.xp = 99999; AA.content.creatures.slice(0, 14).forEach(f => (S.aqua[f.id] = "2026-11-01")); delete S.fedOn; AA.store.save(true); });
+      await p.reload(); await ready(p); await p.evaluate(() => { location.hash = "#/aquarium"; }); await p.waitForTimeout(1200);
+      const a = await p.evaluate(() => AA.aquaLive.state()); await p.waitForTimeout(1500); const a2 = await p.evaluate(() => AA.aquaLive.state());
+      const moved = a.fish.map((f, i) => Math.hypot(f.x - a2.fish[i].x, f.y - a2.fish[i].y));
+      ok(a.running && new Set(a.fish.map(f => f.role)).size >= 4, "aquarium : comportements différents selon l’espèce (" + [...new Set(a.fish.map(f => f.role))].join(", ") + ")");
+      ok(moved.filter(m => m > 3).length >= a.fish.length / 2 && new Set(moved.map(m => Math.round(m / 5))).size >= 4, "aquarium : les poissons nagent, à des vitesses variées");
+      ok(a2.fish.every(f => f.x >= 0 && f.x <= a2.W && f.y >= 0 && f.y <= a2.H), "aquarium : tout le monde reste dans le bac");
+      await p.click("#aqfeed"); await p.waitForTimeout(300); const f1 = await p.evaluate(() => AA.aquaLive.state());
+      ok(f1.food >= 10 && await p.evaluate(() => AA.S.fedOn === AA.u.today()), "nourrir : les granulés tombent, le repas du jour est compté");
+      await p.waitForTimeout(9000); const f2 = await p.evaluate(() => AA.aquaLive.state());
+      ok(f2.eaten >= 8 && f2.fish.some(f => f.sat), "nourrir : les poissons viennent manger puis repartent rassasiés (" + f2.eaten + " granulés mangés)");
+      const box = await p.evaluate(() => { const r = document.querySelector("#tank").getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + 40 }; });
+      await p.mouse.click(box.x, box.y); await p.waitForTimeout(100);
+      ok((await p.evaluate(() => AA.aquaLive.state().food)) >= 1 && !(await p.$(".sheet-wrap")), "toucher l’eau : une pincée de nourriture, sans ouvrir de fiche");
+      ok(await p.evaluate(() => AA.content.decor.length >= 28 && ["fan", "cave", "oyster", "castle", "sub", "diver", "flag", "tank"].every(k => AA.content.decor.some(d => d.kind === k))), "décors : 8 nouveaux décors à débloquer");
+      await p.evaluate(() => { AA.S.profile.motion = false; AA.store.save(true); location.hash = "#/home"; }); await p.waitForTimeout(200);
+      await p.evaluate(() => { location.hash = "#/aquarium"; }); await p.waitForTimeout(800); const r1 = await p.evaluate(() => AA.aquaLive.state()); await p.waitForTimeout(800); const r2 = await p.evaluate(() => AA.aquaLive.state());
+      ok(r1.reduced && !r1.running && r1.fish.every((f, i) => f.x === r2.fish[i].x && f.y === r2.fish[i].y), "réduire les animations : aquarium immobile");
+      await p.evaluate(() => { location.hash = "#/home"; }); await p.waitForTimeout(200);
+      ok(await p.evaluate(() => !AA.aquaLive.state()), "aquarium quitté : l’animation s’arrête");
+      await ctx.close(); }
+
+    console.log("• Jamais deux fois la même question dans une série (2.7.1)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p);
+      const r = await p.evaluate(() => {
+        const Q = AA.quiz, C = AA.content, GM = AA.games, S = AA.S; S.unlockAll = true;
+        C.questions.slice(0, 200).forEach(q => { S.seen[q.id] = 1; S.errors[q.id] = 2; }); 
+        const dup = list => { const k = list.map(q => Q.key(q)), id = list.map(q => q.id); return k.length - new Set(k).size + id.length - new Set(id).size; };
+        const grab = fn => { AA.ctx = {}; try { fn(); } catch (e) { return "ERR " + e.message; } const it = (AA.ctx.items || []).map(x => x.q); AA.ctx.items = null; return it; };
+        const small = C.modules.filter(m => m.world === "n2").sort((a, b) => a.quiz.length - b.quiz.length)[0];
+        const modes = {
+          module: () => Q.module(u_pick(C.inWorld("n2"))), exam: () => Q.exam(false, "n2"), examFull: () => Q.exam(true, "n2"), place: () => AA.path.startPlacement("n2"),
+          tutor: () => AA.tutor.session(), daily: () => Q.daily(), boss: () => Q.boss("n2"), duel: () => Q.duel("A", "B"), five: () => Q.five(), errors: () => Q.errors()
+        };
+        function u_pick(l) { return l[Math.floor(Math.random() * l.length)]; }
+        const out = {};
+        Object.entries(modes).forEach(([k, fn]) => { let worst = 0, n = 0; for (let i = 0; i < 15; i++) { const it = grab(fn); if (typeof it === "string") { out[k] = it; return; } n = Math.max(n, it.length); worst = Math.max(worst, dup(it)); location.hash = "#/home"; } out[k] = { worst, n }; });
+        let bw = 0, bn = 0; for (let i = 0; i < 15; i++) { GM.begin(GM.mini(small.id)); const l = GM.qs(); bn = Math.max(bn, l.length); bw = Math.max(bw, dup(l)); GM.drop(); }
+        out.gardien = { worst: bw, n: bn };
+        /* Un doublon connu du contenu ne passe pas, et la série garde sa longueur. */
+        const a = C.qById["physio-1"], b2 = C.qById["physio-11"]; const u1 = Q.uniq([a, b2, a].concat(C.byId.physio.quiz.slice(2, 8)), "module");
+        out.known = { n: u1.length, dup: dup(u1) };
+        return out; });
+      Object.entries(r).filter(([k]) => k !== "known").forEach(([k, v]) => ok(typeof v === "object" && v.worst === 0 && v.n > 0, `${k} : aucune question répétée sur 15 tirages (${typeof v === "object" ? v.n + " questions" : v})`));
+      ok(r.known.dup === 0 && r.known.n === 9, "doublon du contenu (même énoncé, deux identifiants) : écarté et remplacé, la série garde sa longueur");
+      await ctx.close(); }
+
     console.log("• Briefing, successives, défis, club (1.9)");
     { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
       ok(await p.evaluate(() => AA.content.computer.length >= 19 && AA.content.qById["pc-" + (AA.content.computer.length - 1)]), "mode ordinateur : nouveaux cas ajoutés à la fin");

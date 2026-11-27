@@ -52,7 +52,16 @@ AA.content.addDecor([
   { id: "laminaires", kind: "kelp", name: "Laminaires géantes", how: "Niveau 7", test: { k: "level", n: 7 } },
   { id: "arche", kind: "arch", name: "Arche rocheuse", how: "Niveau 8", test: { k: "level", n: 8 } },
   { id: "statue", kind: "statue", name: "Statue engloutie", how: "Vaincre 2 boss", test: { k: "bossAny", n: 2 } },
-  { id: "phare", kind: "lighthouse", name: "Petit phare", how: "Niveau 9", test: { k: "level", n: 9 } }
+  { id: "phare", kind: "lighthouse", name: "Petit phare", how: "Niveau 9", test: { k: "level", n: 9 } },
+  /* 2.7.1 */
+  { id: "eventail", kind: "fan", name: "Gorgone éventail", how: "Lire 10 cours", test: { k: "read", n: 10 } },
+  { id: "caverne", kind: "cave", name: "Grotte (les murènes adorent)", how: "Finir 2 aventures", test: { k: "story", n: 2 } },
+  { id: "huitre", kind: "oyster", name: "Huître perlière", how: "Combo ×10", test: { k: "combo", n: 10 } },
+  { id: "tour", kind: "castle", name: "Tour engloutie", how: "7 sessions du jour", test: { k: "daily", n: 7 } },
+  { id: "sousmarin", kind: "sub", name: "Mini sous-marin", how: "500 réponses", test: { k: "answers", n: 500 } },
+  { id: "figurine", kind: "diver", name: "Figurine de plongeur", how: "Terminer 10 thèmes", test: { k: "modulesDone", n: 10 } },
+  { id: "pavillon", kind: "flag", name: "Pavillon Alpha", how: "7 jours d’affilée", test: { k: "streak", n: 7 } },
+  { id: "bloc", kind: "tank", name: "Vieux bloc de plongée", how: "14/20 ou plus à un examen", test: { k: "exam", min: 14 } }
 ]);
 
 /* Fonds d'aquarium et sols, débloqués avec le niveau. */
