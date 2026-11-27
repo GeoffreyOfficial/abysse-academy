@@ -509,6 +509,7 @@
         <div class="section-title"><h3>${t("tu.smart")}</h3>${AA.helpBtn("tuteur")}</div>
         <div class="tiles">
           ${ui.tile("tutor", "compass", "var(--primary)", t("tu.session"), t("tu.a.sessionS"))}
+          ${ui.tile("diagnostic", "chart", "var(--world-n3)", t("dg.actT"), t("dg.actS"))}
           ${ui.tile("srs", "brain", "var(--world-n3)", t("mode.srs"), t("train.srsS"), dq ? [t("srs.dueN", { n: dq }), "pri"] : null)}
           ${ui.tile("flash", "cards", "var(--primary)", t("mode.flash"), t("train.flashS"), due ? [t("home.due", { n: due }), "pri"] : null)}
           ${ui.tile("errors", "buoy", "var(--accent)", t("mode.errors"), t("train.errorsS"), nErr ? [String(nErr), "warn"] : null)}

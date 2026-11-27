@@ -56,7 +56,7 @@
     document.body.appendChild(d); setTimeout(() => d.remove(), 1200);
   };
 
-  addEventListener("hashchange", () => { const v = document.querySelector(".verdict"); if (v) v.remove(); });
+  addEventListener("hashchange", () => { const v = document.querySelector(".verdict"); if (v) v.remove(); setTimeout(() => { if (fx.busy && fx.busy()) document.querySelectorAll(".toast").forEach(x => { x.classList.add("passive", "toast-top"); x.onclick = null; }); }, 120); });
 
   /* ---------- Bonne réponse, erreur ---------- */
   dive.ok = btn => { if (moving()) fx.burstAt(btn, 14, "rgba(150,235,255,.9)"); };
@@ -123,4 +123,113 @@
       return out;
     };
   }
+})();
+
+/* =====================================================================
+   2.6.1 · « De quoi parle la question ? » : avant la correction, on
+   explique la question elle-même (thème, notion, sigles développés,
+   termes techniques). Repris dans « Explique-moi ».
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, Q = AA.quiz, T = AA.tutor;
+  if (!Q || !C) return;
+  const esc = u.esc, norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  let RX = null;
+  const rx = () => RX || (RX = (C.sigles || []).map(s => [s, new RegExp(s[1])]));
+  /* Sigles et termes du glossaire présents dans la question (puis dans la bonne réponse). */
+  Q.contextItems = q => {
+    if (!q || !q.q) return [];
+    const main = String(q.q), ans = Array.isArray(q.c) && q.c[q.a] != null && !q.steps ? String(q.c[q.a]) : "";
+    const both = main + " " + ans + (q.steps ? " " + q.steps.flat().join(" ") : "");
+    const out = [], seen = new Set();
+    rx().forEach(([s, re]) => { if (re.test(both) && !seen.has(s[0])) { seen.add(s[0]); out.push({ k: s[0], f: s[2], d: s[3], main: re.test(main) }); } });
+    if (out.some(x => /^Pp./.test(x.k))) { const i = out.findIndex(x => x.k === "Pp"); if (i >= 0) out.splice(i, 1); }
+    out.sort((a, b) => b.main - a.main);
+    const nm = " " + norm(main).replace(/[^a-z0-9]+/g, " ") + " ";
+    const gl = (C.glossary || []).filter(g => { if (seen.has(g.t)) return false; return [g.t].concat(g.alt || []).some(w => { const n = norm(w).replace(/[^a-z0-9]+/g, " ").trim(); return n.length > 3 && nm.includes(" " + n + " "); }); });
+    gl.slice(0, 2).forEach(g => out.push({ k: g.t, f: "", d: g.d }));
+    return out.slice(0, 4);
+  };
+  Q.context = (q, open) => {
+    if (!q || !q.m || !C.byId[q.m]) return "";
+    const items = Q.contextItems(q);
+    let notion = ""; try { const nid = T && T.notionOf(q), n = nid && T.notion(nid); if (n) notion = n.t; } catch (e) { /* tuteur absent */ }
+    const theme = C.byId[q.m].title;
+    return `<details class="ctxq" ${open || items.length ? "open" : ""}><summary>${AA.icon("info")} ${t("cq.title")}</summary>
+      <p class="small ctx-th">${t("cq.theme", { t: esc(theme) })}${notion && norm(notion) !== norm(theme) ? " · " + t("cq.notion", { n: esc(notion) }) : ""}</p>
+      ${items.length ? `<dl class="ctx-dl">${items.map(x => `<div><dt>${esc(x.k)}</dt><dd>${x.f ? `<b>${esc(x.f)}</b>. ` : ""}${esc(x.d)}</dd></div>`).join("")}</dl>` : ""}</details>`;
+  };
+})();
+
+/* =====================================================================
+   2.6.1 · Un seul point d'entrée par parcours : si un test de
+   positionnement est en cours, on ne propose plus de le « Commencer »,
+   seulement de le reprendre (ou de l'abandonner depuis l'accueil).
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, V = AA.views;
+  const live = () => { try { const o = AA.run && AA.run.get(); return o && o.answers && o.items && o.answers.length < o.items.length ? o : null; } catch (e) { return null; } };
+  const placeRun = wid => { const o = live(); return o && o.mode === "place" && (!wid || o.world === wid) ? o : null; };
+  AA.run && (AA.run.live = live);
+  if (AA.path && AA.path.startPlacement) {
+    const sp0 = AA.path.startPlacement;
+    AA.path.startPlacement = wid => (placeRun(wid) && AA.run.resume ? AA.run.resume() : sp0(wid));
+  }
+  if (V.home) {
+    const h0 = V.home.render;
+    V.home.render = function (el, args) {
+      const r = h0.call(this, el, args);
+      try { if (placeRun()) u.$$(".place-card", el).forEach(c => c.remove()); } catch (e) { /* accueil modifié */ }
+      return r;
+    };
+  }
+  if (V.parcours) {
+    const p0 = V.parcours.render;
+    V.parcours.render = function (el, args) {
+      const r = p0.call(this, el, args);
+      try {
+        u.$$("[data-place]", el).forEach(b => { const o = placeRun(b.dataset.place); if (o) b.innerHTML = `${AA.icon("play")} ${t("run.go")} (${o.answers.length}/${o.items.length})`; });
+      } catch (e) { /* parcours modifié */ }
+      return r;
+    };
+  }
+})();
+
+/* =====================================================================
+   2.6.1 · Accueil sans répétitions : une seule entrée par fonction.
+   - « Ta prochaine étape » : l'action prioritaire du tuteur.
+   - « Ensuite » : 3 autres actions au plus, sans séance ni diagnostic
+     (et sans lacune déjà listée dans « Tes lacunes »).
+   - Un seul bloc « Ton tuteur » : séance adaptée + diagnostic.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, T = AA.tutor, V = AA.views;
+  if (!T || !T.actions || !V.home) return;
+  const act0 = T.actions;
+  T.actions = () => {
+    const a = act0().filter(x => x.k !== "diag");
+    if (!a.length) return a;
+    const head = a[0], rest = a.slice(1).filter(x => x.k !== "session" && x.k !== "gap");
+    return [head].concat(rest);
+  };
+  const diagOk = () => Object.keys((AA.S && AA.S.nstat) || {}).length >= 6;
+  const h0 = V.home.render;
+  V.home.render = function (el, args) {
+    const r = h0.call(this, el, args);
+    try {
+      const today = u.$(".tu-today", el), a0 = (T._acts || [])[0], diag = diagOk();
+      const session = !!today && !(a0 && a0.k === "session");
+      if (today && !session && !diag) { today.remove(); return r; }
+      if (!today && !diag) return r;
+      const html = `<section class="card tu-coach"><p class="eyebrow">${AA.icon("compass")} ${t("hm.coachT")}</p>
+        <p class="small muted">${t(session ? "hm.coachS" : "hm.coachDiag")}</p>
+        <div class="row tu-coach-btns">${session ? `<button class="btn sm" data-tusession>${AA.icon("play")} ${t("hm.coachGo")}</button>` : ""}${diag ? `<a class="btn ghost sm" href="#/diagnostic">${AA.icon("chart")} ${t("hm.coachDg")}</a>` : ""}</div></section>`;
+      if (today) today.outerHTML = html;
+      else { const main = u.$(".col-main", el); if (main) main.insertAdjacentHTML("beforeend", html); }
+    } catch (e) { /* accueil modifié */ }
+    return r;
+  };
 })();

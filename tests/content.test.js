@@ -124,6 +124,30 @@ section("Procédures d’urgence (gestes dans l’ordre)");
   C.worlds.filter(w => !w.soon && C.inWorld(w.id).length).forEach(w => ok(W.has(w.id), `aucune procédure d’urgence pour ${w.short}`));
 }
 
+section("Sigles définis (2.6.1)");
+{
+  /* Tout sigle d'une question, d'une réponse ou d'une explication doit être
+     développé dans content/fr/sigles.js (affiché dans « De quoi parle la question ? »). */
+  const S = (C.sigles || []).map(s => new RegExp(s[1], "g")), OKW = new Set(C.siglesOk || []);
+  const LV = /^(?:[NE][1-5]|MF[12]|GP|EANx?|O[2₂]|N[2₂])$/;
+  const missing = {};
+  const scan = (txt, where) => {
+    const s = String(txt || ""), covered = [];
+    S.forEach(re => { re.lastIndex = 0; let m; while ((m = re.exec(s))) covered.push([m.index, m.index + m[0].length]); });
+    const re = /\b[A-Z][A-Z0-9]+\b|\bPp ?[A-Z]/g; let m;
+    while ((m = re.exec(s))) {
+      const w = m[0]; if (OKW.has(w) || LV.test(w)) continue;
+      if (covered.some(([a, b]) => m.index >= a && m.index < b)) continue;
+      (missing[w] = missing[w] || []).push(where);
+    }
+  };
+  C.questions.forEach(q => { scan(q.q, q.id); (q.c || []).forEach(x => scan(x, q.id)); scan(q.e, q.id); });
+  (C.procs || []).forEach(p => [p.q, p.e].concat(p.steps.flat(), p.extra).forEach(x => scan(x, p.id)));
+  Object.keys(missing).forEach(w => ok(false, `sigle « ${w} » non défini (${missing[w].slice(0, 3).join(", ")}${missing[w].length > 3 ? "…" : ""})`));
+  ok((C.sigles || []).length >= 30, `${(C.sigles || []).length} sigles définis`);
+  (C.sigles || []).forEach(s => ok(s[2] && s[3] && s[3].length > 20, `sigle ${s[0]} : définition incomplète`));
+}
+
 section("Aventures");
 C.stories.forEach(s => {
   ok(s.nodes[s.start], `${s.id} : scène de départ absente`);

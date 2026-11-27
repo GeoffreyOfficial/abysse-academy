@@ -2432,6 +2432,24 @@ h1,h2,.pagetitle{text-wrap:balance}
 .reduce-motion #qc.silt{animation:none}
 .numin{grid-template-columns:minmax(0,1fr)}.numin>*{min-width:0}.numin label{overflow-wrap:anywhere}.numrow input{width:100%}.ord{grid-template-columns:minmax(0,1fr)}
 
+/* 2.6.1 · effets jamais bloquants */
+.toast.passive,.verdict,.sonar-ring,.float{pointer-events:none}
+.toast.toast-top{top:calc(env(safe-area-inset-top,0px) + 8px);bottom:auto;max-width:calc(100% - 24px)}
+.verdict{top:calc(env(safe-area-inset-top,0px) + 84px)}
+
+/* 2.6.1 · De quoi parle la question ? */
+.ctxq{margin:6px 0 12px;padding:10px 12px;border-radius:var(--r-md);background:color-mix(in srgb,var(--primary) 8%,transparent);border:1px solid color-mix(in srgb,var(--primary) 28%,var(--line))}
+.ctxq summary{cursor:pointer;font-weight:700;display:flex;align-items:center;gap:6px;list-style:none}
+.ctxq summary::-webkit-details-marker{display:none}
+.ctxq summary svg{width:16px;height:16px;flex:0 0 auto}
+.ctx-th{margin:6px 0 4px;color:var(--ink-2)}
+.ctx-dl{margin:6px 0 0;display:grid;gap:8px}
+.ctx-dl div{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:baseline}
+.ctx-dl dt{font:700 var(--fs-sm) var(--font-mono);color:var(--primary);white-space:nowrap}
+.ctx-dl dd{margin:0;font-size:var(--fs-sm);line-height:1.45;overflow-wrap:anywhere}
+@media (max-width:360px){.ctx-dl div{grid-template-columns:minmax(0,1fr)}}
+.tu-coach .eyebrow{display:flex;align-items:center;gap:6px}.tu-coach .eyebrow svg{width:16px;height:16px}.tu-coach-btns{flex-wrap:wrap;gap:8px}
+
 </style>
 </head>
 <body>
@@ -2454,7 +2472,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.6.0";
+  AA.VERSION = "2.6.1";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -3400,12 +3418,18 @@ window.AA={BUNDLED:true};
 
   /* ---------- Toasts (file d'attente) ---------- */
   const q = []; let busy = false;
+  const ACT = "#qc,#btNext,.bt-c,#btGo,.st-choice,#stnext,.opt";
+  fx.busy = () => !!document.querySelector(ACT);
   fx.toast = (title, sub, icon, onClick) => { q.push({ title, sub, icon, onClick }); if (!busy) next(); };
   function next() {
     const t = q.shift(); if (!t) { busy = false; return; }
     busy = true;
     const d = document.createElement("div");
-    d.className = "toast"; d.setAttribute("role", "status");
+    /* 2.6.1 : pendant un quiz, un combat ou une aventure, les toasts s'affichent
+       en haut et ne captent jamais un clic (on doit pouvoir répondre et continuer). */
+    const onTask = fx.busy();
+    d.className = "toast" + (onTask || !t.onClick ? " passive" : "") + (onTask ? " toast-top" : ""); d.setAttribute("role", "status");
+    if (onTask) t.onClick = null;
     d.innerHTML = `<span class="medal">${AA.icon(t.icon || "star")}</span><div><b>${u.esc(t.title)}</b><span>${u.esc(t.sub || "")}</span></div>`;
     if (t.onClick) { d.style.cursor = "pointer"; d.onclick = () => { t.onClick(); d.remove(); }; }
     document.body.appendChild(d);
@@ -5188,6 +5212,7 @@ window.AA={BUNDLED:true};
           ${AA.S.profile.gestures !== false && (AA.S.gestHint || 0) < 4 ? `<p class="xs muted gesture-hint">${AA.icon("hand")} ${t("gest.quizHint")}</p>` : ""}` : ""}
         ${!answered && c.mode !== "duel" ? `<div class="qactions qdk-row"><button class="btn ghost sm qdk" id="qdk">${AA.icon("doubt")} ${t("quiz.dk")}</button></div>` : ""}
         ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : c.picked === -1 ? t("quiz.dkT") : t("quiz.bad")}</h4>
+          ${Q.context ? Q.context(q, !okNow) : ""}
           ${isOrd ? (() => { const r = Q.procCheck(q, it.seq); return `<p class="small"><b>${t("ord.score", { g: r.good, n: r.n })}</b></p>${okNow ? "" : `<p><b>${t("ord.right")}</b></p><ol class="ord-ok">${q.steps.map(g => `<li>${Array.isArray(g) ? g.map(u.esc).join(" <i>+</i> ") + ` <span class="chip">${t("ord.free")}</span>` : u.esc(g)}</li>`).join("")}</ol>${(q.extra || []).some(x => it.seq.includes(x)) ? `<p class="small"><b>${t("ord.extraT")}</b> ${(q.extra || []).filter(x => it.seq.includes(x)).map(u.esc).join(" · ")}</p>` : ""}`}`; })() : okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
           ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}
           ${okNow || isOrd || !C.byId[q.m] ? "" : `<button class="btn exp-btn block" id="qexp">${AA.icon("play")} ${t("exp.btn")}<span class="xs">${t("exp.btnS")}</span></button>`}${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
@@ -8456,6 +8481,7 @@ window.AA={BUNDLED:true};
         <div class="section-title"><h3>${t("tu.smart")}</h3>${AA.helpBtn("tuteur")}</div>
         <div class="tiles">
           ${ui.tile("tutor", "compass", "var(--primary)", t("tu.session"), t("tu.a.sessionS"))}
+          ${ui.tile("diagnostic", "chart", "var(--world-n3)", t("dg.actT"), t("dg.actS"))}
           ${ui.tile("srs", "brain", "var(--world-n3)", t("mode.srs"), t("train.srsS"), dq ? [t("srs.dueN", { n: dq }), "pri"] : null)}
           ${ui.tile("flash", "cards", "var(--primary)", t("mode.flash"), t("train.flashS"), due ? [t("home.due", { n: due }), "pri"] : null)}
           ${ui.tile("errors", "buoy", "var(--accent)", t("mode.errors"), t("train.errorsS"), nErr ? [String(nErr), "warn"] : null)}
@@ -9976,7 +10002,7 @@ window.AA={BUNDLED:true};
     const wrong = picked != null && picked !== q.a;
 
     const steps = [
-      [t("exp2.s1"), "target", `<p class="exp-q">${u.esc(q.q)}</p>
+      [t("exp2.s1"), "target", `<p class="exp-q">${u.esc(q.q)}</p>${Q.context ? Q.context(q, true) : ""}
         ${wrong ? `<p class="exp-bad">${AA.icon("x")}<span>${t("exp.youPicked")} <b>${u.esc(q.c[picked])}</b></span></p>` : ""}
         <p class="exp-a">${AA.icon("check")}<span>${t("exp2.good")} <b>${u.esc(q.c[q.a])}</b></span></p>
         ${trap || pf ? `<div class="callout trap exp-trap"><span class="eyebrow">${t("exp.s4")}</span>${u.esc(trap || pf.why)}</div>` : ""}`],
@@ -10385,7 +10411,7 @@ window.AA={BUNDLED:true};
     document.body.appendChild(d); setTimeout(() => d.remove(), 1200);
   };
 
-  addEventListener("hashchange", () => { const v = document.querySelector(".verdict"); if (v) v.remove(); });
+  addEventListener("hashchange", () => { const v = document.querySelector(".verdict"); if (v) v.remove(); setTimeout(() => { if (fx.busy && fx.busy()) document.querySelectorAll(".toast").forEach(x => { x.classList.add("passive", "toast-top"); x.onclick = null; }); }, 120); });
 
   /* ---------- Bonne réponse, erreur ---------- */
   dive.ok = btn => { if (moving()) fx.burstAt(btn, 14, "rgba(150,235,255,.9)"); };
@@ -10452,6 +10478,115 @@ window.AA={BUNDLED:true};
       return out;
     };
   }
+})();
+
+/* =====================================================================
+   2.6.1 · « De quoi parle la question ? » : avant la correction, on
+   explique la question elle-même (thème, notion, sigles développés,
+   termes techniques). Repris dans « Explique-moi ».
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, Q = AA.quiz, T = AA.tutor;
+  if (!Q || !C) return;
+  const esc = u.esc, norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  let RX = null;
+  const rx = () => RX || (RX = (C.sigles || []).map(s => [s, new RegExp(s[1])]));
+  /* Sigles et termes du glossaire présents dans la question (puis dans la bonne réponse). */
+  Q.contextItems = q => {
+    if (!q || !q.q) return [];
+    const main = String(q.q), ans = Array.isArray(q.c) && q.c[q.a] != null && !q.steps ? String(q.c[q.a]) : "";
+    const both = main + " " + ans + (q.steps ? " " + q.steps.flat().join(" ") : "");
+    const out = [], seen = new Set();
+    rx().forEach(([s, re]) => { if (re.test(both) && !seen.has(s[0])) { seen.add(s[0]); out.push({ k: s[0], f: s[2], d: s[3], main: re.test(main) }); } });
+    if (out.some(x => /^Pp./.test(x.k))) { const i = out.findIndex(x => x.k === "Pp"); if (i >= 0) out.splice(i, 1); }
+    out.sort((a, b) => b.main - a.main);
+    const nm = " " + norm(main).replace(/[^a-z0-9]+/g, " ") + " ";
+    const gl = (C.glossary || []).filter(g => { if (seen.has(g.t)) return false; return [g.t].concat(g.alt || []).some(w => { const n = norm(w).replace(/[^a-z0-9]+/g, " ").trim(); return n.length > 3 && nm.includes(" " + n + " "); }); });
+    gl.slice(0, 2).forEach(g => out.push({ k: g.t, f: "", d: g.d }));
+    return out.slice(0, 4);
+  };
+  Q.context = (q, open) => {
+    if (!q || !q.m || !C.byId[q.m]) return "";
+    const items = Q.contextItems(q);
+    let notion = ""; try { const nid = T && T.notionOf(q), n = nid && T.notion(nid); if (n) notion = n.t; } catch (e) { /* tuteur absent */ }
+    const theme = C.byId[q.m].title;
+    return `<details class="ctxq" ${open || items.length ? "open" : ""}><summary>${AA.icon("info")} ${t("cq.title")}</summary>
+      <p class="small ctx-th">${t("cq.theme", { t: esc(theme) })}${notion && norm(notion) !== norm(theme) ? " · " + t("cq.notion", { n: esc(notion) }) : ""}</p>
+      ${items.length ? `<dl class="ctx-dl">${items.map(x => `<div><dt>${esc(x.k)}</dt><dd>${x.f ? `<b>${esc(x.f)}</b>. ` : ""}${esc(x.d)}</dd></div>`).join("")}</dl>` : ""}</details>`;
+  };
+})();
+
+/* =====================================================================
+   2.6.1 · Un seul point d'entrée par parcours : si un test de
+   positionnement est en cours, on ne propose plus de le « Commencer »,
+   seulement de le reprendre (ou de l'abandonner depuis l'accueil).
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, V = AA.views;
+  const live = () => { try { const o = AA.run && AA.run.get(); return o && o.answers && o.items && o.answers.length < o.items.length ? o : null; } catch (e) { return null; } };
+  const placeRun = wid => { const o = live(); return o && o.mode === "place" && (!wid || o.world === wid) ? o : null; };
+  AA.run && (AA.run.live = live);
+  if (AA.path && AA.path.startPlacement) {
+    const sp0 = AA.path.startPlacement;
+    AA.path.startPlacement = wid => (placeRun(wid) && AA.run.resume ? AA.run.resume() : sp0(wid));
+  }
+  if (V.home) {
+    const h0 = V.home.render;
+    V.home.render = function (el, args) {
+      const r = h0.call(this, el, args);
+      try { if (placeRun()) u.$$(".place-card", el).forEach(c => c.remove()); } catch (e) { /* accueil modifié */ }
+      return r;
+    };
+  }
+  if (V.parcours) {
+    const p0 = V.parcours.render;
+    V.parcours.render = function (el, args) {
+      const r = p0.call(this, el, args);
+      try {
+        u.$$("[data-place]", el).forEach(b => { const o = placeRun(b.dataset.place); if (o) b.innerHTML = `${AA.icon("play")} ${t("run.go")} (${o.answers.length}/${o.items.length})`; });
+      } catch (e) { /* parcours modifié */ }
+      return r;
+    };
+  }
+})();
+
+/* =====================================================================
+   2.6.1 · Accueil sans répétitions : une seule entrée par fonction.
+   - « Ta prochaine étape » : l'action prioritaire du tuteur.
+   - « Ensuite » : 3 autres actions au plus, sans séance ni diagnostic
+     (et sans lacune déjà listée dans « Tes lacunes »).
+   - Un seul bloc « Ton tuteur » : séance adaptée + diagnostic.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, T = AA.tutor, V = AA.views;
+  if (!T || !T.actions || !V.home) return;
+  const act0 = T.actions;
+  T.actions = () => {
+    const a = act0().filter(x => x.k !== "diag");
+    if (!a.length) return a;
+    const head = a[0], rest = a.slice(1).filter(x => x.k !== "session" && x.k !== "gap");
+    return [head].concat(rest);
+  };
+  const diagOk = () => Object.keys((AA.S && AA.S.nstat) || {}).length >= 6;
+  const h0 = V.home.render;
+  V.home.render = function (el, args) {
+    const r = h0.call(this, el, args);
+    try {
+      const today = u.$(".tu-today", el), a0 = (T._acts || [])[0], diag = diagOk();
+      const session = !!today && !(a0 && a0.k === "session");
+      if (today && !session && !diag) { today.remove(); return r; }
+      if (!today && !diag) return r;
+      const html = `<section class="card tu-coach"><p class="eyebrow">${AA.icon("compass")} ${t("hm.coachT")}</p>
+        <p class="small muted">${t(session ? "hm.coachS" : "hm.coachDiag")}</p>
+        <div class="row tu-coach-btns">${session ? `<button class="btn sm" data-tusession>${AA.icon("play")} ${t("hm.coachGo")}</button>` : ""}${diag ? `<a class="btn ghost sm" href="#/diagnostic">${AA.icon("chart")} ${t("hm.coachDg")}</a>` : ""}</div></section>`;
+      if (today) today.outerHTML = html;
+      else { const main = u.$(".col-main", el); if (main) main.insertAdjacentHTML("beforeend", html); }
+    } catch (e) { /* accueil modifié */ }
+    return r;
+  };
 })();
 
 /* locales/fr.js */
@@ -10706,7 +10841,7 @@ AA.i18n.add("fr", {
   "boss.toWorld": "Découvrir le monde {world}", "boss.retry": "Réessayer", "boss.study": "Voir mes erreurs fréquentes", "boss.toReview": "À revoir",
 
   "story.title": "Aventures", "story.intro": "De vraies histoires de plongée, pour chaque niveau et chaque rôle : encadré, autonome, guide, initiateur, moniteur, secouriste. Chaque choix a des conséquences. Un bon choix du premier coup = 1 point.",
-  "story.len": "{n} décisions", "story.toBoss": "Affronter {name}", "story.bossChip": "mène au boss", "bq.need": "Vis d’abord l’aventure « {t} » : c’est elle qui te mène jusqu’au boss.", "bq.also": "Il te faudra aussi vivre l’aventure « {t} », qui mène jusqu’à lui.", "bq.go": "Vivre l’aventure", "bq.story": "Ton aventure t’a mené jusqu’ici", "bq.epi": "La suite de l’histoire", "dv.ok": "Bonne réponse", "dv.bad": "Raté", "dv.dk": "Passée", "dv.depth": "−{m} m", "dv.comboS": "Combo ×{n} · tu descends à −{m} m. {s}", "dv.streak": { one: "Toujours en immersion : {n} jour d’affilée.", other: "Toujours en immersion : {n} jours d’affilée." }, "dv.set": "Ambiance plongée", "dv.set.full": "Complète", "dv.set.calm": "Discrète", "dv.set.off": "Coupée", "dv.setS": "Bulles, sonar et profondeur pendant les quiz, les combos et les jours d’affilée. « Discrète » garde les sons classiques sans effets ; le verdict (bonne réponse ou raté) reste toujours affiché.", "dv.c.bulles.t": "Bulles en rafale", "dv.c.bulles.s": "Bien lancé, continue.", "dv.c.thermo.t": "Thermocline franchie", "dv.c.thermo.s": "L’eau fraîchit, tes réponses aussi.", "dv.c.sonar.t": "Sonar verrouillé", "dv.c.sonar.s": "Plus rien ne t’échappe.", "dv.c.bleu.t": "Grand bleu", "dv.c.bleu.s": "Plus de fond en vue, que du bleu.", "dv.c.tombant.t": "Le long du tombant", "dv.c.tombant.s": "Une série digne d’un N3.", "dv.c.abysses.t": "Abysses", "dv.c.abysses.s": "Même les poissons-lanternes applaudissent.", "dv.c.fosse.t": "Fosse océane", "dv.c.fosse.s": "Série légendaire.", "dv.c.legende.t": "Légende des abysses", "dv.c.legende.s": "Tu ne remontes plus.", "ord.chip": "Gestes dans l’ordre", "ord.help": "Touche les gestes dans l’ordre où tu les fais ({n} bons gestes, les autres sont des pièges). Touche un geste choisi pour le retirer.", "ord.yours": "Ton enchaînement", "ord.pool": "Gestes possibles", "ord.empty": "Ton enchaînement apparaîtra ici.", "ord.go": "Valider mon enchaînement ({n})", "ord.score": "{g} geste(s) bien placé(s) sur {n}", "ord.right": "Le bon enchaînement :", "ord.free": "ordre libre", "ord.extraT": "Gestes à ne pas faire que tu as choisis :", "num.chip": "Réponse à taper", "num.label": "Tape ta réponse (l’unité est déjà indiquée) :", "num.ph": "ex. 2,5", "num.go": "Valider", "num.qcm": "Voir des propositions", "num.yours": "Ta réponse :", "num.badT": "Il faut un nombre", "num.badS": "Tape seulement le nombre, par exemple 2,5 ou 12.", "pr.title": "Procédures d’urgence", "pr.tileS": "Remets les bons gestes dans l’ordre", "pr.count": "{n} / {tot} réussies", "pr.eyebrow": "Les bons gestes, dans le bon ordre", "pr.intro": "Pour chaque niveau, des situations d’urgence réelles : un camarade qui ne se sent pas bien, une panne d’air, une victime en surface… Tu choisis les bons gestes parmi une longue liste et tu les remets dans l’ordre.", "pr.how": "Certains gestes de la liste sont des pièges. Quand deux gestes peuvent se faire dans n’importe quel ordre, la correction l’indique. Les procédures varient selon les structures : fais-les valider par ton moniteur.", "pr.steps": "{n} gestes parmi {x}", "pr.all": "Enchaîner les {n} procédures {w}", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
+  "story.len": "{n} décisions", "story.toBoss": "Affronter {name}", "story.bossChip": "mène au boss", "bq.need": "Vis d’abord l’aventure « {t} » : c’est elle qui te mène jusqu’au boss.", "bq.also": "Il te faudra aussi vivre l’aventure « {t} », qui mène jusqu’à lui.", "bq.go": "Vivre l’aventure", "bq.story": "Ton aventure t’a mené jusqu’ici", "bq.epi": "La suite de l’histoire", "hm.coachT": "Ton tuteur", "hm.coachS": "Une séance de questions choisies pour toi dans tes cours lus : lacunes, révisions espacées, notions fragiles et un calcul. Le diagnostic montre tes points faibles notion par notion.", "hm.coachDiag": "Le diagnostic montre tes points faibles notion par notion, avec la cause probable.", "hm.coachGo": "Lancer la séance", "hm.coachDg": "Voir le diagnostic", "cq.title": "De quoi parle la question ?", "cq.theme": "Thème : {t}", "cq.notion": "notion : {n}", "dv.ok": "Bonne réponse", "dv.bad": "Raté", "dv.dk": "Passée", "dv.depth": "−{m} m", "dv.comboS": "Combo ×{n} · tu descends à −{m} m. {s}", "dv.streak": { one: "Toujours en immersion : {n} jour d’affilée.", other: "Toujours en immersion : {n} jours d’affilée." }, "dv.set": "Ambiance plongée", "dv.set.full": "Complète", "dv.set.calm": "Discrète", "dv.set.off": "Coupée", "dv.setS": "Bulles, sonar et profondeur pendant les quiz, les combos et les jours d’affilée. « Discrète » garde les sons classiques sans effets ; le verdict (bonne réponse ou raté) reste toujours affiché.", "dv.c.bulles.t": "Bulles en rafale", "dv.c.bulles.s": "Bien lancé, continue.", "dv.c.thermo.t": "Thermocline franchie", "dv.c.thermo.s": "L’eau fraîchit, tes réponses aussi.", "dv.c.sonar.t": "Sonar verrouillé", "dv.c.sonar.s": "Plus rien ne t’échappe.", "dv.c.bleu.t": "Grand bleu", "dv.c.bleu.s": "Plus de fond en vue, que du bleu.", "dv.c.tombant.t": "Le long du tombant", "dv.c.tombant.s": "Une série digne d’un N3.", "dv.c.abysses.t": "Abysses", "dv.c.abysses.s": "Même les poissons-lanternes applaudissent.", "dv.c.fosse.t": "Fosse océane", "dv.c.fosse.s": "Série légendaire.", "dv.c.legende.t": "Légende des abysses", "dv.c.legende.s": "Tu ne remontes plus.", "ord.chip": "Gestes dans l’ordre", "ord.help": "Touche les gestes dans l’ordre où tu les fais ({n} bons gestes, les autres sont des pièges). Touche un geste choisi pour le retirer.", "ord.yours": "Ton enchaînement", "ord.pool": "Gestes possibles", "ord.empty": "Ton enchaînement apparaîtra ici.", "ord.go": "Valider mon enchaînement ({n})", "ord.score": "{g} geste(s) bien placé(s) sur {n}", "ord.right": "Le bon enchaînement :", "ord.free": "ordre libre", "ord.extraT": "Gestes à ne pas faire que tu as choisis :", "num.chip": "Réponse à taper", "num.label": "Tape ta réponse (l’unité est déjà indiquée) :", "num.ph": "ex. 2,5", "num.go": "Valider", "num.qcm": "Voir des propositions", "num.yours": "Ta réponse :", "num.badT": "Il faut un nombre", "num.badS": "Tape seulement le nombre, par exemple 2,5 ou 12.", "pr.title": "Procédures d’urgence", "pr.tileS": "Remets les bons gestes dans l’ordre", "pr.count": "{n} / {tot} réussies", "pr.eyebrow": "Les bons gestes, dans le bon ordre", "pr.intro": "Pour chaque niveau, des situations d’urgence réelles : un camarade qui ne se sent pas bien, une panne d’air, une victime en surface… Tu choisis les bons gestes parmi une longue liste et tu les remets dans l’ordre.", "pr.how": "Certains gestes de la liste sont des pièges. Quand deux gestes peuvent se faire dans n’importe quel ordre, la correction l’indique. Les procédures varient selon les structures : fais-les valider par ton moniteur.", "pr.steps": "{n} gestes parmi {x}", "pr.all": "Enchaîner les {n} procédures {w}", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
   "story.locked": "Termine l’aventure précédente pour l’ouvrir.", "story.lockedT": "Aventure fermée", "story.resume": "Reprendre",
   "story.best": "Meilleur : {n} / {tot}", "story.step": "scène {n}/{tot}", "story.surface": "Surface",
   "story.good": "Bon réflexe", "story.bad": "Pas tout à fait", "story.retry": "Essaie un autre choix.", "story.continue": "Continuer",
@@ -21931,6 +22066,63 @@ ${val("<p>Délais avant l’avion recommandés par la FFESSM et par le fabricant
   const b0 = C.build;
   C.build = function () { const r = b0.apply(this, arguments); C.procs.forEach(p => { if (C.byId[p.m]) p.world = C.byId[p.m].world; C.qById[p.id] = p; }); return r; };
   if (C.qById) C.procs.forEach(p => { if (C.byId[p.m]) p.world = C.byId[p.m].world; C.qById[p.id] = p; });
+})();
+
+/* content/fr/sigles.js */
+/* =====================================================================
+   Abysse Academy 2.6.1 · sigles et abréviations
+   Chaque sigle employé dans une question, une réponse ou une explication
+   est développé ici : [sigle affiché, motif de recherche, forme
+   développée, la notion en une phrase]. Affiché dans « De quoi parle la
+   question ? » avant la correction, et dans « Explique-moi ».
+   tests/content.test.js échoue si un sigle des questions n'est pas ici.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const C = window.AA.content;
+  C.sigles = [
+    ["ADD", "\\bADD\\b", "Accident de désaturation (on dit aussi accident de décompression)", "Des bulles d’azote se forment dans le corps pendant ou après la remontée. Signes possibles : fatigue, douleurs, fourmillements, troubles neurologiques. C’est une urgence : oxygène et alerte."],
+    ["DP", "\\bDP\\b", "Directeur de plongée", "Le responsable de l’organisation et de la sécurité de la plongée : il compose les palanquées, fixe les paramètres et organise les secours."],
+    ["MOD", "\\bMOD\\b", "Profondeur maximale d’utilisation (Maximum Operating Depth)", "La profondeur à ne pas dépasser avec un mélange, pour que la pression partielle d’oxygène reste sous la limite choisie."],
+    ["PpO₂", "\\bPp ?O[₂2]", "Pression partielle d’oxygène", "La part de la pression totale due à l’oxygène : pression absolue × proportion d’oxygène. Trop haute, elle devient toxique."],
+    ["PpN₂", "\\bPp ?N[₂2]", "Pression partielle d’azote", "La part de la pression totale due à l’azote : elle règle la narcose et la quantité d’azote dissoute dans le corps."],
+    ["FO₂", "\\bFO[₂2]", "Fraction d’oxygène", "La proportion d’oxygène dans le mélange, écrite en décimal (0,21 pour l’air, 0,32 pour un nitrox 32)."],
+    ["FN₂", "\\bFN[₂2]", "Fraction d’azote", "La proportion d’azote dans le mélange, écrite en décimal (environ 0,79 pour l’air)."],
+    ["CO₂", "\\bCO[₂2]", "Dioxyde de carbone (gaz carbonique)", "Le gaz produit par le corps, surtout à l’effort. S’il s’accumule (respiration courte, effort), il déclenche l’essoufflement."],
+    ["CO", "\\bCO\\b(?![₂2])", "Monoxyde de carbone", "Un gaz toxique sans odeur (par exemple des gaz d’échappement aspirés par un compresseur) : il prend la place de l’oxygène dans le sang."],
+    ["Pp", "\\bPp ?(?:CO|[A-Z])", "Pression partielle", "La part de la pression totale due à un seul gaz du mélange : pression absolue × proportion de ce gaz (loi de Dalton)."],
+    ["PLS", "\\bPLS\\b", "Position latérale de sécurité", "On couche sur le côté une victime inconsciente qui respire, pour garder ses voies aériennes libres."],
+    ["RIFAP", "\\bRIFAP\\b", "Réactions et intervention face à un accident de plongée", "La qualification secourisme du plongeur : alerter, sortir la victime de l’eau, donner l’oxygène, ranimer si besoin."],
+    ["NDL", "\\bNDL\\b", "Limite sans palier (No Decompression Limit)", "Le temps qu’il reste à une profondeur avant de devoir faire des paliers obligatoires."],
+    ["VHF", "\\bVHF\\b", "Radio marine (Very High Frequency)", "La radio du bateau : le canal 16 sert à appeler les secours en mer."],
+    ["CROSS", "\\bCROSS\\b", "Centre régional opérationnel de surveillance et de sauvetage", "Il coordonne les secours en mer. On le joint par la VHF (canal 16) ou au 196."],
+    ["CMAS", "\\bCMAS\\b", "Confédération mondiale des activités subaquatiques", "La fédération internationale : ses brevets permettent de faire reconnaître son niveau à l’étranger."],
+    ["FFESSM", "\\bFFESSM\\b", "Fédération française d’études et de sports sous-marins", "La fédération qui délivre les niveaux N1 à N4, les brevets d’encadrant et le RIFAP."],
+    ["ANMP", "\\bANMP\\b", "Association nationale des moniteurs de plongée", "Un réseau de moniteurs professionnels qui délivre aussi ses propres niveaux."],
+    ["MP", "\\bMP\\b", "Moyenne pression", "La pression intermédiaire entre le premier étage du détendeur et le deuxième étage (et l’inflateur)."],
+    ["HP", "\\bHP\\b", "Haute pression", "La pression du bloc, lue au manomètre branché sur la sortie HP du premier étage."],
+    ["PS", "\\bPS\\b", "Pression de service", "La pression de gonflage normale du bloc, gravée sur l’ogive."],
+    ["PA / PE", "\\bP[AE](?:\\d{2})?\\b", "Aptitudes : plongée autonome (PA) ou encadrée (PE)", "Le nombre qui suit donne la profondeur maximale en mètres : PE40 = encadré jusqu’à 40 m, PA20 = autonome jusqu’à 20 m."],
+    ["MN90", "\\bMN90\\b", "Tables de la Marine nationale (version 1990)", "Les tables de décompression utilisées dans l’enseignement fédéral pour calculer paliers et durée de remontée."],
+    ["DIN", "\\bDIN\\b", "Raccord DIN", "Le détendeur se visse dans le robinet du bloc (par opposition au raccord à étrier)."],
+    ["RC", "\\bRC\\b", "Responsabilité civile", "L’assurance qui couvre les dommages que tu causes aux autres."],
+    ["EAD", "\\bEAD\\b", "Équivalent air en profondeur", "La profondeur à laquelle l’air donnerait la même pression d’azote que le nitrox utilisé : elle sert à utiliser des tables à l’air."],
+    ["RCP", "\\bRCP\\b", "Réanimation cardio-pulmonaire", "Compressions thoraciques et insufflations pour une victime en arrêt cardiaque, en attendant le défibrillateur et les secours."],
+    ["FOP", "\\bFOP\\b", "Foramen ovale perméable", "Une petite communication entre les deux oreillettes du cœur, qui peut laisser passer des bulles et favoriser certains ADD."],
+    ["BAVU", "\\bBAVU\\b", "Ballon autoremplisseur à valve unidirectionnelle", "Un ballon avec masque pour insuffler de l’air ou de l’oxygène à une victime qui ne respire pas."],
+    ["GF", "\\bGF\\b", "Facteurs de gradient (Gradient Factors)", "Le réglage de prudence de certains ordinateurs : plus les valeurs sont basses, plus la décompression est prudente."],
+    ["GPS", "\\bGPS\\b", "Positionnement par satellite", "Il donne la position exacte du bateau ou du site, utile pour l’alerte."],
+    ["DAE", "\\bDAE\\b", "Défibrillateur automatisé externe", "L’appareil qui analyse le cœur et délivre un choc si besoin. Il guide le sauveteur à la voix."],
+    ["DTR", "\\bDTR\\b", "Durée totale de remontée", "Le temps qu’il faut pour revenir en surface, paliers compris."],
+    ["TIV", "\\bTIV\\b", "Technicien en inspection visuelle", "Un plongeur formé pour inspecter chaque année l’intérieur et l’extérieur des blocs du club."],
+    ["SAMU", "\\bSAMU\\b", "Service d’aide médicale urgente", "Les secours médicaux, joignables au 15 (ou au 112)."],
+    ["SNC", "\\bSNC\\b", "Système nerveux central", "Le cerveau et la moelle épinière."],
+    ["CAT", "\\bCAT\\b", "Conduite à tenir", "Ce qu’il faut faire, dans l’ordre, face à un incident ou un accident."],
+    ["NO FLY", "\\bNO FLY\\b", "Interdiction de vol", "Le temps à attendre après la plongée avant de prendre l’avion (la pression en cabine est plus basse)."],
+    ["SAFETY STOP", "\\bSAFETY STOP\\b", "Palier de sécurité", "Une pause de quelques minutes vers 3 à 5 m avant de faire surface, même quand aucun palier n’est obligatoire."]
+  ];
+  /* Mots en capitales qui ne sont pas des sigles (insistance, signes). */
+  C.siglesOk = ["OK", "PAS", "ET", "NE", "NON", "OUI", "SAUF", "FAUX", "VRAI", "JAMAIS", "TOUJOURS", "NO", "FLY", "SAFETY", "STOP", "PA", "PE"];
 })();
 
 /* js/app.js */

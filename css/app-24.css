@@ -260,3 +260,21 @@ h1,h2,.pagetitle{text-wrap:balance}
 .reduce-motion .sonar-ring{display:none}
 .reduce-motion #qc.silt{animation:none}
 .numin{grid-template-columns:minmax(0,1fr)}.numin>*{min-width:0}.numin label{overflow-wrap:anywhere}.numrow input{width:100%}.ord{grid-template-columns:minmax(0,1fr)}
+
+/* 2.6.1 · effets jamais bloquants */
+.toast.passive,.verdict,.sonar-ring,.float{pointer-events:none}
+.toast.toast-top{top:calc(env(safe-area-inset-top,0px) + 8px);bottom:auto;max-width:calc(100% - 24px)}
+.verdict{top:calc(env(safe-area-inset-top,0px) + 84px)}
+
+/* 2.6.1 · De quoi parle la question ? */
+.ctxq{margin:6px 0 12px;padding:10px 12px;border-radius:var(--r-md);background:color-mix(in srgb,var(--primary) 8%,transparent);border:1px solid color-mix(in srgb,var(--primary) 28%,var(--line))}
+.ctxq summary{cursor:pointer;font-weight:700;display:flex;align-items:center;gap:6px;list-style:none}
+.ctxq summary::-webkit-details-marker{display:none}
+.ctxq summary svg{width:16px;height:16px;flex:0 0 auto}
+.ctx-th{margin:6px 0 4px;color:var(--ink-2)}
+.ctx-dl{margin:6px 0 0;display:grid;gap:8px}
+.ctx-dl div{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 10px;align-items:baseline}
+.ctx-dl dt{font:700 var(--fs-sm) var(--font-mono);color:var(--primary);white-space:nowrap}
+.ctx-dl dd{margin:0;font-size:var(--fs-sm);line-height:1.45;overflow-wrap:anywhere}
+@media (max-width:360px){.ctx-dl div{grid-template-columns:minmax(0,1fr)}}
+.tu-coach .eyebrow{display:flex;align-items:center;gap:6px}.tu-coach .eyebrow svg{width:16px;height:16px}.tu-coach-btns{flex-wrap:wrap;gap:8px}

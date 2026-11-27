@@ -18,13 +18,13 @@
 <link rel="preload" href="assets/fonts/Figtree-dab710cf.woff2" as="font" type="font/woff2" crossorigin>
 <script>/* Thème appliqué avant l'affichage pour éviter un flash de couleurs. */
 try{var s=JSON.parse(localStorage.getItem("abysse-academy")||"null"),r=document.documentElement;if(s&&s.profile){if(s.profile.theme)r.dataset.aaTheme=s.profile.theme;if(s.profile.textSize)r.style.setProperty("--ts",s.profile.textSize);if(s.profile.cvd)r.dataset.aaCvd="1";}}catch(e){}</script>
-<link rel="stylesheet" href="assets/fonts/fonts.css?v=2.6.0">
-<link rel="stylesheet" href="css/tokens.css?v=2.6.0">
-<link rel="stylesheet" href="css/app.css?v=2.6.0">
-<link rel="stylesheet" href="css/app-11.css?v=2.6.0">
-<link rel="stylesheet" href="css/app-20.css?v=2.6.0">
-<link rel="stylesheet" href="css/app-22.css?v=2.6.0">
-<link rel="stylesheet" href="css/app-24.css?v=2.6.0">
+<link rel="stylesheet" href="assets/fonts/fonts.css?v=2.6.1">
+<link rel="stylesheet" href="css/tokens.css?v=2.6.1">
+<link rel="stylesheet" href="css/app.css?v=2.6.1">
+<link rel="stylesheet" href="css/app-11.css?v=2.6.1">
+<link rel="stylesheet" href="css/app-20.css?v=2.6.1">
+<link rel="stylesheet" href="css/app-22.css?v=2.6.1">
+<link rel="stylesheet" href="css/app-24.css?v=2.6.1">
 </head>
 <body>
 <canvas id="bubbles" aria-hidden="true"></canvas>
@@ -34,100 +34,101 @@ try{var s=JSON.parse(localStorage.getItem("abysse-academy")||"null"),r=document.
 </div>
 <div id="tabbar" class="tabbar"></div>
 <noscript><p style="padding:24px;font-family:sans-serif">Abysse Academy a besoin de JavaScript.</p></noscript>
-<script src="js/core/ns.js?v=2.6.0"></script>
-<script src="js/core/i18n.js?v=2.6.0"></script>
-<script src="js/core/store.js?v=2.6.0"></script>
-<script src="js/core/content.js?v=2.6.0"></script>
-<script src="js/ui/icons.js?v=2.6.0"></script>
-<script src="js/ui/creatures.js?v=2.6.0"></script>
-<script src="js/ui/avatar.js?v=2.6.0"></script>
-<script src="js/ui/reset.js?v=2.6.0"></script>
-<script src="js/core/a11y.js?v=2.6.0"></script>
-<script src="js/core/fx.js?v=2.6.0"></script>
-<script src="js/ui/scene.js?v=2.6.0"></script>
-<script src="js/ui/gestures.js?v=2.6.0"></script>
-<script src="js/core/game.js?v=2.6.0"></script>
-<script src="js/core/path.js?v=2.6.0"></script>
-<script src="js/core/router.js?v=2.6.0"></script>
-<script src="js/ui/ui.js?v=2.6.0"></script>
-<script src="js/core/pwa.js?v=2.6.0"></script>
-<script src="js/core/sync.js?v=2.6.0"></script>
-<script src="js/views/home.js?v=2.6.0"></script>
-<script src="js/views/learn.js?v=2.6.0"></script>
-<script src="js/views/quiz.js?v=2.6.0"></script>
-<script src="js/views/train.js?v=2.6.0"></script>
-<script src="js/views/lab.js?v=2.6.0"></script>
-<script src="js/views/profile.js?v=2.6.0"></script>
-<script src="js/views/aquarium.js?v=2.6.0"></script>
-<script src="js/views/story.js?v=2.6.0"></script>
-<script src="js/views/search.js?v=2.6.0"></script>
-<script src="js/views/mistakes.js?v=2.6.0"></script>
-<script src="js/views/backup.js?v=2.6.0"></script>
-<script src="js/views/path.js?v=2.6.0"></script>
-<script src="js/views/help.js?v=2.6.0"></script>
-<script src="js/views/cursus.js?v=2.6.0"></script>
-<script src="js/views/v17.js?v=2.6.0"></script>
-<script src="js/views/v18.js?v=2.6.0"></script>
-<script src="js/views/v19.js?v=2.6.0"></script>
-<script src="js/views/v20.js?v=2.6.0"></script>
-<script src="js/views/search2.js?v=2.6.0"></script>
-<script src="js/views/v22.js?v=2.6.0"></script>
-<script src="js/views/v22b.js?v=2.6.0"></script>
-<script src="js/views/v22c.js?v=2.6.0"></script>
-<script src="js/views/v22d.js?v=2.6.0"></script>
-<script src="js/views/v23.js?v=2.6.0"></script>
-<script src="js/views/v24.js?v=2.6.0"></script>
-<script src="js/views/v25.js?v=2.6.0"></script>
-<script src="js/views/v26.js?v=2.6.0"></script>
-<script src="locales/fr.js?v=2.6.0"></script>
-<script src="content/fr/worlds.js?v=2.6.0"></script>
-<script src="content/fr/decouverte.js?v=2.6.0"></script>
-<script src="content/fr/n1.js?v=2.6.0"></script>
-<script src="content/fr/n2.js?v=2.6.0"></script>
-<script src="content/fr/rifap.js?v=2.6.0"></script>
-<script src="content/fr/e1.js?v=2.6.0"></script>
-<script src="content/fr/n3.js?v=2.6.0"></script>
-<script src="content/fr/n4.js?v=2.6.0"></script>
-<script src="content/fr/cards.js?v=2.6.0"></script>
-<script src="content/fr/computer.js?v=2.6.0"></script>
-<script src="content/fr/scenarios.js?v=2.6.0"></script>
-<script src="content/fr/generators.js?v=2.6.0"></script>
-<script src="content/fr/generators-plus.js?v=2.6.0"></script>
-<script src="content/fr/diagrams.js?v=2.6.0"></script>
-<script src="content/fr/progress.js?v=2.6.0"></script>
-<script src="content/fr/aquarium.js?v=2.6.0"></script>
-<script src="content/fr/companions.js?v=2.6.0"></script>
-<script src="content/fr/methods.js?v=2.6.0"></script>
-<script src="content/fr/glossary.js?v=2.6.0"></script>
-<script src="content/fr/story.js?v=2.6.0"></script>
-<script src="content/fr/pitfalls.js?v=2.6.0"></script>
-<script src="content/fr/help.js?v=2.6.0"></script>
-<script src="content/fr/lessons-plus.js?v=2.6.0"></script>
-<script src="content/fr/cursus.js?v=2.6.0"></script>
-<script src="content/fr/deep-n3.js?v=2.6.0"></script>
-<script src="content/fr/deep-n4.js?v=2.6.0"></script>
-<script src="content/fr/deep-rifap-e1.js?v=2.6.0"></script>
-<script src="content/fr/diagrams-plus.js?v=2.6.0"></script>
-<script src="content/fr/deep-audit.js?v=2.6.0"></script>
-<script src="content/fr/v19.js?v=2.6.0"></script>
-<script src="content/fr/v20.js?v=2.6.0"></script>
-<script src="content/fr/v20-art.js?v=2.6.0"></script>
-<script src="content/fr/search2.js?v=2.6.0"></script>
-<script src="content/fr/v22.js?v=2.6.0"></script>
-<script src="content/fr/v22b.js?v=2.6.0"></script>
-<script src="content/fr/n3-plus.js?v=2.6.0"></script>
-<script src="content/fr/n4-plus.js?v=2.6.0"></script>
-<script src="content/fr/e1-plus.js?v=2.6.0"></script>
-<script src="content/fr/e2-plus.js?v=2.6.0"></script>
-<script src="content/fr/rifap-nx-plus.js?v=2.6.0"></script>
-<script src="content/fr/n2-ordi.js?v=2.6.0"></script>
-<script src="content/fr/enrich-24.js?v=2.6.0"></script>
-<script src="content/fr/q25.js?v=2.6.0"></script>
-<script src="content/fr/qcm-audit.js?v=2.6.0"></script>
-<script src="content/fr/story-audit.js?v=2.6.0"></script>
-<script src="content/fr/stories-24.js?v=2.6.0"></script>
-<script src="content/fr/boss-quests.js?v=2.6.0"></script>
-<script src="content/fr/procs.js?v=2.6.0"></script>
-<script src="js/app.js?v=2.6.0"></script>
+<script src="js/core/ns.js?v=2.6.1"></script>
+<script src="js/core/i18n.js?v=2.6.1"></script>
+<script src="js/core/store.js?v=2.6.1"></script>
+<script src="js/core/content.js?v=2.6.1"></script>
+<script src="js/ui/icons.js?v=2.6.1"></script>
+<script src="js/ui/creatures.js?v=2.6.1"></script>
+<script src="js/ui/avatar.js?v=2.6.1"></script>
+<script src="js/ui/reset.js?v=2.6.1"></script>
+<script src="js/core/a11y.js?v=2.6.1"></script>
+<script src="js/core/fx.js?v=2.6.1"></script>
+<script src="js/ui/scene.js?v=2.6.1"></script>
+<script src="js/ui/gestures.js?v=2.6.1"></script>
+<script src="js/core/game.js?v=2.6.1"></script>
+<script src="js/core/path.js?v=2.6.1"></script>
+<script src="js/core/router.js?v=2.6.1"></script>
+<script src="js/ui/ui.js?v=2.6.1"></script>
+<script src="js/core/pwa.js?v=2.6.1"></script>
+<script src="js/core/sync.js?v=2.6.1"></script>
+<script src="js/views/home.js?v=2.6.1"></script>
+<script src="js/views/learn.js?v=2.6.1"></script>
+<script src="js/views/quiz.js?v=2.6.1"></script>
+<script src="js/views/train.js?v=2.6.1"></script>
+<script src="js/views/lab.js?v=2.6.1"></script>
+<script src="js/views/profile.js?v=2.6.1"></script>
+<script src="js/views/aquarium.js?v=2.6.1"></script>
+<script src="js/views/story.js?v=2.6.1"></script>
+<script src="js/views/search.js?v=2.6.1"></script>
+<script src="js/views/mistakes.js?v=2.6.1"></script>
+<script src="js/views/backup.js?v=2.6.1"></script>
+<script src="js/views/path.js?v=2.6.1"></script>
+<script src="js/views/help.js?v=2.6.1"></script>
+<script src="js/views/cursus.js?v=2.6.1"></script>
+<script src="js/views/v17.js?v=2.6.1"></script>
+<script src="js/views/v18.js?v=2.6.1"></script>
+<script src="js/views/v19.js?v=2.6.1"></script>
+<script src="js/views/v20.js?v=2.6.1"></script>
+<script src="js/views/search2.js?v=2.6.1"></script>
+<script src="js/views/v22.js?v=2.6.1"></script>
+<script src="js/views/v22b.js?v=2.6.1"></script>
+<script src="js/views/v22c.js?v=2.6.1"></script>
+<script src="js/views/v22d.js?v=2.6.1"></script>
+<script src="js/views/v23.js?v=2.6.1"></script>
+<script src="js/views/v24.js?v=2.6.1"></script>
+<script src="js/views/v25.js?v=2.6.1"></script>
+<script src="js/views/v26.js?v=2.6.1"></script>
+<script src="locales/fr.js?v=2.6.1"></script>
+<script src="content/fr/worlds.js?v=2.6.1"></script>
+<script src="content/fr/decouverte.js?v=2.6.1"></script>
+<script src="content/fr/n1.js?v=2.6.1"></script>
+<script src="content/fr/n2.js?v=2.6.1"></script>
+<script src="content/fr/rifap.js?v=2.6.1"></script>
+<script src="content/fr/e1.js?v=2.6.1"></script>
+<script src="content/fr/n3.js?v=2.6.1"></script>
+<script src="content/fr/n4.js?v=2.6.1"></script>
+<script src="content/fr/cards.js?v=2.6.1"></script>
+<script src="content/fr/computer.js?v=2.6.1"></script>
+<script src="content/fr/scenarios.js?v=2.6.1"></script>
+<script src="content/fr/generators.js?v=2.6.1"></script>
+<script src="content/fr/generators-plus.js?v=2.6.1"></script>
+<script src="content/fr/diagrams.js?v=2.6.1"></script>
+<script src="content/fr/progress.js?v=2.6.1"></script>
+<script src="content/fr/aquarium.js?v=2.6.1"></script>
+<script src="content/fr/companions.js?v=2.6.1"></script>
+<script src="content/fr/methods.js?v=2.6.1"></script>
+<script src="content/fr/glossary.js?v=2.6.1"></script>
+<script src="content/fr/story.js?v=2.6.1"></script>
+<script src="content/fr/pitfalls.js?v=2.6.1"></script>
+<script src="content/fr/help.js?v=2.6.1"></script>
+<script src="content/fr/lessons-plus.js?v=2.6.1"></script>
+<script src="content/fr/cursus.js?v=2.6.1"></script>
+<script src="content/fr/deep-n3.js?v=2.6.1"></script>
+<script src="content/fr/deep-n4.js?v=2.6.1"></script>
+<script src="content/fr/deep-rifap-e1.js?v=2.6.1"></script>
+<script src="content/fr/diagrams-plus.js?v=2.6.1"></script>
+<script src="content/fr/deep-audit.js?v=2.6.1"></script>
+<script src="content/fr/v19.js?v=2.6.1"></script>
+<script src="content/fr/v20.js?v=2.6.1"></script>
+<script src="content/fr/v20-art.js?v=2.6.1"></script>
+<script src="content/fr/search2.js?v=2.6.1"></script>
+<script src="content/fr/v22.js?v=2.6.1"></script>
+<script src="content/fr/v22b.js?v=2.6.1"></script>
+<script src="content/fr/n3-plus.js?v=2.6.1"></script>
+<script src="content/fr/n4-plus.js?v=2.6.1"></script>
+<script src="content/fr/e1-plus.js?v=2.6.1"></script>
+<script src="content/fr/e2-plus.js?v=2.6.1"></script>
+<script src="content/fr/rifap-nx-plus.js?v=2.6.1"></script>
+<script src="content/fr/n2-ordi.js?v=2.6.1"></script>
+<script src="content/fr/enrich-24.js?v=2.6.1"></script>
+<script src="content/fr/q25.js?v=2.6.1"></script>
+<script src="content/fr/qcm-audit.js?v=2.6.1"></script>
+<script src="content/fr/story-audit.js?v=2.6.1"></script>
+<script src="content/fr/stories-24.js?v=2.6.1"></script>
+<script src="content/fr/boss-quests.js?v=2.6.1"></script>
+<script src="content/fr/procs.js?v=2.6.1"></script>
+<script src="content/fr/sigles.js?v=2.6.1"></script>
+<script src="js/app.js?v=2.6.1"></script>
 </body>
 </html>

@@ -221,11 +221,38 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       await p.evaluate(ids => { window.__snd = []; AA.quiz.start("errors", ids.map(id => AA.content.qById[id]), { title: "Q" }); }, qs); await p.waitForTimeout(250);
       await p.click(`.choice[data-ci="${await answerCi(true)}"]`); await p.waitForTimeout(60);
       ok(await p.evaluate(() => window.__snd.includes("ok") && !!document.querySelector(".feedback.ok")), "quiz : correction affichée avec le son");
+      /* Aucun effet (toast, verdict, bulle d'XP, sonar) ne doit empêcher de cliquer. */
+      await p.evaluate(() => { const c = AA.ctx; c.combo = 4; AA.fx.toast("Trophée", "Un trophée cliquable", "star", () => {}); AA.fx.toast("Combo", "x", "dive"); AA.fx.verdict(true); AA.fx.float("+10 XP", document.querySelector("#nextq")); AA.fx.dive.combo({ combo: 5 }); });
+      await p.waitForTimeout(350);
+      const blocked = await p.evaluate(() => [...document.querySelectorAll("#view button, #view a.btn")].filter(b => { const r = b.getBoundingClientRect(); if (!r.width || r.bottom < 0 || r.top > innerHeight) return false; const pts = [[r.left + r.width / 2, r.top + r.height / 2], [r.left + 8, r.top + r.height / 2], [r.right - 8, r.top + r.height / 2]]; return pts.some(([x, y]) => { const e = document.elementFromPoint(x, Math.min(y, innerHeight - 1)); return e && !b.contains(e); }); }).map(b => b.id || b.className));
+      ok(await p.$(".toast") && blocked.length === 0, "effets : toasts, verdict et bulles ne bloquent aucun bouton" + (blocked.length ? " (" + blocked.join(", ") + ")" : ""));
+      await p.click("#nextq", { timeout: 2000 }); await p.waitForTimeout(150);
+      ok(await p.evaluate(() => AA.ctx.idx === 1), "effets : « Continuer » reste cliquable pendant un toast");
+      await p.evaluate(ids => { AA.quiz.start("errors", ids.map(id => AA.content.qById[id]), { title: "Q" }); }, qs); await p.waitForTimeout(250);
+      await p.click(`.choice[data-ci="${await answerCi(true)}"]`); await p.waitForTimeout(60);
       /* Ambiance : profondeur du combo, réglage, coupure. */
       await p.click("#nextq"); await p.waitForTimeout(150); await p.click(`.choice[data-ci="${await answerCi(true)}"]`); await p.waitForTimeout(80);
       ok(await p.evaluate(() => /−6 m/.test((document.querySelector(".combo") || {}).textContent || "")), "ambiance : le combo se lit en profondeur");
       await p.goto(URL + "#/settings"); await p.waitForTimeout(300); await p.click('[data-amb="off"]'); await p.waitForTimeout(80);
       ok(await p.evaluate(() => AA.S.profile.amb === "off" && AA.fx.dive.level() === 0 && AA.fx.dive.comboLabel(4) !== "−12 m"), "ambiance : réglable et coupable dans les paramètres");
+      await ctx.close(); }
+
+    console.log("• Un seul point d’entrée par parcours (2.6.1)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
+      await p.evaluate(() => { AA.S.profile.placeAsk = true; AA.S.placeDone = {}; AA.store.save(true); AA.path.startPlacement("n2"); }); await p.waitForTimeout(300);
+      const n = await p.evaluate(() => AA.ctx.items.length);
+      ok(n === await p.evaluate(() => AA.content.inWorld("n2").length * 2), "positionnement : 2 questions par thème");
+      await p.click(".choice >> nth=0"); await p.waitForTimeout(100); await p.click("#nextq"); await p.waitForTimeout(150);
+      await p.goto(URL + "#/home"); await p.waitForTimeout(400);
+      ok(await p.$(".run-card") && !(await p.$(".place-card")), "accueil : positionnement en cours = seulement « Reprendre », pas « Commencer »");
+      await p.goto(URL + "#/parcours"); await p.waitForTimeout(300);
+      ok(/1\/\d+/.test(await p.evaluate(() => (document.querySelector('[data-place="n2"]') || {}).textContent || "")), "parcours : le bouton du test devient « Reprendre (1/n) »");
+      await p.click('[data-place="n2"]'); await p.waitForTimeout(300);
+      ok(await p.evaluate(n => AA.router.name === "quiz" && AA.ctx.mode === "place" && AA.ctx.answers.length === 1 && AA.ctx.items.length === n, n), "parcours : on reprend la même série au lieu d’en recommencer une");
+      await p.evaluate(() => { AA.run.clear(); AA.content.inWorld("n2").slice(0, 4).forEach(m => m.quiz.slice(0, 4).forEach((q, i) => AA.game.record(q, i % 2 === 0, false, 0))); AA.store.save(true); });
+      await p.goto(URL + "#/home"); await p.waitForTimeout(400);
+      const dup = await p.evaluate(() => { const acts = AA.tutor._acts || []; const sess = document.querySelectorAll("#view [data-tusession]").length + acts.filter((a, i) => a.k === "session" && document.querySelector('#view [data-tuact="' + i + '"]')).length; const dg = document.querySelectorAll('#view a[href="#/diagnostic"]').length + acts.filter((a, i) => a.k === "diag" && document.querySelector('#view [data-tuact="' + i + '"]')).length; const titles = [...document.querySelectorAll("#view .tu-act b")].map(b => b.textContent); return { sess, dg, uniq: new Set(titles).size === titles.length }; });
+      ok(dup.sess <= 1 && dup.dg <= 1 && dup.uniq, "accueil : une seule entrée pour la séance du tuteur et le diagnostic");
       await ctx.close(); }
 
     console.log("• Briefing, successives, défis, club (1.9)");

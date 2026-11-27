@@ -53,12 +53,18 @@
 
   /* ---------- Toasts (file d'attente) ---------- */
   const q = []; let busy = false;
+  const ACT = "#qc,#btNext,.bt-c,#btGo,.st-choice,#stnext,.opt";
+  fx.busy = () => !!document.querySelector(ACT);
   fx.toast = (title, sub, icon, onClick) => { q.push({ title, sub, icon, onClick }); if (!busy) next(); };
   function next() {
     const t = q.shift(); if (!t) { busy = false; return; }
     busy = true;
     const d = document.createElement("div");
-    d.className = "toast"; d.setAttribute("role", "status");
+    /* 2.6.1 : pendant un quiz, un combat ou une aventure, les toasts s'affichent
+       en haut et ne captent jamais un clic (on doit pouvoir répondre et continuer). */
+    const onTask = fx.busy();
+    d.className = "toast" + (onTask || !t.onClick ? " passive" : "") + (onTask ? " toast-top" : ""); d.setAttribute("role", "status");
+    if (onTask) t.onClick = null;
     d.innerHTML = `<span class="medal">${AA.icon(t.icon || "star")}</span><div><b>${u.esc(t.title)}</b><span>${u.esc(t.sub || "")}</span></div>`;
     if (t.onClick) { d.style.cursor = "pointer"; d.onclick = () => { t.onClick(); d.remove(); }; }
     document.body.appendChild(d);

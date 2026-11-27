@@ -100,7 +100,7 @@
     const wrong = picked != null && picked !== q.a;
 
     const steps = [
-      [t("exp2.s1"), "target", `<p class="exp-q">${u.esc(q.q)}</p>
+      [t("exp2.s1"), "target", `<p class="exp-q">${u.esc(q.q)}</p>${Q.context ? Q.context(q, true) : ""}
         ${wrong ? `<p class="exp-bad">${AA.icon("x")}<span>${t("exp.youPicked")} <b>${u.esc(q.c[picked])}</b></span></p>` : ""}
         <p class="exp-a">${AA.icon("check")}<span>${t("exp2.good")} <b>${u.esc(q.c[q.a])}</b></span></p>
         ${trap || pf ? `<div class="callout trap exp-trap"><span class="eyebrow">${t("exp.s4")}</span>${u.esc(trap || pf.why)}</div>` : ""}`],
