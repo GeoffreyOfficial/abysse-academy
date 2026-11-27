@@ -25,8 +25,10 @@ const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console
 const WIDTHS = [[280, 653], [390, 844], [884, 1104], [1440, 900], [3840, 2160]];
 const ROUTES = ["home", "map/n2", "lesson/pression", "lesson/dalton/approfondir", "train", "flash", "lab", "sim", "pc", "scen", "calc", "tables", "profile", "club", "settings", "cours", "cours/n3", "progres", "moniteur", "search/palier", "jeux", "jeux/n2", "aquarium", "quests", "story", "boss/n2", "boss/n1", "gardien/pression", "paires", "vraifaux", "glossary", "mistakes", "backup", "parcours", "map/decouverte", "map/n3", "lesson/n3-gaz", "lesson/nx-base", "reports", "sources", "valider", "lesson/mariotte", "cursus", "cursus/e2", "lesson/n3-cadre", "lesson/r-cas", "carnet", "examen", "examen/n3/quick", "fiches/n2", "fiches/e2/e2-evaluer", "brief", "brief/gp", "succ", "succ/go"];
 
-async function newPage(b, w, h) {
+async function newPage(b, w, h, rich) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
+  /* Les anciens parcours répondent par QCM : sans procédures ni calculs à taper (testés à part). */
+  if (!rich) await ctx.addInitScript(() => { window.AA_PLAIN = 1; });
   p.on("pageerror", e => errs.push(`${w}px ${e.message}`));
   p.on("console", m => { if (m.type() === "error" && !/vibrate|favicon/.test(m.text())) errs.push(`${w}px ${m.text()}`); });
   return { ctx, p };
@@ -170,6 +172,30 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       const canSpeak = await p.evaluate(() => AA.a11y.canSpeak);
       if (canSpeak) { await p.click("[data-oral]"); await p.waitForTimeout(300); ok(await p.$(".oral-bar"), "lecture du cours : lecteur affiché"); await p.click("#orStop"); }
       else ok(true, "lecture du cours : synthèse vocale absente ici (bouton masqué)");
+      await ctx.close(); }
+
+    console.log("• Procédures d’urgence et calculs à taper (2.5)");
+    { const { ctx, p } = await newPage(b, 390, 844, true); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
+      await p.goto(URL + "#/procs"); await p.waitForTimeout(300);
+      ok((await p.$$(".pr-item")).length >= 18, "procédures : page dédiée, tous les niveaux");
+      await p.click('[data-pr="proc-n2-assist"]'); await p.waitForTimeout(300);
+      ok((await p.$$(".ord-pool .ord-it")).length >= 13, "procédures : longue liste de gestes avec pièges");
+      const steps = await p.evaluate(() => AA.content.qById["proc-n2-assist"].steps.flat());
+      for (const s of steps) { await p.evaluate(x => [...document.querySelectorAll(".ord-pool .ord-it")].find(b => b.dataset.p === x).click(), s); await p.waitForTimeout(30); }
+      await p.click("#ordGo"); await p.waitForTimeout(250);
+      ok(await p.$(".feedback.ok") && (await p.$$(".ord-seq .ord-it.good")).length === steps.length, "procédures : bon enchaînement validé");
+      ok(await p.evaluate(() => !!(AA.S.procs || {})["proc-n2-assist"]), "procédures : réussite enregistrée");
+      await p.evaluate(() => AA.quiz.procs([AA.content.qById["proc-n1-perte"]])); await p.waitForTimeout(300);
+      const fl = await p.evaluate(() => AA.content.qById["proc-n1-perte"]), bad = [fl.steps[0][0], fl.extra[0]];
+      for (const s of bad) { await p.evaluate(x => [...document.querySelectorAll(".ord-pool .ord-it")].find(b => b.dataset.p === x).click(), s); await p.waitForTimeout(30); }
+      await p.click("#ordGo"); await p.waitForTimeout(250);
+      ok(await p.$(".feedback.bad .ord-ok") && await p.$(".ord-seq .ord-it.wrong"), "procédures : erreur corrigée avec le bon enchaînement");
+      ok(await p.evaluate(() => { const ids = []; for (let k = 0; k < 4; k++) AA.quiz.examPlan("n2", true).forEach(q => q.proc && ids.push(q.id)); return ids.length === 8; }), "procédures : 2 par brevet blanc complet");
+      const typed = await p.evaluate(() => { const G = AA.game, k = G.genKeys().find(k => AA.quiz.canType(G.gen(k))), q = G.gen(k); AA.quiz.start("place", [q], { title: "t" }); return q.c[q.a]; });
+      await p.waitForTimeout(250); await p.evaluate(() => { AA.ctx.items[0].inp = true; AA.router.refresh(); }); await p.waitForTimeout(250);
+      await p.fill("#numv", typed.replace(/\s*[^\d,.\s-].*$/, "")); await p.click("#numGo"); await p.waitForTimeout(250);
+      ok(await p.$(".numres.good") && await p.$(".feedback.ok"), "calcul à taper : bonne réponse acceptée (virgule, sans unité)");
+      ok(await p.evaluate(() => { const q = { calc: true, c: ["12 min", "15 min", "9 min", "20 min"], a: 0 }; return AA.quiz.canType(q) && AA.quiz.numOf("12,0") === 12 && AA.quiz.numOf("1 234,5 L") === 1234.5 && AA.quiz.numTol(q) >= .5 && AA.quiz.numTol(q) < 1.5; }), "calcul à taper : tolérance et lecture des nombres");
       await ctx.close(); }
 
     console.log("• Briefing, successives, défis, club (1.9)");
@@ -320,6 +346,8 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       for (const wid of bossIds) { await p.goto(URL + "#/boss/" + wid); await p.waitForTimeout(200); const go = await p.$("#btGo"); if (!go) { fightBad.push(wid); continue; } await go.click(); await p.waitForTimeout(250); if (!(await p.$("#btA .bt-boss")) || !(await p.$(".bt-c"))) fightBad.push(wid); }
       ok(!fightBad.length, "chaque boss se combat : arène, boss et questions " + fightBad.join(","));
       await p.evaluate(() => { AA.S.unlockAll = false; AA.store.save(true); });
+      ok(await p.evaluate(() => AA.S.path.n2 !== "learn" || !AA.game.bossOpen("n2") || AA.game.questDone("n2")), "boss : la quête du gardien est demandée avant le combat");
+      await p.evaluate(() => { AA.S.story["boss-n2"] = { done: AA.u.today(), node: "q1" }; AA.store.save(true); });
       await p.goto(URL + "#/boss/n2"); await p.waitForTimeout(200); await p.click("#btGo"); await p.waitForTimeout(300);
       const hp0 = await p.evaluate(() => document.querySelectorAll("#btHp i:not(.off)").length);
       await p.evaluate(() => { const q = document.querySelector(".bt-qt").textContent, Q = AA.content.questions.find(x => x.q === q); [...document.querySelectorAll(".bt-c")].find(b => +b.dataset.ci === Q.a).click(); }); await p.waitForTimeout(700);

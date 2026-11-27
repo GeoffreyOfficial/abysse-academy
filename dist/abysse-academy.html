@@ -2352,6 +2352,67 @@ h1,h2,.pagetitle{text-wrap:balance}
 @media (max-width:420px){.dg-p{flex-wrap:wrap}.dg-p .btn{margin-left:44px}}
 @media (max-width:420px){.dg-p .grow{flex:1 1 calc(100% - 3rem)}.dg-p{row-gap:8px}}
 
+/* ===== 2.5 · Carte « À reprendre » : plus de chevauchement ===== */
+.run-card{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px 14px}
+.run-card .grow{min-width:0}
+.run-card .grow b{overflow-wrap:anywhere}
+.run-btns{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-start}
+.run-btns .btn{flex:1 1 auto}
+@media (min-width:640px){.run-card{grid-template-columns:auto minmax(0,1fr) auto}.run-btns{grid-column:auto;justify-content:flex-end}.run-btns .btn{flex:0 0 auto}}
+
+/* ===== 2.5 · Récit des boss ===== */
+.bt-story,.bt-epi{margin:var(--sp-3) 0;padding:12px 14px;border-radius:var(--r-lg);background:color-mix(in srgb,var(--gold) 10%,var(--surface-2));border:1px solid color-mix(in srgb,var(--gold) 35%,var(--line));text-align:left;animation:stIn .5s var(--ease) both}
+.bt-story .eyebrow,.bt-epi .eyebrow{display:flex;gap:6px;align-items:center;margin:0 0 4px;color:var(--gold)}
+.bt-story .eyebrow svg{width:1rem;height:1rem}
+.bt-story p:last-child,.bt-epi p:last-child{margin:0;font-style:italic;line-height:1.55}
+.st-boss{margin-bottom:var(--sp-2)}
+
+/* ===== 2.5 · Visite guidée : lexique ===== */
+.tour-words{margin:0;display:grid;gap:8px;max-height:min(46vh,380px);overflow:auto;padding-right:4px}
+.tour-words div{display:grid;gap:1px}
+.tour-words dt{font:700 .9rem var(--font-display);color:var(--primary)}
+.tour-words dd{margin:0;font-size:.85rem;line-height:1.45;color:var(--ink-2)}
+/* 2.5 · gestes dans l'ordre et réponses à taper */
+.ord{display:grid;gap:var(--sp-3);margin-top:var(--sp-3)}
+.ord-help{margin:0}
+.ord-seq{list-style:none;margin:0;padding:10px;display:grid;gap:6px;border:2px dashed var(--line);border-radius:var(--r-md);min-height:56px}
+.ord-seq:not(.empty){border-style:solid;border-color:color-mix(in srgb,var(--primary) 45%,var(--line))}
+.ord-ph{color:var(--muted);font-size:.9rem;align-self:center;text-align:center}
+.ord-pool{display:grid;gap:6px;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr))}
+.ord-it{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);font:inherit;font-size:.95rem;line-height:1.3;cursor:pointer;min-height:44px}
+.ord-it span{flex:1;min-width:0;overflow-wrap:anywhere}
+.ord-it svg{flex:0 0 auto;width:18px;height:18px;opacity:.7}
+.ord-it b{flex:0 0 auto;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--primary);color:var(--primary-ink);font-size:.85rem}
+.ord-it.on{border-color:color-mix(in srgb,var(--primary) 50%,var(--line))}
+.ord-it.good{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface))}
+.ord-it.good b{background:var(--ok)}
+.ord-it.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
+.ord-it.wrong b{background:var(--bad)}
+.ord-it:disabled{cursor:default}
+.ord-it:not(:disabled):hover{border-color:var(--primary)}
+.ord-ok{margin:6px 0 10px;padding-left:1.4em;display:grid;gap:4px}
+.ord-ok i{font-style:normal;color:var(--muted)}
+.ord-ok .chip{font-size:.7rem;padding:1px 8px;vertical-align:middle}
+.numin{display:grid;gap:10px;margin-top:var(--sp-3)}
+.numrow{display:flex;align-items:center;gap:10px}
+.numrow input{flex:1;min-width:0;font:inherit;font-size:1.3rem;padding:12px 14px;border-radius:12px;border:2px solid var(--line);background:var(--surface-2);color:var(--ink)}
+.numrow input:focus{outline:none;border-color:var(--primary)}
+.numrow .unit{font-weight:700;font-size:1.1rem;color:var(--muted);max-width:40%;overflow-wrap:anywhere}
+.numin #numQcm{justify-self:center}
+.numres{display:flex;align-items:center;gap:10px;margin-top:var(--sp-3);padding:12px 14px;border-radius:12px;border:2px solid var(--line)}
+.numres.good{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,var(--surface))}
+.numres.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,var(--surface))}
+.numres svg{width:20px;height:20px;flex:0 0 auto}
+.pr-list{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))}
+.pr-item{display:flex;align-items:center;gap:12px;text-align:left;width:100%;cursor:pointer;color:var(--ink);font:inherit;margin:0}
+.pr-item .grow{display:grid;gap:2px;min-width:0}
+.pr-item>svg{width:18px;height:18px;flex:0 0 auto;opacity:.6}
+.pr-ic{display:grid;place-items:center;width:38px;height:38px;flex:0 0 auto;border-radius:12px;background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.pr-ic.ok{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.pr-ic svg{width:20px;height:20px}
+.pr-all{margin-top:8px}
+.pr-hero .eyebrow svg{width:16px;height:16px;vertical-align:-3px;margin-right:4px}
+
 </style>
 </head>
 <body>
@@ -2374,7 +2435,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.4.0";
+  AA.VERSION = "2.5.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -5004,15 +5065,83 @@ window.AA={BUNDLED:true};
     const y = u.$("#yes"); if (y) { y.onclick = () => rate(true); u.$("#no").onclick = () => rate(false); AA.gest.swipe(u.$("#fc"), { right: () => rate(true), left: () => rate(false), follow: true }); }
   }
 
+  /* ----- 2.5 : procédures à remettre dans l'ordre et réponses à taper ----- */
+  const flatSteps = q => q.steps.reduce((a, g) => a.concat(Array.isArray(g) ? g : [g]), []);
+  Q.procCheck = (q, seq) => {
+    const marks = []; let i = 0;
+    q.steps.forEach(g => { const set = Array.isArray(g) ? g : [g]; seq.slice(i, i + set.length).forEach(s => marks.push(set.includes(s))); i += set.length; });
+    for (; i < seq.length; i++) marks.push(false);
+    const n = flatSteps(q).length;
+    return { ok: seq.length === n && marks.every(Boolean), marks, good: marks.filter(Boolean).length, n };
+  };
+  const NUMRE = /^\s*[≈~]?\s*(-?\d[\d\s  ]*(?:[.,]\d+)?)\s*(.*)$/;
+  Q.numOf = s => { const m = String(s == null ? "" : s).replace(/[  ]/g, " ").match(NUMRE); if (!m) return null; const v = parseFloat(m[1].replace(/\s/g, "").replace(",", ".")); return isFinite(v) ? v : null; };
+  const unitOf = s => { const m = String(s).replace(/[  ]/g, " ").match(NUMRE); return m ? m[2].trim() : ""; };
+  /* Calcul « à taper » : toutes les propositions sont un nombre suivi d'une unité courte. */
+  Q.canType = q => !!(q && q.calc && Array.isArray(q.c) && q.c.length >= 2 && q.c.every(x => { const m = String(x).replace(/[  ]/g, " ").match(NUMRE); return m && m[2].length <= 12 && !/\d/.test(m[2]); }) && new Set(q.c.map(Q.numOf)).size === q.c.length);
+  Q.numTol = q => {
+    const ans = Q.numOf(q.c[q.a]), others = q.c.filter((_, i) => i !== q.a).map(Q.numOf);
+    const gap = Math.min(...others.map(o => Math.abs(o - ans)));
+    const dec = ((String(q.c[q.a]).match(/[.,](\d+)/) || [, ""])[1] || "").length;
+    return Math.max(.5 * Math.pow(10, -dec), Math.min(Math.abs(ans) * .02, gap / 2 * .98));
+  };
+  Q.yours = a => (a.typed != null ? u.esc(a.typed) : a.seq ? u.esc(a.seq.join(" → ") || "—") : u.esc(a.q.c[a.picked]));
+  function ordInner(c, it, answered) {
+    const q = it.q, chk = answered ? Q.procCheck(q, it.seq) : null;
+    const seq = it.seq.map((s, k) => `<li><button class="ord-it on ${chk ? (chk.marks[k] ? "good" : "wrong") : ""}" data-s="${k}" ${answered ? "disabled" : ""}><b>${k + 1}</b><span>${u.esc(s)}</span>${answered ? AA.icon(chk.marks[k] ? "check" : "x") : AA.icon("close")}</button></li>`).join("");
+    const pool = it.pool.filter(p => !it.seq.includes(p)).map(p => `<button class="ord-it" data-p="${u.esc(p)}" ${answered ? "disabled" : ""}><span>${u.esc(p)}</span>${AA.icon("plus")}</button>`).join("");
+    return `<p class="xs muted ord-help">${t("ord.help", { n: flatSteps(q).length })}</p>
+      <ol class="ord-seq ${it.seq.length ? "" : "empty"}" aria-label="${t("ord.yours")}">${seq || `<li class="ord-ph">${t("ord.empty")}</li>`}</ol>
+      ${answered ? "" : `<div class="ord-pool" role="group" aria-label="${t("ord.pool")}">${pool}</div>
+      <button class="btn block" id="ordGo" ${it.seq.length ? "" : "disabled"}>${AA.icon("check")} ${t("ord.go", { n: it.seq.length })}</button>`}`;
+  }
+  function bindOrd(el, c, it) {
+    const box = u.$("#ord", el); if (!box || c.picked != null) return;
+    box.onclick = e => {
+      const b = e.target.closest("button"); if (!b || b.disabled) return;
+      if (b.id === "ordGo") { const r = Q.procCheck(it.q, it.seq); return answer(c, r.ok ? 0 : 1, b); }
+      if (b.dataset.p != null) it.seq.push(b.dataset.p); else if (b.dataset.s != null) it.seq.splice(+b.dataset.s, 1); else return;
+      fx.sfx.tap(); box.innerHTML = ordInner(c, it, false);
+    };
+  }
+  function numHtml(c, it, answered) {
+    const q = it.q, unit = unitOf(q.c[q.a]);
+    if (answered) { const ok = c.picked === q.a; return `<div class="numres ${ok ? "good" : "wrong"}">${AA.icon(ok ? "check" : "x")}<span>${t("num.yours")} <b>${it.typed != null ? u.esc(it.typed) : "—"}</b></span></div>`; }
+    return `<form class="numin" id="numf" autocomplete="off"><label for="numv" class="small">${t("num.label")}</label>
+      <div class="numrow"><input id="numv" type="text" inputmode="decimal" enterkeyhint="done" spellcheck="false" placeholder="${t("num.ph")}">${unit ? `<span class="unit">${u.esc(unit)}</span>` : ""}</div>
+      <button class="btn block" type="submit" id="numGo">${AA.icon("check")} ${t("num.go")}</button>
+      ${c.mode !== "exam" ? `<button class="btn ghost sm" type="button" id="numQcm">${t("num.qcm")}</button>` : ""}</form>`;
+  }
+  function bindNum(el, c, it) {
+    const f = u.$("#numf", el); if (!f || c.picked != null) return;
+    const inp = u.$("#numv", f), q = it.q;
+    if (!matchMedia("(pointer:coarse)").matches) setTimeout(() => { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 60);
+    f.onsubmit = e => {
+      e.preventDefault(); const v = Q.numOf(inp.value);
+      if (v == null) { inp.classList.add("shake"); setTimeout(() => inp.classList.remove("shake"), 500); fx.toast(t("num.badT"), t("num.badS"), "calc"); return; }
+      const ans = Q.numOf(q.c[q.a]), ok = Math.abs(v - ans) <= Q.numTol(q);
+      let ci = q.a; if (!ok) { let best = Infinity; q.c.forEach((x, i) => { if (i === q.a) return; const d = Math.abs(Q.numOf(x) - v); if (d < best) { best = d; ci = i; } }); }
+      it.typed = inp.value.trim() + (unitOf(q.c[q.a]) && !/[a-z%°]/i.test(inp.value) ? " " + unitOf(q.c[q.a]) : "");
+      answer(c, ci, u.$("#numGo", f));
+    };
+    const qc = u.$("#numQcm", f); if (qc) qc.onclick = () => { it.inp = false; draw(el, c); };
+  }
+
   function draw(el, c) {
     const it = c.items[c.idx];
     if (!it || (c.air != null && c.air <= 0 && c.picked == null) || (c.mode === "boss" && c.bossHp <= 0 && c.picked == null)) return finish(c);
     if (it.q.card) return drawCard(el, c, it);
     const q = it.q, n = c.mode === "apnee" ? null : c.items.length, answered = c.picked != null;
+    const isOrd = q.type === "order" && Array.isArray(q.steps);
+    if (isOrd && !it.pool) { it.pool = u.shuffle(flatSteps(q).concat(q.extra || [])); it.seq = []; }
+    if (!isOrd && it.inp == null) it.inp = !window.AA_PLAIN && c.mode !== "duel" && c.mode !== "rduel" && Q.canType(q) && Math.random() < .6;
+    const isNum = !isOrd && it.inp;
     const okNow = answered && c.picked === q.a;
     const prog = c.mode === "apnee" ? c.time / 60 : (c.idx + (answered ? 1 : 0)) / n;
     const tags = [];
     if (q.m && C.byId[q.m]) tags.push(`<span class="chip">${u.esc(C.byId[q.m].title)}</span>`);
+    if (isOrd) tags.push(`<span class="chip warn">${AA.icon("plan")}${t("ord.chip")}</span>`);
+    if (isNum) tags.push(`<span class="chip pri">${AA.icon("edit")}${t("num.chip")}</span>`);
     if (q.calc) tags.push(`<span class="chip gold">${AA.icon("calc")}${t("quiz.calc")}</span>`);
     if (q.lvl === 2) tags.push(`<span class="chip pri">${AA.icon("layers")}${t("lesson.deep")}</span>`);
     if (c.mode === "duel") tags.unshift(`<span class="chip warn">${u.esc(c.players[c.turn])}</span>`);
@@ -5028,19 +5157,19 @@ window.AA={BUNDLED:true};
         <div class="qtag">${tags.join("")}</div>
         ${c.mode === "pc" ? AA.lab.computerScreen(q.scr) : ""}
         <div class="qhead"><h2 class="qtext" id="qtext">${u.esc(q.q)}</h2>${AA.a11y.button("#qc .qread", t("a11y.listenQ"))}</div>
-        <div class="qread" hidden>${u.esc(q.q)} ${it.order.map((ci, k) => "ABCD"[k] + ". " + u.esc(q.c[ci]) + ".").join(" ")}</div>
-        <div class="choices ${c.mode !== "pc" && q.c.every(x => String(x).length <= 38) ? "two" : ""}" role="group" aria-labelledby="qtext">${it.order.map((ci, k) => {
+        <div class="qread" hidden>${u.esc(q.q)} ${isOrd ? it.pool.map(u.esc).join(". ") : isNum ? "" : it.order.map((ci, k) => "ABCD"[k] + ". " + u.esc(q.c[ci]) + ".").join(" ")}</div>
+        ${isOrd ? `<div class="ord" id="ord">${ordInner(c, it, answered)}</div>` : isNum ? numHtml(c, it, answered) : `<div class="choices ${c.mode !== "pc" && q.c.every(x => String(x).length <= 38) ? "two" : ""}" role="group" aria-labelledby="qtext">${it.order.map((ci, k) => {
           let cls = ""; if (answered) { if (ci === q.a) cls = "good"; else if (ci === c.picked) cls = "wrong"; }
           const mk = answered && (ci === q.a || ci === c.picked) ? AA.icon(ci === q.a ? "check" : "x") : "";
           return `<button class="choice ${cls}" data-ci="${ci}" ${answered ? "disabled" : ""}><span class="k">${"ABCD"[k]}</span><span>${u.esc(q.c[ci])}</span><span class="mk">${mk}</span></button>`;
-        }).join("")}</div>
+        }).join("")}</div>`}
         ${!answered && !NOFB(c.mode) ? `<div class="qactions"><button class="chip ${c.doubt ? "warn" : ""}" id="doubt" aria-pressed="${c.doubt}">${AA.icon("doubt")}${t("quiz.doubt")}</button></div>
           ${AA.S.profile.gestures !== false && (AA.S.gestHint || 0) < 4 ? `<p class="xs muted gesture-hint">${AA.icon("hand")} ${t("gest.quizHint")}</p>` : ""}` : ""}
         ${!answered && c.mode !== "duel" ? `<div class="qactions qdk-row"><button class="btn ghost sm qdk" id="qdk">${AA.icon("doubt")} ${t("quiz.dk")}</button></div>` : ""}
         ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : c.picked === -1 ? t("quiz.dkT") : t("quiz.bad")}</h4>
-          ${okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
+          ${isOrd ? (() => { const r = Q.procCheck(q, it.seq); return `<p class="small"><b>${t("ord.score", { g: r.good, n: r.n })}</b></p>${okNow ? "" : `<p><b>${t("ord.right")}</b></p><ol class="ord-ok">${q.steps.map(g => `<li>${Array.isArray(g) ? g.map(u.esc).join(" <i>+</i> ") + ` <span class="chip">${t("ord.free")}</span>` : u.esc(g)}</li>`).join("")}</ol>${(q.extra || []).some(x => it.seq.includes(x)) ? `<p class="small"><b>${t("ord.extraT")}</b> ${(q.extra || []).filter(x => it.seq.includes(x)).map(u.esc).join(" · ")}</p>` : ""}`}`; })() : okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
           ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}
-          ${okNow || !C.byId[q.m] ? "" : `<button class="btn exp-btn block" id="qexp">${AA.icon("play")} ${t("exp.btn")}<span class="xs">${t("exp.btnS")}</span></button>`}${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
+          ${okNow || isOrd || !C.byId[q.m] ? "" : `<button class="btn exp-btn block" id="qexp">${AA.icon("play")} ${t("exp.btn")}<span class="xs">${t("exp.btnS")}</span></button>`}${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
           <div class="qactions"><button class="btn block" id="nextq">${isEnd(c) ? t("quiz.seeResult") : t("quiz.next")} ${AA.icon("next")}</button></div>` : ""}
       </div>`;
     u.$("#qclose").onclick = () => AA.ui.confirm(t("quiz.quitQ"), t("quiz.quitYes"), () => { clearInterval(c.timer); AA.router.go(c.back || "home"); }, c.answers.length === 0);
@@ -5055,6 +5184,7 @@ window.AA={BUNDLED:true};
       AA.gest.swipe(b, { right: () => answer(c, +b.dataset.ci, b) });
       if (!NOFB(c.mode)) AA.gest.hold(b, () => { c.doubt = true; AA.S.gestHint = (AA.S.gestHint || 0) + 1; fx.toast(t("gest.doubtT"), t("gest.doubtS"), "doubt"); answer(c, +b.dataset.ci, b); });
     });
+    if (isOrd) bindOrd(el, c, it); else if (isNum) bindNum(el, c, it);
     const d = u.$("#doubt"); if (d) d.onclick = () => { c.doubt = !c.doubt; fx.sfx.tap(); draw(el, c); };
     const dk = u.$("#qdk"); if (dk) dk.onclick = () => answer(c, -1, dk);
     const goNext = () => { if (c.timeUp || (c.mode === "boss" && c.bossHp <= 0)) return finish(c); c.idx++; c.picked = null; c.doubt = false; c.hit = false; AA.router.refresh(); };
@@ -5065,6 +5195,8 @@ window.AA={BUNDLED:true};
     const it = c.items[c.idx], q = it.q; if (c.picked != null) return;
     c.picked = ci; const ok = ci === q.a, S = AA.S;
     c.answers.push({ q, picked: ci, ok, player: c.turn, doubt: c.doubt });
+    if (it.inp && it.typed != null && ci >= 0) c.answers[c.answers.length - 1].typed = it.typed;
+    if (q.type === "order" && it.seq) c.answers[c.answers.length - 1].seq = ci < 0 ? [] : it.seq.slice();
     if (c.mode === "boss") { c.hit = ok; if (ok) c.bossHp = Math.max(0, c.bossHp - 1); }
     if (c.mode !== "duel") {
       const prev = G.qPrev(q);
@@ -5163,8 +5295,8 @@ window.AA={BUNDLED:true};
       <a class="btn ghost block" href="#/${c.mode === "module" ? "map/" + (m ? m.world : "") : c.back || "home"}">${t("result.continue")}</a></div></section>
       ${c.answers.length ? `<div class="section-title"><h3>${t("result.review")}</h3><span class="muted small">${t("result.reviewHint")}</span></div>
       <div class="review">${c.answers.filter(a => !a.card).map(a => `<div class="rv ${a.ok ? "ok" : ""}"><b>${u.esc(a.q.q)}</b>
-        <span class="small">${a.ok ? t("result.yours") + " " + u.esc(a.q.c[a.picked]) + " ✓" : (a.picked < 0 ? t("quiz.dkYours") : t("result.yours") + " " + u.esc(a.q.c[a.picked])) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
-        <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<div class="row rv-acts"><a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>${C.qById[a.q.id] ? `<button class="btn ghost sm" data-expq="${a.q.id}" data-pk="${a.picked}">${AA.icon("play")} ${t("exp.btn")}</button>` : ""}</div>` : ""}</div>`).join("")}</div>` : ""}`;
+        <span class="small">${a.ok ? t("result.yours") + " " + Q.yours(a) + " ✓" : (a.picked < 0 ? t("quiz.dkYours") : t("result.yours") + " " + Q.yours(a)) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
+        <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<div class="row rv-acts"><a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>${C.qById[a.q.id] && !a.q.steps ? `<button class="btn ghost sm" data-expq="${a.q.id}" data-pk="${a.picked}">${AA.icon("play")} ${t("exp.btn")}</button>` : ""}</div>` : ""}</div>`).join("")}</div>` : ""}`;
     u.$("#again").onclick = () => Q.restart(c);
     u.$("#rclose").onclick = () => AA.router.go(c.back || "home");
   }
@@ -6008,7 +6140,7 @@ window.AA={BUNDLED:true};
         const ok = open(s), r = S.story[s.id] || {}, w = C.worldById[s.world] || {}, n = mainLen(s);
         return `<button class="card story-card ${ok ? "" : "off"} ${r.done ? "done" : ""}" data-s="${s.id}" style="--wc:var(${w.color || "--primary"})" ${ok ? "" : "aria-disabled=\"true\""}>
             <span class="medal">${AA.icon(ok ? s.icon : "lock")}</span>
-            <span class="grow"><span class="eyebrow">${u.esc(s.role || w.short || "")}</span><b>${u.esc(s.title)}</b><span class="small muted">${ok ? u.esc(s.sub) : t("story.locked")}</span>
+            <span class="grow"><span class="eyebrow">${u.esc(s.role || w.short || "")}${s.boss ? ` · ${t("story.bossChip")}` : ""}</span><b>${u.esc(s.title)}</b><span class="small muted">${ok ? u.esc(s.sub) : t("story.locked")}</span>
             ${r.done ? `<span class="row" style="margin-top:6px">${AA.stars(r.stars || 0)}<span class="xs muted">${t("story.best", { n: Math.min(r.best || 0, n), tot: n })}</span></span>` : r.node && r.node !== s.start ? `<span class="chip pri" style="margin-top:6px">${t("story.resume")}</span>` : `<span class="xs muted st-len">${t("story.len", { n })}</span>`}</span>
             ${AA.icon("next")}</button>`;
       };
@@ -6062,7 +6194,7 @@ window.AA={BUNDLED:true};
       el.innerHTML = `${ui.head(u.esc(s.title), "story")}<section class="card result stack-lg story-end" style="--wc:var(${w.color || "--primary"})">
         <p class="eyebrow">${t("story.end")}</p><h2>${u.esc(n.title)}</h2><div class="rstars">${[1, 2, 3].map(k => AA.star(k <= stars)).join("")}</div>
         <p>${u.esc(n.text)}</p>${learn}<p class="small muted">${t("story.score", { n: c.score, tot: c.made })}</p>
-        <div class="stack"><button class="btn block" id="replay">${AA.icon("refresh")} ${t("story.replay")}</button><a class="btn ghost block" href="#/story">${t("story.others")}</a></div></section>`;
+        <div class="stack">${n.boss && C.worldById[n.boss] && C.worldById[n.boss].boss ? `<a class="btn gold block st-boss" href="#/boss/${n.boss}">${AA.icon("swords")} ${t("story.toBoss", { name: u.esc(C.worldById[n.boss].boss.name) })}</a>` : ""}<button class="btn block" id="replay">${AA.icon("refresh")} ${t("story.replay")}</button><a class="btn ghost block" href="#/story">${t("story.others")}</a></div></section>`;
       u.$("#replay").onclick = () => { AA.ctx.story = null; rec.node = s.start; AA.router.refresh(); };
       return;
     }
@@ -8300,6 +8432,7 @@ window.AA={BUNDLED:true};
           ${ui.tile("errors", "buoy", "var(--accent)", t("mode.errors"), t("train.errorsS"), nErr ? [String(nErr), "warn"] : null)}
           ${ui.tile("doubt", "doubt", "var(--world-e2)", t("mode.doubt"), t("train.doubtS"), doubts ? [String(doubts), "pri"] : null)}
           ${ui.tile("calcs", "calc", "var(--gold)", t("mode.calcs"), t("train.calcsS"))}
+          ${C.procs && C.procs.length ? ui.tile("procs", "buoy", "var(--bad)", t("pr.title"), t("pr.tileS"), [t("pr.count", { n: C.procs.filter(p => (s.procs || {})[p.id]).length, tot: C.procs.length }), "warn"]) : ""}
         </div>
         <div class="section-title"><h3>${t("tu.byCourseT")}</h3></div><p class="small muted" style="margin-top:0">${t("tu.byCourseS")}</p>
         <div class="tu-quizlist">${goalRead.concat(other).map(m => `<button class="chip tu-qchip" data-tuquiz="${m.id}">${AA.icon("play")} ${esc(m.title)}</button>`).join("") || `<span class="small muted">${t("tu.noneRead")}</span>`}</div>
@@ -9487,21 +9620,29 @@ window.AA={BUNDLED:true};
   });
 
   /* ---------- Visite guidée ---------- */
+  /* 2.5 : la visite entre dans chaque onglet et montre ce qu'il contient. */
+  const goal = () => { try { return AA.game.goalWorld(); } catch (e) { return "n2"; } };
   const STEPS = [
     { k: "hello" },
-    { k: "home", sel: '.tabbar [data-tab="home"]' },
-    { k: "cours", sel: '.tabbar [data-tab="cours"]' },
-    { k: "map", sel: '.tabbar [data-tab="map"]' },
-    { k: "train", sel: '.tabbar [data-tab="train"]' },
-    { k: "jeux", sel: '.tabbar [data-tab="train"]' },
-    { k: "progres", sel: '.tabbar [data-tab="progres"]' },
-    { k: "profile", sel: '.tabbar [data-tab="profile"]' },
-    { k: "streak", sel: '#topbar [data-hud="streak"]' },
-    { k: "xp", sel: '#topbar [data-hud="xp"]' },
-    { k: "search", sel: '#topbar a[href="#/search"]' },
+    { k: "home", route: "home", sel: "#view .card" },
+    { k: "cours", route: () => "cours/" + goal(), sel: '.tabbar [data-tab="cours"]' },
+    { k: "lesson", route: () => "lesson/" + ((C.inWorld(goal())[0] || C.modules[0]).id), sel: "#view .lesson-tabs" },
+    { k: "map", route: () => "map/" + goal(), sel: '.tabbar [data-tab="map"]' },
+    { k: "train", route: "train", sel: "#view .tiles" },
+    { k: "jeux", route: () => "jeux/" + goal(), sel: '.tabbar [data-tab="train"]' },
+    { k: "story", route: "story", sel: "#view .story-card" },
+    { k: "boss", route: () => "boss/" + goal(), sel: "#view .bt-card" },
+    { k: "progres", route: "progres", sel: '.tabbar [data-tab="progres"]' },
+    { k: "profile", route: "profile", sel: '.tabbar [data-tab="profile"]' },
+    { k: "streak", route: "home", sel: '#topbar [data-hud="streak"]' },
+    { k: "xp", route: "home", sel: '#topbar [data-hud="xp"]' },
+    { k: "search", route: "home", sel: '#topbar a[href="#/search"]' },
+    { k: "words" },
     { k: "help" },
-    { k: "end" }
+    { k: "end", route: "home" }
   ];
+  const WORDS = ["cours", "notion", "tuteur", "lacune", "explique", "aventure", "quete", "gardien", "boss", "examen", "xp", "flamme"];
+  const wordsHtml = () => `<dl class="tour-words">${WORDS.map(w => `<div><dt>${t("tour.w." + w + ".t")}</dt><dd>${t("tour.w." + w + ".s")}</dd></div>`).join("")}</dl>`;
   const TO = (AA.tour = {});
   let cur = -1, box = null;
   const st = () => { const s = S(); if (!s.tour || typeof s.tour !== "object") s.tour = {}; return s.tour; };
@@ -9525,14 +9666,16 @@ window.AA={BUNDLED:true};
     box.innerHTML = `<div class="tour-spot"></div><section class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourT" tabindex="-1">
       <div class="row between"><span class="eyebrow">${t("tour.step", { i: cur + 1, n })}</span><button class="linkbtn xs" data-tour="skip">${t(last ? "tour.close" : "tour.skipAll")}</button></div>
       <h3 id="tourT">${t("tour." + S1.k + ".t")}</h3>
-      <p class="small" style="margin:0">${t("tour." + S1.k + ".s")}</p>
+      <p class="small" style="margin:0">${t("tour." + S1.k + ".s")}</p>${S1.k === "words" ? wordsHtml() : ""}
       ${t("tour." + S1.k + ".w") !== "tour." + S1.k + ".w" ? `<p class="xs muted tour-why"><b>${t(S1.k === "hello" || S1.k === "help" ? "tour.tip" : "tour.why")}</b> ${t("tour." + S1.k + ".w")}</p>` : ""}
       <div class="tour-dots" role="tablist">${STEPS.map((x, i) => `<button class="${i === cur ? "on" : i < cur ? "seen" : ""}" data-tour-go="${i}" aria-label="${t("tour.goto", { i: i + 1 })}" ${i === cur ? 'aria-current="step"' : ""}></button>`).join("")}</div>
       <div class="row tour-btns">${cur > 0 ? `<button class="btn ghost sm" data-tour="prev">${AA.icon("back")} ${t("tour.prev")}</button>` : `<button class="btn ghost sm" data-tour="later">${t("tour.later")}</button>`}
         <span class="grow"></span>${last ? `<button class="btn sm" data-tour="done">${AA.icon("play")} ${t("tour.go")}</button>` : `<button class="btn sm" data-tour="next">${t(cur === 0 ? "tour.start" : "tour.next")} ${AA.icon("next")}</button>`}</div></section>`;
     requestAnimationFrame(() => { place(); const c = u.$(".tour-card", box); if (c) c.focus({ preventScroll: true }); });
+    setTimeout(place, 450);
   };
-  const go = i => { cur = Math.max(0, Math.min(STEPS.length - 1, i)); st().step = cur; AA.store.save(); fx.sfx.tap(); draw(); };
+  const nav = S1 => { if (!S1 || !S1.route) return; const r = typeof S1.route === "function" ? S1.route() : S1.route; if (location.hash !== "#/" + r) { AA.router.go(r); window.scrollTo(0, 0); } };
+  const go = i => { cur = Math.max(0, Math.min(STEPS.length - 1, i)); st().step = cur; AA.store.save(); fx.sfx.tap(); nav(STEPS[cur]); draw(); };
   const close = how => {
     if (!box) return; const s = st();
     if (how === "done") { s.done = 1; s.step = 0; }
@@ -9550,7 +9693,7 @@ window.AA={BUNDLED:true};
   TO.start = from => {
     if (box) return; if (AA.router.name !== "home" && !from) AA.router.go("home");
     box = document.createElement("div"); box.className = "tour"; document.body.appendChild(box);
-    cur = from != null ? from : 0; draw();
+    cur = Math.min(from != null ? from : 0, STEPS.length - 1); nav(STEPS[cur]); draw();
     addEventListener("resize", place); addEventListener("keydown", key, true);
     box.addEventListener("click", e => {
       const g = e.target.closest("[data-tour-go]"); if (g) return go(+g.dataset.tourGo);
@@ -10010,6 +10153,150 @@ window.AA={BUNDLED:true};
   };
 })();
 
+/* js/views/v25.js */
+/* =====================================================================
+   Abysse Academy 2.5 · examen blanc complet
+   - Chaque thème du niveau est interrogé, lu ou pas (comme le jour J).
+   - Dans un thème, les questions viennent de notions différentes.
+   - Difficulté réaliste : on privilégie calculs, mises en situation,
+     « pourquoi », questions difficiles et notions que tu maîtrises mal.
+   - AA.quiz.examPlan(wid, full) renvoie la liste (testée par
+     tests/exam.test.js).
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, Q = AA.quiz, T = AA.tutor;
+  if (!Q || !C) return;
+  const FMT = { full: { n: 40, calc: 10, min: 2, time: 45 }, quick: { n: 20, calc: 4, min: 1, time: 20 } };
+  const SITU = /^(tu |ton |ta |tes |un |une |pendant|lors|en |apr[eè]s|au |à \d)/i;
+
+  /* Plus le score est haut, plus la question est exigeante. */
+  Q.examHard = q => {
+    let h = 0;
+    if (q.lvl === 2 || q.type === "order") h += 2;
+    if (/\d/.test(q.q) && (q.c || []).some(c => /\d/.test(c))) h += 1;
+    if (/(pourquoi|sauf|faux|inexact|ne .{1,30} pas)/i.test(q.q)) h += 1;
+    if (SITU.test(q.q)) h += 1;
+    try { const nid = T && T.notionOf(q), m = nid != null && T.mastery(nid); if (m != null && m !== false && m < .6) h += 1; } catch (e) { /* tuteur absent */ }
+    return h;
+  };
+
+  Q.examPlan = (wid, full) => {
+    const F = full ? FMT.full : FMT.quick, mods = C.inWorld(wid);
+    const gens = G.genKeys().filter(k => C.generators[k].m && C.byId[C.generators[k].m] && C.byId[C.generators[k].m].world === wid);
+    /* 2.5 : une ou deux procédures d'urgence à remettre dans l'ordre. */
+    const procs = window.AA_PLAIN ? [] : u.shuffle((C.procs || []).filter(p => p.world === wid)).slice(0, full ? 2 : 1);
+    const nc = gens.length ? F.calc : 0, slots = F.n - nc - procs.length;
+    /* Répartition : au moins « min » par thème, le reste aux thèmes les plus riches. */
+    const quota = {}; mods.forEach(m => (quota[m.id] = Math.min(F.min, m.quiz.length)));
+    let left = slots - Object.values(quota).reduce((a, b) => a + b, 0);
+    const rich = u.shuffle(mods.slice()).sort((a, b) => (C.notions && C.notions[b.id] ? C.notions[b.id].length : 0) - (C.notions && C.notions[a.id] ? C.notions[a.id].length : 0));
+    for (let k = 0; left > 0 && k < 200; k++) { const m = rich[k % rich.length]; if (quota[m.id] < m.quiz.length) { quota[m.id]++; left--; } }
+    const pick = [];
+    mods.forEach(m => {
+      /* Regroupe par notion, puis tourne entre les notions (la plus exigeante d'abord). */
+      const groups = {};
+      m.quiz.forEach(q => { let nid = "x"; try { nid = (T && T.notionOf(q)) || "x"; } catch (e) {} (groups[nid] = groups[nid] || []).push(q); });
+      const lists = u.shuffle(Object.values(groups)).map(g => g.map(q => [q, Q.examHard(q) + Math.random() * 1.6]).sort((a, b) => b[1] - a[1]).map(x => x[0]));
+      let got = 0;
+      for (let r = 0; got < quota[m.id] && r < 20; r++) lists.forEach(l => { if (got < quota[m.id] && l[r]) { pick.push(l[r]); got++; } });
+    });
+    const sg = u.shuffle(gens.slice()), calcs = nc ? Array.from({ length: nc }, (_, i) => G.gen(sg[i % sg.length])).filter(Boolean) : [];
+    return u.shuffle(pick.concat(calcs, procs));
+  };
+
+  Q.exam = (full, wid) => {
+    wid = wid || Q.examWorld();
+    const w = C.worldById[wid], F = full ? FMT.full : FMT.quick;
+    Q.start("exam", Q.examPlan(wid, full), { full, world: wid, timeLeft: F.time * 60, title: t(full ? "mode.examFull" : "mode.examQuick") + (w && wid !== "n2" ? " · " + w.short : ""), back: "train" });
+  };
+})();
+
+/* =====================================================================
+   2.5 · Quêtes des gardiens : il faut vivre l'aventure « boss-<monde> »
+   pour affronter le boss. Avant le combat, le récit ; après la victoire,
+   la suite de l'histoire.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, GM = AA.games, V = AA.views;
+  if (!G || !GM || !V.boss) return;
+  const quest = wid => C.storyById["boss-" + wid];
+  G.questDone = wid => { const s = quest(wid); return !s || !!((AA.S.story || {})[s.id] || {}).done; };
+  const bo0 = G.bossOpen;
+  /* Niveau déjà obtenu ou en simple révision : pas besoin de revivre la quête. */
+  const passed = wid => { try { return !!AA.path && (AA.path.mode(wid) !== "learn" || AA.path.certified(wid)); } catch (e) { return false; } };
+  G.bossOpen = wid => bo0(wid) && (!!AA.S.unlockAll || G.questDone(wid) || GM.bossWon(wid) || passed(wid));
+  const v = V.boss, r0 = v.render;
+  v.render = function (el, args) {
+    const out = r0.call(this, el, args);
+    try {
+      const wid = (args && args[0]) || G.goalWorld(), s = quest(wid); if (!s) return out;
+      const card = u.$(".bt-card", el), won = GM.bossWon(wid);
+      if (card && !won && !AA.S.unlockAll && !G.questDone(wid) && !passed(wid)) {
+        const warn = u.$(".callout.warn", card), btn = warn && warn.nextElementSibling;
+        const html = `<a class="btn block bt-quest" href="#/story/${s.id}">${AA.icon("scroll")} ${t("bq.go")} · ${u.esc(s.title)}</a>`;
+        if (GM.toRead(wid).length === 0 && warn) { warn.innerHTML = t("bq.need", { t: u.esc(s.title) }); if (btn && btn.tagName === "A") btn.outerHTML = html; else warn.insertAdjacentHTML("afterend", html); }
+        else if (warn) warn.insertAdjacentHTML("beforeend", " " + t("bq.also", { t: u.esc(s.title) }));
+      }
+      if (card && (G.questDone(wid) || won) && s.bossIntro && !u.$(".bt-story", card)) {
+        const h = u.$(".bt-h", card);
+        if (h) h.insertAdjacentHTML("afterend", `<div class="bt-story"><p class="eyebrow">${AA.icon("scroll")} ${t("bq.story")}</p><p>${u.esc(s.bossIntro)}</p></div>`);
+      }
+      const res = u.$(".bt-res.won", el);
+      if (res && s.epilogue && !u.$(".bt-epi", res)) {
+        const h1 = u.$("h1", res);
+        if (h1) h1.insertAdjacentHTML("afterend", `<div class="bt-epi"><p class="eyebrow">${t("bq.epi")}</p><p>${u.esc(s.epilogue)}</p></div>`);
+      }
+    } catch (e) { console.error(e); }
+    return out;
+  };
+})();
+
+/* =====================================================================
+   2.5 · Procédures d'urgence : remettre les gestes dans l'ordre, en
+   choisissant les bons parmi une longue liste. Une page par niveau.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, Q = AA.quiz, ui = AA.ui, fx = AA.fx;
+  if (!Q || !C) return;
+  const P = () => C.procs || [];
+  const esc = u.esc, done = () => (AA.S.procs = AA.S.procs || {});
+  const nSteps = p => p.steps.reduce((a, g) => a + (Array.isArray(g) ? g.length : 1), 0);
+  /* Les procédures se travaillent même sans avoir lu le cours (urgence = réflexe). */
+  const qo = AA.tutor && AA.tutor.qOk; if (qo) AA.tutor.qOk = q => !!(q && q.proc) || qo(q);
+  /* Quiz de thème : une procédure d'urgence du thème remplace une question (si le thème en a). */
+  const st0 = Q.start;
+  Q.start = (mode, qs, opts) => {
+    if (mode === "module" && !window.AA_PLAIN && opts && opts.module && Array.isArray(qs) && qs.length > 3 && !qs.some(q => q && q.proc)) {
+      const l = P().filter(p => p.m === opts.module); if (l.length) qs = qs.slice(0, qs.length - 1).concat([u.pick(l)]);
+    }
+    return st0(mode, qs, opts);
+  };
+  const rec0 = G.record;
+  G.record = (q, ok, doubt, picked) => { rec0(q, ok, doubt, picked); if (q && q.proc && ok) done()[q.id] = 1; };
+  const worlds = () => { const g = G.goalWorld(); return C.worlds.filter(w => P().some(p => p.world === w.id)).sort((a, b) => (b.id === g) - (a.id === g) || a.order - b.order); };
+  Q.procs = (list, title) => Q.start("drill", u.shuffle(list.slice()), { title: title || t("pr.title"), back: "procs", procs: list.map(p => p.id) });
+  const rs0 = Q.restart;
+  Q.restart = c => (c && c.procs ? Q.procs(c.procs.map(id => C.qById[id]).filter(Boolean), c.title) : rs0(c));
+  AA.view("procs", {
+    tab: "train", depth: 2,
+    render(el) {
+      const D = done(), tot = P().length, ok = P().filter(p => D[p.id]).length;
+      el.innerHTML = `${ui.head(t("pr.title"), "train")}
+        <section class="card pr-hero"><p class="eyebrow">${AA.icon("buoy")} ${t("pr.eyebrow")}</p><p>${t("pr.intro")}</p>
+          <p class="small muted">${t("pr.how")}</p><p class="small"><b>${t("pr.count", { n: ok, tot })}</b></p></section>
+        ${worlds().map(w => { const l = P().filter(p => p.world === w.id), n = l.filter(p => D[p.id]).length;
+          return `<div class="section-title"><h3>${esc(w.short)}</h3><span class="chip ${n === l.length ? "ok" : ""}">${n} / ${l.length}</span></div>
+          <div class="pr-list">${l.map(p => `<button class="card pr-item" data-pr="${p.id}"><span class="pr-ic ${D[p.id] ? "ok" : ""}">${AA.icon(D[p.id] ? "check" : "buoy")}</span><span class="grow"><b>${esc(p.title)}</b><span class="xs muted">${esc(C.byId[p.m] ? C.byId[p.m].title : "")} · ${t("pr.steps", { n: nSteps(p), x: nSteps(p) + p.extra.length })}</span></span>${AA.icon("play")}</button>`).join("")}</div>
+          ${l.length > 1 ? `<button class="btn ghost block pr-all" data-prw="${w.id}">${AA.icon("play")} ${t("pr.all", { w: esc(w.short), n: l.length })}</button>` : ""}`; }).join("")}`;
+      u.$$("[data-pr]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); const p = C.qById[b.dataset.pr]; Q.procs([p], p.title); });
+      u.$$("[data-prw]", el).forEach(b => b.onclick = () => { fx.sfx.tap(); const w = C.worldById[b.dataset.prw]; Q.procs(P().filter(p => p.world === w.id), t("pr.title") + " · " + w.short); });
+    }
+  });
+})();
+
 /* locales/fr.js */
 /* =====================================================================
    Abysse Academy · textes de l'interface en français
@@ -10262,7 +10549,7 @@ AA.i18n.add("fr", {
   "boss.toWorld": "Découvrir le monde {world}", "boss.retry": "Réessayer", "boss.study": "Voir mes erreurs fréquentes", "boss.toReview": "À revoir",
 
   "story.title": "Aventures", "story.intro": "De vraies histoires de plongée, pour chaque niveau et chaque rôle : encadré, autonome, guide, initiateur, moniteur, secouriste. Chaque choix a des conséquences. Un bon choix du premier coup = 1 point.",
-  "story.len": "{n} décisions", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
+  "story.len": "{n} décisions", "story.toBoss": "Affronter {name}", "story.bossChip": "mène au boss", "bq.need": "Vis d’abord l’aventure « {t} » : c’est elle qui te mène jusqu’au boss.", "bq.also": "Il te faudra aussi vivre l’aventure « {t} », qui mène jusqu’à lui.", "bq.go": "Vivre l’aventure", "bq.story": "Ton aventure t’a mené jusqu’ici", "bq.epi": "La suite de l’histoire", "ord.chip": "Gestes dans l’ordre", "ord.help": "Touche les gestes dans l’ordre où tu les fais ({n} bons gestes, les autres sont des pièges). Touche un geste choisi pour le retirer.", "ord.yours": "Ton enchaînement", "ord.pool": "Gestes possibles", "ord.empty": "Ton enchaînement apparaîtra ici.", "ord.go": "Valider mon enchaînement ({n})", "ord.score": "{g} geste(s) bien placé(s) sur {n}", "ord.right": "Le bon enchaînement :", "ord.free": "ordre libre", "ord.extraT": "Gestes à ne pas faire que tu as choisis :", "num.chip": "Réponse à taper", "num.label": "Tape ta réponse (l’unité est déjà indiquée) :", "num.ph": "ex. 2,5", "num.go": "Valider", "num.qcm": "Voir des propositions", "num.yours": "Ta réponse :", "num.badT": "Il faut un nombre", "num.badS": "Tape seulement le nombre, par exemple 2,5 ou 12.", "pr.title": "Procédures d’urgence", "pr.tileS": "Remets les bons gestes dans l’ordre", "pr.count": "{n} / {tot} réussies", "pr.eyebrow": "Les bons gestes, dans le bon ordre", "pr.intro": "Pour chaque niveau, des situations d’urgence réelles : un camarade qui ne se sent pas bien, une panne d’air, une victime en surface… Tu choisis les bons gestes parmi une longue liste et tu les remets dans l’ordre.", "pr.how": "Certains gestes de la liste sont des pièges. Quand deux gestes peuvent se faire dans n’importe quel ordre, la correction l’indique. Les procédures varient selon les structures : fais-les valider par ton moniteur.", "pr.steps": "{n} gestes parmi {x}", "pr.all": "Enchaîner les {n} procédures {w}", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
   "story.locked": "Termine l’aventure précédente pour l’ouvrir.", "story.lockedT": "Aventure fermée", "story.resume": "Reprendre",
   "story.best": "Meilleur : {n} / {tot}", "story.step": "scène {n}/{tot}", "story.surface": "Surface",
   "story.good": "Bon réflexe", "story.bad": "Pas tout à fait", "story.retry": "Essaie un autre choix.", "story.continue": "Continuer",
@@ -15236,8 +15523,8 @@ Object.assign(AA.content.help, {
     "tu.epreuves": "Épreuves",
     "tu.noneRead": "Lis un premier cours pour débloquer l’entraînement.",
     /* Examen */
-    "tu.exUnread": "{n} cours de ce niveau ne sont pas encore lus : l’examen ne contient que les questions de tes cours lus. Conseil : lis tout avant ton examen blanc.",
-    "tu.exAll": "Tous les cours de ce niveau sont lus : examen complet.",
+    "tu.exUnread": "{n} cours de ce niveau ne sont pas encore lus. L’examen interroge quand même tout le programme, comme le jour J : lis tout avant pour qu’il te serve vraiment.",
+    "tu.exAll": "Tous les cours de ce niveau sont lus. L’examen interroge tout le programme, avec des questions exigeantes.",
     /* Club et moniteur */
     "tu.clubT": "Club et moniteur",
     "tu.clubS": "Facultatif. Pour ceux qui suivent une formation en club.",
@@ -15590,20 +15877,39 @@ Object.assign(AA.content.help, {
     "tour.goto": "Aller à l’étape {i}", "tour.prev": "Retour", "tour.next": "Suivant", "tour.start": "C’est parti", "tour.later": "Plus tard", "tour.go": "Commencer à apprendre",
     "tour.laterT": "Visite mise de côté", "tour.laterS": "Reprends-la quand tu veux : Profil › Visite guidée.",
     "tour.tile": "Visite guidée", "tour.tileS": "Revoir à quoi sert chaque menu", "tour.tileResume": "Reprendre là où tu t’étais arrêté",
-    "tour.hello.t": "Bienvenue dans Abysse Academy 🤿", "tour.hello.s": "Ici, tu prépares la théorie de tes niveaux de plongée (N2 jusqu’à E2) : tu lis un cours, tu t’entraînes dessus, l’appli repère ce que tu maîtrises et ce qu’il faut revoir. En 1 minute, voici les menus.",
+    "tour.hello.t": "Bienvenue dans Abysse Academy 🤿", "tour.hello.s": "Ici, tu prépares la théorie de tes niveaux de plongée, du baptême jusqu’à moniteur : tu lis un cours, tu t’entraînes dessus, l’appli repère ce que tu maîtrises et ce qu’il faut revoir. En 2 minutes, on entre dans chaque onglet pour voir ce qu’il contient.",
     "tour.hello.w": "Tu peux sauter une étape avec les points, ou passer toute la visite et la reprendre plus tard depuis Profil.",
-    "tour.home.t": "Accueil : ton tuteur", "tour.home.s": "Il te dit la prochaine chose utile à faire (lire, réviser, combler une lacune), où tu en es dans ton niveau et ton plan jusqu’à l’examen.",
+    "tour.home.t": "Accueil : ton tuteur", "tour.home.s": "La grande carte du haut, c’est ta prochaine étape : lire un cours, réviser, combler une lacune ou passer l’examen blanc. En dessous : où tu en es dans ton niveau, tes lacunes et une série « à reprendre » si tu t’es arrêté en cours de route.",
     "tour.home.w": "Pour ne jamais te demander « je fais quoi maintenant ? ». Un bouton, et c’est parti.",
-    "tour.cours.t": "Cours : la théorie dans l’ordre", "tour.cours.s": "Tous les cours de ton niveau, du premier au dernier. Ouvre-en un, lis-le, puis touche « J’ai lu ce cours » : ses quiz et ses jeux se débloquent.",
+    "tour.cours.t": "Cours : la théorie dans l’ordre", "tour.cours.s": "Tous les cours de ton niveau, dans l’ordre conseillé, avec l’examen blanc à la fin. Les onglets en haut changent de niveau (Découverte, N1, N2… jusqu’à E2).",
     "tour.cours.w": "On ne s’entraîne que sur ce qu’on a lu : ça évite les questions sur des notions jamais vues.",
     "tour.map.t": "Carte : le même parcours, en plongée", "tour.map.s": "Les cours dessinés comme une descente, avec leurs gardiens et le boss final au fond. Tu passes de la Carte aux Cours (et inversement) quand tu veux.",
     "tour.map.w": "Pour voir d’un coup d’œil le chemin parcouru et ce qui reste.",
     "tour.train.t": "Entraîner : tous les exercices", "tour.train.s": "Révisions espacées, cartes mémoire, calculs, erreurs à retravailler, examens blancs… Ce qui n’est pas encore faisable est grisé, avec la raison écrite dessous.",
     "tour.train.w": "Répondre, se tromper, revoir au bon moment : c’est ce qui fait retenir.",
-    "tour.jeux.t": "Jeux : apprendre en s’amusant", "tour.jeux.s": "Dans Entraîner, la carte « Jeux et boss » regroupe tout : quêtes du jour, défis de la semaine, événements, gardiens, boss, mini-jeux, aventures et aquarium.",
+    "tour.jeux.t": "Jeux : apprendre en s’amusant", "tour.jeux.s": "L’espace Jeux de ton niveau : quêtes du jour (petits objectifs), défis de la semaine, un gardien par cours, le boss final, des mini-jeux (paires, vrai ou faux), les aventures et ton aquarium.",
     "tour.jeux.w": "Tout est rangé au même endroit pour que l’accueil reste calme. Chaque bonne réponse en jeu compte aussi pour tes révisions.",
     "tour.progres.t": "Progrès : ce que tu sais vraiment", "tour.progres.s": "Ta maîtrise notion par notion, tes lacunes et ton historique. Une notion faible ? Un bouton pour la combler.",
     "tour.progres.w": "Pour réviser ce qui compte, pas ce que tu sais déjà.",
+    "tour.lesson.t": "Un cours, de l’intérieur", "tour.lesson.s": "Trois onglets : « L’essentiel » (ce qu’il faut savoir, avec exemples et schémas animés), « Approfondir » (pour aller plus loin) et « À retenir » (la fiche mémo). En bas : « J’ai lu ce cours », puis « Plonger » pour t’entraîner dessus.",
+    "tour.lesson.w": "Après une erreur dans un quiz, le bouton « Explique-moi » ouvre un mini-cours sur ta question précise.",
+    "tour.story.t": "Les aventures", "tour.story.s": "Des histoires de plongée réalistes où c’est toi qui décides : baptisé, plongeur autonome, guide, moniteur, secouriste… Chaque choix a des conséquences, et une erreur peut mal finir (on t’explique pourquoi, puis tu reprends).",
+    "tour.story.w": "Les « quêtes du gardien » sont les aventures qui mènent jusqu’au boss de chaque niveau : il faut les vivre pour l’affronter.",
+    "tour.boss.t": "Gardiens et boss", "tour.boss.s": "Un combat de questions : chaque bonne réponse fait perdre des points de vie à la créature, chaque erreur te coûte une vie. Chaque cours a son gardien ; au fond de chaque niveau, un boss final.",
+    "tour.boss.w": "Pour réveiller le boss : lire tous les cours du niveau et vivre sa quête du gardien. Le battre ouvre les niveaux suivants.",
+    "tour.words.t": "Les mots de l’appli", "tour.words.s": "Pour ne jamais deviner :",
+    "tour.w.cours.t": "Cours", "tour.w.cours.s": "Un thème du programme (ex. « Pression »), à lire puis à travailler.",
+    "tour.w.notion.t": "Notion", "tour.w.notion.s": "Une idée précise d’un cours (ex. « pression absolue »). Ta maîtrise est suivie notion par notion.",
+    "tour.w.tuteur.t": "Tuteur", "tour.w.tuteur.s": "Le coach de l’appli : il choisit tes questions et ta prochaine étape selon tes réponses.",
+    "tour.w.lacune.t": "Lacune", "tour.w.lacune.s": "Une notion où tu te trompes plusieurs fois. Le tuteur te propose une série ciblée pour la combler.",
+    "tour.w.explique.t": "Explique-moi", "tour.w.explique.s": "Un mini-cours, étape par étape, sur la question que tu viens de rater.",
+    "tour.w.aventure.t": "Aventure", "tour.w.aventure.s": "Une histoire interactive : tu choisis quoi faire, l’histoire continue selon tes choix.",
+    "tour.w.quete.t": "Quête", "tour.w.quete.s": "Un petit objectif du jour (« lire un cours », « 5 bonnes réponses ») qui rapporte de l’XP. La « quête du gardien » est l’aventure qui mène au boss.",
+    "tour.w.gardien.t": "Gardien", "tour.w.gardien.s": "Une créature à battre à la fin d’un cours, avec des questions de ce cours.",
+    "tour.w.boss.t": "Boss", "tour.w.boss.s": "Le grand combat de fin de niveau, sur tout le programme du niveau.",
+    "tour.w.examen.t": "Examen blanc", "tour.w.examen.s": "Un écrit d’entraînement chronométré, noté sur 20, qui couvre tous les thèmes du niveau.",
+    "tour.w.xp.t": "XP", "tour.w.xp.s": "Tes points d’expérience : ils font monter ton niveau, ton rang et ton avatar.",
+    "tour.w.flamme.t": "Flamme", "tour.w.flamme.s": "Le nombre de jours d’affilée où tu as répondu à au moins une question.",
     "tour.profile.t": "Profil : toi", "tour.profile.s": "Ton avatar qui évolue, ton niveau, tes trophées, le Club (classement et duels entre copains), tes notes et les réglages.",
     "tour.profile.w": "Personnaliser l’appli et jouer avec ton club, sans compte ni serveur.",
     "tour.streak.t": "La flamme : ta série", "tour.streak.s": "Le nombre de jours d’affilée où tu as répondu à au moins une question. Elle grandit et change de couleur à 3, 7, 14, 30, 60, 100 jours…",
@@ -17790,6 +18096,86 @@ ${val("<p>Délais avant l’avion recommandés par la FFESSM et par le fabricant
   D.flowSvg = D.flow;
   D.flow = (steps, cap) => `<figure class="diagram anim hflow-fig"><ol class="hflow" role="list">${steps.map(([title, det], i) =>
     `<li style="--i:${i}"><span class="hf-n">${i + 1}</span><span class="hf-b"><b>${esc(title)}</b>${det ? `<span>${esc(det)}</span>` : ""}</span></li>`).join("")}</ol><figcaption>${cap}</figcaption></figure>`;
+})();
+
+/* content/fr/q25.js */
+/* =====================================================================
+   Abysse Academy 2.5 · questions complémentaires
+   Découverte et N1 passent à 12 questions par thème, les thèmes N2 les
+   moins fournis à 16. Formes variées : mise en situation, « pourquoi »,
+   calcul, « laquelle est fausse », ordre des gestes, signes.
+   On ajoute à la fin, on ne réordonne jamais.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const C = AA.content, x = (id, quiz) => C.extend(id, { quiz });
+
+  x("d-bapteme", [
+    { q: "Tu es à 4 m avec ton moniteur et tu as envie d’arrêter. Que fais-tu ?", c: ["Tu enlèves ton détendeur pour lui expliquer clairement ce qui ne va pas", "Tu fais le signe « ça ne va pas » puis tu montres le haut", "Tu remontes seul vers la surface en palmant vite, sans le gêner", "Tu attends la fin de la plongée sans rien montrer pour ne pas l’inquiéter"], a: 1, e: "On prévient par signe : main à plat qui oscille, puis on montre le problème ou le haut. Le moniteur te remonte calmement. Jamais seul, jamais sans détendeur." },
+    { q: "Pourquoi le moniteur te tient-il souvent pendant un baptême ?", c: ["Pour gérer ta profondeur et ta stabilité pendant que tu découvres la respiration", "Parce que le règlement interdit de lâcher un baptisé, même à 1 m de profondeur", "Pour t’empêcher de toucher les animaux et les plantes au fond", "Parce que le baptisé n’a pas de gilet et coulerait immédiatement sans lui"], a: 0, e: "Tu n’as qu’une chose à faire : respirer et profiter. Le moniteur gère la profondeur, le gilet et la vitesse." },
+    { q: "Laquelle de ces affirmations sur le baptême est fausse ?", c: ["On peut l’arrêter à tout moment par un signe", "Le moniteur reste à côté de toi toute la plongée", "Il faut savoir parfaitement équilibrer avant de venir, sinon c’est refusé", "On respire normalement, par la bouche, dans le détendeur"], a: 2, e: "L’équilibrage s’apprend pendant le baptême, avec le moniteur. Les trois autres affirmations sont vraies." }
+  ]);
+  x("d-materiel", [
+    { q: "Tu sens un filet d’eau entrer dans ton masque. Que fais-tu ?", c: ["Tu remontes immédiatement en surface pour le vider à l’air libre", "Tu souffles par le nez en appuyant le haut du masque : l’eau sort par le bas", "Tu serres très fort la sangle sous l’eau pour arrêter la fuite", "Tu retires complètement ton masque pour le remettre proprement"], a: 1, e: "Souffler par le nez, tête légèrement relevée, en tenant le haut du masque : l’air chasse l’eau par le bas." },
+    { q: "Ta bouteille de 12 L est gonflée à 200 bar. Combien de litres d’air contient-elle à la pression de surface ?", c: ["212 L", "1 200 L", "2 400 L", "24 000 L"], a: 2, e: "Volume × pression = 12 × 200 = 2 400 L d’air détendu." },
+    { q: "À quoi sert l’octopus, le deuxième embout jaune ?", c: ["À respirer quand ton détendeur principal est fatigué par une longue plongée", "À donner de l’air à un autre plongeur qui en manque", "À gonfler ton gilet plus vite quand tu es en surface", "À vérifier la pression qu’il reste dans ta bouteille"], a: 1, e: "L’octopus est la source d’air de secours, surtout pour un équipier en panne." },
+    { q: "Pourquoi le gilet stabilisateur est-il utile même en surface ?", c: ["Gonflé, il te fait flotter sans effort en attendant le bateau", "Il garde ta bouteille au chaud et évite que le détendeur gèle", "Il remplace le masque si tu dois le retirer en surface", "Il te permet de respirer sans le détendeur quand tu es fatigué"], a: 0, e: "En surface, on gonfle le gilet : on flotte, on se repose, on attend tranquillement." }
+  ]);
+  x("d-oreilles", [
+    { q: "Pourquoi les oreilles « coincent »-elles en descendant ?", c: ["Parce que l’eau froide contracte les muscles autour du tympan", "Parce que la pression de l’eau pousse le tympan vers l’intérieur", "Parce que le détendeur envoie de l’air trop sec dans les oreilles", "Parce que le masque appuie sur les oreilles quand on descend"], a: 1, e: "La pression augmente avec la profondeur : le tympan est poussé vers l’intérieur. En équilibrant, on envoie de l’air derrière lui." },
+    { q: "Dans quel ordre fais-tu les choses si l’oreille bloque à 3 m ?", c: ["Forcer en soufflant, descendre, puis prévenir", "Prévenir, remonter un peu, réessayer doucement", "Descendre encore un peu, attendre, puis remonter", "Remonter en surface, retirer le masque, redescendre vite"], a: 1, e: "Signe au moniteur, on remonte d’un mètre pour réduire l’écart, et on réessaie en douceur. Jamais de force." },
+    { q: "Tu as le nez bouché par un rhume depuis hier. Le baptême ?", c: ["Tu le fais en équilibrant plus fort que d’habitude pour compenser", "Tu le fais en descendant plus vite pour passer la zone difficile", "Tu en parles au moniteur : souvent, on préfère le reporter", "Tu prends un spray nasal juste avant et tu ne dis rien"], a: 2, e: "Nez bouché = équilibrage difficile, risque pour l’oreille et les sinus. On en parle, et souvent on reporte." },
+    { q: "Pourquoi faut-il souffler un peu par le nez dans le masque en descendant ?", c: ["Pour éviter que le masque se plaque et serre le visage", "Pour faire sortir la buée qui se forme sur la vitre", "Pour équilibrer les oreilles plus facilement", "Pour économiser l’air de la bouteille pendant la descente"], a: 0, e: "L’air du masque se comprime en descendant : un petit souffle par le nez évite l’effet ventouse." },
+    { q: "Comment souffler doucement pour équilibrer ?", c: ["Bouche ouverte, en soufflant fort dans le détendeur", "En toussant deux ou trois fois sans pincer le nez", "Nez pincé, bouche fermée, un souffle léger", "En retenant sa respiration le plus longtemps possible"], a: 2, e: "Nez pincé, bouche fermée, souffle léger : l’air passe derrière le tympan. On recommence souvent, sans forcer." },
+    { q: "Laquelle de ces règles pour les oreilles est fausse ?", c: ["On équilibre avant d’avoir mal", "On équilibre plus souvent dans les premiers mètres", "Si ça bloque, on remonte un peu", "Si ça bloque, on souffle de plus en plus fort jusqu’à ce que ça passe"], a: 3, e: "Forcer peut blesser l’oreille interne. Les trois autres règles sont justes." }
+  ]);
+
+  x("n1-signes", [
+    { q: "Ton guide te montre deux doigts posés sur sa paume. Que demande-t-il ?", c: ["Si tu as froid et veux finir la plongée", "Ta pression ou ton état d’air, selon le signe convenu au briefing", "Que tu te mettes à côté de lui, en binôme", "De montrer ton ordinateur pour vérifier la profondeur"], a: 1, e: "Les signes de pression varient selon les clubs. On les revoit au briefing : c’est là qu’on convient du sens exact." },
+    { q: "Pourquoi répète-t-on les signes au briefing avant chaque plongée ?", c: ["Parce que les signes changent selon la mer et la saison", "Parce que la loi oblige à les réciter avant la mise à l’eau", "Pour être sûrs de tous se comprendre sous l’eau, même entre clubs", "Pour vérifier que chacun parle bien français avant de plonger"], a: 2, e: "Il existe des variantes. Les revoir ensemble évite les malentendus au fond." },
+    { q: "Ton binôme croise les bras et se frotte les épaules. Il veut dire…", c: ["« J’ai froid »", "« Je suis essoufflé »", "« Stop, on reste ici »", "« Regarde, un animal »"], a: 0, e: "Bras croisés, mains qui frottent les épaules : le signe du froid. On le prend au sérieux." },
+    { q: "Tu es essoufflé. Quel signe fais-tu ?", c: ["Le pouce levé, pour qu’on remonte tout de suite", "La main ouverte qui bat devant la poitrine", "La main en tranchant sur la gorge", "Le rond pouce-index, pour rassurer le guide"], a: 1, e: "Main qui bat devant la poitrine : essoufflement. Le guide fait arrêter l’effort. Le pouce levé voudrait dire « on remonte »." }
+  ]);
+  x("n1-physique", [
+    { q: "Quelle est la pression absolue à 30 m en mer ?", c: ["3 bar", "4 bar", "30 bar", "31 bar"], a: 1, e: "1 bar d’air + 3 bar d’eau (30 m) = 4 bar." },
+    { q: "Ton gilet contient 2 L d’air à 20 m. Tu remontes à 10 m sans purger. Son volume devient…", c: ["1 L", "2 L", "3 L", "4 L"], a: 2, e: "P × V constant : 3 bar × 2 L = 6. À 10 m (2 bar), V = 3 L. C’est pour ça qu’on purge en remontant." },
+    { q: "Pourquoi deviens-tu plus lourd en descendant, sans toucher au gilet ?", c: ["Parce que l’eau devient plus salée et plus dense en profondeur", "Parce que l’air du gilet et le néoprène s’écrasent avec la pression", "Parce que ta bouteille se remplit d’eau au fur et à mesure", "Parce que tu respires plus vite et gardes plus d’air dans les poumons"], a: 1, e: "Le volume d’air et de néoprène diminue avec la pression : la poussée d’Archimède baisse, tu coules un peu plus." }
+  ]);
+  x("n1-accidents", [
+    { q: "Une heure après la plongée, ton binôme a des fourmis dans le bras. Que fais-tu ?", c: ["Tu lui conseilles de bouger le bras pour relancer la circulation", "Tu préviens tout de suite le responsable : c’est peut-être un accident de plongée", "Tu attends le soir pour voir si ça passe après une bonne nuit", "Tu lui proposes de replonger pour faire un palier plus long"], a: 1, e: "Tout signe anormal après une plongée se signale tout de suite : oxygène, alerte. Mieux vaut une fausse alerte qu’un accident non traité." },
+    { q: "Dans quel ordre réagis-tu face à l’essoufflement ?", c: ["Remonter, s’arrêter, souffler", "S’arrêter, souffler longuement, prévenir le guide", "Palmer plus fort, prévenir, s’arrêter", "Retirer le détendeur, souffler, reprendre"], a: 1, e: "On arrête l’effort, on expire longuement, et on prévient par signe. On ne remonte pas essoufflé." },
+    { q: "Pourquoi le froid est-il un risque en plongée ?", c: ["Il fatigue, fait consommer plus d’air et favorise les accidents", "Il fait gonfler le gilet et te fait remonter sans le vouloir", "Il épaissit l’air de la bouteille, qui devient difficile à respirer", "Il rend l’eau plus dense, donc tu flottes beaucoup trop"], a: 0, e: "Le froid fatigue, augmente la consommation et favorise l’accident de désaturation. On le signale." },
+    { q: "Laquelle de ces situations doit t’empêcher de plonger aujourd’hui ?", c: ["Tu as bien dormi mais tu n’as pas plongé depuis trois mois", "Tu as un gros rhume avec le nez bouché depuis hier", "L’eau est un peu plus fraîche que la dernière fois", "Tu plonges avec un binôme que tu ne connais pas encore"], a: 1, e: "Nez bouché = équilibrage difficile, risque de barotraumatisme. Les autres situations se gèrent avec prudence." }
+  ]);
+  x("n1-secu", [
+    { q: "Ton manomètre affiche 50 bar et personne ne te l’a demandé. Que fais-tu ?", c: ["Tu attends que le guide te demande ta pression pour ne pas l’interrompre", "Tu fais le signe « réserve » au guide tout de suite", "Tu respires plus lentement pour faire durer ton air jusqu’à la fin", "Tu remontes seul tranquillement, puisque tu as encore de l’air"], a: 1, e: "La réserve se signale tout de suite : la palanquée remonte ensemble." },
+    { q: "Pourquoi un N1 plonge-t-il toujours avec un guide ?", c: ["Parce qu’il n’a pas encore le droit de choisir et gérer sa plongée seul", "Parce qu’un N1 ne sait pas encore respirer sans aide sous l’eau", "Parce que le matériel d’un N1 doit être réglé par quelqu’un d’autre", "Parce que les N1 n’ont pas d’ordinateur de plongée"], a: 0, e: "Le N1 est un plongeur encadré : le guide choisit le parcours, la profondeur et gère la sécurité (limites : à faire valider)." },
+    { q: "Ton équipier te fait le signe « plus d’air ». Dans quel ordre agis-tu ?", c: ["Prévenir le guide, puis lui donner ton octopus, puis remonter", "Lui donner ton octopus, le tenir, prévenir le guide, remonter ensemble", "Remonter avec lui en surface, puis lui donner ton octopus", "Vérifier son manomètre, puis lui donner ton octopus"], a: 1, e: "L’air d’abord, le contact ensuite, puis le guide et la remontée à vitesse contrôlée." }
+  ]);
+  x("n1-milieu", [
+    { q: "Un oursin est posé près de ta main sur le rocher. Que fais-tu ?", c: ["Tu le déplaces doucement pour pouvoir t’appuyer à cet endroit", "Tu gardes tes distances : ses piquants cassent dans la peau", "Tu le ramasses pour le montrer au guide puis le reposes", "Tu le touches avec le bout de ta palme pour voir s’il bouge"], a: 1, e: "On ne touche pas : piquants, mais aussi respect de l’animal. On se stabilise loin du fond." },
+    { q: "Pourquoi ne faut-il pas s’accrocher aux gorgones ?", c: ["Parce qu’elles sont toxiques et provoquent des brûlures", "Parce qu’elles grandissent de quelques millimètres par an et cassent facilement", "Parce qu’elles abritent des poissons dangereux qui mordent", "Parce qu’elles sont glissantes et qu’on risque de tomber"], a: 1, e: "Une gorgone cassée met des dizaines d’années à repousser. On regarde, on ne touche pas." },
+    { q: "Ta palme soulève un nuage de sable. Que corriges-tu ?", c: ["Ta stabilisation : un peu plus haut, palmage plus doux", "Ton masque : il est sûrement mal réglé sur le visage", "Ta respiration : tu dois la retenir près du fond", "Ton lestage : il faut ajouter un plomb pour rester posé"], a: 0, e: "On se stabilise au-dessus du fond et on palme doucement : le sable soulevé abîme la vie fixée et gâche la visibilité." },
+    { q: "Laquelle de ces actions respecte le milieu ?", c: ["Ramener un coquillage vide en souvenir", "Nourrir les poissons pour les attirer", "Observer un poulpe sans le déranger", "Retourner une pierre pour voir ce qu’il y a dessous"], a: 2, e: "On observe sans toucher ni nourrir. Même un coquillage vide sert d’abri à d’autres espèces." },
+    { q: "Tu vois une méduse devant toi en remontant. Que fais-tu ?", c: ["Tu l’écartes doucement avec la main pour passer", "Tu la contournes en gardant une bonne distance", "Tu remontes plus vite pour passer au-dessus d’elle", "Tu restes immobile en attendant qu’elle s’en aille"], a: 1, e: "On évite le contact : ses filaments piquent, parfois loin de son ombrelle." },
+    { q: "Pourquoi faut-il éviter de s’ancrer dans l’herbier de posidonie ?", c: ["Parce que les ancres s’y coincent et qu’on les perd souvent", "Parce que c’est une nurserie protégée que l’ancre arrache", "Parce que l’herbier cache des rochers qui abîment la coque", "Parce que la posidonie rend l’eau trouble autour du bateau"], a: 1, e: "La posidonie, protégée, abrite les jeunes poissons. Une ancre arrache des années de croissance." }
+  ]);
+
+  x("dalton", [
+    { q: "Pourquoi un N2 autonome limité à 20 m reste-t-il loin de la narcose sévère ?", c: ["Parce qu’à 20 m la Pp N₂ reste modérée, la narcose est en général discrète", "Parce que la narcose n’existe qu’au-delà de 60 m, quelle que soit la personne", "Parce que l’ordinateur coupe l’arrivée d’azote quand on dépasse 20 m", "Parce que l’azote ne se dissout pas dans le sang avant 30 m"], a: 0, e: "La narcose augmente avec la Pp N₂, donc avec la profondeur. À 20 m, elle est en général faible, mais elle varie selon les personnes et le jour." },
+    { q: "Pp O₂ de l’air à 20 m ?", c: ["0,42 bar", "0,63 bar", "0,84 bar", "3 bar"], a: 1, e: "Pabs = 3 bar ; Pp O₂ = 3 × 0,21 = 0,63 bar." }
+  ]);
+  x("physio", [
+    { q: "Pourquoi une expiration longue calme-t-elle l’essoufflement ?", c: ["Elle évacue le CO₂ qui s’accumule et déclenche l’envie de respirer", "Elle fait entrer plus d’oxygène dans les poumons à l’inspiration suivante", "Elle réchauffe l’air de la bouteille avant qu’il arrive aux poumons", "Elle fait baisser la pression de l’eau sur la cage thoracique"], a: 0, e: "C’est le CO₂ qui pilote l’envie de respirer. Une expiration longue le chasse et le rythme se calme." },
+    { q: "Tu as mal au-dessus des yeux à la descente. Quelle cavité est en cause ?", c: ["L’oreille moyenne, derrière le tympan", "Les sinus frontaux", "Les poumons", "L’estomac"], a: 1, e: "Les sinus frontaux sont au-dessus des yeux. Un sinus bloqué fait mal : on remonte un peu, on ne force pas." }
+  ]);
+  x("regles", [
+    { q: "Tu arrives dans un club inconnu. Quels documents présentes-tu en général ?", c: ["Ta carte de niveau seulement, le reste est vérifié en ligne", "Carte de niveau, certificat médical, licence et carnet", "Ton ordinateur de plongée, qui garde toutes tes plongées", "Une pièce d’identité et ton permis bateau"], a: 1, e: "Niveau, aptitude médicale, assurance (licence) et expérience (carnet) : le DP décide avec ces éléments. Liste exacte : à faire valider." },
+    { q: "Un N2 peut-il guider des N1 en mer ?", c: ["Oui, s’il a plus de 50 plongées dans son carnet", "Oui, mais seulement jusqu’à 12 m et avec l’accord du DP", "Non : il faut être N4 guide de palanquée ou moniteur", "Oui, dès qu’il plonge depuis plus d’un an avec son club"], a: 2, e: "Le N2 est plongeur autonome, pas encadrant. Guider demande le N4 ou un niveau d’enseignant (à faire valider)." }
+  ]);
+  x("pa20", [
+    { q: "Départ 200 bar, retour prévu 50 bar. À 120 bar, quelle part de ton air utilisable as-tu déjà consommée ?", c: ["40 %", "50 %", "53 %", "60 %"], a: 2, e: "Utilisable : 200 − 50 = 150 bar. Consommé : 200 − 120 = 80 bar. 80 ÷ 150 ≈ 53 %." }
+  ]);
 })();
 
 /* content/fr/qcm-audit.js */
@@ -20948,6 +21334,446 @@ ${val("<p>Délais avant l’avion recommandés par la FFESSM et par le fabricant
     { id: "story5", icon: "scroll", name: "Conteur des profondeurs", desc: "Finir 5 aventures", test: { k: "story", n: 5 } },
     { id: "story12", icon: "trophy", name: "Toutes les vies du plongeur", desc: "Finir les 12 aventures", test: { k: "story", n: 12 } }
   ]);
+})();
+
+/* content/fr/boss-quests.js */
+/* Abysse Academy 2.5 · Quêtes des gardiens
+   Une aventure par niveau qui mène jusqu'au boss final : il faut la vivre
+   pour pouvoir l'affronter. bossIntro s'affiche avant le combat, epilogue
+   après la victoire. Personnages et lieux inventés. */
+(function () {
+  const C = AA.content;
+  const O = (t, e, m, go) => ({ t, ok: 1, e, m, go });
+  const X = (t, e, m, go) => (go ? { t, ok: 0, e, m, go } : { t, ok: 0, e, m });
+  const Q = s => C.addStory(Object.assign({ role: "Quête du gardien", icon: "swords", xp: 50, unlock: null, start: "q1" }, s));
+
+  Q({ id: "boss-decouverte", world: "decouverte", boss: "decouverte", title: "Le défi du poulpe", sub: "Ta deuxième plongée découverte. Un poulpe t’observe…",
+    cast: { karim: "Karim, moniteur" },
+    bossIntro: "Au fond de la crique, entre deux pierres, le poulpe t’a suivi du regard toute la plongée. Il change de couleur : il veut voir si tu as retenu les bases.",
+    epilogue: "Le poulpe file se cacher dans sa jarre en lâchant un petit nuage d’encre. Karim rit : « Il t’a adopté. Le Niveau 1 t’attend. »",
+    nodes: {
+      q1: { depth: 0, scene: "La crique, 10 h. Karim te tend ton détendeur.", who: "karim", text: "Aujourd’hui, on va jusqu’à la jarre du poulpe. Montre-moi d’abord comment tu me dis que ça va.", q: "Quel signe fais-tu ?",
+        choices: [
+          X("Le pouce levé, bien visible devant le masque.", "Le pouce levé veut dire « on remonte ». Pour « ça va », c’est le rond pouce-index.", "n1-signes"),
+          O("Le rond avec le pouce et l’index.", "Le rond pouce-index, c’est « ça va ». On le répète au briefing pour être sûrs.", "n1-signes", "q2"),
+          X("La main à plat qui bascule doucement.", "La main qui oscille veut dire « ça ne va pas ».", "n1-signes") ] },
+      q2: { depth: 2, scene: "2 m. Ça appuie sur tes oreilles.", q: "Que fais-tu ?",
+        choices: [
+          X("J’attends d’avoir vraiment mal pour être sûr d’en avoir besoin.", "On équilibre avant d’avoir mal, souvent, dès les premiers mètres.", "d-oreilles"),
+          X("Je descends plus vite pour passer cette zone désagréable.", "Plus vite, c’est plus d’écart de pression. On descend doucement en équilibrant.", "d-oreilles"),
+          O("Je pince le nez et je souffle doucement.", "Nez pincé, souffle léger, souvent : l’air passe derrière le tympan.", "d-oreilles", "q3") ] },
+      q3: { depth: 4, scene: "4 m. Un filet d’eau entre dans ton masque.", q: "Comment le vides-tu ?",
+        choices: [
+          O("Je souffle par le nez en tenant le haut du masque.", "L’air chasse l’eau par le bas. Tête légèrement relevée, et c’est fait.", "d-materiel", "q4"),
+          X("Je retire le masque pour le remettre bien en place.", "Retirer le masque n’est pas nécessaire : on le vide en soufflant par le nez.", "d-materiel"),
+          X("Je fais signe à Karim que je veux remonter le vider en surface.", "On peut le vider sous l’eau sans remonter : souffle par le nez, haut du masque tenu.", "d-materiel") ] },
+      q4: { depth: 4, scene: "Devant toi, une jarre ancienne. Deux yeux dorés te fixent.", text: "Le poulpe sort un bras, curieux.", q: "Que fais-tu ?",
+        choices: [
+          X("Je tends doucement la main pour qu’il vienne la toucher.", "On ne touche pas : on le stresse et on peut se blesser. On observe.", "n1-milieu"),
+          O("Je reste à distance, immobile, et je l’observe.", "Rester calme et à distance : il sort souvent de lui-même par curiosité.", "n1-milieu", "q5"),
+          X("Je fais tourner la jarre pour le voir en entier.", "On ne déplace rien : la jarre est sa maison.", "n1-milieu") ] },
+      q5: { depth: 3, scene: "Karim montre le haut avec le pouce.", q: "Comment remontes-tu ?",
+        choices: [
+          X("En gardant mon souffle pour arriver avec de l’air en réserve.", "Jamais d’apnée en remontant : l’air se dilate dans les poumons.", "d-bapteme"),
+          X("En palmant vite vers la lumière pour sortir avant Karim.", "Le moniteur règle la vitesse : on remonte doucement avec lui.", "d-bapteme"),
+          O("Doucement, avec Karim, en respirant normalement.", "On respire normalement et on suit le rythme du moniteur.", "d-bapteme", "end") ] },
+      end: { depth: 4, end: true, boss: "decouverte", title: "Le poulpe te défie", text: "En remontant, tu vois le poulpe changer de couleur, du brun au rouge vif. Karim te fait signe : il te lance un défi. Prêt ?",
+        learn: ["Rond pouce-index = ça va ; pouce levé = on remonte.", "On équilibre tôt et doucement.", "On observe sans toucher."] }
+    } });
+
+  Q({ id: "boss-n1", world: "n1", boss: "n1", title: "Le passage du crabe", sub: "Avec Maëlle, vers la grotte du crabe géant.",
+    cast: { maelle: "Maëlle, guide de palanquée" },
+    bossIntro: "Au fond de la faille, à 20 m, un crabe immense ferme le passage vers le large. Il agite ses pinces : signes, pression, sécurité, il veut tout vérifier.",
+    epilogue: "Le crabe recule de côté et libère le passage. Maëlle te serre la main en surface : « Tu es prêt pour le Niveau 2. »",
+    nodes: {
+      q1: { depth: 0, scene: "Sur le bateau.", who: "maelle", text: "On va à la faille du crabe, 20 m maximum. Ton bloc est prêt ?", q: "Que vérifies-tu ?",
+        choices: [
+          X("Qu’il est bien attaché ; il a été gonflé et contrôlé ce matin.", "On ouvre, on lit la pression et on respire sur les deux détendeurs.", "n1-secu"),
+          O("Je l’ouvre, je lis la pression, je respire sur les deux détendeurs.", "C’est le contrôle de base avant chaque plongée.", "n1-secu", "q2"),
+          X("Je le garde fermé jusqu’à la mise à l’eau pour économiser l’air.", "Un bloc fermé, c’est la panne d’air à la première inspiration.", "n1-secu") ] },
+      q2: { depth: 10, scene: "10 m.", who: "maelle", text: "Maëlle te demande : à 20 m, quelle sera la pression ?", q: "Ta réponse ?",
+        choices: [
+          X("2 bar", "C’est la pression de l’eau seule. Il faut ajouter le bar de l’atmosphère.", "n1-physique"),
+          X("20 bar", "1 bar tous les 10 m, pas par mètre.", "n1-physique"),
+          O("3 bar", "1 bar d’air + 2 bar d’eau = 3 bar absolus.", "n1-physique", "q3") ] },
+      q3: { depth: 18, scene: "18 m. Ton gilet te fait couler un peu.", q: "Que fais-tu ?",
+        choices: [
+          O("Une petite injection dans le gilet, puis je règle avec la respiration.", "L’air du gilet s’écrase en descendant : on en ajoute un peu.", "n1-physique", "q4"),
+          X("Je palme vers le haut pour rester au même niveau.", "Palmer fatigue et consomme : c’est le gilet qui corrige.", "n1-physique"),
+          X("Je vide le gilet pour me poser au fond près de la faille.", "Vider le gilet te ferait couler encore plus, sur la vie fixée.", "n1-milieu") ] },
+      q4: { depth: 20, scene: "20 m. Ton manomètre affiche 50 bar.", q: "Que fais-tu ?",
+        choices: [
+          X("J’attends que Maëlle me demande ma pression pour ne pas la déranger.", "La réserve se signale tout de suite, sans attendre.", "n1-secu"),
+          O("Je fais le signe « réserve » à Maëlle.", "La réserve se signale tout de suite : la palanquée remonte.", "n1-secu", "q5"),
+          X("Je respire moins pour faire durer l’air jusqu’au crabe.", "Retenir sa respiration crée de l’essoufflement.", "n1-accidents") ] },
+      q5: { depth: 8, scene: "Remontée. Ton gilet te tire vers le haut.", q: "Que fais-tu ?",
+        choices: [
+          X("Je palme vers le bas pour garder la même vitesse que Maëlle.", "Le gilet se dilate : il faut le purger.", "n1-physique"),
+          X("Je gonfle un peu plus pour remonter sans effort.", "C’est la remontée en ballon assurée.", "n1-physique"),
+          O("Je purge un peu le gilet, et je remonte au rythme de Maëlle.", "En remontant, l’air du gilet se dilate : on purge régulièrement.", "n1-physique", "end") ] },
+      end: { depth: 20, end: true, boss: "n1", title: "Le crabe bloque la faille", text: "La plongée suivante, tu retournes à la faille. Le crabe est là, pinces levées. Maëlle sourit derrière son masque : c’est ton examen.",
+        learn: ["3 bar à 20 m.", "La réserve se signale tout de suite.", "On purge le gilet en remontant."] }
+    } });
+
+  Q({ id: "boss-n2", world: "n2", boss: "n2", title: "Vers le grand bleu", sub: "Ta préparation pour rencontrer le Gardien des 40 mètres.",
+    cast: { lou: "Lou, directrice de plongée", sam: "Sam, ton binôme N2" },
+    bossIntro: "Au pied du tombant, à 40 m, une ombre immense se détache du bleu. Le Gardien, un mérou centenaire, te fixe. Physique, physiologie, calculs, règles : il ne laisse passer que ceux qui savent.",
+    epilogue: "Le Gardien s’écarte lentement et retourne dans sa faille. Lou t’attend en surface : « Le grand bleu t’est ouvert. RIFAP et N3, à toi de choisir. »",
+    nodes: {
+      q1: { depth: 0, scene: "Le bateau. Lou déplie la carte du tombant.", who: "lou", text: "Pour aller voir le Gardien, il faut descendre à 40 m, encadré. D’abord, la pression là-bas ?", q: "Pression absolue à 40 m en mer ?",
+        choices: [
+          X("4 bar", "C’est la pression relative. Avec l’atmosphère : 5 bar.", "pression"),
+          O("5 bar", "1 bar d’air + 4 bar d’eau = 5 bar.", "pression", "q2"),
+          X("40 bar", "On ajoute 1 bar par 10 m.", "pression") ] },
+      q2: { depth: 0, scene: "Sam fait ses calculs.", who: "sam", text: "Je consomme 20 L/min en surface. À 40 m ?", q: "Sa consommation au fond ?",
+        choices: [
+          X("80 L/min", "Tu as multiplié par la pression relative (4). Il faut l’absolue : 5.", "mariotte"),
+          X("60 L/min", "Ce serait vrai à 20 m (3 bar). À 40 m : 5 bar.", "mariotte"),
+          O("100 L/min", "20 × 5 bar = 100 L/min. Le bloc se vide cinq fois plus vite.", "mariotte", "q3") ] },
+      q3: { depth: 38, scene: "38 m. Le tombant plonge dans le bleu.", text: "Sam rit, te montre un poisson… puis le vide, l’air absent.", q: "Ton analyse ?",
+        choices: [
+          O("Narcose possible : je le prends par le bras, on remonte de quelques mètres.", "La narcose dépend de la Pp N₂ : elle s’atténue en remontant.", "dalton", "q4"),
+          X("Il s’amuse, je le laisse profiter de la vue.", "Un équipier qui ne répond plus normalement, c’est une alerte.", "accidents"),
+          X("On descend encore pour voir si ça passe en s’habituant.", "Plus profond = narcose plus forte.", "dalton") ] },
+      q4: { depth: 30, scene: "30 m. Ton ordinateur et celui de Sam ne disent pas la même chose.", q: "Lequel suivez-vous ?",
+        choices: [
+          X("Celui qui donne le plus de temps : c’est le plus récent.", "La palanquée suit le plus pénalisant, pas le plus arrangeant.", "n2-ordi"),
+          O("Celui qui demande le plus de paliers : le plus pénalisant.", "C’est la règle de la palanquée.", "n2-ordi", "q5"),
+          X("On fait la moyenne pour ne pas trop rallonger.", "Une moyenne n’a pas de sens pour la décompression.", "deco") ] },
+      q5: { depth: 3, scene: "Palier. Le Gardien vous a suivis du regard.", who: "lou", text: "En surface, Lou te pose une dernière question.", q: "Qui fixe les paramètres d’une palanquée autonome de N2 ?",
+        choices: [
+          X("Les plongeurs eux-mêmes, puisqu’ils sont autonomes.", "Ils préparent la plongée, mais dans le cadre fixé par le DP.", "regles"),
+          X("Le plus expérimenté de la palanquée, selon son carnet.", "C’est le directeur de plongée qui fixe le cadre.", "regles"),
+          O("Le directeur de plongée.", "Le DP fixe profondeur et durée ; la palanquée s’organise dedans.", "regles", "end") ] },
+      end: { depth: 40, end: true, boss: "n2", title: "Le Gardien vous attend", text: "Le lendemain, Lou te confie : « Le Gardien ne laisse passer que ceux qui maîtrisent tout le N2. Aujourd’hui, c’est ton tour. »",
+        learn: ["5 bar à 40 m, consommation × 5.", "Narcose : on remonte de quelques mètres.", "On suit l’ordinateur le plus pénalisant."] }
+    } });
+
+  Q({ id: "boss-rifap", world: "rifap", boss: "rifap", title: "La trousse du récif", sub: "Un plongeur en difficulté, et une murène qui garde la trousse de secours.",
+    cast: { nadia: "Nadia, directrice de plongée" },
+    bossIntro: "La trousse de secours a glissé au fond du récif. La murène s’est enroulée autour. Alerte, oxygène, bilan : prouve que tu sais réagir sans hésiter, et elle te la rendra.",
+    epilogue: "La murène dénoue sa queue et retourne dans son trou. Tu remontes la trousse : le monde Initiateur t’ouvre ses portes.",
+    nodes: {
+      q1: { depth: 0, scene: "Sur le bateau. Un plongeur remonte, pâle, et s’effondre sur le pont.", q: "Premier réflexe ?",
+        choices: [
+          X("Je lui retire sa combinaison pour qu’il respire mieux.", "D’abord la sécurité et l’alerte : on prévient le DP et on fait le bilan.", "r-vict"),
+          O("Je préviens Nadia et je vérifie s’il répond et s’il respire.", "Alerter le DP et commencer le bilan vital : conscience, respiration.", "r-bilan", "q2"),
+          X("Je lui donne de l’eau tout de suite pour le réhydrater.", "Jamais à boire avant d’avoir fait le bilan.", "r-acc") ] },
+      q2: { depth: 0, scene: "Il répond, il respire. Il a mal à la poitrine.", q: "Que fais-tu ?",
+        choices: [
+          X("Je le fais marcher sur le pont pour qu’il se réchauffe.", "L’effort aggrave un accident de plongée : repos, allongé.", "r-vict"),
+          X("J’attends de voir si ça passe avant d’utiliser l’oxygène.", "L’oxygène se donne tout de suite, sans attendre.", "r-o2"),
+          O("Oxygène au masque à haute concentration, tout de suite.", "Douleur après une plongée : on pense accident, oxygène immédiatement.", "r-o2", "q3") ] },
+      q3: { depth: 0, scene: "Nadia te demande d’alerter.", q: "En mer, qui appelles-tu ?",
+        choices: [
+          O("Le CROSS, par la VHF canal 16.", "En mer, le CROSS coordonne les secours (à terre : 15 ou 112).", "r-alerte", "q4"),
+          X("Le club, pour qu’ils préparent une voiture au port.", "Les secours se déclenchent par le CROSS ou le 15 / 112.", "r-alerte"),
+          X("Sa famille, pour qu’elle sache où l’emmener.", "On appelle d’abord les secours.", "r-alerte") ] },
+      q4: { depth: 0, scene: "Il ne répond plus, mais il respire.", q: "Que fais-tu ?",
+        choices: [
+          X("Je commence les compressions thoraciques sans attendre.", "Il respire : pas de compressions. PLS et oxygène.", "r-rcp"),
+          O("PLS, oxygène, et je signale l’aggravation.", "Inconscient qui respire : PLS, on protège ses voies aériennes.", "r-vict", "q5"),
+          X("Je le laisse sur le dos et je vais chercher de l’aide à l’avant.", "On ne laisse jamais seule une victime inconsciente.", "r-vict") ] },
+      q5: { depth: 0, scene: "L’hélicoptère arrive.", q: "Que transmets-tu ?",
+        choices: [
+          X("Son ordinateur, tout y est enregistré automatiquement.", "L’ordinateur aide, mais il faut aussi les signes, les heures et les gestes faits.", "r-sortie"),
+          X("Son nom et le nom de son club, pour la suite.", "La priorité : profil, signes, heures, gestes.", "r-sortie"),
+          O("La fiche : profil, heure des signes, oxygène depuis quand, évolution.", "La fiche suit la victime jusqu’au caisson.", "r-sortie", "end") ] },
+      end: { depth: 6, end: true, boss: "rifap", title: "La murène et la trousse", text: "Le plongeur est évacué à temps. En voulant ranger le matériel, tu vois la trousse glisser dans le récif. Une murène s’enroule autour, et te fixe.",
+        learn: ["Alerter et faire le bilan.", "Oxygène tout de suite.", "Inconscient qui respire : PLS."] }
+    } });
+
+  Q({ id: "boss-n3", world: "n3", boss: "n3", title: "L’épave du Congre", sub: "Autonome au pied du tombant, vers l’épave des 60 mètres.",
+    cast: { lina: "Lina, N3" },
+    bossIntro: "Sous la proue de l’épave, à 60 m, un congre énorme sort la tête. Narcose, gaz, décompression : il attend que tu gardes la tête froide.",
+    epilogue: "Le congre rentre dans l’épave. Lina et toi faites vos paliers en riant dans vos détendeurs. Le monde N4 est ouvert.",
+    nodes: {
+      q1: { depth: 0, scene: "Préparation. Bloc de 15 L à 230 bar.", who: "lina", text: "On vise l’épave, puis on remonte le long du tombant. Notre règle d’air ?", q: "Que retenez-vous ?",
+        choices: [
+          X("50 bar comme d’habitude, la profondeur ne change rien.", "En profondeur, on consomme beaucoup plus : la réserve doit couvrir remontée, paliers et équipier.", "n3-autonomie"),
+          O("Une pression de retour qui couvre remontée, paliers et partage d’air.", "On calcule la réserve pour la profondeur prévue.", "n3-autonomie", "q2"),
+          X("L’alarme de l’ordinateur, il connaît notre consommation.", "La pression de retour se décide avant, ensemble.", "n3-autonomie") ] },
+      q2: { depth: 50, scene: "50 m. Tout semble lent, les pensées aussi.", q: "Que fais-tu ?",
+        choices: [
+          O("Je le signale à Lina et on reste au-dessus, sans descendre plus.", "Narcose : on ne descend pas plus, on peut remonter de quelques mètres.", "n3-accidents", "q3"),
+          X("Je continue vers l’épave, ça passe en s’habituant.", "La narcose ne passe pas en descendant.", "n3-accidents"),
+          X("Je retiens ma respiration pour mieux me concentrer.", "Retenir sa respiration augmente le CO₂, qui aggrave la narcose.", "n3-physio") ] },
+      q3: { depth: 55, scene: "L’épave. Une porte ouverte vers les cales.", q: "On y entre ?",
+        choices: [
+          X("Oui, juste la tête, ce n’est pas vraiment entrer.", "Pénétrer une épave demande une formation et un matériel spécifiques.", "n3-speciales"),
+          X("Oui, avec une lampe, la porte est assez large.", "Sans formation ni fil d’Ariane, on reste dehors.", "n3-speciales"),
+          O("Non : la pénétration d’épave demande une formation spécifique.", "On regarde de l’extérieur, en sécurité.", "n3-speciales", "q4") ] },
+      q4: { depth: 30, scene: "Remontée.", q: "Ton ordinateur annonce plus de paliers que celui de Lina. Que faites-vous ?",
+        choices: [
+          O("Toute la palanquée suit le mien, le plus pénalisant.", "Le plus pénalisant décide pour tous.", "n3-deco", "q5"),
+          X("On suit celui de Lina, elle est plus expérimentée que moi.", "L’expérience ne change pas le calcul.", "n3-deco"),
+          X("Chacun fait ses paliers, on se retrouve en surface.", "La palanquée reste ensemble.", "n3-deco") ] },
+      q5: { depth: 6, scene: "Palier. Le froid te gagne.", q: "Que fais-tu ?",
+        choices: [
+          X("Je raccourcis le palier, le froid est plus dangereux.", "On ne coupe pas un palier obligatoire.", "n3-deco"),
+          O("Je fais tout le palier, en bougeant un peu, et je le signale à Lina.", "On garde les paliers ; le froid se signale et se note pour la suite.", "n3-deco", "end"),
+          X("Je remonte à 3 m, il fait plus chaud près de la surface.", "On fait le palier à la profondeur demandée.", "n3-deco") ] },
+      end: { depth: 60, end: true, boss: "n3", title: "Le congre sort de l’épave", text: "Le lendemain, vous redescendez. Cette fois, sous la proue, deux yeux brillent. Le congre de l’épave te regarde.",
+        learn: ["Réserve calculée pour la profondeur.", "Pas de pénétration sans formation.", "Le plus pénalisant décide."] }
+    } });
+
+  Q({ id: "boss-e1", world: "e1", boss: "e1", title: "La séance de l’île", sub: "Ta séance d’initiateur, sous l’œil d’une raie.",
+    cast: { helene: "Hélène, monitrice responsable" },
+    bossIntro: "Pendant ta séance dans le lagon, une raie immense tourne autour de ton groupe. Préparer, conduire, sécuriser : elle t’observe comme une examinatrice.",
+    epilogue: "La raie s’éloigne en battant lentement des ailes. Hélène signe ton carnet : « Tu sais transmettre. »",
+    nodes: {
+      q1: { depth: 0, scene: "Bord du lagon.", who: "helene", text: "Trois débutants, un objectif : lâcher et reprendre l’embout.", q: "Comment prépares-tu ?",
+        choices: [
+          O("Un objectif, des étapes, le matériel prêt et ma place.", "Une séance se prépare.", "e1-cours", "q2"),
+          X("Je montre tout au bord en détail, puis ils plongent seuls.", "Démonstration courte, puis essai avec toi à côté.", "e1-apprendre"),
+          X("Je verrai sur place selon leur humeur.", "On s’adapte, mais à partir d’un plan.", "e1-cours") ] },
+      q2: { depth: 2, scene: "2 m.", q: "Comment présentes-tu le geste ?",
+        choices: [
+          X("Je l’explique longuement avant qu’ils essaient.", "Ils retiennent ce qu’ils voient et font.", "e1-apprendre"),
+          O("Démonstration lente, une phrase pour le pourquoi, puis essai.", "La base d’un apprentissage efficace.", "e1-apprendre", "q3"),
+          X("Je les laisse essayer sans montrer, pour qu’ils trouvent seuls.", "On montre d’abord.", "e1-apprendre") ] },
+      q3: { depth: 2, scene: "Une élève ne retrouve plus son embout.", q: "Que fais-tu ?",
+        choices: [
+          X("Je la fais remonter, elle le reprendra en surface.", "On reprend l’embout au fond, avec de l’air de secours prêt.", "e1-exercices"),
+          X("Je lui laisse chercher seule, c’est comme ça qu’on apprend.", "Tu guides et tu gardes de l’air prêt.", "e1-exercices"),
+          O("Je lui montre le balayage du bras, mon octopus prêt.", "Guider le geste, avec la solution d’air prête.", "e1-exercices", "q4") ] },
+      q4: { depth: 2, scene: "Un élève veut aller voir plus loin, vers le tombant.", q: "Que réponds-tu ?",
+        choices: [
+          O("On reste dans la zone prévue par Hélène.", "L’initiateur reste dans le cadre fixé.", "e1-cadre", "q5"),
+          X("D’accord, mais seulement lui et moi, les autres attendent.", "On ne laisse pas le groupe.", "e1-cadre"),
+          X("D’accord, puisque tout le monde est à l’aise aujourd’hui.", "Ce n’était pas prévu ni dans tes prérogatives.", "e1-cadre") ] },
+      q5: { depth: 0, scene: "Fin de séance.", q: "Comment termines-tu ?",
+        choices: [
+          X("Je liste toutes leurs erreurs pour la prochaine fois.", "On valorise, une piste, la suite.", "e1-cours"),
+          X("Pas de bilan, ils sont fatigués.", "Le bilan est court mais indispensable.", "e1-cours"),
+          O("Leur ressenti, un progrès de chacun, la prochaine étape.", "Un bilan qui ancre la séance.", "e1-cours", "end") ] },
+      end: { depth: 6, end: true, boss: "e1", title: "La raie s’approche", text: "Hélène te propose de mener seul la séance suivante, pour ta validation. Au fond du lagon, la raie est revenue.",
+        learn: ["Un objectif par séance.", "Démonstration, essai, correction.", "Rester dans le cadre fixé."] }
+    } });
+
+  Q({ id: "boss-n4", world: "n4", boss: "n4", title: "Les barracudas du large", sub: "Tu guides trois plongeurs vers le banc de barracudas.",
+    cast: { claire: "Claire, directrice de plongée" },
+    bossIntro: "Au large, à 40 m, le banc de barracudas tourne autour de ta palanquée comme un tourbillon d’argent. Rôle du guide, air, assistance : garde tout le monde en sécurité.",
+    epilogue: "Le banc s’ouvre et laisse passer ta palanquée. Claire : « Tu les as ramenés tous les trois, calmes et ravis. Le monde E2 t’attend. »",
+    nodes: {
+      q1: { depth: 0, scene: "Claire te confie trois N2 pour aller voir les barracudas.", q: "Ton briefing contient…",
+        choices: [
+          X("Le spectacle à voir et la meilleure place pour les photos.", "Il manque l’essentiel : paramètres, signes, conduite à tenir.", "n4-guide"),
+          O("Profondeur, durée, pression de retour, signes, conduite si perte.", "Le briefing prépare les incidents.", "n4-guide", "q2"),
+          X("Ma consommation et mes paliers, pour qu’ils me suivent.", "Ce sont leurs paramètres qui comptent.", "n4-guide") ] },
+      q2: { depth: 35, scene: "35 m. Le banc arrive.", q: "Où places-tu ta palanquée ?",
+        choices: [
+          O("Devant ou à côté de moi, dans mon champ de vision.", "Le guide voit toujours sa palanquée.", "n4-guide", "q3"),
+          X("Libres autour du banc, chacun à son rythme.", "On reste groupés avec le guide.", "n4-guide"),
+          X("Derrière moi en file, pour ne pas effrayer les poissons.", "Derrière toi, tu ne les vois pas.", "n4-guide") ] },
+      q3: { depth: 35, scene: "Deux plongeurs ont 120 bar, le troisième 70.", q: "Que décides-tu ?",
+        choices: [
+          X("On continue, celui à 70 bar partagera avec les autres.", "On se règle sur le plus bas.", "n4-air"),
+          X("J’envoie celui à 70 bar remonter seul, les autres restent.", "On ne sépare pas la palanquée.", "n4-air"),
+          O("Toute la palanquée commence le retour.", "Le plus bas décide pour tous.", "n4-air", "q4") ] },
+      q4: { depth: 20, scene: "Un plongeur part en remontée rapide.", q: "Que fais-tu ?",
+        choices: [
+          O("Je le rattrape, je purge son gilet et je freine.", "Intervenir vite, puis regrouper.", "n4-assistance", "q5"),
+          X("Je le regarde : il saura s’arrêter seul.", "Une remontée incontrôlée ne s’arrête pas seule.", "n4-assistance"),
+          X("Je lâche les autres pour le suivre jusqu’en surface.", "On freine, puis on regroupe.", "n4-assistance") ] },
+      q5: { depth: 0, scene: "À bord.", q: "Que dis-tu à Claire ?",
+        choices: [
+          X("Rien de spécial, tout s’est bien fini.", "Un incident se signale même sans blessé.", "n4-resp"),
+          O("L’incident de remontée, avec heure et profondeur.", "Le DP doit savoir pour surveiller.", "n4-resp", "end"),
+          X("J’en parlerai demain au débriefing général.", "Le DP doit le savoir maintenant.", "n4-resp") ] },
+      end: { depth: 40, end: true, boss: "n4", title: "Le banc t’encercle", text: "Le lendemain, Claire te confie une nouvelle palanquée. Au large, le banc de barracudas t’attend.",
+        learn: ["Briefing complet.", "Le plus bas en air décide.", "Remontée incontrôlée : saisir et purger."] }
+    } });
+
+  Q({ id: "boss-e2", world: "e2", boss: "e2", title: "Le poisson-lune du large", sub: "Ta séance de moniteur en mer, observée par un géant.",
+    cast: { bastien: "Bastien, directeur de plongée" },
+    bossIntro: "Pendant ta séance, un poisson-lune immense s’approche, calme, et observe chacun de tes gestes. Objectif, démonstration, sécurité : enseigne comme un pro.",
+    epilogue: "Le poisson-lune repart vers le large. Bastien : « Tu as parcouru tout le chemin, de ta première bulle à moniteur. Bravo. »",
+    nodes: {
+      q1: { depth: 0, scene: "Deux élèves N1 en mer.", q: "Comment construis-tu la séance ?",
+        choices: [
+          X("Toute la séance à 15 m, pour les conditions réelles.", "Une nouvelle compétence s’apprend près d’un fond, peu profond.", "e2-n1mer"),
+          O("Une compétence à la fois, près d’un fond à 6 m.", "Progression et sécurité d’abord.", "e2-n1mer", "q2"),
+          X("Deux exercices en même temps pour gagner du temps.", "Une nouveauté à la fois.", "e2-n1mer") ] },
+      q2: { depth: 0, scene: "Avant de partir.", q: "Que dis-tu à Bastien ?",
+        choices: [
+          O("Objectif, zone, profondeur, durée, heure de retour, élèves.", "Le DP organise la sécurité de tous.", "e2-orga", "q3"),
+          X("L’heure de retour, le reste il le connaît.", "La zone compte aussi : c’est là qu’on te cherchera.", "e2-orga"),
+          X("Je lui demande de choisir les exercices.", "Tu conçois ta séance et tu la présentes.", "e2-orga") ] },
+      q3: { depth: 6, scene: "Un élève monte sans s’en rendre compte.", q: "Que fais-tu ?",
+        choices: [
+          X("Je finis avec l’autre élève, il redescendra seul.", "On traite d’abord le danger le plus grave.", "e2-securite"),
+          X("Je laisse les deux élèves s’entraider pendant que je réfléchis.", "Tu gardes le groupe en main.", "e2-securite"),
+          O("Je le ramène d’un geste, puis je reprends l’exercice.", "Le moniteur voit tout le groupe.", "e2-securite", "q4") ] },
+      q4: { depth: 6, scene: "L’exercice réussit deux fois sur trois.", q: "Tu valides ?",
+        choices: [
+          X("Oui : elle est motivée, ça viendra.", "On valide ce qui est fiable.", "e2-evaluer"),
+          O("Pas encore : à revoir avant de valider.", "Une compétence de sécurité doit être fiable.", "e2-evaluer", "q5"),
+          X("Oui, pour ne pas la décourager.", "Une validation de complaisance met en danger plus tard.", "e2-evaluer") ] },
+      q5: { depth: 0, scene: "En surface, un élève a mal au sinus.", q: "Que fais-tu ?",
+        choices: [
+          O("Je préviens Bastien, je note, pas de replongée sans avis.", "Incident signalé, noté, suivi.", "e2-incidents", "end"),
+          X("Un antidouleur et on replonge l’après-midi.", "On ne replonge pas sans avis.", "e2-incidents"),
+          X("On en reparle la semaine prochaine si ça dure.", "Le DP doit le savoir maintenant.", "e2-incidents") ] },
+      end: { depth: 20, end: true, boss: "e2", title: "Le géant observe", text: "La semaine suivante, pour ta dernière séance d’évaluation, le poisson-lune est revenu. Il tourne lentement autour de ton groupe.",
+        learn: ["Une compétence à la fois.", "Tout le groupe dans ton champ de vision.", "On valide ce qui est fiable."] }
+    } });
+})();
+
+/* content/fr/procs.js */
+/* =====================================================================
+   Abysse Academy 2.5 · procédures d'urgence « remets les gestes dans
+   l'ordre ». Chaque procédure : la situation (q), les bons gestes dans
+   l'ordre (steps ; un tableau dans steps = gestes dont l'ordre est libre),
+   des gestes tentants mais faux (extra) mélangés dans la liste, et
+   l'explication (e). Les procédures varient selon les structures :
+   tout est marqué « À faire valider » avec ton moniteur.
+   Ne jamais réordonner ni supprimer : la progression est attachée à l'id.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const C = window.AA.content;
+  const V = " À faire valider avec ton moniteur : le détail peut varier selon ta structure et le briefing du DP.";
+  const P = [
+    /* ---------- Découverte ---------- */
+    { id: "proc-dec-oreille", m: "d-oreilles", title: "Mal à l’oreille à la descente",
+      q: "Pendant ton baptême, à 3 m, ton oreille te fait mal et la douleur augmente. Remets les bons gestes dans l’ordre.",
+      steps: ["Faire signe « ça ne va pas » au moniteur en montrant l’oreille", "Arrêter de descendre", "Remonter d’un mètre avec le moniteur", "Équilibrer doucement (Valsalva léger, déglutir)", "Reprendre la descente lentement en équilibrant souvent"],
+      extra: ["Souffler très fort dans le nez pinché jusqu’à ce que ça passe", "Continuer la descente : la douleur part toute seule", "Remonter seul à la surface sans prévenir", "Retirer le détendeur pour expliquer le problème"],
+      e: "On prévient, on s’arrête, on remonte un peu pour soulager, puis on équilibre en douceur. Forcer peut abîmer le tympan ; si la douleur persiste, on arrête la plongée." },
+    { id: "proc-dec-eau", m: "d-materiel", title: "De l’eau dans le détendeur",
+      q: "Pendant ton baptême, tu avales un peu d’eau et tu as envie de tousser. Remets les bons gestes dans l’ordre.",
+      steps: ["Garder le détendeur en bouche", "Tousser dans le détendeur", "Appuyer sur le bouton de purge pour chasser l’eau", "Reprendre une respiration lente et ample", "Faire signe « OK » au moniteur quand c’est passé"],
+      extra: ["Retirer le détendeur pour tousser plus facilement", "Bloquer sa respiration pour ne plus avaler d’eau", "Remonter seul en palmant vite", "Retirer le masque pour se moucher"],
+      e: "On peut tousser dans le détendeur : il reste en bouche. La purge chasse l’eau, puis on reprend une respiration calme et on rassure le moniteur." },
+
+    /* ---------- N1 ---------- */
+    { id: "proc-n1-air", m: "n1-secu", title: "Panne d’air avec ton moniteur",
+      q: "À 15 m, tu n’arrives plus à respirer : ton manomètre est presque à zéro. Ton moniteur est près de toi. Remets les bons gestes dans l’ordre.",
+      steps: ["Faire le signe « je n’ai plus d’air » au moniteur", "Prendre la source de secours qu’il te présente", "Respirer calmement sur cette source", "Te tenir à lui (sangle ou bras) face à face", "Remonter avec lui à la vitesse qu’il impose, sans lâcher l’embout", "En surface, gonfler ton gilet et rester avec lui"],
+      extra: ["Remonter seul le plus vite possible", "Gonfler ton gilet au fond pour remonter plus vite", "Prendre le détendeur d’un autre plongeur sans prévenir", "Retenir ta respiration pendant la remontée", "Lâcher ton détendeur avant d’avoir l’autre source en main"],
+      e: "Le signe d’abord, puis la source de secours, une respiration calme et une remontée contrôlée par l’encadrant. Ne jamais bloquer sa respiration en remontant : risque de surpression pulmonaire." },
+    { id: "proc-n1-perte", m: "n1-secu", title: "Tu perds ta palanquée",
+      q: "Dans une eau trouble, tu ne vois plus ta palanquée. Remets les bons gestes dans l’ordre.",
+      steps: [["Faire un tour sur toi-même pour regarder autour", "Chercher les bulles des autres plongeurs"], "Attendre environ une minute à l’endroit où tu es", "Remonter lentement, sans dépasser la vitesse de remontée", "En surface, gonfler ton gilet", "Te signaler au bateau et attendre ta palanquée"],
+      extra: ["Descendre plus profond pour les retrouver", "Partir seul à la palme dans une direction", "Remonter le plus vite possible", "Continuer la plongée seul jusqu’à la fin prévue"],
+      e: "La procédure de perte est annoncée au briefing : on cherche, on attend un peu, puis on remonte calmement pour se retrouver en surface." + V },
+    { id: "proc-n1-crampe", m: "n1-accidents", title: "Une crampe au mollet",
+      q: "Sous l’eau, une crampe te bloque le mollet. Remets les bons gestes dans l’ordre.",
+      steps: ["Arrêter de palmer", "Prévenir ton encadrant (signe « crampe »)", "Attraper le bout de ta palme", "Tirer la palme vers toi pour étirer le mollet", "Masser doucement le muscle", "Repartir en palmant plus souplement"],
+      extra: ["Palmer plus fort pour faire passer la crampe", "Retirer ta palme et la laisser tomber", "Remonter seul tout de suite en surface", "Te tenir au fond en appuyant sur le pied"],
+      e: "On arrête l’effort, on prévient, on étire le muscle en tirant la pointe de la palme, puis on repart en palmant plus souplement." },
+
+    /* ---------- N2 ---------- */
+    { id: "proc-n2-assist", m: "accidents", title: "Ton binôme ne se sent pas bien",
+      q: "À 20 m, ton camarade te fait signe qu’il ne se sent pas bien. Remets les bons gestes dans l’ordre.",
+      steps: ["Aller vers lui et capter son regard", "L’attraper de la main gauche (sangle ou gilet)", "Lui signifier que tu prends en charge la situation", "Gonfler un peu son gilet pour amorcer la remontée", "Ajuster avec ton gilet si besoin", "Remonter doucement en purgeant pour garder la vitesse", "Surveiller son état et son expiration pendant la remontée", "En surface, gonfler son gilet et le maintenir tête hors de l’eau", "Alerter le bateau (signe de détresse)"],
+      extra: ["Le laisser remonter seul et le suivre des yeux", "Remonter très vite pour gagner du temps", "Gonfler les deux gilets au maximum dès le fond", "Lui retirer son détendeur pour qu’il respire mieux", "L’attraper par la palme pour le tirer", "Lui demander de faire seul un palier de sécurité"],
+      e: "On établit le contact, on tient la victime de la main gauche, on annonce la prise en charge, on remonte en contrôlant la vitesse avec la purge, on surveille, puis en surface : flottabilité, voies aériennes hors de l’eau et alerte." + V },
+    { id: "proc-n2-air", m: "pa20", title: "Panne d’air en autonomie",
+      q: "À 18 m en autonomie, ton binôme te fait le signe « plus d’air ». Remets les bons gestes dans l’ordre.",
+      steps: ["Lui présenter ta source de secours", "Le saisir face à face (sangle ou gilet)", "Vérifier qu’il respire bien sur ta source", "Annoncer la remontée par signe", "Remonter ensemble en contrôlant la vitesse avec les gilets", "Faire le palier de sécurité si l’air restant le permet", "En surface, gonfler son gilet et se signaler au bateau"],
+      extra: ["Lui dire de remonter seul en expirant", "Échanger vos blocs au fond", "Remonter le plus vite possible", "Lui donner ton détendeur principal et partir chercher de l’aide", "Gonfler son gilet à fond pour qu’il monte seul"],
+      e: "La source de secours d’abord, un contact solide, puis une remontée contrôlée à deux. Le palier de sécurité se fait seulement si l’air le permet." + V },
+    { id: "proc-n2-perte", m: "regles", title: "Tu perds ton binôme en autonomie",
+      q: "Plongée en autonomie à 25 m : tu ne vois plus ton binôme. Remets les bons gestes dans l’ordre.",
+      steps: [["Faire un tour d’horizon complet", "Chercher ses bulles ou sa lampe"], "Attendre environ une minute sur place", "Remonter à vitesse normale", "Faire le palier de sécurité si possible", "En surface, chercher ses bulles et te signaler au bateau", "Prévenir le directeur de plongée"],
+      extra: ["Descendre plus profond pour le retrouver", "Continuer la plongée seul comme prévu", "Remonter très vite pour donner l’alerte", "Partir à sa recherche dans la direction de l’ancre"],
+      e: "La procédure de perte se décide au briefing. Le principe : chercher, attendre un peu, remonter normalement et se retrouver en surface, puis prévenir le DP." + V },
+    { id: "proc-n2-essouf", m: "physio", title: "Ton binôme est essoufflé",
+      q: "À 25 m, ton binôme respire vite et fort, il palme contre le courant. Remets les bons gestes dans l’ordre.",
+      steps: ["Lui faire signe de s’arrêter de palmer", ["Te stabiliser près de lui", "L’attraper pour l’aider à s’immobiliser"], "Lui montrer une expiration longue et lente", "Remonter de quelques mètres avec lui si ça ne passe pas", "Une fois calmé, terminer la plongée tranquillement"],
+      extra: ["Lui dire de respirer plus vite", "Accélérer pour rejoindre le mouillage", "Remonter directement en surface à toute vitesse", "Continuer la plongée à la même profondeur"],
+      e: "On coupe l’effort, on s’immobilise, on insiste sur l’expiration. Remonter un peu réduit la densité du gaz et soulage. On termine calmement." },
+
+    /* ---------- RIFAP ---------- */
+    { id: "proc-rif-surface", m: "r-vict", title: "Plongeur inanimé en surface",
+      q: "Un plongeur remonte et reste inanimé en surface, face dans l’eau. Tu es à côté. Remets les bons gestes dans l’ordre.",
+      steps: ["Lever le bras pour alerter le bateau", "Le retourner face vers le ciel", "Gonfler son gilet", "Lui sortir les voies aériennes de l’eau (retirer le détendeur)", "Le tracter vers le bateau, tête hors de l’eau", "Le hisser à bord avec l’équipe", "Faire le bilan : conscience, respiration"],
+      extra: ["Attendre qu’il reprenne conscience dans l’eau", "Le redescendre pour faire un palier", "Lui donner à boire dès qu’il est à bord", "Retirer son gilet pour le tracter plus vite", "Nager seul vers le bateau chercher de l’aide"],
+      e: "Alerter, retourner, flottabilité, voies aériennes libres, tracter, sortir de l’eau, puis bilan. La suite dépend du bilan (RCP, oxygène)." + V },
+    { id: "proc-rif-rcp", m: "r-rcp", title: "Arrêt cardiaque sur le bateau",
+      q: "Sur le bateau, la victime ne répond pas et ne respire pas normalement. Remets les bons gestes dans l’ordre.",
+      steps: ["Vérifier la conscience (lui parler, le stimuler)", "Libérer les voies aériennes (bascule de la tête)", "Vérifier la respiration (10 secondes au plus)", "Faire alerter les secours et apporter le défibrillateur", "Commencer les compressions thoraciques (30)", "Alterner avec 2 insufflations, avec oxygène si possible", "Poser le défibrillateur dès qu’il arrive et suivre ses consignes"],
+      extra: ["Le mettre en position latérale de sécurité", "Attendre l’arrivée des secours avant de masser", "Surélever ses jambes et attendre", "Lui donner de l’eau sucrée", "Arrêter le massage pour vérifier le pouls toutes les 30 secondes"],
+      e: "Conscience, libération des voies aériennes, respiration, alerte, puis massage cardiaque 30/2 et défibrillateur au plus tôt. La PLS est pour une victime inconsciente qui respire." + V },
+    { id: "proc-rif-add", m: "r-cas", title: "Suspicion d’accident de décompression",
+      q: "30 min après la plongée, un plongeur se plaint de fourmillements dans un bras et d’une grande fatigue. Remets les bons gestes dans l’ordre.",
+      steps: ["L’installer au repos, allongé, à l’abri", ["Lui donner de l’oxygène à fort débit", "Faire alerter les secours (VHF 16 en mer, 15 ou 112 à terre)"], "Faire le bilan : signes, heure, profil de plongée", "Lui faire boire de l’eau par petites gorgées s’il est conscient", "Surveiller et noter l’évolution des signes", "Transmettre la fiche et le profil aux secours", "Surveiller aussi son binôme"],
+      extra: ["Le remettre à l’eau pour refaire un palier", "Attendre de voir si ça passe avant d’appeler", "Lui faire bouger le bras pour tester sa force", "Lui servir un café chaud et sucré", "Le ramener chez lui en voiture"],
+      e: "Repos, oxygène et alerte sans attendre, puis bilan, hydratation si conscient et surveillance. Le binôme a fait la même plongée : on le surveille aussi." + V },
+
+    /* ---------- Nitrox ---------- */
+    { id: "proc-nx-prepa", m: "nx-pratique", title: "Préparer un bloc Nitrox",
+      q: "Avant une plongée au Nitrox, tu prépares ton bloc. Remets les bons gestes dans l’ordre.",
+      steps: ["Analyser toi-même le mélange avec un analyseur étalonné", "Comparer avec le pourcentage annoncé", "Noter le pourcentage sur le bloc et le registre, puis signer", ["Calculer ta profondeur maximale (PpO₂ retenue)", "Régler ton ordinateur sur le pourcentage analysé"], "Annoncer pourcentage et profondeur maximale à ton binôme et au DP"],
+      extra: ["Te fier à l’étiquette de la station sans analyser", "Analyser le mélange après la plongée", "Prendre le bloc de ton binôme sans vérifier", "Régler ton ordinateur sur 21 % pour aller plus vite", "Calculer la profondeur maximale avec une PpO₂ de 2 bar"],
+      e: "Chaque plongeur analyse son propre bloc, compare, note et signe. Ensuite : profondeur maximale, réglage de l’ordinateur, et annonce à la palanquée." + V },
+    { id: "proc-nx-hyperox", m: "nx-toxo", title: "Signes d’hyperoxie au fond",
+      q: "À 32 m au Nitrox, ton binôme a des contractions des lèvres et semble confus. Remets les bons gestes dans l’ordre.",
+      steps: ["Le saisir immédiatement", "Lui maintenir le détendeur en bouche", "Remonter de quelques mètres pour baisser la PpO₂", "Annoncer la fin de la plongée", "Remonter avec lui en contrôlant la vitesse et en le surveillant", "En surface, le maintenir tête hors de l’eau et alerter"],
+      extra: ["Descendre un peu pour le calmer", "Lui retirer son détendeur pour qu’il respire mieux", "Le laisser se reposer au fond quelques minutes", "Continuer la plongée en restant plus près de lui"],
+      e: "Ces signes peuvent annoncer une crise. On tient la victime et son détendeur, on baisse la PpO₂ en remontant un peu, et on termine la plongée sous surveillance." + V },
+
+    /* ---------- N3 ---------- */
+    { id: "proc-n3-debit", m: "n3-materiel", title: "Détendeur en débit continu",
+      q: "À 35 m en autonomie, ton détendeur principal se met en débit continu. Remets les bons gestes dans l’ordre.",
+      steps: ["Garder l’embout et respirer en laissant fuir l’excès par les lèvres", "Prévenir ton binôme par signe", "Passer sur ton détendeur de secours", "Fermer la sortie du détendeur en débit continu (ou la faire fermer)", "Annoncer la fin de la plongée", "Remonter ensemble à vitesse contrôlée, paliers selon l’ordinateur", "Signaler l’incident au DP"],
+      extra: ["Recracher le détendeur et retenir ta respiration", "Remonter très vite avant que le bloc soit vide", "Continuer la plongée en surveillant le manomètre", "Taper le détendeur sur un rocher pour le débloquer"],
+      e: "On garde l’embout : on peut respirer dans un débit continu. Ensuite : prévenir, changer de source, couper la sortie qui fuit et remonter en gérant les paliers." + V },
+    { id: "proc-n3-narcose", m: "n3-accidents", title: "Ton binôme est narcosé",
+      q: "À 45 m, ton binôme ne répond plus à tes signes, le regard fixe. Remets les bons gestes dans l’ordre.",
+      steps: ["Le saisir fermement", "Remonter de quelques mètres avec lui", "Vérifier qu’il répond à nouveau (signe OK)", "Rester moins profond pour la suite de la plongée", "Écourter la plongée si les signes reviennent"],
+      extra: ["Descendre pour voir s’il te suit", "Le laisser pour aller chercher le reste de la palanquée", "Lui retirer son masque pour le réveiller", "Remonter seul pour donner l’alerte"],
+      e: "La narcose diminue en remontant un peu. On tient la victime, on remonte, on vérifie qu’elle répond, puis on reste moins profond ou on termine." },
+    { id: "proc-n3-brief", m: "n3-autonomie", title: "Préparer une plongée autonome à 40 m",
+      q: "Tu prépares une plongée autonome à 40 m avec deux équipiers. Remets les bons gestes dans l’ordre.",
+      steps: [["Fixer la profondeur et la durée maximales", "Fixer la pression de retour et la réserve", "Convenir des signes et de la procédure de perte"], "Faire valider le plan par le DP", "Vérifier le matériel les uns des autres", "S’immerger ensemble au signal"],
+      extra: ["Laisser chacun choisir sa profondeur au fond", "Décider de la réserve pendant la plongée", "Se mettre à l’eau sans prévenir le DP", "Ne vérifier que son propre matériel"],
+      e: "En autonomie, le plan se décide avant : limites, réserve, signes et procédure de perte. Le DP valide, puis vérification croisée du matériel et immersion ensemble." + V },
+
+    /* ---------- E1 (initiateur) ---------- */
+    { id: "proc-e1-panique", m: "e1-piscine", title: "Élève qui panique en piscine",
+      q: "En piscine, à 3 m, ton élève débutant panique et veut retirer son détendeur. Remets les bons gestes dans l’ordre.",
+      steps: ["Le saisir face à face", "Maintenir son détendeur en bouche avec ta main", "Le rassurer par le regard et le contact", "Remonter avec lui en douceur en lui faisant expirer", "En surface, lui faire prendre appui au bord et le rassurer", "Faire le point avec lui sur ce qui s’est passé"],
+      extra: ["Le laisser remonter seul", "Lui dire de bloquer sa respiration", "Continuer l’exercice pour qu’il s’habitue", "Lui retirer le détendeur pour qu’il respire en surface plus vite"],
+      e: "Contact, détendeur maintenu en bouche, réassurance, remontée en douceur avec expiration. Ensuite on analyse avec l’élève avant de reprendre." },
+    { id: "proc-e1-demo", m: "e1-exercices", title: "Enseigner le lâcher d’embout",
+      q: "Tu enseignes le lâcher et la reprise d’embout à un débutant. Remets les étapes dans l’ordre.",
+      steps: ["Expliquer l’exercice au sec et les signes utilisés", "Faire une démonstration lente devant l’élève", "Le faire réaliser en le tenant", "Corriger ce qui ne va pas", "Lui faire répéter jusqu’à l’aisance", "Le féliciter et faire le bilan"],
+      extra: ["Le faire essayer avant toute explication", "Faire la démonstration en allant vite pour qu’il la mémorise", "Le laisser seul faire l’exercice dès la première fois", "Corriger uniquement en fin de séance"],
+      e: "Expliquer, démontrer, faire faire en sécurité, corriger, répéter, valoriser : c’est la trame d’une séance réussie." },
+
+    /* ---------- N4 (guide de palanquée) ---------- */
+    { id: "proc-n4-panique", m: "n4-assistance", title: "Plongeur qui panique",
+      q: "Tu es guide : à 20 m, un plongeur de ta palanquée panique et veut remonter vite. Remets les bons gestes dans l’ordre.",
+      steps: ["Le saisir face à face", "Contrôler son gilet (purge) pour empêcher une remontée rapide", "Vérifier qu’il a son détendeur et respire", "Le rassurer par le regard et le contact", "Faire signe aux autres de se regrouper", "Remonter avec toute la palanquée à vitesse contrôlée", "En surface, gonfler son gilet et alerter le bateau"],
+      extra: ["Le laisser remonter et le surveiller d’en bas", "Le tenir par la palme pour le freiner", "Gonfler son gilet pour aller plus vite", "Envoyer un autre plongeur le raccompagner"],
+      e: "Saisir, bloquer la remontée rapide, vérifier la respiration, rassurer, puis gérer toute la palanquée. Le guide ne laisse personne seul." + V },
+    { id: "proc-n4-perte", m: "n4-guide", title: "Un plongeur a disparu",
+      q: "Tu es guide : un plongeur de ta palanquée a disparu. Remets les bons gestes dans l’ordre.",
+      steps: ["Regrouper le reste de la palanquée", ["Faire un tour d’horizon", "Chercher ses bulles ou sa lampe"], "Attendre environ une minute sur place", "Remonter avec toute la palanquée à vitesse normale", "En surface, chercher ses bulles et alerter le bateau", "Laisser le DP organiser les recherches"],
+      extra: ["Laisser la palanquée pour chercher seul", "Descendre plus profond pour le retrouver", "Continuer la plongée en espérant le croiser", "Envoyer deux plongeurs le chercher pendant que tu continues"],
+      e: "Le guide garde sa palanquée groupée, cherche, attend un peu puis remonte avec tout le monde. Les recherches s’organisent depuis la surface." + V },
+
+    /* ---------- E2 ---------- */
+    { id: "proc-e2-remontee", m: "e2-incidents", title: "Remontée rapide d’un élève",
+      q: "En mer à 15 m, ton élève N1 part vers la surface, gilet trop gonflé. Remets les bons gestes dans l’ordre.",
+      steps: ["Le rattraper par la sangle ou le gilet", "Purger son gilet", "Vérifier qu’il expire", "Stabiliser puis regrouper tes autres élèves", "Remonter calmement avec toute la palanquée", "Faire le bilan et surveiller l’apparition de signes", "Informer le DP"],
+      extra: ["Le laisser remonter, il sera attendu en surface", "Gonfler ton propre gilet pour le suivre", "Lui dire de retenir sa respiration", "Reprendre la plongée sans rien dire"],
+      e: "Freiner la remontée, faire expirer, regrouper les autres élèves, remonter calmement puis surveiller : une remontée rapide peut causer une surpression pulmonaire ou un accident de décompression." + V },
+    { id: "proc-e2-air", m: "e2-securite", title: "Panne d’air d’un élève en palanquée",
+      q: "Tu es moniteur à 18 m avec trois élèves. L’un d’eux fait le signe « plus d’air ». Remets les bons gestes dans l’ordre.",
+      steps: ["Lui donner ta source de secours", "Le saisir face à face", "Faire signe aux autres élèves de se regrouper", "Annoncer la remontée", "Remonter toute la palanquée à vitesse contrôlée", "Faire le palier de sécurité si l’air le permet", "Signaler l’incident au DP"],
+      extra: ["Envoyer un élève lui donner son octopus", "Le remonter seul et laisser les autres au fond", "Lui demander de remonter en expirant", "Continuer la plongée en partageant l’air"],
+      e: "Air d’abord, contact, puis on garde toute la palanquée. Un moniteur ne laisse jamais des élèves seuls au fond." + V }
+  ];
+  const lab = s => (Array.isArray(s) ? s.join(" + ") : s);
+  P.forEach(p => { p.type = "order"; p.proc = true; p.c = [p.steps.map(lab).join(" → "), "Un autre enchaînement"]; p.a = 0; });
+  C.procs = (C.procs || []).concat(P);
+  const b0 = C.build;
+  C.build = function () { const r = b0.apply(this, arguments); C.procs.forEach(p => { if (C.byId[p.m]) p.world = C.byId[p.m].world; C.qById[p.id] = p; }); return r; };
+  if (C.qById) C.procs.forEach(p => { if (C.byId[p.m]) p.world = C.byId[p.m].world; C.qById[p.id] = p; });
 })();
 
 /* js/app.js */

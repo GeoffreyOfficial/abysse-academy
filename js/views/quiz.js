@@ -205,15 +205,83 @@
     const y = u.$("#yes"); if (y) { y.onclick = () => rate(true); u.$("#no").onclick = () => rate(false); AA.gest.swipe(u.$("#fc"), { right: () => rate(true), left: () => rate(false), follow: true }); }
   }
 
+  /* ----- 2.5 : procédures à remettre dans l'ordre et réponses à taper ----- */
+  const flatSteps = q => q.steps.reduce((a, g) => a.concat(Array.isArray(g) ? g : [g]), []);
+  Q.procCheck = (q, seq) => {
+    const marks = []; let i = 0;
+    q.steps.forEach(g => { const set = Array.isArray(g) ? g : [g]; seq.slice(i, i + set.length).forEach(s => marks.push(set.includes(s))); i += set.length; });
+    for (; i < seq.length; i++) marks.push(false);
+    const n = flatSteps(q).length;
+    return { ok: seq.length === n && marks.every(Boolean), marks, good: marks.filter(Boolean).length, n };
+  };
+  const NUMRE = /^\s*[≈~]?\s*(-?\d[\d\s  ]*(?:[.,]\d+)?)\s*(.*)$/;
+  Q.numOf = s => { const m = String(s == null ? "" : s).replace(/[  ]/g, " ").match(NUMRE); if (!m) return null; const v = parseFloat(m[1].replace(/\s/g, "").replace(",", ".")); return isFinite(v) ? v : null; };
+  const unitOf = s => { const m = String(s).replace(/[  ]/g, " ").match(NUMRE); return m ? m[2].trim() : ""; };
+  /* Calcul « à taper » : toutes les propositions sont un nombre suivi d'une unité courte. */
+  Q.canType = q => !!(q && q.calc && Array.isArray(q.c) && q.c.length >= 2 && q.c.every(x => { const m = String(x).replace(/[  ]/g, " ").match(NUMRE); return m && m[2].length <= 12 && !/\d/.test(m[2]); }) && new Set(q.c.map(Q.numOf)).size === q.c.length);
+  Q.numTol = q => {
+    const ans = Q.numOf(q.c[q.a]), others = q.c.filter((_, i) => i !== q.a).map(Q.numOf);
+    const gap = Math.min(...others.map(o => Math.abs(o - ans)));
+    const dec = ((String(q.c[q.a]).match(/[.,](\d+)/) || [, ""])[1] || "").length;
+    return Math.max(.5 * Math.pow(10, -dec), Math.min(Math.abs(ans) * .02, gap / 2 * .98));
+  };
+  Q.yours = a => (a.typed != null ? u.esc(a.typed) : a.seq ? u.esc(a.seq.join(" → ") || "—") : u.esc(a.q.c[a.picked]));
+  function ordInner(c, it, answered) {
+    const q = it.q, chk = answered ? Q.procCheck(q, it.seq) : null;
+    const seq = it.seq.map((s, k) => `<li><button class="ord-it on ${chk ? (chk.marks[k] ? "good" : "wrong") : ""}" data-s="${k}" ${answered ? "disabled" : ""}><b>${k + 1}</b><span>${u.esc(s)}</span>${answered ? AA.icon(chk.marks[k] ? "check" : "x") : AA.icon("close")}</button></li>`).join("");
+    const pool = it.pool.filter(p => !it.seq.includes(p)).map(p => `<button class="ord-it" data-p="${u.esc(p)}" ${answered ? "disabled" : ""}><span>${u.esc(p)}</span>${AA.icon("plus")}</button>`).join("");
+    return `<p class="xs muted ord-help">${t("ord.help", { n: flatSteps(q).length })}</p>
+      <ol class="ord-seq ${it.seq.length ? "" : "empty"}" aria-label="${t("ord.yours")}">${seq || `<li class="ord-ph">${t("ord.empty")}</li>`}</ol>
+      ${answered ? "" : `<div class="ord-pool" role="group" aria-label="${t("ord.pool")}">${pool}</div>
+      <button class="btn block" id="ordGo" ${it.seq.length ? "" : "disabled"}>${AA.icon("check")} ${t("ord.go", { n: it.seq.length })}</button>`}`;
+  }
+  function bindOrd(el, c, it) {
+    const box = u.$("#ord", el); if (!box || c.picked != null) return;
+    box.onclick = e => {
+      const b = e.target.closest("button"); if (!b || b.disabled) return;
+      if (b.id === "ordGo") { const r = Q.procCheck(it.q, it.seq); return answer(c, r.ok ? 0 : 1, b); }
+      if (b.dataset.p != null) it.seq.push(b.dataset.p); else if (b.dataset.s != null) it.seq.splice(+b.dataset.s, 1); else return;
+      fx.sfx.tap(); box.innerHTML = ordInner(c, it, false);
+    };
+  }
+  function numHtml(c, it, answered) {
+    const q = it.q, unit = unitOf(q.c[q.a]);
+    if (answered) { const ok = c.picked === q.a; return `<div class="numres ${ok ? "good" : "wrong"}">${AA.icon(ok ? "check" : "x")}<span>${t("num.yours")} <b>${it.typed != null ? u.esc(it.typed) : "—"}</b></span></div>`; }
+    return `<form class="numin" id="numf" autocomplete="off"><label for="numv" class="small">${t("num.label")}</label>
+      <div class="numrow"><input id="numv" type="text" inputmode="decimal" enterkeyhint="done" spellcheck="false" placeholder="${t("num.ph")}">${unit ? `<span class="unit">${u.esc(unit)}</span>` : ""}</div>
+      <button class="btn block" type="submit" id="numGo">${AA.icon("check")} ${t("num.go")}</button>
+      ${c.mode !== "exam" ? `<button class="btn ghost sm" type="button" id="numQcm">${t("num.qcm")}</button>` : ""}</form>`;
+  }
+  function bindNum(el, c, it) {
+    const f = u.$("#numf", el); if (!f || c.picked != null) return;
+    const inp = u.$("#numv", f), q = it.q;
+    if (!matchMedia("(pointer:coarse)").matches) setTimeout(() => { try { inp.focus({ preventScroll: true }); } catch (e) {} }, 60);
+    f.onsubmit = e => {
+      e.preventDefault(); const v = Q.numOf(inp.value);
+      if (v == null) { inp.classList.add("shake"); setTimeout(() => inp.classList.remove("shake"), 500); fx.toast(t("num.badT"), t("num.badS"), "calc"); return; }
+      const ans = Q.numOf(q.c[q.a]), ok = Math.abs(v - ans) <= Q.numTol(q);
+      let ci = q.a; if (!ok) { let best = Infinity; q.c.forEach((x, i) => { if (i === q.a) return; const d = Math.abs(Q.numOf(x) - v); if (d < best) { best = d; ci = i; } }); }
+      it.typed = inp.value.trim() + (unitOf(q.c[q.a]) && !/[a-z%°]/i.test(inp.value) ? " " + unitOf(q.c[q.a]) : "");
+      answer(c, ci, u.$("#numGo", f));
+    };
+    const qc = u.$("#numQcm", f); if (qc) qc.onclick = () => { it.inp = false; draw(el, c); };
+  }
+
   function draw(el, c) {
     const it = c.items[c.idx];
     if (!it || (c.air != null && c.air <= 0 && c.picked == null) || (c.mode === "boss" && c.bossHp <= 0 && c.picked == null)) return finish(c);
     if (it.q.card) return drawCard(el, c, it);
     const q = it.q, n = c.mode === "apnee" ? null : c.items.length, answered = c.picked != null;
+    const isOrd = q.type === "order" && Array.isArray(q.steps);
+    if (isOrd && !it.pool) { it.pool = u.shuffle(flatSteps(q).concat(q.extra || [])); it.seq = []; }
+    if (!isOrd && it.inp == null) it.inp = !window.AA_PLAIN && c.mode !== "duel" && c.mode !== "rduel" && Q.canType(q) && Math.random() < .6;
+    const isNum = !isOrd && it.inp;
     const okNow = answered && c.picked === q.a;
     const prog = c.mode === "apnee" ? c.time / 60 : (c.idx + (answered ? 1 : 0)) / n;
     const tags = [];
     if (q.m && C.byId[q.m]) tags.push(`<span class="chip">${u.esc(C.byId[q.m].title)}</span>`);
+    if (isOrd) tags.push(`<span class="chip warn">${AA.icon("plan")}${t("ord.chip")}</span>`);
+    if (isNum) tags.push(`<span class="chip pri">${AA.icon("edit")}${t("num.chip")}</span>`);
     if (q.calc) tags.push(`<span class="chip gold">${AA.icon("calc")}${t("quiz.calc")}</span>`);
     if (q.lvl === 2) tags.push(`<span class="chip pri">${AA.icon("layers")}${t("lesson.deep")}</span>`);
     if (c.mode === "duel") tags.unshift(`<span class="chip warn">${u.esc(c.players[c.turn])}</span>`);
@@ -229,19 +297,19 @@
         <div class="qtag">${tags.join("")}</div>
         ${c.mode === "pc" ? AA.lab.computerScreen(q.scr) : ""}
         <div class="qhead"><h2 class="qtext" id="qtext">${u.esc(q.q)}</h2>${AA.a11y.button("#qc .qread", t("a11y.listenQ"))}</div>
-        <div class="qread" hidden>${u.esc(q.q)} ${it.order.map((ci, k) => "ABCD"[k] + ". " + u.esc(q.c[ci]) + ".").join(" ")}</div>
-        <div class="choices ${c.mode !== "pc" && q.c.every(x => String(x).length <= 38) ? "two" : ""}" role="group" aria-labelledby="qtext">${it.order.map((ci, k) => {
+        <div class="qread" hidden>${u.esc(q.q)} ${isOrd ? it.pool.map(u.esc).join(". ") : isNum ? "" : it.order.map((ci, k) => "ABCD"[k] + ". " + u.esc(q.c[ci]) + ".").join(" ")}</div>
+        ${isOrd ? `<div class="ord" id="ord">${ordInner(c, it, answered)}</div>` : isNum ? numHtml(c, it, answered) : `<div class="choices ${c.mode !== "pc" && q.c.every(x => String(x).length <= 38) ? "two" : ""}" role="group" aria-labelledby="qtext">${it.order.map((ci, k) => {
           let cls = ""; if (answered) { if (ci === q.a) cls = "good"; else if (ci === c.picked) cls = "wrong"; }
           const mk = answered && (ci === q.a || ci === c.picked) ? AA.icon(ci === q.a ? "check" : "x") : "";
           return `<button class="choice ${cls}" data-ci="${ci}" ${answered ? "disabled" : ""}><span class="k">${"ABCD"[k]}</span><span>${u.esc(q.c[ci])}</span><span class="mk">${mk}</span></button>`;
-        }).join("")}</div>
+        }).join("")}</div>`}
         ${!answered && !NOFB(c.mode) ? `<div class="qactions"><button class="chip ${c.doubt ? "warn" : ""}" id="doubt" aria-pressed="${c.doubt}">${AA.icon("doubt")}${t("quiz.doubt")}</button></div>
           ${AA.S.profile.gestures !== false && (AA.S.gestHint || 0) < 4 ? `<p class="xs muted gesture-hint">${AA.icon("hand")} ${t("gest.quizHint")}</p>` : ""}` : ""}
         ${!answered && c.mode !== "duel" ? `<div class="qactions qdk-row"><button class="btn ghost sm qdk" id="qdk">${AA.icon("doubt")} ${t("quiz.dk")}</button></div>` : ""}
         ${answered ? `<div class="feedback ${okNow ? "ok" : "bad"}" role="status"><h4>${okNow ? u.pick(AA.i18n.raw("quiz.okList")) : c.picked === -1 ? t("quiz.dkT") : t("quiz.bad")}</h4>
-          ${okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
+          ${isOrd ? (() => { const r = Q.procCheck(q, it.seq); return `<p class="small"><b>${t("ord.score", { g: r.good, n: r.n })}</b></p>${okNow ? "" : `<p><b>${t("ord.right")}</b></p><ol class="ord-ok">${q.steps.map(g => `<li>${Array.isArray(g) ? g.map(u.esc).join(" <i>+</i> ") + ` <span class="chip">${t("ord.free")}</span>` : u.esc(g)}</li>`).join("")}</ol>${(q.extra || []).some(x => it.seq.includes(x)) ? `<p class="small"><b>${t("ord.extraT")}</b> ${(q.extra || []).filter(x => it.seq.includes(x)).map(u.esc).join(" · ")}</p>` : ""}`}`; })() : okNow ? "" : `<p><b>${t("quiz.answer")}</b> ${u.esc(q.c[q.a])}</p>`}<p>${u.esc(q.e)}</p>
           ${c.doubt && okNow ? `<p class="small muted">${t("quiz.doubtNote")}</p>` : ""}
-          ${okNow || !C.byId[q.m] ? "" : `<button class="btn exp-btn block" id="qexp">${AA.icon("play")} ${t("exp.btn")}<span class="xs">${t("exp.btnS")}</span></button>`}${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
+          ${okNow || isOrd || !C.byId[q.m] ? "" : `<button class="btn exp-btn block" id="qexp">${AA.icon("play")} ${t("exp.btn")}<span class="xs">${t("exp.btnS")}</span></button>`}${Q.explain(q, okNow)}<div class="row" style="justify-content:flex-end">${AA.reportBtn('id="qrep"')}</div></div>
           <div class="qactions"><button class="btn block" id="nextq">${isEnd(c) ? t("quiz.seeResult") : t("quiz.next")} ${AA.icon("next")}</button></div>` : ""}
       </div>`;
     u.$("#qclose").onclick = () => AA.ui.confirm(t("quiz.quitQ"), t("quiz.quitYes"), () => { clearInterval(c.timer); AA.router.go(c.back || "home"); }, c.answers.length === 0);
@@ -256,6 +324,7 @@
       AA.gest.swipe(b, { right: () => answer(c, +b.dataset.ci, b) });
       if (!NOFB(c.mode)) AA.gest.hold(b, () => { c.doubt = true; AA.S.gestHint = (AA.S.gestHint || 0) + 1; fx.toast(t("gest.doubtT"), t("gest.doubtS"), "doubt"); answer(c, +b.dataset.ci, b); });
     });
+    if (isOrd) bindOrd(el, c, it); else if (isNum) bindNum(el, c, it);
     const d = u.$("#doubt"); if (d) d.onclick = () => { c.doubt = !c.doubt; fx.sfx.tap(); draw(el, c); };
     const dk = u.$("#qdk"); if (dk) dk.onclick = () => answer(c, -1, dk);
     const goNext = () => { if (c.timeUp || (c.mode === "boss" && c.bossHp <= 0)) return finish(c); c.idx++; c.picked = null; c.doubt = false; c.hit = false; AA.router.refresh(); };
@@ -266,6 +335,8 @@
     const it = c.items[c.idx], q = it.q; if (c.picked != null) return;
     c.picked = ci; const ok = ci === q.a, S = AA.S;
     c.answers.push({ q, picked: ci, ok, player: c.turn, doubt: c.doubt });
+    if (it.inp && it.typed != null && ci >= 0) c.answers[c.answers.length - 1].typed = it.typed;
+    if (q.type === "order" && it.seq) c.answers[c.answers.length - 1].seq = ci < 0 ? [] : it.seq.slice();
     if (c.mode === "boss") { c.hit = ok; if (ok) c.bossHp = Math.max(0, c.bossHp - 1); }
     if (c.mode !== "duel") {
       const prev = G.qPrev(q);
@@ -364,8 +435,8 @@
       <a class="btn ghost block" href="#/${c.mode === "module" ? "map/" + (m ? m.world : "") : c.back || "home"}">${t("result.continue")}</a></div></section>
       ${c.answers.length ? `<div class="section-title"><h3>${t("result.review")}</h3><span class="muted small">${t("result.reviewHint")}</span></div>
       <div class="review">${c.answers.filter(a => !a.card).map(a => `<div class="rv ${a.ok ? "ok" : ""}"><b>${u.esc(a.q.q)}</b>
-        <span class="small">${a.ok ? t("result.yours") + " " + u.esc(a.q.c[a.picked]) + " ✓" : (a.picked < 0 ? t("quiz.dkYours") : t("result.yours") + " " + u.esc(a.q.c[a.picked])) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
-        <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<div class="row rv-acts"><a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>${C.qById[a.q.id] ? `<button class="btn ghost sm" data-expq="${a.q.id}" data-pk="${a.picked}">${AA.icon("play")} ${t("exp.btn")}</button>` : ""}</div>` : ""}</div>`).join("")}</div>` : ""}`;
+        <span class="small">${a.ok ? t("result.yours") + " " + Q.yours(a) + " ✓" : (a.picked < 0 ? t("quiz.dkYours") : t("result.yours") + " " + Q.yours(a)) + "<br>" + t("quiz.answer") + " <b>" + u.esc(a.q.c[a.q.a]) + "</b>"}</span>
+        <p class="small muted" style="margin:6px 0 0">${u.esc(a.q.e)}</p>${!a.ok && a.q.m && C.byId[a.q.m] ? `<div class="row rv-acts"><a class="small" href="#/lesson/${a.q.m}">${t("result.toLesson", { title: u.esc(C.byId[a.q.m].title) })}</a>${C.qById[a.q.id] && !a.q.steps ? `<button class="btn ghost sm" data-expq="${a.q.id}" data-pk="${a.picked}">${AA.icon("play")} ${t("exp.btn")}</button>` : ""}</div>` : ""}</div>`).join("")}</div>` : ""}`;
     u.$("#again").onclick = () => Q.restart(c);
     u.$("#rclose").onclick = () => AA.router.go(c.back || "home");
   }

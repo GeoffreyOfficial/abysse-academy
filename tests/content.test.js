@@ -45,7 +45,7 @@ section("QCM sans indice (2.2.4)");
   /* Une question ne doit pas se deviner sans rien connaître : la bonne
      réponse ne doit pas être systématiquement la plus longue, ni écraser
      les autres en longueur, et aucun distracteur ne doit être absurde. */
-  const ABSURDE = /couleur (du|des|de son) (bloc|masque|palmes|écran)|le club s.en charge|(^|\s)à rien( du tout)?$|pour (la )?d[ée]cor|faire joli|au hasard|n.importe (où|quoi|comment)|ce n.est pas utile|sans raison|^rien( du tout)?$|barbecue|appareil photo|explose|go[ûu]te|menu du|le prix|la facture|son maillot|(^|\s)crier|huile d.olive|se transforme en eau|par habitude|par tradition|t.énerves|le grondes|l.humilies|dans son dos|3615|la mairie|le café|du café/i;
+  var ABSURDE = /couleur (du|des|de son) (bloc|masque|palmes|écran)|le club s.en charge|(^|\s)à rien( du tout)?$|pour (la )?d[ée]cor|faire joli|au hasard|n.importe (où|quoi|comment)|ce n.est pas utile|sans raison|^rien( du tout)?$|barbecue|appareil photo|explose|go[ûu]te|menu du|le prix|la facture|son maillot|(^|\s)crier|huile d.olive|se transforme en eau|par habitude|par tradition|t.énerves|le grondes|l.humilies|dans son dos|3615|la mairie|le café|du café/i;
   const len = s => String(s).length;
   let longest = 0, crushing = [];
   (C.computer || []).forEach(q => (q.c || []).forEach((s, i) => { if (i !== q.a) ok(!ABSURDE.test(String(s)), `${q.id} : choix absurde « ${s} »`); }));
@@ -103,6 +103,26 @@ C.glossary.forEach(g => {
   (g.see || []).forEach(s => ok(C.glossById[s], `terme ${g.id} : voir aussi ${s} inconnu`));
   ok(!g.dg || C.diagrams[g.dg], `terme ${g.id} : schéma ${g.dg} inconnu`);
 });
+
+section("Procédures d’urgence (gestes dans l’ordre)");
+{
+  const P = C.procs || [], ids = new Set(), W = new Set();
+  ok(P.length >= 18, `${P.length} procédures (mini 18)`);
+  P.forEach(p => {
+    ok(!ids.has(p.id), `procédure ${p.id} en double`); ids.add(p.id);
+    ok(C.byId[p.m], `procédure ${p.id} : thème ${p.m} inconnu`); if (C.byId[p.m]) W.add(C.byId[p.m].world);
+    const fl = p.steps.reduce((a, g) => a.concat(Array.isArray(g) ? g : [g]), []);
+    ok(fl.length >= 5, `procédure ${p.id} : ${fl.length} gestes (mini 5)`);
+    ok((p.extra || []).length >= 4, `procédure ${p.id} : ${(p.extra || []).length} pièges (mini 4)`);
+    ok(new Set(fl.concat(p.extra)).size === fl.length + p.extra.length, `procédure ${p.id} : geste en double`);
+    ok(p.q && p.e && p.title, `procédure ${p.id} : question, titre ou explication manquant`);
+    p.extra.forEach(x => ok(!ABSURDE.test(x), `procédure ${p.id} : piège absurde « ${x} »`));
+    /* Anti-indice : les pièges ne doivent pas être nettement plus courts ou plus longs que les bons gestes. */
+    const avg = l => l.reduce((a, x) => a + x.length, 0) / l.length, r = avg(p.extra) / avg(fl);
+    ok(r > .6 && r < 1.5, `procédure ${p.id} : longueur des pièges trop différente (${r.toFixed(2)})`);
+  });
+  C.worlds.filter(w => !w.soon && C.inWorld(w.id).length).forEach(w => ok(W.has(w.id), `aucune procédure d’urgence pour ${w.short}`));
+}
 
 section("Aventures");
 C.stories.forEach(s => {

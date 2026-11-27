@@ -34,7 +34,7 @@
         const ok = open(s), r = S.story[s.id] || {}, w = C.worldById[s.world] || {}, n = mainLen(s);
         return `<button class="card story-card ${ok ? "" : "off"} ${r.done ? "done" : ""}" data-s="${s.id}" style="--wc:var(${w.color || "--primary"})" ${ok ? "" : "aria-disabled=\"true\""}>
             <span class="medal">${AA.icon(ok ? s.icon : "lock")}</span>
-            <span class="grow"><span class="eyebrow">${u.esc(s.role || w.short || "")}</span><b>${u.esc(s.title)}</b><span class="small muted">${ok ? u.esc(s.sub) : t("story.locked")}</span>
+            <span class="grow"><span class="eyebrow">${u.esc(s.role || w.short || "")}${s.boss ? ` · ${t("story.bossChip")}` : ""}</span><b>${u.esc(s.title)}</b><span class="small muted">${ok ? u.esc(s.sub) : t("story.locked")}</span>
             ${r.done ? `<span class="row" style="margin-top:6px">${AA.stars(r.stars || 0)}<span class="xs muted">${t("story.best", { n: Math.min(r.best || 0, n), tot: n })}</span></span>` : r.node && r.node !== s.start ? `<span class="chip pri" style="margin-top:6px">${t("story.resume")}</span>` : `<span class="xs muted st-len">${t("story.len", { n })}</span>`}</span>
             ${AA.icon("next")}</button>`;
       };
@@ -88,7 +88,7 @@
       el.innerHTML = `${ui.head(u.esc(s.title), "story")}<section class="card result stack-lg story-end" style="--wc:var(${w.color || "--primary"})">
         <p class="eyebrow">${t("story.end")}</p><h2>${u.esc(n.title)}</h2><div class="rstars">${[1, 2, 3].map(k => AA.star(k <= stars)).join("")}</div>
         <p>${u.esc(n.text)}</p>${learn}<p class="small muted">${t("story.score", { n: c.score, tot: c.made })}</p>
-        <div class="stack"><button class="btn block" id="replay">${AA.icon("refresh")} ${t("story.replay")}</button><a class="btn ghost block" href="#/story">${t("story.others")}</a></div></section>`;
+        <div class="stack">${n.boss && C.worldById[n.boss] && C.worldById[n.boss].boss ? `<a class="btn gold block st-boss" href="#/boss/${n.boss}">${AA.icon("swords")} ${t("story.toBoss", { name: u.esc(C.worldById[n.boss].boss.name) })}</a>` : ""}<button class="btn block" id="replay">${AA.icon("refresh")} ${t("story.replay")}</button><a class="btn ghost block" href="#/story">${t("story.others")}</a></div></section>`;
       u.$("#replay").onclick = () => { AA.ctx.story = null; rec.node = s.start; AA.router.refresh(); };
       return;
     }

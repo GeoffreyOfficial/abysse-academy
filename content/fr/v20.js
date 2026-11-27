@@ -330,8 +330,8 @@
     "tu.epreuves": "Épreuves",
     "tu.noneRead": "Lis un premier cours pour débloquer l’entraînement.",
     /* Examen */
-    "tu.exUnread": "{n} cours de ce niveau ne sont pas encore lus : l’examen ne contient que les questions de tes cours lus. Conseil : lis tout avant ton examen blanc.",
-    "tu.exAll": "Tous les cours de ce niveau sont lus : examen complet.",
+    "tu.exUnread": "{n} cours de ce niveau ne sont pas encore lus. L’examen interroge quand même tout le programme, comme le jour J : lis tout avant pour qu’il te serve vraiment.",
+    "tu.exAll": "Tous les cours de ce niveau sont lus. L’examen interroge tout le programme, avec des questions exigeantes.",
     /* Club et moniteur */
     "tu.clubT": "Club et moniteur",
     "tu.clubS": "Facultatif. Pour ceux qui suivent une formation en club.",

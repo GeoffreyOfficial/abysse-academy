@@ -67,21 +67,29 @@
   });
 
   /* ---------- Visite guidée ---------- */
+  /* 2.5 : la visite entre dans chaque onglet et montre ce qu'il contient. */
+  const goal = () => { try { return AA.game.goalWorld(); } catch (e) { return "n2"; } };
   const STEPS = [
     { k: "hello" },
-    { k: "home", sel: '.tabbar [data-tab="home"]' },
-    { k: "cours", sel: '.tabbar [data-tab="cours"]' },
-    { k: "map", sel: '.tabbar [data-tab="map"]' },
-    { k: "train", sel: '.tabbar [data-tab="train"]' },
-    { k: "jeux", sel: '.tabbar [data-tab="train"]' },
-    { k: "progres", sel: '.tabbar [data-tab="progres"]' },
-    { k: "profile", sel: '.tabbar [data-tab="profile"]' },
-    { k: "streak", sel: '#topbar [data-hud="streak"]' },
-    { k: "xp", sel: '#topbar [data-hud="xp"]' },
-    { k: "search", sel: '#topbar a[href="#/search"]' },
+    { k: "home", route: "home", sel: "#view .card" },
+    { k: "cours", route: () => "cours/" + goal(), sel: '.tabbar [data-tab="cours"]' },
+    { k: "lesson", route: () => "lesson/" + ((C.inWorld(goal())[0] || C.modules[0]).id), sel: "#view .lesson-tabs" },
+    { k: "map", route: () => "map/" + goal(), sel: '.tabbar [data-tab="map"]' },
+    { k: "train", route: "train", sel: "#view .tiles" },
+    { k: "jeux", route: () => "jeux/" + goal(), sel: '.tabbar [data-tab="train"]' },
+    { k: "story", route: "story", sel: "#view .story-card" },
+    { k: "boss", route: () => "boss/" + goal(), sel: "#view .bt-card" },
+    { k: "progres", route: "progres", sel: '.tabbar [data-tab="progres"]' },
+    { k: "profile", route: "profile", sel: '.tabbar [data-tab="profile"]' },
+    { k: "streak", route: "home", sel: '#topbar [data-hud="streak"]' },
+    { k: "xp", route: "home", sel: '#topbar [data-hud="xp"]' },
+    { k: "search", route: "home", sel: '#topbar a[href="#/search"]' },
+    { k: "words" },
     { k: "help" },
-    { k: "end" }
+    { k: "end", route: "home" }
   ];
+  const WORDS = ["cours", "notion", "tuteur", "lacune", "explique", "aventure", "quete", "gardien", "boss", "examen", "xp", "flamme"];
+  const wordsHtml = () => `<dl class="tour-words">${WORDS.map(w => `<div><dt>${t("tour.w." + w + ".t")}</dt><dd>${t("tour.w." + w + ".s")}</dd></div>`).join("")}</dl>`;
   const TO = (AA.tour = {});
   let cur = -1, box = null;
   const st = () => { const s = S(); if (!s.tour || typeof s.tour !== "object") s.tour = {}; return s.tour; };
@@ -105,14 +113,16 @@
     box.innerHTML = `<div class="tour-spot"></div><section class="tour-card" role="dialog" aria-modal="true" aria-labelledby="tourT" tabindex="-1">
       <div class="row between"><span class="eyebrow">${t("tour.step", { i: cur + 1, n })}</span><button class="linkbtn xs" data-tour="skip">${t(last ? "tour.close" : "tour.skipAll")}</button></div>
       <h3 id="tourT">${t("tour." + S1.k + ".t")}</h3>
-      <p class="small" style="margin:0">${t("tour." + S1.k + ".s")}</p>
+      <p class="small" style="margin:0">${t("tour." + S1.k + ".s")}</p>${S1.k === "words" ? wordsHtml() : ""}
       ${t("tour." + S1.k + ".w") !== "tour." + S1.k + ".w" ? `<p class="xs muted tour-why"><b>${t(S1.k === "hello" || S1.k === "help" ? "tour.tip" : "tour.why")}</b> ${t("tour." + S1.k + ".w")}</p>` : ""}
       <div class="tour-dots" role="tablist">${STEPS.map((x, i) => `<button class="${i === cur ? "on" : i < cur ? "seen" : ""}" data-tour-go="${i}" aria-label="${t("tour.goto", { i: i + 1 })}" ${i === cur ? 'aria-current="step"' : ""}></button>`).join("")}</div>
       <div class="row tour-btns">${cur > 0 ? `<button class="btn ghost sm" data-tour="prev">${AA.icon("back")} ${t("tour.prev")}</button>` : `<button class="btn ghost sm" data-tour="later">${t("tour.later")}</button>`}
         <span class="grow"></span>${last ? `<button class="btn sm" data-tour="done">${AA.icon("play")} ${t("tour.go")}</button>` : `<button class="btn sm" data-tour="next">${t(cur === 0 ? "tour.start" : "tour.next")} ${AA.icon("next")}</button>`}</div></section>`;
     requestAnimationFrame(() => { place(); const c = u.$(".tour-card", box); if (c) c.focus({ preventScroll: true }); });
+    setTimeout(place, 450);
   };
-  const go = i => { cur = Math.max(0, Math.min(STEPS.length - 1, i)); st().step = cur; AA.store.save(); fx.sfx.tap(); draw(); };
+  const nav = S1 => { if (!S1 || !S1.route) return; const r = typeof S1.route === "function" ? S1.route() : S1.route; if (location.hash !== "#/" + r) { AA.router.go(r); window.scrollTo(0, 0); } };
+  const go = i => { cur = Math.max(0, Math.min(STEPS.length - 1, i)); st().step = cur; AA.store.save(); fx.sfx.tap(); nav(STEPS[cur]); draw(); };
   const close = how => {
     if (!box) return; const s = st();
     if (how === "done") { s.done = 1; s.step = 0; }
@@ -130,7 +140,7 @@
   TO.start = from => {
     if (box) return; if (AA.router.name !== "home" && !from) AA.router.go("home");
     box = document.createElement("div"); box.className = "tour"; document.body.appendChild(box);
-    cur = from != null ? from : 0; draw();
+    cur = Math.min(from != null ? from : 0, STEPS.length - 1); nav(STEPS[cur]); draw();
     addEventListener("resize", place); addEventListener("keydown", key, true);
     box.addEventListener("click", e => {
       const g = e.target.closest("[data-tour-go]"); if (g) return go(+g.dataset.tourGo);

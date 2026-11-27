@@ -514,6 +514,7 @@
           ${ui.tile("errors", "buoy", "var(--accent)", t("mode.errors"), t("train.errorsS"), nErr ? [String(nErr), "warn"] : null)}
           ${ui.tile("doubt", "doubt", "var(--world-e2)", t("mode.doubt"), t("train.doubtS"), doubts ? [String(doubts), "pri"] : null)}
           ${ui.tile("calcs", "calc", "var(--gold)", t("mode.calcs"), t("train.calcsS"))}
+          ${C.procs && C.procs.length ? ui.tile("procs", "buoy", "var(--bad)", t("pr.title"), t("pr.tileS"), [t("pr.count", { n: C.procs.filter(p => (s.procs || {})[p.id]).length, tot: C.procs.length }), "warn"]) : ""}
         </div>
         <div class="section-title"><h3>${t("tu.byCourseT")}</h3></div><p class="small muted" style="margin-top:0">${t("tu.byCourseS")}</p>
         <div class="tu-quizlist">${goalRead.concat(other).map(m => `<button class="chip tu-qchip" data-tuquiz="${m.id}">${AA.icon("play")} ${esc(m.title)}</button>`).join("") || `<span class="small muted">${t("tu.noneRead")}</span>`}</div>
