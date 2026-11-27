@@ -73,7 +73,7 @@
     const pool = deepOnly ? m.quiz.filter(q => q.lvl === 2) : m.quiz;
     /* Plus d'aléatoire : jusqu'à 2 calculs tirés au hasard dans la série (chiffres neufs à chaque fois). */
     const gk = deepOnly ? [] : G.genKeys(m.id), ng = gk.length ? Math.min(2, Math.max(1, Math.round(pool.length / 8))) : 0;
-    const picks = u.shuffle(pool).slice(0, 10 - ng).concat(Array.from({ length: ng }, () => G.gen(u.pick(gk))).filter(Boolean));
+    const picks = (Q.freshSort ? Q.freshSort(pool) : u.shuffle(pool)).slice(0, 10 - ng).concat(Array.from({ length: ng }, () => G.gen(u.pick(gk))).filter(Boolean));
     Q.start("module", u.shuffle(picks), { module: m.id, title: m.title, air: 200, wasStale: G.isStale(m.id), back: "lesson/" + m.id });
   };
   Q.calcs = (mid, n, title) => { const keys = G.genKeys(mid); Q.start("gen", Array.from({ length: n || 6 }, () => G.gen(u.pick(keys))), { title: title || t("quiz.calcs"), air: mid ? 200 : null, back: mid ? "lesson/" + mid : "train" }); };
@@ -111,7 +111,7 @@
   /* Boss de fin de monde : vider sa jauge avant de vider sa bouteille. */
   Q.boss = wid => {
     const w = C.worldById[wid], b = w.boss, mods = C.inWorld(wid), pick = [];
-    mods.forEach(m => pick.push(...u.shuffle(m.quiz).slice(0, 2)));
+    mods.forEach(m => pick.push(...(Q.freshSort ? Q.freshSort(m.quiz) : u.shuffle(m.quiz)).slice(0, 2)));
     const gens = G.genKeys().filter(k => C.generators[k].m && C.byId[C.generators[k].m] && C.byId[C.generators[k].m].world === wid);
     const calcs = gens.length ? Array.from({ length: Math.min(5, Math.round(b.n / 5)) }, () => G.gen(u.pick(gens))) : [];
     const qs = u.shuffle(u.shuffle(pick).slice(0, b.n - calcs.length).concat(calcs));

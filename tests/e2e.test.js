@@ -375,7 +375,7 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
         let bw = 0, bn = 0; for (let i = 0; i < 15; i++) { GM.begin(GM.mini(small.id)); const l = GM.qs(); bn = Math.max(bn, l.length); bw = Math.max(bw, dup(l)); GM.drop(); }
         out.gardien = { worst: bw, n: bn };
         /* Un doublon connu du contenu ne passe pas, et la série garde sa longueur. */
-        const a = C.qById["physio-1"], b2 = C.qById["physio-11"]; const u1 = Q.uniq([a, b2, a].concat(C.byId.physio.quiz.slice(2, 8)), "module");
+        const a = C.qById["pa20-0"], b2 = C.qById["n3-autonomie-1"]; const u1 = Q.uniq([a, b2, a].concat(C.byId.physio.quiz.slice(2, 8)), "module");
         out.known = { n: u1.length, dup: dup(u1) };
         return out; });
       Object.entries(r).filter(([k]) => k !== "known").forEach(([k, v]) => ok(typeof v === "object" && v.worst === 0 && v.n > 0, `${k} : aucune question répétée sur 15 tirages (${typeof v === "object" ? v.n + " questions" : v})`));
@@ -524,6 +524,24 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(await p.$(".rec-sheet") && await p.evaluate(() => localStorage.getItem("abysse-academy-corrupt") === "{abîmé"), "récupération : écran de choix, données abîmées gardées de côté");
       await p.click("#recfresh"); await p.waitForTimeout(200); await p.click(".sheet-wrap.cf [data-ok]"); await p.waitForTimeout(300);
       ok(!(await p.$(".rec-sheet")) && await p.evaluate(() => !localStorage.getItem("abysse-academy-corrupt")), "récupération : repartir de zéro ferme l’écran");
+      await ctx.close(); }
+
+    console.log("• Questions moins répétées, vrai ou faux (2.9.1)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p);
+      const r = await p.evaluate(() => { const Q = AA.quiz, C = AA.content, m = C.byId.physio, S = AA.S; S.recentQ = [];
+        const ids = () => AA.ctx.items.map(it => String(it.q.id).replace(/^vf:/, ""));
+        Q.module(m); const a = ids(); location.hash = "#/home"; Q.module(m); const b2 = ids(); location.hash = "#/home";
+        const overlap = b2.filter(id => a.includes(id)).length;
+        window.AA_PLAIN = 0; let vfN = 0, vfOkAll = true; for (let i = 0; i < 6; i++) { Q.module(m); AA.ctx.items.forEach(it => { if (it.q.vf) { vfN++; const o = C.qById[it.q.vf]; vfOkAll = vfOkAll && it.q.c.length === 2 && it.order.join() === "0,1" && (it.q.a === 0) === it.q.q.includes("« " + o.c[o.a] + " »"); } }); location.hash = "#/home"; }
+        window.AA_PLAIN = 1;
+        const q = C.qById["physio-7"], t1 = Q.toVf(q, true), t0 = Q.toVf(q, false);
+        Q.exam(false, "n2"); const exVf = AA.ctx.items.some(it => it.q.vf); location.hash = "#/home";
+        return { overlap, vfN, vfOkAll, t1: t1.a === 0 && t1.q.includes(q.c[q.a]), t0: t0.a === 1 && !t0.q.includes("« " + q.c[q.a] + " »"), neg: !Q.vfOk(C.qById["accidents-5"]), exVf, rec: S.recentQ.length > 0 && S.recentQ.length <= 150 }; });
+      ok(r.overlap <= 5, `séries d’un même thème : ${r.overlap} question(s) sur 10 reprises de la série précédente (maxi 5)`);
+      ok(r.rec, "mémoire des questions servies : bornée à 150");
+      ok(r.vfN >= 6 && r.vfOkAll, `vrai ou faux dans les séries de thème (${r.vfN} sur 6 séries), réponse juste et ordre Vrai / Faux fixe`);
+      ok(r.t1 && r.t0, "vrai ou faux : proposition vraie ou fausse correctement corrigée");
+      ok(r.neg && !r.exVf, "vrai ou faux : jamais sur une question négative ni en brevet blanc");
       await ctx.close(); }
 
     console.log("• Briefing, successives, défis, club (1.9)");

@@ -184,11 +184,33 @@ section("Mises en situation (2.9)");
   });
 }
 
+section("Questions ni devinables ni répétées (2.9.1)");
+{
+  const nrm = s => String(s || "").replace(/<[^>]+>/g, " ").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const STOP = new Set("dans pour avec plus moins elle elles ils sont cette cela quand quel quelle quels quelles comment pourquoi entre leur leurs tout tous toute toutes votre vous nous etre avoir fait faire peut doit mais donc alors ainsi aussi tres bien encore apres avant sous chez sans selon dont plongee plongeur plongeurs".split(" "));
+  const W = s => nrm(s).split(/[^a-z0-9]+/).filter(w => w.length >= 5 && !STOP.has(w));
+  /* Indice « seulement / jamais » : seules les mauvaises réponses sont absolues ou incomplètes. */
+  const ABS = /\b(toujours|jamais|uniquement|seulement|aucun|aucune|systematiquement|obligatoirement|tout de suite)\b/;
+  const absClue = C.questions.filter(q => { const wr = q.c.filter((_, i) => i !== q.a); return !ABS.test(nrm(q.c[q.a])) && wr.length >= 2 && wr.filter(x => ABS.test(nrm(x))).length >= 2; }).map(q => q.id);
+  ok(absClue.length <= 3, `indice « seulement / jamais » dans ${absClue.length} questions : ${absClue.slice(0, 10).join(", ")}`);
+  /* Quasi-doublons dans un même cours (même énoncé et même réponse, mots différents), hors calculs. */
+  const near = [];
+  C.modules.forEach(m => { const qs = m.quiz.filter(q => !/\d/.test(q.q)); for (let i = 0; i < qs.length; i++) for (let j = i + 1; j < qs.length; j++) {
+    const A = new Set(W(qs[i].q + " " + qs[i].c[qs[i].a])), B = new Set(W(qs[j].q + " " + qs[j].c[qs[j].a])), inter = [...A].filter(w => B.has(w)).length, uni = new Set([...A, ...B]).size;
+    if (uni >= 4 && inter / uni >= .6) near.push(qs[i].id + "≈" + qs[j].id); } });
+  ok(near.length === 0, `questions qui se répètent dans un même cours : ${near.join(" ; ")}`);
+  /* Écho : un mot de l'énoncé repris seulement par la bonne réponse (au moins 2 mots). */
+  const echo = C.questions.filter(q => { const sw = new Set(W(q.q).map(w => w.slice(0, 6))), okW = W(q.c[q.a]).map(w => w.slice(0, 6)).filter(w => sw.has(w)), wr = new Set(q.c.filter((_, i) => i !== q.a).flatMap(x => W(x).map(w => w.slice(0, 6)))); return okW.length >= 2 && okW.every(w => !wr.has(w)); }).map(q => q.id);
+  ok(echo.length <= 2, `la bonne réponse reprend les mots de l’énoncé : ${echo.join(", ")}`);
+  /* Chaque cours : assez de questions, au moins une question « pourquoi » ou de situation. */
+  C.modules.forEach(m => ok(m.quiz.some(q => /pourquoi|\b(tu|ton|ta|tes)\b|\d|^(un|une|le|la|si|pendant|face) [^?…]{5,90}[.,] /i.test(q.q)), `${m.id} : aucune question de compréhension ou de situation`));
+}
+
 section("Doublons d’énoncé (2.7.1)");
 {
   /* Même clé que AA.quiz.key : énoncé normalisé, chiffres masqués. Les doublons déjà publiés restent
      (on ne supprime pas de questions) mais ne peuvent plus revenir dans une même série. Tout NOUVEAU doublon bloque. */
-  const KNOWN = 22;
+  const KNOWN = 11; /* 2.9.1 : 11 doublons réécrits */
   const normQ = s => String(s || "").replace(/<[^>]+>/g, " ").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim().replace(/\d+/g, "#");
   const g = {}; C.questions.forEach(q => { const k = normQ(q.q); (g[k] = g[k] || []).push(q.id); });
   const dups = Object.values(g).filter(l => l.length > 1);

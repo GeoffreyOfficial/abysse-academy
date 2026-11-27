@@ -41,7 +41,7 @@
       /* Regroupe par notion, puis tourne entre les notions (la plus exigeante d'abord). */
       const groups = {};
       m.quiz.forEach(q => { let nid = "x"; try { nid = (T && T.notionOf(q)) || "x"; } catch (e) {} (groups[nid] = groups[nid] || []).push(q); });
-      const lists = u.shuffle(Object.values(groups)).map(g => g.map(q => [q, Q.examHard(q) + Math.random() * 1.6]).sort((a, b) => b[1] - a[1]).map(x => x[0]));
+      const lists = u.shuffle(Object.values(groups)).map(g => g.map(q => [q, Q.examHard(q) + Math.random() * 1.6 - (Q.recentPen ? Q.recentPen(q) * 2.5 : 0)]).sort((a, b) => b[1] - a[1]).map(x => x[0]));
       let got = 0;
       for (let r = 0; got < quota[m.id] && r < 20; r++) lists.forEach(l => { if (got < quota[m.id] && l[r]) { pick.push(l[r]); got++; } });
     });

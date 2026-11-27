@@ -44,7 +44,7 @@
   const qsOf = mods => mods.flatMap(m => m.quiz.filter(q => q.lvl !== 2 && q.c && q.c.length > 1));
   const pickQs = (pool, n) => {
     const s = S(), gapN = new Set(T.gaps().map(g => g.id));
-    const pr = q => (gapN.has(T.notionOf(q)) ? 0 : s.errors[q.id] ? 1 : s.seen[q.id] === undefined ? 2 : 3) + Math.random() * 1.5;
+    const pr = q => (gapN.has(T.notionOf(q)) ? 0 : s.errors[q.id] ? 1 : s.seen[q.id] === undefined ? 2 : 3) + Math.random() * 1.5 + (AA.quiz.recentPen ? AA.quiz.recentPen(q) * 3 : 0);
     const sorted = pool.slice().sort((a, b) => pr(a) - pr(b)); const out = [];
     /* 2.7.1 : sans remise (avant, un petit thème faisait revenir les mêmes questions). */
     const seen = new Set();
@@ -58,7 +58,8 @@
   const later = (fn, ms) => { const id = setTimeout(fn, reduced() ? Math.min(ms, 200) : ms); if (B) B.timers.push(id); return id; };
   GM.begin = def => {
     const mods = def.kind === "mini" ? [C.byId[def.mid]] : C.inWorld(def.wid).filter(m => T.isRead(m.id));
-    let pool = qsOf(mods); if (!pool.length) return T.needAny(def.wid);
+    /* 2.9.1 : le gardien d’un thème puise aussi dans les questions d’approfondissement (moins de répétitions). */
+    let pool = def.kind === "mini" ? mods.flatMap(m => m.quiz.filter(q => q.c && q.c.length > 1)) : qsOf(mods); if (!pool.length) return T.needAny(def.wid);
     /* Gardien d'un petit thème : on complète avec les autres thèmes lus du niveau, sans répéter. */
     const need = def.hp + def.lives + 3;
     if (new Set(pool.map(AA.quiz.key)).size < need && def.kind === "mini") { const more = qsOf(C.inWorld(def.wid).filter(m => m.id !== def.mid && T.isRead(m.id))); pool = pool.concat(u.shuffle(more).slice(0, need * 2)); }

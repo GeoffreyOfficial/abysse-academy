@@ -742,3 +742,8 @@ AA.i18n.add("fr", {
   "g29.in.endS.top": "Toutes les bonnes décisions, au bon moment.", "g29.in.endS.mid": "Quelques hésitations : revois les étapes ci-dessous.", "g29.in.endS.low": "Trop d’erreurs : la palanquée s’en sort, mais de peu.", "g29.in.endS.lost": "Le stress a tout emporté. Le directeur de plongée a dû intervenir.",
   "g29.in.replay": "Tes décisions"
 });
+
+/* 2.9.1 : vrai ou faux dans les séries */
+AA.i18n.add("fr", {
+  "vf2.lead": "Vrai ou faux ?", "vf2.true": "Vrai.", "vf2.false": "Faux : la bonne réponse était « {a} »."
+});
