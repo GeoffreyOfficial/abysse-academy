@@ -13,7 +13,7 @@ AA.i18n.add("fr", {
   "tab.home": "Accueil", "tab.map": "Carte", "tab.train": "Entraîner", "tab.lab": "Labo", "tab.profile": "Profil",
   "hud.exam": "Jours avant l’examen", "hud.streak": "Jours d’affilée", "hud.level": "Niveau {l}",
   "common.cancel": "Annuler", "common.next": "Continuer", "common.add": "Ajouter", "common.remove": "Retirer", "common.validate": "À vérifier avec ton moniteur",
-  "theme.abysse": "Abysse", "theme.lagon": "Lagon", "theme.corail": "Corail", "theme.contraste": "Grand large",
+  "theme.abysse": "Abysse", "theme.nacre": "Nacre", "theme.minuit": "Minuit", "theme.auto": "Automatique", "theme.mode.light": "Clair", "theme.mode.dark": "Sombre", "theme.mode.auto": "Selon l’appareil", "theme.lagon": "Lagon", "theme.corail": "Corail", "theme.contraste": "Grand large",
 
   /* Premier lancement */
   "onb.eyebrow": "Bienvenue à bord",
@@ -248,11 +248,12 @@ AA.i18n.add("fr", {
   "boss.won": "Victoire !", "boss.lost": "Bouteille vide", "boss.lostS": "Il lui restait {n} points. Revois tes erreurs et reviens plus fort.",
   "boss.toWorld": "Découvrir le monde {world}", "boss.retry": "Réessayer", "boss.study": "Voir mes erreurs fréquentes", "boss.toReview": "À revoir",
 
-  "story.title": "Aventures", "story.intro": "Des histoires de plongée où chaque choix utilise ce que tu as appris. Un bon choix du premier coup = 1 point.",
+  "story.title": "Aventures", "story.intro": "De vraies histoires de plongée, pour chaque niveau et chaque rôle : encadré, autonome, guide, initiateur, moniteur, secouriste. Chaque choix a des conséquences. Un bon choix du premier coup = 1 point.",
+  "story.len": "{n} décisions", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
   "story.locked": "Termine l’aventure précédente pour l’ouvrir.", "story.lockedT": "Aventure fermée", "story.resume": "Reprendre",
   "story.best": "Meilleur : {n} / {tot}", "story.step": "scène {n}/{tot}", "story.surface": "Surface",
   "story.good": "Bon réflexe", "story.bad": "Pas tout à fait", "story.retry": "Essaie un autre choix.", "story.continue": "Continuer",
-  "story.end": "Fin de l’aventure", "story.score": "{n} bons choix du premier coup sur {tot}.", "story.replay": "Rejouer", "story.others": "Autres aventures",
+  "story.end": "Fin de l’aventure", "story.score": "{n} bons choix du premier coup sur {tot} décisions.", "story.replay": "Rejouer", "story.others": "Autres aventures",
 
   "aqua.title": "Mon aquarium", "aqua.intro": "Chaque progrès fait venir une nouvelle espèce. Touche un poisson pour le découvrir.",
   "aqua.empty": "Ton aquarium attend son premier habitant : termine un thème !", "aqua.collection": "Collection", "aqua.tap": "Touche pour en savoir plus",
@@ -508,6 +509,14 @@ AA.i18n.add("fr", {
   "exp.s1": "La notion", "exp.s2": "Le schéma", "exp.s3": "La méthode", "exp.s3b": "La bonne réponse", "exp.s4": "Le piège", "exp.s5": "À retenir",
   "exp.youPicked": "Tu as choisi", "exp.trapGen": "La bonne réponse était « {a} ». Relis la question en cherchant le mot qui change tout, puis l’explication ci-dessus.",
   "exp.prev": "Étape précédente",
+  "les24.key": "L’essentiel en 30 secondes",
+  "exp3.repT": "Erreurs répétées", "exp3.rep": "Tu as raté {e} des {n} dernières questions sur « {t} ». Ce n’est pas un hasard : on reprend cette notion calmement, puis une petite série ciblée.", "exp3.drill": "Séance ciblée sur cette notion",
+  "dg.title": "Ton diagnostic", "dg.mastery": "Maîtrise : {p} %", "dg.sum": "{s} notions solides sur {n} · {c} à travailler en priorité.", "dg.prio": "Tes trois priorités", "dg.go": "S’entraîner", "dg.train": "Séance ciblée", "dg.read": "Revoir dans le cours",
+  "dg.none": "Rien d’urgent : continue ton parcours et tes révisions du jour.", "dg.how": "Le tuteur regarde tes dernières réponses notion par notion : les erreurs qui se répètent, les calculs, ce que tu n’as pas revu depuis longtemps. Il propose l’action la plus utile pour chaque cas.",
+  "dg.actT": "Voir ton diagnostic", "dg.actS": "Tes points faibles notion par notion, avec la cause probable",
+  "dg.s.confusion": "Erreurs répétées", "dg.s.calc": "Calculs à reprendre", "dg.s.fragile": "Encore fragile", "dg.s.forgot": "En train de s’oublier", "dg.s.stale": "Solide, mais à rafraîchir", "dg.s.untested": "Pas encore testé", "dg.s.unread": "Cours pas encore lu", "dg.s.solid": "Solide",
+  "dg.c.confusion": "confusion probable", "dg.c.calc": "erreurs de calcul", "dg.c.fragile": "réponses irrégulières", "dg.c.forgot": "pas revu depuis {d} jours", "dg.c.stale": "pas revu depuis {d} jours", "dg.c.untested": "aucune question encore", "dg.c.unread": "cours à lire d’abord", "dg.c.solid": "maîtrisé",
+  "dg.why.confusion": "Plusieurs erreurs d’affilée : relis le passage, puis une série ciblée.", "dg.why.calc": "La méthode n’est pas encore sûre : refais des calculs guidés.", "dg.why.fragile": "Tantôt juste, tantôt faux : quelques questions de plus vont fixer la notion.", "dg.why.forgot": "Tu la savais, mais ça fait {d} jours : une révision rapide suffit.", "dg.why.stale": "Solide, mais pas revu depuis {d} jours.", "dg.why.untested": "Tu as lu le cours, teste-toi.",
   "exp2.s1": "Ta réponse", "exp2.s2": "Pourquoi", "exp2.s3": "Le point de cours", "exp2.good": "Bonne réponse :", "exp2.sit": "La situation", "exp2.why": "Ce qui se passe", "exp2.so": "Donc",
   "exp2.cap": "Le raisonnement, appliqué à cette question.", "exp2.prev": "Retour", "exp2.notion": "Notion à revoir :", "exp2.readSec": "Lire ce passage dans le cours", "exp.pause": "Pause", "exp.next": "Suite", "exp.done": "J’ai compris",
   "net.title": "Hors ligne et sauvegarde", "net.onT": "En ligne", "net.offT": "Hors ligne",

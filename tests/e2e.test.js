@@ -328,7 +328,7 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       await p.evaluate(() => { const q = document.querySelector(".bt-qt").textContent, Q = AA.content.questions.find(x => x.q === q); [...document.querySelectorAll(".bt-c")].find(b => +b.dataset.ci !== Q.a).click(); }); await p.waitForTimeout(800);
       ok(await p.evaluate(() => document.querySelectorAll("#btLives span.off").length) === 1 && await p.$(".bt-c.good"), "combat : erreur = une vie perdue et la bonne réponse montrée");
       await p.goto(URL + "#/gardien/pression"); await p.waitForTimeout(250); ok(await p.$("#btGo"), "gardien d’un cours lu prêt au combat");
-      await p.goto(URL + "#/jeux/n2"); await p.waitForTimeout(250); ok((await p.$$(".gm-g")).length === 11 && await p.$(".gm-final"), "jeux : gardiens et boss final du niveau");
+      await p.goto(URL + "#/jeux/n2"); await p.waitForTimeout(250); ok((await p.$$(".gm-g")).length === 12 && await p.$(".gm-final"), "jeux : gardiens et boss final du niveau");
       await p.goto(URL + "#/paires"); await p.waitForTimeout(250); ok((await p.$$(".pg-card")).length === 12, "Paires : 12 cartes");
       await p.goto(URL + "#/vraifaux"); await p.waitForTimeout(250); await p.click("#vfGo"); await p.waitForTimeout(250); ok(await p.$("#vfCard") && await p.$("[data-v='1']"), "Vrai ou faux : partie lancée");
       await p.goto(URL + "#/map/n2"); await p.waitForTimeout(300); await p.goto(URL + "#/lesson/pression"); await p.waitForTimeout(250);
@@ -378,7 +378,7 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(await p.evaluate(() => AA.ctx.mode === "drill" && AA.ctx.items.length >= 4), "lacune : série ciblée sur la notion");
       for (let i = 0; i < 8 && !(await p.$(".result")); i++) { const a = await p.evaluate(() => { const it = AA.ctx.items[AA.ctx.idx]; return it ? it.q.a : 0; }); const c = await p.$(`.choice[data-ci="${a}"]`); if (c) await c.click(); await p.waitForTimeout(60); const n = await p.$("#nextq"); if (n) await n.click(); await p.waitForTimeout(60); }
       ok(await p.evaluate(() => !!(AA.S.gapChk || {})["archimede:poussee"]), "lacune travaillée : vérification programmée");
-      await p.goto(URL + "#/cours/n2"); await p.waitForTimeout(250); ok((await p.$$(".tu-step")).length === 12, "écran Cours : 11 cours dans l’ordre et l’examen blanc");
+      await p.goto(URL + "#/cours/n2"); await p.waitForTimeout(250); ok((await p.$$(".tu-step")).length === 13, "écran Cours : 12 cours dans l’ordre et l’examen blanc");
       await p.goto(URL + "#/progres"); await p.waitForTimeout(250); ok(await p.$(".tu-mod .tu-nrow"), "écran Progrès : maîtrise notion par notion");
       /* Avatar */
       await p.goto(URL + "#/profile"); await p.waitForTimeout(200); await p.click("#avedit"); await p.waitForTimeout(150);

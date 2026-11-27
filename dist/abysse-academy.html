@@ -2168,6 +2168,190 @@ html.reduce-motion .bt-arena *,html.reduce-motion .bt-intro *,html.reduce-motion
 .exp2 .exp-flow li.ok p{font-weight:700}
 .reduce-motion .exp2 .exp-flow li{animation:none}
 
+/* css/app-24.css */
+/* =====================================================================
+   Abysse Academy 2.4 · thèmes premium, cours, diagnostic, finitions
+   ===================================================================== */
+
+/* ---------- Thème Nacre (clair premium : nacre, bleu profond, or) ---------- */
+[data-aa-theme="nacre"]{
+  color-scheme:light;
+  --bg:#F7F3EC; --bg-2:#EFE8DC; --bg-grad:radial-gradient(120% 60% at 50% -10%,#FFFFFF 0%,#F6F0E6 45%,#EFE7DA 85%);
+  --surface:#FFFDF9; --surface-2:#F6F1E8; --surface-3:#ECE4D6; --line:#E2D7C4; --line-soft:rgba(40,30,10,.08);
+  --ink:#14212B; --ink-2:#34434F; --muted:#6E7580;
+  --primary:#0F5C78; --primary-ink:#FFFFFF; --primary-soft:rgba(15,92,120,.1);
+  --accent:#B4532A; --accent-ink:#FFFFFF; --accent-soft:rgba(180,83,42,.1);
+  --gold:#A87A22; --gold-ink:#FFFFFF; --gold-soft:rgba(200,150,62,.16);
+  --ok:#2F7D4F; --ok-soft:rgba(47,125,79,.11); --bad:#B23A48; --bad-soft:rgba(178,58,72,.1);
+  --world-n2:#0F5C78; --world-rifap:#B4532A; --world-e1:#A87A22; --world-e2:#6A4FB3; --world-dec:#2B7BA8; --world-n1:#2F7D4F; --world-nx:#A8436E; --world-n3:#2F55A4; --world-n4:#8C3B8F;
+  --shadow:0 1px 2px rgba(60,40,10,.05),0 12px 32px rgba(60,40,10,.09); --glow:0 0 0 1px rgba(168,122,34,.18),0 8px 24px rgba(168,122,34,.12);
+  --bubble:rgba(15,92,120,.18);
+}
+[data-aa-theme="nacre"] #scene .tint{background:radial-gradient(130% 80% at 50% 0%,rgba(255,255,255,.2),rgba(230,220,200,.5))}
+[data-aa-theme="nacre"] #scene .rays{opacity:.35}
+[data-aa-theme="nacre"] .tank{background:linear-gradient(180deg,#7CC7D6 0%,#2C8BA6 55%,#16627E 100%)}
+[data-aa-theme="nacre"] .btn:not(.ghost):not(.gold){box-shadow:0 1px 0 rgba(255,255,255,.4) inset,0 6px 16px rgba(15,92,120,.22)}
+
+/* ---------- Thème Minuit (sombre premium : bleu nuit, glacier, or) ---------- */
+[data-aa-theme="minuit"]{
+  color-scheme:dark;
+  --bg:#070B16; --bg-2:#0B1222; --bg-grad:radial-gradient(120% 60% at 50% -10%,#18223D 0%,#0C1426 40%,#070B16 80%);
+  --surface:#0E1628; --surface-2:#131D33; --surface-3:#1A2641; --line:#25324F; --line-soft:rgba(226,184,103,.1);
+  --ink:#F3F1EA; --ink-2:#CFD3DC; --muted:#8E97AA;
+  --primary:#7FD1E8; --primary-ink:#06121A; --primary-soft:rgba(127,209,232,.12);
+  --accent:#E2B867; --accent-ink:#1E1404; --accent-soft:rgba(226,184,103,.13);
+  --gold:#E2B867; --gold-ink:#1E1404; --gold-soft:rgba(226,184,103,.14);
+  --ok:#6FD3A3; --ok-soft:rgba(111,211,163,.13); --bad:#F07A8B; --bad-soft:rgba(240,122,139,.13);
+  --world-n2:#7FD1E8; --world-rifap:#F0A07A; --world-e1:#E2B867; --world-e2:#B9A4F5; --world-dec:#8EC9F2; --world-n1:#93DDB0; --world-nx:#F2A8CB; --world-n3:#8FB3F5; --world-n4:#E6A6EE;
+  --shadow:0 1px 0 rgba(255,255,255,.03) inset,0 14px 36px rgba(0,0,0,.45); --glow:0 0 0 1px rgba(226,184,103,.22),0 0 28px rgba(127,209,232,.14);
+  --bubble:rgba(200,225,240,.35);
+}
+[data-aa-theme="minuit"] #scene .tint{background:radial-gradient(130% 80% at 50% 0%,rgba(8,12,26,.4),rgba(3,5,12,.94))}
+[data-aa-theme="minuit"] .tank{background:linear-gradient(180deg,#1D4F6E 0%,#123650 55%,#0A2236 100%)}
+[data-aa-theme="minuit"] h1,[data-aa-theme="minuit"] .pagetitle{letter-spacing:-.01em}
+
+/* ---------- Choix du thème ---------- */
+.sw-groups{display:grid;gap:var(--sp-3)}
+.sw-group .eyebrow{margin:0 0 6px}
+.sw-group .swatch span{display:block}
+
+/* ---------- Finitions premium, toute l'appli ---------- */
+.card{transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s}
+@media (hover:hover){.card.tile:hover,.tile:hover,.ml-row:hover{transform:translateY(-2px)}}
+.btn{transition:transform .15s var(--ease),filter .2s,box-shadow .2s}
+.btn:active{transform:scale(.97)}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.eyebrow{letter-spacing:.12em}
+h1,h2,.pagetitle{text-wrap:balance}
+.prose p,.prose li{text-wrap:pretty}
+
+/* ---------- Cours : en-tête ---------- */
+.hero24{position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.hero24::after{content:"";position:absolute;inset:-40% -20% auto auto;width:60%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--wc) 30%,transparent),transparent 65%);pointer-events:none;animation:hero24 9s ease-in-out infinite alternate}
+@keyframes hero24{from{transform:translate(0,0)}to{transform:translate(-12%,10%)}}
+.hero24 .ic{box-shadow:0 8px 22px color-mix(in srgb,var(--wc) 35%,transparent)}
+
+/* ---------- Cours : l'essentiel en 30 s ---------- */
+.keypts{border-radius:var(--r-lg);padding:14px;margin:0 0 var(--sp-4);background:linear-gradient(150deg,var(--gold-soft),var(--primary-soft));border:1px solid var(--line-soft)}
+.keypts .eyebrow{display:flex;gap:6px;align-items:center;color:var(--gold);margin:0 0 10px}
+.keypts .eyebrow svg{width:15px;height:15px}
+.keypts-g{display:grid;gap:8px}
+@media (min-width:640px){.keypts-g{grid-template-columns:repeat(auto-fit,minmax(11rem,1fr))}}
+.kp{background:var(--surface);border-radius:var(--r-md);padding:10px 12px;display:grid;gap:3px;border:1px solid var(--line-soft)}
+.kp b{font-size:var(--fs-sm);color:var(--ink)} .kp span{font-size:var(--fs-sm);color:var(--ink-2);line-height:1.4}
+.keypts.reveal.in .kp{animation:anStep .5s var(--ease) both;animation-delay:calc(var(--i,0) * .12s)}
+
+/* ---------- Cours : chapitres numérotés ---------- */
+.prose h3.sec-h::before{display:none}
+.prose h3.sec-h{gap:12px;align-items:center;padding-top:.6em;border-top:1px solid var(--line-soft);margin-top:1.6em}
+.prose > h3.sec-h:first-child{border-top:0;margin-top:.4em}
+.sec-n{flex:0 0 auto;display:inline-grid;place-items:center;min-width:2.1rem;height:2.1rem;border-radius:10px;font:800 .8rem var(--font-mono);color:var(--primary-ink);background:linear-gradient(135deg,var(--primary),color-mix(in srgb,var(--primary) 55%,var(--accent)));box-shadow:0 4px 12px color-mix(in srgb,var(--primary) 30%,transparent)}
+
+/* ---------- Cours : mots clés surlignés à l'apparition ---------- */
+.prose b.kw,.prose strong.kw{background:linear-gradient(transparent 60%,color-mix(in srgb,var(--primary) 26%,transparent) 60%) no-repeat 0 0/0% 100%;padding:0 2px;border-radius:2px;transition:background-size .8s var(--ease) .15s;color:var(--ink)}
+.prose .in b.kw,.prose .in strong.kw,.prose b.kw.in,.reduce-motion .prose b.kw,.prose:not(:has(.reveal)) b.kw{background-size:100% 100%}
+.prose li.in b.kw,.prose ul.in b.kw,.prose ol.in b.kw,.prose p.in b.kw{background-size:100% 100%}
+
+/* ---------- Cours : encadrés ---------- */
+.lesson-body .callout{position:relative;box-shadow:0 1px 0 var(--line-soft)}
+.lesson-body .callout .ce-eb{display:flex;align-items:center;gap:6px}
+.lesson-body .callout .ce-eb svg{width:15px;height:15px;flex:none}
+.lesson-body .callout.ex{border-style:solid;border-color:color-mix(in srgb,var(--primary) 35%,transparent);background:linear-gradient(160deg,var(--primary-soft),transparent 120%);border-left:4px solid var(--primary)}
+.lesson-body .callout.trap{border-left:4px solid var(--accent)}
+.lesson-body .callout.check{border-left:4px solid var(--gold)}
+.lesson-body .callout.reveal{transform:translateY(14px) scale(.985)}
+.lesson-body .callout.reveal.in{transform:none}
+
+/* ---------- Cours : tableaux lisibles partout ---------- */
+.tbl.tbl-pro{border-radius:var(--r-md);border:1px solid var(--line-soft);overflow:hidden}
+.tbl-pro td:first-child{font-weight:700;color:var(--ink)}
+@media (max-width:620px){
+  .tbl-pro{border:0 !important;overflow:visible !important}
+  .tbl-pro table.tbl-stack,.tbl-pro .tbl-stack tbody,.tbl-pro .tbl-stack tr,.tbl-pro .tbl-stack td{display:block;width:100%}
+  .tbl-pro .tbl-stack thead{display:none}
+  .tbl-pro .tbl-stack tr:has(th){display:none}
+  .tbl-pro .tbl-stack tr{border:1px solid var(--line-soft);border-radius:var(--r-md);margin:0 0 10px;padding:6px 4px;background:var(--surface-2)}
+  .tbl-pro .tbl-stack td{border:0 !important;padding:5px 10px !important;background:none !important;overflow-wrap:break-word;word-break:normal;hyphens:auto}
+  .tbl-pro .tbl-stack td[data-label]::before{content:attr(data-label);display:block;font:700 .68rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  .tbl-pro .tbl-stack td:first-child{font-size:var(--fs-md);color:var(--primary)}
+  .tbl-pro .tbl-stack td:first-child::before{display:none}
+}
+
+/* ---------- Cours : schémas ---------- */
+.lesson-body .diagram{border-radius:var(--r-lg);box-shadow:0 1px 0 var(--line-soft)}
+.lesson-body .diagram.reveal{transform:translateY(18px) scale(.97)}
+.lesson-body .diagram.reveal.in{transform:none}
+.lesson-body .diagram:not(.in) [class*="an-"]{animation-play-state:paused}
+
+/* ---------- Diagnostic du tuteur ---------- */
+.dg-worlds{flex-wrap:wrap;margin:var(--sp-3) 0}
+.dg-hero{display:flex;gap:var(--sp-4);align-items:center;margin-bottom:var(--sp-3)}
+.dg-hero h2{margin:2px 0 4px}
+.dg-ring{width:86px;height:86px;flex:none;transform:rotate(-90deg)}
+.dg-ring circle{fill:none;stroke-width:9}
+.dg-ring .tr{stroke:var(--surface-3)} .dg-ring .fg{stroke:var(--primary);stroke-linecap:round;transition:stroke-dasharray 1s var(--ease);animation:dgRing 1.2s var(--ease) both}
+@keyframes dgRing{from{stroke-dasharray:0 283}}
+.dg-prio{display:grid;gap:10px;margin-bottom:var(--sp-3)}
+.dg-prio .eyebrow{display:flex;gap:6px;align-items:center;margin:0}
+.dg-p{display:flex;gap:12px;align-items:center;animation:anStep .45s var(--ease) both;animation-delay:calc(var(--i,0) * .12s)}
+.dg-p .grow{display:grid;gap:2px}
+.dg-num{width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;flex:none;font:800 .9rem var(--font-mono);background:var(--accent-soft);color:var(--accent)}
+.dg-sec{margin-bottom:var(--sp-3);padding:0}
+.dg-sec summary{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 16px;cursor:pointer;list-style:none}
+.dg-sec summary::-webkit-details-marker{display:none}
+.dg-row{display:flex;gap:10px;align-items:center;padding:10px 16px;border-top:1px solid var(--line-soft)}
+.dg-row .grow{display:grid;gap:3px;min-width:0}
+.dg-ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;flex:none;background:var(--surface-2)}
+.dg-ic svg{width:16px;height:16px}
+.dg-confusion .dg-ic,.dg-calc .dg-ic{background:var(--accent-soft);color:var(--accent)}
+.dg-fragile .dg-ic,.dg-forgot .dg-ic{background:var(--primary-soft);color:var(--primary)}
+.dg-solid .dg-ic{background:var(--ok-soft);color:var(--ok)}
+.dg-bar{display:block;height:4px;border-radius:2px;background:var(--surface-3);overflow:hidden;max-width:14rem}
+.dg-bar b{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--primary));border-radius:2px}
+.exp-rep .btn{margin-top:8px}
+
+.reduce-motion .hero24::after,.reduce-motion .keypts .kp,.reduce-motion .dg-p,.reduce-motion .dg-ring .fg{animation:none}
+
+/* ===== 2.4 · Aventures ===== */
+.st-sum{margin:var(--sp-3) 0 0}
+.st-group{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-3);margin:var(--sp-6) 0 var(--sp-3);padding-left:12px;border-left:4px solid var(--wc);font:700 var(--fs-lg) var(--font-display)}
+.story-card.done .medal{box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 55%,transparent)}
+.st-len{display:block;margin-top:6px}
+.st-prog{height:4px;border-radius:4px;background:var(--surface-3);overflow:hidden;margin:0 0 var(--sp-3)}
+.st-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--wc,var(--primary)),var(--primary));transition:width .5s var(--ease)}
+.story-scene{animation:stIn .45s var(--ease) both}
+.story-scene.alt{border-color:color-mix(in srgb,var(--bad) 45%,var(--line));background:linear-gradient(170deg,color-mix(in srgb,var(--bad) 12%,var(--surface)),var(--surface) 75%)}
+.story-choices .st-choice{animation:stIn .4s var(--ease) both}
+.story-choices .st-choice:nth-child(2){animation-delay:.06s}.story-choices .st-choice:nth-child(3){animation-delay:.12s}.story-choices .st-choice:nth-child(4){animation-delay:.18s}
+@keyframes stIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.btn.warn{--b:var(--warn,#E8A33D);background:var(--warn,#E8A33D);color:#1a1206;border-color:transparent}
+.story-end.bad{border-color:var(--bad)}
+.st-learn{text-align:left;padding:var(--sp-4);border-radius:var(--r-lg);background:var(--surface-2);border:1px solid var(--line-soft)}
+.st-learn ul{margin:var(--sp-2) 0 0;padding-left:1.2em;display:grid;gap:6px}
+.story-end .callout{text-align:left}
+@media (prefers-reduced-motion:reduce){.story-scene,.story-choices .st-choice{animation:none}}
+[data-aa-theme="nacre"][data-aa-cvd]{--ok:#0B6FD6;--ok-soft:rgba(11,111,214,.12);--bad:#C46A00;--bad-soft:rgba(196,106,0,.14)}
+
+/* ===== 2.4 · Schémas en étapes (HTML) ===== */
+.hflow{list-style:none;margin:0;padding:var(--sp-2) 0 0;display:grid;gap:0;text-align:left}
+.hflow li{display:grid;grid-template-columns:2.1rem minmax(0,1fr);gap:12px;position:relative;padding-bottom:16px}
+.hflow li:not(:last-child)::before{content:"";position:absolute;left:calc(1.05rem - 1px);top:2.2rem;bottom:2px;width:2px;background:repeating-linear-gradient(var(--primary) 0 6px,transparent 6px 12px);opacity:.6}
+.hf-n{width:2.1rem;height:2.1rem;border-radius:50%;display:grid;place-items:center;font:700 .95rem var(--font-display);background:var(--primary);color:var(--primary-ink);box-shadow:0 0 0 4px color-mix(in srgb,var(--primary) 18%,transparent)}
+.hf-b{display:grid;gap:2px;padding-top:4px}
+.hf-b b{font:700 1rem/1.3 var(--font-display);color:var(--ink)}
+.hf-b span{font-size:.95rem;line-height:1.5;color:var(--ink-2)}
+.diagram.anim.in .hflow li{animation:hfIn .5s var(--ease) both;animation-delay:calc(var(--i,0) * .28s)}
+.diagram.anim.in .hflow li:not(:last-child)::before{animation:hfLine .5s var(--ease) both;animation-delay:calc(var(--i,0) * .28s + .25s);transform-origin:top}
+@keyframes hfIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:none}}
+@keyframes hfLine{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@media (prefers-reduced-motion:reduce){.diagram.anim.in .hflow li,.diagram.anim.in .hflow li::before{animation:none}}
+.prose .hflow b.kw,.prose .hflow b{background:none!important;padding:0}
+.dg-prio .eyebrow svg{width:1rem;height:1rem;flex:none}
+.dg-hero h2{font-size:clamp(1.3rem,5.5vw,1.8rem);white-space:nowrap}
+.dg-p .btn{flex:none}
+@media (max-width:420px){.dg-p{flex-wrap:wrap}.dg-p .btn{margin-left:44px}}
+@media (max-width:420px){.dg-p .grow{flex:1 1 calc(100% - 3rem)}.dg-p{row-gap:8px}}
+
 </style>
 </head>
 <body>
@@ -2190,7 +2374,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.3.0";
+  AA.VERSION = "2.4.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -5789,16 +5973,29 @@ window.AA={BUNDLED:true};
 
 /* js/views/story.js */
 /* =====================================================================
-   Abysse Academy · mode histoire
-   Liste des aventures (#/story) et lecture d'une aventure (#/story/<id>).
-   Chaque bon choix du premier coup = 1 point ; le fond marin suit la
-   profondeur de la scène ; les mauvais choix expliquent puis on réessaie.
+   Abysse Academy · mode histoire (moteur 2.4)
+   Liste des aventures (#/story), groupées par niveau, et lecture d'une
+   aventure (#/story/<id>).
+   - Bon choix du premier coup = 1 point ; étoiles = points / décisions prises.
+   - Mauvais choix sans « go » : explication puis on réessaie.
+   - Mauvais choix avec « go » : on voit la conséquence (scène suivante),
+     qui peut se rattraper… ou finir mal (end:true, bad:true, why, retry).
+   - Chaque première décision nourrit le tuteur (maîtrise par notion).
+   Champs d'une aventure : id, world, role, icon, title, sub, unlock, start,
+   cast, nodes. Une fin : end, title, text, learn (liste), bad, why, retry.
    ===================================================================== */
 (function () {
   "use strict";
   const AA = window.AA, u = AA.u, t = AA.t, G = AA.game, C = AA.content, fx = AA.fx, ui = AA.ui;
   const open = s => !s.unlock || AA.S.unlockAll || G.met(s.unlock);
-  const decisions = s => Object.values(s.nodes).filter(n => !n.end).length;
+  /* Longueur du chemin principal (on suit les bons choix jusqu'à une fin). */
+  const mainLen = s => {
+    if (s._len) return s._len;
+    let id = s.start, n = 0; const seen = new Set();
+    while (s.nodes[id] && !s.nodes[id].end && !seen.has(id)) { seen.add(id); n++; const ok = (s.nodes[id].choices || []).find(c => c.ok); id = ok && ok.go; }
+    return (s._len = n || 1);
+  };
+  const starsOf = (score, made) => { const r = made ? score / made : 0; return r >= 1 ? 3 : r >= .7 ? 2 : 1; };
 
   AA.view("story", {
     tab: "train",
@@ -5806,68 +6003,100 @@ window.AA={BUNDLED:true};
     immersive: false,
     render(el, [id]) {
       if (id && C.storyById[id] && open(C.storyById[id])) return play(el, C.storyById[id]);
-      const S = AA.S;
-      el.innerHTML = `${ui.head(t("story.title"), "train")}<p class="muted">${t("story.intro")}</p>
-        <div class="stack" style="margin-top:var(--sp-4)">${C.stories.map(s => {
-          const ok = open(s), r = S.story[s.id] || {}, w = C.worldById[s.world] || {}, n = decisions(s);
-          return `<button class="card story-card ${ok ? "" : "off"}" data-s="${s.id}" style="--wc:var(${w.color || "--primary"})" ${ok ? "" : "aria-disabled=\"true\""}>
+      const S = AA.S, done = C.stories.filter(s => (S.story[s.id] || {}).done).length;
+      const card = s => {
+        const ok = open(s), r = S.story[s.id] || {}, w = C.worldById[s.world] || {}, n = mainLen(s);
+        return `<button class="card story-card ${ok ? "" : "off"} ${r.done ? "done" : ""}" data-s="${s.id}" style="--wc:var(${w.color || "--primary"})" ${ok ? "" : "aria-disabled=\"true\""}>
             <span class="medal">${AA.icon(ok ? s.icon : "lock")}</span>
-            <span class="grow"><span class="eyebrow">${u.esc(w.short || "")}</span><b>${u.esc(s.title)}</b><span class="small muted">${ok ? u.esc(s.sub) : t("story.locked")}</span>
-            ${r.done ? `<span class="row" style="margin-top:6px">${AA.stars(r.stars || 0)}<span class="xs muted">${t("story.best", { n: r.best || 0, tot: n })}</span></span>` : r.node && r.node !== s.start ? `<span class="chip pri" style="margin-top:6px">${t("story.resume")}</span>` : ""}</span>
+            <span class="grow"><span class="eyebrow">${u.esc(s.role || w.short || "")}</span><b>${u.esc(s.title)}</b><span class="small muted">${ok ? u.esc(s.sub) : t("story.locked")}</span>
+            ${r.done ? `<span class="row" style="margin-top:6px">${AA.stars(r.stars || 0)}<span class="xs muted">${t("story.best", { n: Math.min(r.best || 0, n), tot: n })}</span></span>` : r.node && r.node !== s.start ? `<span class="chip pri" style="margin-top:6px">${t("story.resume")}</span>` : `<span class="xs muted st-len">${t("story.len", { n })}</span>`}</span>
             ${AA.icon("next")}</button>`;
-        }).join("")}</div>`;
+      };
+      const groups = C.worlds.map(w => ({ w, list: C.stories.filter(s => s.world === w.id) })).filter(g => g.list.length);
+      el.innerHTML = `${ui.head(t("story.title"), "train")}<p class="muted">${t("story.intro")}</p>
+        <div class="row st-sum"><span class="chip">${AA.icon("scroll")} ${t("story.count", { n: done, tot: C.stories.length })}</span></div>
+        ${groups.map(g => `<h3 class="st-group" style="--wc:var(${g.w.color || "--primary"})"><span>${u.esc(g.w.title || g.w.short || g.w.id)}</span><span class="xs muted">${g.list.filter(s => (S.story[s.id] || {}).done).length}/${g.list.length}</span></h3>
+          <div class="stack">${g.list.map(card).join("")}</div>`).join("")}`;
       u.on(el, "click", "[data-s]", (e, b) => { const s = C.storyById[b.dataset.s]; if (!open(s)) { fx.sfx.bad(); fx.toast(t("story.lockedT"), t("story.locked"), "lock"); return; } fx.sfx.tap(); AA.router.go("story/" + s.id); });
     }
   });
 
+  /* Le tuteur apprend aussi des aventures : on lui passe la scène comme une question. */
+  function feedTutor(s, id, n, ok) {
+    try {
+      const good = n.choices.find(c => c.ok) || {}, m = good.m || (n.choices.find(c => c.m) || {}).m;
+      if (!m || !AA.tutor || !AA.tutor.note) return;
+      AA.tutor.note({ id: "story:" + s.id + ":" + id, m, q: (n.text || "") + " " + n.q, c: [good.t], a: 0, e: good.e }, ok);
+    } catch (e) { /* le tuteur est facultatif */ }
+  }
+
   function play(el, s) {
     const S = AA.S, rec = S.story[s.id] || (S.story[s.id] = { node: s.start, tries: 0 });
     let c = AA.ctx.story;
-    if (!c || c.id !== s.id) c = AA.ctx.story = { id: s.id, node: rec.done || !s.nodes[rec.node] ? s.start : rec.node, score: rec.done ? 0 : rec.score || 0, missed: {}, fb: null };
-    const n = s.nodes[c.node], w = C.worldById[s.world] || {}, total = decisions(s);
+    if (!c || c.id !== s.id) c = AA.ctx.story = { id: s.id, node: rec.done || !s.nodes[rec.node] ? s.start : rec.node, score: rec.done ? 0 : rec.score || 0, made: rec.done ? 0 : rec.made || 0, missed: {}, decided: {}, fb: null, steps: rec.done ? 0 : rec.steps || 0 };
+    const n = s.nodes[c.node], w = C.worldById[s.world] || {}, total = mainLen(s);
     AA.scene.set(n.depth || 0);
     const who = n.who && s.cast ? s.cast[n.who] : "";
-    const step = Object.keys(s.nodes).indexOf(c.node) + 1;
+    const learn = n.learn && n.learn.length ? `<div class="st-learn"><p class="eyebrow">${t("story.learn")}</p><ul>${n.learn.map(x => `<li>${u.esc(x)}</li>`).join("")}</ul></div>` : "";
+
+    if (n.end && n.bad) {
+      if (!c.savedBad) { c.savedBad = true; rec.node = n.retry && s.nodes[n.retry] ? n.retry : s.start; rec.score = c.score; rec.made = c.made; rec.steps = c.steps; rec.bad = (rec.bad || 0) + 1; AA.store.save(); fx.sfx.bad(); fx.buzz([60, 40, 60]); }
+      el.innerHTML = `${ui.head(u.esc(s.title), "story")}<section class="card result stack-lg story-end bad" style="--wc:var(${w.color || "--primary"})">
+        <p class="eyebrow">${t("story.badEnd")}</p><h2>${u.esc(n.title)}</h2><div class="rstars">${[1, 2, 3].map(() => AA.star(false)).join("")}</div>
+        <p>${u.esc(n.text)}</p>
+        ${n.why ? `<div class="callout trap"><span class="eyebrow">${t("story.why")}</span><p>${u.esc(n.why)}</p></div>` : ""}${learn}
+        <div class="stack">${n.retry && s.nodes[n.retry] ? `<button class="btn block" id="stretry">${AA.icon("back")} ${t("story.retryFrom")}</button>` : ""}
+        <button class="btn ${n.retry ? "ghost" : ""} block" id="replay">${AA.icon("refresh")} ${t("story.replay")}</button><a class="btn ghost block" href="#/story">${t("story.others")}</a></div></section>`;
+      const rb = u.$("#stretry");
+      if (rb) rb.onclick = () => { c.node = n.retry; c.fb = null; c.savedBad = false; rec.node = c.node; AA.store.save(); AA.router.go("story/" + s.id, undefined, true); window.scrollTo(0, 0); };
+      u.$("#replay").onclick = () => { AA.ctx.story = null; Object.assign(rec, { node: s.start, score: 0, made: 0, steps: 0 }); AA.store.save(); AA.router.refresh(); };
+      return;
+    }
     if (n.end) {
-      const stars = c.score >= total ? 3 : c.score >= total - 2 ? 2 : 1;
+      const stars = starsOf(c.score, c.made);
       if (!c.saved) {
         c.saved = true; const first = !rec.done;
-        Object.assign(rec, { done: u.today(), node: s.start, best: Math.max(rec.best || 0, c.score), stars: Math.max(rec.stars || 0, stars), tries: (rec.tries || 0) + 1, score: 0 });
-        AA.store.save(); if (first) G.addXp(60); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight * .4, 50, "rgba(255,200,87,.9)"); G.checkBadges();
+        Object.assign(rec, { done: u.today(), node: s.start, best: Math.max(rec.best || 0, c.score), stars: Math.max(rec.stars || 0, stars), tries: (rec.tries || 0) + 1, score: 0, made: 0, steps: 0 });
+        AA.store.save(); if (first) G.addXp(s.xp || 60); fx.sfx.up(); fx.burst(innerWidth / 2, innerHeight * .4, 50, "rgba(255,200,87,.9)"); G.checkBadges();
       }
       el.innerHTML = `${ui.head(u.esc(s.title), "story")}<section class="card result stack-lg story-end" style="--wc:var(${w.color || "--primary"})">
         <p class="eyebrow">${t("story.end")}</p><h2>${u.esc(n.title)}</h2><div class="rstars">${[1, 2, 3].map(k => AA.star(k <= stars)).join("")}</div>
-        <p>${u.esc(n.text)}</p><p class="small muted">${t("story.score", { n: c.score, tot: total })}</p>
+        <p>${u.esc(n.text)}</p>${learn}<p class="small muted">${t("story.score", { n: c.score, tot: c.made })}</p>
         <div class="stack"><button class="btn block" id="replay">${AA.icon("refresh")} ${t("story.replay")}</button><a class="btn ghost block" href="#/story">${t("story.others")}</a></div></section>`;
       u.$("#replay").onclick = () => { AA.ctx.story = null; rec.node = s.start; AA.router.refresh(); };
       return;
     }
-    const fb = c.fb;
-    el.innerHTML = `<div class="pagehead"><a class="closebtn" href="#/story" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(s.title)} · ${t("story.step", { n: step, tot: Object.keys(s.nodes).length - 1 })}</span>
+    const fb = c.fb, step = c.steps + 1;
+    const fch = fb ? n.choices[fb.i] : null, conseq = fb && !fb.ok && fch.go;
+    el.innerHTML = `<div class="pagehead"><a class="closebtn" href="#/story" aria-label="${t("nav.back")}">${AA.icon("back")}</a><span class="eyebrow grow">${u.esc(s.title)} · ${n.alt ? t("story.alt") : t("story.step", { n: Math.min(step, total), tot: total })}</span>
         <span class="chip">${AA.icon("gauge")} ${n.depth ? "−" + n.depth + " m" : t("story.surface")}</span>${AA.a11y.button("#stx", t("a11y.listen"))}</div>
-      <section class="story-scene" style="--wc:var(${w.color || "--primary"})" id="stx">
+      <div class="st-prog" aria-hidden="true"><i style="width:${Math.round(Math.min(1, c.steps / total) * 100)}%"></i></div>
+      <section class="story-scene ${n.alt ? "alt" : ""}" style="--wc:var(${w.color || "--primary"})" id="stx">
         <p class="story-set">${u.esc(n.scene || "")}</p>
         ${n.text ? `<div class="story-say ${who ? "" : "narr"}">${who ? `<span class="eyebrow">${u.esc(who)}</span>` : ""}<p>${u.esc(n.text)}</p></div>` : ""}
         <h2 class="story-q">${u.esc(n.q)}</h2>
       </section>
       <div class="stack story-choices">${n.choices.map((ch, i) => {
         const st = fb && fb.i === i ? (ch.ok ? "good" : "wrong") : fb && fb.ok && ch.ok ? "good" : "";
-        return `<button class="choice st-choice ${st}" data-i="${i}" ${fb && fb.ok ? "disabled" : ""}><span class="k">${"ABCD"[i]}</span><span>${u.esc(ch.t)}</span><span class="mk">${st ? AA.icon(st === "good" ? "check" : "x") : ""}</span></button>`;
+        const lock = fb && (fb.ok || conseq);
+        return `<button class="choice st-choice ${st}" data-i="${i}" ${lock ? "disabled" : ""}><span class="k">${"ABCD"[i]}</span><span>${u.esc(ch.t)}</span><span class="mk">${st ? AA.icon(st === "good" ? "check" : "x") : ""}</span></button>`;
       }).join("")}</div>
-      ${fb ? `<div class="feedback ${fb.ok ? "ok" : "bad"}" role="status"><h4>${fb.ok ? t("story.good") : t("story.bad")}</h4><p>${u.esc(n.choices[fb.i].e)}</p>
-        ${n.choices[fb.i].m && C.byId[n.choices[fb.i].m] ? `<a class="small" href="#/lesson/${n.choices[fb.i].m}">${t("result.toLesson", { title: u.esc(C.moduleTitle(n.choices[fb.i].m)) })}</a>` : ""}</div>
-        ${fb.ok ? `<button class="btn block" id="stnext" style="margin-top:var(--sp-3)">${t("story.continue")} ${AA.icon("next")}</button>` : `<p class="small muted center">${t("story.retry")}</p>`}` : ""}`;
+      ${fb ? `<div class="feedback ${fb.ok ? "ok" : "bad"}" role="status"><h4>${fb.ok ? t("story.good") : t("story.bad")}</h4><p>${u.esc(fch.e)}</p>
+        ${fch.m && C.byId[fch.m] ? `<a class="small" href="#/lesson/${fch.m}">${t("result.toLesson", { title: u.esc(C.moduleTitle(fch.m)) })}</a>` : ""}</div>
+        ${fb.ok ? `<button class="btn block" id="stnext" style="margin-top:var(--sp-3)">${t("story.continue")} ${AA.icon("next")}</button>`
+          : conseq ? `<button class="btn warn block" id="stnext" style="margin-top:var(--sp-3)">${t("story.conseq")} ${AA.icon("next")}</button>` : `<p class="small muted center">${t("story.retry")}</p>`}` : ""}`;
     u.$$(".st-choice", el).forEach(b => b.onclick = () => {
       const i = +b.dataset.i, ch = n.choices[i];
-      if (c.fb && c.fb.ok) return;
+      if (c.fb && (c.fb.ok || n.choices[c.fb.i].go)) return;
       c.fb = { i, ok: !!ch.ok };
+      if (!c.decided[c.node]) { c.decided[c.node] = true; c.made++; feedTutor(s, c.node, n, !!ch.ok); }
       if (ch.ok) { if (!c.missed[c.node]) { c.score++; G.addXp(10, b); } fx.sfx.ok(); fx.burstAt(b, 16, "rgba(61,220,151,.85)"); }
       else { c.missed[c.node] = true; fx.sfx.bad(); fx.buzz([40, 40, 40]); }
       G.markDay(); AA.store.save(); AA.router.refresh();
       const f = u.$(".feedback"); if (f) f.scrollIntoView({ behavior: AA.a11y.reduced() ? "auto" : "smooth", block: "nearest" });
     });
     const nx = u.$("#stnext");
-    if (nx) { nx.focus({ preventScroll: true }); nx.onclick = () => { const ch = n.choices[c.fb.i]; c.node = ch.go || c.node; c.fb = null; rec.node = c.node; rec.score = c.score; AA.store.save(); AA.router.go("story/" + s.id, undefined, true); window.scrollTo(0, 0); }; }
+    if (nx) { nx.focus({ preventScroll: true }); nx.onclick = () => { const ch = n.choices[c.fb.i]; c.node = ch.go || c.node; c.fb = null; c.steps++; Object.assign(rec, { node: c.node, score: c.score, made: c.made, steps: c.steps }); AA.store.save(); AA.router.go("story/" + s.id, undefined, true); window.scrollTo(0, 0); }; }
   }
 })();
 
@@ -9621,6 +9850,166 @@ window.AA={BUNDLED:true};
   AA.explainMe._parts = { sections, bestSection, words };
 })();
 
+/* js/views/v24.js */
+/* =====================================================================
+   Abysse Academy 2.4
+   - Thèmes : Nacre (clair premium), Minuit (sombre premium), Automatique
+     (suit le réglage clair/sombre de l'appareil).
+   - Cours premium : « L'essentiel en 30 s », chapitres numérotés,
+     tableaux lisibles sur téléphone, encadrés illustrés, mots clés surlignés
+     à l'apparition, schémas animés quand ils entrent à l'écran.
+   - Tuteur : diagnostic par notion (cause probable + action), erreurs
+     répétées repérées dans « Explique-moi », révisions mieux ciblées.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, ui = AA.ui, fx = AA.fx, Q = AA.quiz, T = AA.tutor, V = AA.views;
+  const S = () => AA.S;
+  const esc = s => u.esc(String(s == null ? "" : s));
+
+  /* ---------- Thèmes ---------- */
+  const add = th => { if (!AA.THEMES.some(x => x.id === th.id)) AA.THEMES.push(th); };
+  add({ id: "nacre", preview: ["#F7F3EC", "#0F5C78", "#C8963E"], dark: false, meta: "#F7F3EC", mode: "light" });
+  add({ id: "minuit", preview: ["#070B16", "#7FD1E8", "#E2B867"], dark: true, meta: "#070B16", mode: "dark" });
+  add({ id: "auto", preview: ["#050E1A", "#EAF5F7", "#3EE6D8"], dark: null, meta: "#050E1A", mode: "auto" });
+  AA.THEMES.forEach(th => { if (!th.mode) th.mode = th.dark ? "dark" : "light"; });
+  const mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
+  const resolve = id => id === "auto" ? (mq && !mq.matches ? "lagon" : "abysse") : id;
+  ui.applyTheme = () => {
+    const p = AA.S.profile, want = (AA.THEMES.find(x => x.id === p.theme) || AA.THEMES[0]).id, id = resolve(want);
+    const th = AA.THEMES.find(x => x.id === id) || AA.THEMES[0];
+    document.documentElement.dataset.aaTheme = th.id;
+    document.documentElement.dataset.aaMode = th.dark ? "dark" : "light";
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = th.meta;
+  };
+  if (mq && mq.addEventListener) mq.addEventListener("change", () => { if (AA.S && AA.S.profile.theme === "auto") ui.applyTheme(); });
+  /* Pastilles regroupées : clair, sombre, automatique. */
+  ui.swatches = cur => {
+    const grp = mode => AA.THEMES.filter(th => th.mode === mode);
+    const btn = th => `<button class="swatch" data-theme="${th.id}" aria-pressed="${cur === th.id}"><i style="background:linear-gradient(135deg,${th.preview[0]} 0 50%,${th.preview[1]} 50% 75%,${th.preview[2]} 75%)"></i><span>${t("theme." + th.id)}</span></button>`;
+    return `<div class="sw-groups" role="group" aria-label="${t("set.theme")}">${["light", "dark", "auto"].map(mo => grp(mo).length ? `<div class="sw-group"><p class="eyebrow">${t("theme.mode." + mo)}</p><div class="swatches">${grp(mo).map(btn).join("")}</div></div>` : "").join("")}</div>`;
+  };
+  AA.ui.swatches = ui.swatches;
+
+  /* ---------- Cours premium ---------- */
+  const wrap = (name, fn) => { const v = V[name]; if (!v) return; const r = v.render; v.render = (el, args) => { r(el, args); try { fn(el, args || []); } catch (e) { console.error(e); } }; };
+  const CALL_IC = { ex: "bulb", trap: "info", check: "check", ok: "check", "": "book" };
+  AA.lessonPolish = (body, m, tab) => {
+    if (!body || body.dataset.polished) return; body.dataset.polished = 1;
+    const prose = u.$$(".prose", body);
+    /* Tableaux : en-têtes recopiés sur chaque cellule, empilés sur petit écran. */
+    u.$$("table", body).forEach(tb => {
+      const hs = u.$$("thead th, tr:first-child th", tb).map(th => th.textContent.trim());
+      u.$$("tbody tr, tr", tb).forEach(tr => u.$$("td", tr).forEach((td, i) => { if (hs[i]) td.dataset.label = hs[i]; }));
+      tb.classList.add("tbl-stack"); const w = tb.closest(".tbl"); if (w) w.classList.add("tbl-pro");
+    });
+    /* Chapitres numérotés. */
+    let n = 0; prose.forEach(p => u.$$(":scope > h3", p).forEach(h => { if (h.querySelector(".sec-n")) return; n++; h.insertAdjacentHTML("afterbegin", `<span class="sec-n" aria-hidden="true">${String(n).padStart(2, "0")}</span>`); h.classList.add("sec-h"); }));
+    /* Encadrés : une icône selon le type. */
+    u.$$(".callout", body).forEach(c => { const e = u.$(".eyebrow", c); if (!e || e.querySelector("svg")) return; const k = ["ex", "trap", "check", "ok"].find(x => c.classList.contains(x)) || ""; e.insertAdjacentHTML("afterbegin", AA.icon(CALL_IC[k]) + " "); e.classList.add("ce-eb"); });
+    /* Mots clés : surlignage animé à l'apparition. */
+    prose.forEach(p => u.$$("b, strong", p).forEach(b => { if (!b.closest(".callout pre, table, h3")) b.classList.add("kw"); }));
+    /* Points clés en tête de l'essentiel. */
+    if (tab === "essentiel" && m.memo && m.memo.length && !u.$(".keypts", body)) {
+      const pts = m.memo.slice(0, 3);
+      const html = `<section class="keypts" aria-label="${t("les24.key")}"><p class="eyebrow">${AA.icon("star")} ${t("les24.key")}</p><div class="keypts-g">${pts.map(([a, b], i) => `<div class="kp" style="--i:${i}"><b>${esc(a)}</b><span>${esc(b)}</span></div>`).join("")}</div></section>`;
+      body.insertAdjacentHTML("afterbegin", html);
+    }
+    /* Apparition progressive et schémas qui s'animent à l'écran. */
+    const items = u.$$(".keypts, .prose > *, .diagram, .callout, .memo > div", body).filter(x => !x.classList.contains("reveal"));
+    if (AA.a11y.reduced() || !("IntersectionObserver" in window)) { items.forEach(x => x.classList.add("in")); return; }
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -6% 0px" });
+    items.forEach(x => { x.classList.add("reveal"); io.observe(x); });
+  };
+  wrap("lesson", (el, [id, tab0]) => {
+    const m = C.byId[id]; if (!m) return; const tb = u.$(".lesson-tabs [aria-pressed=true]", el), tab = tb ? tb.dataset.tab : tab0 || "essentiel";
+    AA.lessonPolish(u.$(".lesson-body", el), m, tab);
+    const hero = u.$(".lesson-hero", el); if (hero) hero.classList.add("hero24");
+  });
+
+  /* ---------- Tuteur : diagnostic ---------- */
+  const zerosRecent = nid => { const r = T.stat(nid); if (!r) return 0; return (r.h.slice(-4).match(/0/g) || []).length; };
+  T.repeated = nid => zerosRecent(nid) >= 2;
+  /* Cause probable d'une difficulté, et l'action qui va avec. */
+  T.cause = nid => {
+    const n = T.notion(nid); if (!n) return null; const r = T.stat(nid), st = T.nState(nid);
+    if (!T.isRead(n.mid)) return { k: "unread", ic: "book" };
+    if (!r || !r.n) return { k: "untested", ic: "play" };
+    if (st === "master" || st === "ok") { const days = r.d ? u.daysBetween(r.d, u.today()) : 0; return days > 21 ? { k: "stale", ic: "refresh", d: days } : { k: "solid", ic: "check" }; }
+    if (n.gen || /calc|gen/.test(n.id)) return { k: "calc", ic: "calc" };
+    if (T.repeated(nid)) return { k: "confusion", ic: "buoy" };
+    const days = r.d ? u.daysBetween(r.d, u.today()) : 0;
+    if (days > 14 && /1/.test(r.h.slice(0, -2))) return { k: "forgot", ic: "refresh", d: days };
+    return { k: "fragile", ic: "target" };
+  };
+  const PRIO = { confusion: 0, calc: 1, fragile: 2, forgot: 3, stale: 4, untested: 5, unread: 6, solid: 9 };
+  T.diagnose = wid => {
+    const out = [];
+    C.inWorld(wid).forEach(m => T.notions(m.id).filter(n => !n.gen).forEach(n => { const c = T.cause(n.id); if (c) out.push({ n, c, m: T.mastery(n.id) }); }));
+    return out;
+  };
+  const DW = () => { const g = G.goalWorld(); return AA.ctx.dw && C.worldById[AA.ctx.dw] ? AA.ctx.dw : g; };
+  AA.view("diagnostic", {
+    tab: "train", depth: 2,
+    render(el) {
+      const wid = DW(), W = C.worldById[wid], all = T.diagnose(wid);
+      const by = k => all.filter(x => x.c.k === k);
+      const solid = by("solid").length, tot = all.length || 1, tested = all.filter(x => x.m != null);
+      const avg = tested.length ? tested.reduce((a, x) => a + x.m, 0) / tested.length : 0;
+      const prio = all.filter(x => !["solid", "unread"].includes(x.c.k)).sort((a, b) => PRIO[a.c.k] - PRIO[b.c.k] || (a.m ?? .5) - (b.m ?? .5)).slice(0, 3);
+      const worlds = C.worlds.filter(w => !w.soon && C.inWorld(w.id).length);
+      const pctTxt = Math.round(avg * 100), dash = Math.round(avg * 283);
+      const row = x => { const k = x.c.k; return `<div class="dg-row dg-${k}"><span class="dg-ic">${AA.icon(x.c.ic)}</span><div class="grow"><b>${esc(x.n.t)}</b><span class="xs muted">${esc(C.byId[x.n.mid].title)} · ${t("dg.c." + k, { d: x.c.d || "" })}</span>
+        ${x.m != null ? `<i class="dg-bar"><b style="width:${Math.round(x.m * 100)}%"></b></i>` : ""}</div>
+        ${k === "unread" ? `<a class="btn ghost sm" href="#/lesson/${x.n.mid}">${AA.icon("book")}</a>` : k === "solid" ? "" : `<button class="btn ghost sm" data-dgo="${x.n.id}" aria-label="${t("dg.train")}">${AA.icon("play")}</button><button class="btn ghost sm" data-dread="${x.n.id}" aria-label="${t("dg.read")}">${AA.icon("book")}</button>`}</div>`; };
+      const sec = (k, list) => list.length ? `<details class="card dg-sec" ${["confusion", "calc", "fragile"].includes(k) ? "open" : ""}><summary><b>${t("dg.s." + k)}</b><span class="chip">${list.length}</span></summary>${list.map(row).join("")}</details>` : "";
+      el.innerHTML = `${ui.head(t("dg.title"), "train")}
+        <div class="seg dg-worlds" role="tablist">${worlds.map(w => `<button data-dw="${w.id}" aria-pressed="${w.id === wid}">${esc(w.short)}</button>`).join("")}</div>
+        <section class="card dg-hero"><svg class="dg-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" class="tr"/><circle cx="50" cy="50" r="45" class="fg" style="stroke-dasharray:${dash} 283"/></svg>
+          <div class="grow"><p class="eyebrow">${esc(W.short)}</p><h2>${t("dg.mastery", { p: pctTxt })}</h2><p class="small muted">${t("dg.sum", { s: solid, n: all.length, c: by("confusion").length + by("calc").length + by("fragile").length })}</p></div></section>
+        ${prio.length ? `<section class="card dg-prio"><p class="eyebrow">${AA.icon("target")} ${t("dg.prio")}</p>${prio.map((x, i) => `<div class="dg-p" style="--i:${i}"><span class="dg-num">${i + 1}</span><div class="grow"><b>${esc(x.n.t)}</b><span class="small muted">${t("dg.why." + x.c.k, { d: x.c.d || "" })}</span></div><button class="btn sm" data-dgo="${x.n.id}">${t("dg.go")}</button></div>`).join("")}</section>` : `<p class="callout ok">${t("dg.none")}</p>`}
+        ${["confusion", "calc", "fragile", "forgot", "stale", "untested", "unread", "solid"].map(k => sec(k, by(k))).join("")}
+        <p class="small muted">${t("dg.how")}</p>`;
+      u.$$("[data-dw]", el).forEach(b => b.onclick = () => { AA.ctx.dw = b.dataset.dw; fx.sfx.tap(); AA.router.refresh(); });
+      u.$$("[data-dgo]", el).forEach(b => b.onclick = () => T.drill(b.dataset.dgo));
+      u.$$("[data-dread]", el).forEach(b => b.onclick = () => T.openNotion(b.dataset.dread));
+    }
+  });
+  /* Le diagnostic apparaît dans les prochaines étapes du tuteur. */
+  const act0 = T.actions;
+  T.actions = () => { const a = act0(); const any = Object.keys(S().nstat || {}).length >= 6; if (any) a.splice(Math.min(3, a.length), 0, { k: "diag", ic: "chart", t: t("dg.actT"), s: t("dg.actS"), run: () => AA.router.go("diagnostic") }); return a; };
+  /* Séance du tuteur : d'abord les confusions, puis ce qui s'oublie. */
+  const sess0 = T.session;
+  T.session = () => {
+    const conf = Object.keys(S().nstat || {}).filter(nid => T.notion(nid) && T.repeated(nid) && T.isRead(nid.split(":")[0]) && G.inPlay(nid.split(":")[0]));
+    const stale = Object.keys(S().nstat || {}).filter(nid => { const c = T.notion(nid) && T.cause(nid); return c && (c.k === "stale" || c.k === "forgot"); });
+    AA.ctx.tuBoost = u.shuffle(conf).slice(0, 2).concat(u.shuffle(stale).slice(0, 2));
+    return sess0();
+  };
+  const start0 = Q.start;
+  Q.start = (mode, qs, opts) => {
+    if (mode === "tutor" && AA.ctx.tuBoost && AA.ctx.tuBoost.length) {
+      const have = new Set(qs.map(q => q.id)), extra = [];
+      AA.ctx.tuBoost.forEach(nid => { const q = u.shuffle(T.qsOf(nid)).find(x => !have.has(x.id)); if (q) { extra.push(q); have.add(q.id); } });
+      AA.ctx.tuBoost = null;
+      if (extra.length) { const keep = qs.filter(q => !q.gen).slice(0, Math.max(6, 11 - extra.length)), gens = qs.filter(q => q.gen); qs = u.shuffle(keep.concat(extra)).concat(gens); }
+    }
+    return start0(mode, qs, opts);
+  };
+
+  /* ---------- Explique-moi : erreurs répétées ---------- */
+  const exp0 = AA.explainMe;
+  AA.explainMe = (q, picked) => {
+    exp0(q, picked);
+    const nid = T.notionOf(q); if (!nid || !T.repeated(nid)) return;
+    const n = T.notion(nid), r = T.stat(nid), root = document.querySelector(".exp-sheet"); if (!root || !n) return;
+    const errs = (r.h.slice(-4).match(/0/g) || []).length, tot = Math.min(4, r.h.length);
+    const box = `<div class="callout trap exp-rep"><span class="eyebrow">${AA.icon("buoy")} ${t("exp3.repT")}</span>${t("exp3.rep", { e: errs, n: tot, t: esc(n.t) })}<button class="btn sm block" id="expDrill" style="margin-top:8px">${AA.icon("target")} ${t("exp3.drill")}</button></div>`;
+    const bars = root.querySelector(".exp-bars"); if (bars) bars.insertAdjacentHTML("afterend", box); else root.insertAdjacentHTML("afterbegin", box);
+    const b = root.querySelector("#expDrill"); if (b) b.onclick = () => { document.querySelectorAll(".sheet-wrap").forEach(x => x._close && x._close()); T.drill(nid); };
+  };
+})();
+
 /* locales/fr.js */
 /* =====================================================================
    Abysse Academy · textes de l'interface en français
@@ -9637,7 +10026,7 @@ AA.i18n.add("fr", {
   "tab.home": "Accueil", "tab.map": "Carte", "tab.train": "Entraîner", "tab.lab": "Labo", "tab.profile": "Profil",
   "hud.exam": "Jours avant l’examen", "hud.streak": "Jours d’affilée", "hud.level": "Niveau {l}",
   "common.cancel": "Annuler", "common.next": "Continuer", "common.add": "Ajouter", "common.remove": "Retirer", "common.validate": "À vérifier avec ton moniteur",
-  "theme.abysse": "Abysse", "theme.lagon": "Lagon", "theme.corail": "Corail", "theme.contraste": "Grand large",
+  "theme.abysse": "Abysse", "theme.nacre": "Nacre", "theme.minuit": "Minuit", "theme.auto": "Automatique", "theme.mode.light": "Clair", "theme.mode.dark": "Sombre", "theme.mode.auto": "Selon l’appareil", "theme.lagon": "Lagon", "theme.corail": "Corail", "theme.contraste": "Grand large",
 
   /* Premier lancement */
   "onb.eyebrow": "Bienvenue à bord",
@@ -9872,11 +10261,12 @@ AA.i18n.add("fr", {
   "boss.won": "Victoire !", "boss.lost": "Bouteille vide", "boss.lostS": "Il lui restait {n} points. Revois tes erreurs et reviens plus fort.",
   "boss.toWorld": "Découvrir le monde {world}", "boss.retry": "Réessayer", "boss.study": "Voir mes erreurs fréquentes", "boss.toReview": "À revoir",
 
-  "story.title": "Aventures", "story.intro": "Des histoires de plongée où chaque choix utilise ce que tu as appris. Un bon choix du premier coup = 1 point.",
+  "story.title": "Aventures", "story.intro": "De vraies histoires de plongée, pour chaque niveau et chaque rôle : encadré, autonome, guide, initiateur, moniteur, secouriste. Chaque choix a des conséquences. Un bon choix du premier coup = 1 point.",
+  "story.len": "{n} décisions", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
   "story.locked": "Termine l’aventure précédente pour l’ouvrir.", "story.lockedT": "Aventure fermée", "story.resume": "Reprendre",
   "story.best": "Meilleur : {n} / {tot}", "story.step": "scène {n}/{tot}", "story.surface": "Surface",
   "story.good": "Bon réflexe", "story.bad": "Pas tout à fait", "story.retry": "Essaie un autre choix.", "story.continue": "Continuer",
-  "story.end": "Fin de l’aventure", "story.score": "{n} bons choix du premier coup sur {tot}.", "story.replay": "Rejouer", "story.others": "Autres aventures",
+  "story.end": "Fin de l’aventure", "story.score": "{n} bons choix du premier coup sur {tot} décisions.", "story.replay": "Rejouer", "story.others": "Autres aventures",
 
   "aqua.title": "Mon aquarium", "aqua.intro": "Chaque progrès fait venir une nouvelle espèce. Touche un poisson pour le découvrir.",
   "aqua.empty": "Ton aquarium attend son premier habitant : termine un thème !", "aqua.collection": "Collection", "aqua.tap": "Touche pour en savoir plus",
@@ -10132,6 +10522,14 @@ AA.i18n.add("fr", {
   "exp.s1": "La notion", "exp.s2": "Le schéma", "exp.s3": "La méthode", "exp.s3b": "La bonne réponse", "exp.s4": "Le piège", "exp.s5": "À retenir",
   "exp.youPicked": "Tu as choisi", "exp.trapGen": "La bonne réponse était « {a} ». Relis la question en cherchant le mot qui change tout, puis l’explication ci-dessus.",
   "exp.prev": "Étape précédente",
+  "les24.key": "L’essentiel en 30 secondes",
+  "exp3.repT": "Erreurs répétées", "exp3.rep": "Tu as raté {e} des {n} dernières questions sur « {t} ». Ce n’est pas un hasard : on reprend cette notion calmement, puis une petite série ciblée.", "exp3.drill": "Séance ciblée sur cette notion",
+  "dg.title": "Ton diagnostic", "dg.mastery": "Maîtrise : {p} %", "dg.sum": "{s} notions solides sur {n} · {c} à travailler en priorité.", "dg.prio": "Tes trois priorités", "dg.go": "S’entraîner", "dg.train": "Séance ciblée", "dg.read": "Revoir dans le cours",
+  "dg.none": "Rien d’urgent : continue ton parcours et tes révisions du jour.", "dg.how": "Le tuteur regarde tes dernières réponses notion par notion : les erreurs qui se répètent, les calculs, ce que tu n’as pas revu depuis longtemps. Il propose l’action la plus utile pour chaque cas.",
+  "dg.actT": "Voir ton diagnostic", "dg.actS": "Tes points faibles notion par notion, avec la cause probable",
+  "dg.s.confusion": "Erreurs répétées", "dg.s.calc": "Calculs à reprendre", "dg.s.fragile": "Encore fragile", "dg.s.forgot": "En train de s’oublier", "dg.s.stale": "Solide, mais à rafraîchir", "dg.s.untested": "Pas encore testé", "dg.s.unread": "Cours pas encore lu", "dg.s.solid": "Solide",
+  "dg.c.confusion": "confusion probable", "dg.c.calc": "erreurs de calcul", "dg.c.fragile": "réponses irrégulières", "dg.c.forgot": "pas revu depuis {d} jours", "dg.c.stale": "pas revu depuis {d} jours", "dg.c.untested": "aucune question encore", "dg.c.unread": "cours à lire d’abord", "dg.c.solid": "maîtrisé",
+  "dg.why.confusion": "Plusieurs erreurs d’affilée : relis le passage, puis une série ciblée.", "dg.why.calc": "La méthode n’est pas encore sûre : refais des calculs guidés.", "dg.why.fragile": "Tantôt juste, tantôt faux : quelques questions de plus vont fixer la notion.", "dg.why.forgot": "Tu la savais, mais ça fait {d} jours : une révision rapide suffit.", "dg.why.stale": "Solide, mais pas revu depuis {d} jours.", "dg.why.untested": "Tu as lu le cours, teste-toi.",
   "exp2.s1": "Ta réponse", "exp2.s2": "Pourquoi", "exp2.s3": "Le point de cours", "exp2.good": "Bonne réponse :", "exp2.sit": "La situation", "exp2.why": "Ce qui se passe", "exp2.so": "Donc",
   "exp2.cap": "Le raisonnement, appliqué à cette question.", "exp2.prev": "Retour", "exp2.notion": "Notion à revoir :", "exp2.readSec": "Lire ce passage dans le cours", "exp.pause": "Pause", "exp.next": "Suite", "exp.done": "J’ai compris",
   "net.title": "Hors ligne et sauvegarde", "net.onT": "En ligne", "net.offT": "Hors ligne",
@@ -17205,6 +17603,195 @@ ${VAL}Le cursus nitrox confirmé (mélanges autorisés, Pp O₂ max de décompre
   });
 })();
 
+/* content/fr/n2-ordi.js */
+/* =====================================================================
+   Abysse Academy 2.4 · N2 · L’ordinateur de plongée
+   Nouveau thème : lire l’écran, régler, plonger en palanquée, gérer une
+   panne et l’après-plongée. Aucune valeur de table MN90.
+   Points réglementaires ou propres au club : « À faire valider ».
+   ===================================================================== */
+(function () {
+  "use strict";
+  const C = AA.content, D = C.dgb || {};
+
+  if (D.flow) C.addDiagrams({
+    "n2-ordi": () => D.flow([["Capteur", "Il mesure la pression (donc la profondeur) et le temps, plusieurs fois par seconde."], ["Modèle", "Des « tissus » théoriques se chargent en azote selon la profondeur et la durée."], ["Écran", "Profondeur, durée, temps sans palier, vitesse de remontée, paliers."], ["Remontée", "Il calcule où et combien de temps s’arrêter pour que l’azote sorte doucement."], ["Après", "Il continue à compter : désaturation, plongée successive, avion."]], "Ce que fait ton ordinateur : il mesure, il modélise, il te dit quoi faire, puis il continue après la plongée."),
+    "n2-ordi-ecran": () => D.flow([["Profondeur", "Actuelle, et maximale atteinte."], ["Durée", "Depuis le début de la descente."], ["NDL", "Temps restant sans palier obligatoire à cette profondeur."], ["Flèches ou barre", "Vitesse de remontée : trop vite = alarme."], ["STOP / DECO", "Palier de sécurité conseillé ou palier obligatoire : profondeur et durée."]], "Lire l’écran en cinq zones, de haut en bas (la disposition varie selon les modèles).")
+  });
+
+  const ex = (h) => `<div class="callout ex"><span class="eyebrow">Exemple</span>${h}</div>`;
+  const val = (h) => `<div class="callout trap"><span class="eyebrow">À faire valider</span>${h}</div>`;
+
+  C.module({
+    id: "n2-ordi", world: "n2", depth: "−20 m", icon: "watch", diagram: "n2-ordi",
+    title: "L’ordinateur de plongée",
+    sub: "Lire l’écran, le régler, plonger avec, et après",
+    essentiel: `
+<p>Ton ordinateur fait en continu ce que la table fait une seule fois : il mesure ta <b>profondeur</b> et ta <b>durée</b>, il estime l’<b>azote</b> que ton corps a absorbé, et il te dit combien de temps tu peux rester sans palier, à quelle vitesse remonter et où t’arrêter.</p>
+<h3>Lire l’écran</h3>
+<div data-diagram="n2-ordi-ecran"></div>
+<div class="tbl"><table><tr><th>Affichage</th><th>Ce que ça veut dire</th><th>Ce que tu fais</th></tr>
+<tr><td>Profondeur / max</td><td>Où tu es, et le plus profond atteint</td><td>Tu compares à la limite du briefing</td></tr>
+<tr><td>NDL (temps sans palier)</td><td>Minutes restantes avant qu’un palier devienne obligatoire</td><td>Tu remontes bien avant qu’il arrive à zéro</td></tr>
+<tr><td>Vitesse de remontée</td><td>Flèches, barre ou pourcentage</td><td>Alarme = tu ralentis, tu purges, tu te stabilises</td></tr>
+<tr><td>STOP / SAFETY</td><td>Palier de sécurité conseillé</td><td>Tu le fais, il réduit le risque</td></tr>
+<tr><td>DECO / STOP obligatoire</td><td>Profondeur et durée d’un palier imposé</td><td>Tu le fais, à cette profondeur, au moins cette durée</td></tr></table></div>
+${ex("<p>À 18 m, ton écran indique <b>NDL 6</b>. Ça ne veut pas dire « encore 6 minutes de balade » : en 6 minutes, un palier deviendra obligatoire. Tu le montres à ton binôme et vous commencez à remonter vers des profondeurs moindres, où le NDL remonte.</p>")}
+<h3>Le régler avant de plonger</h3>
+<p>Un ordinateur mal réglé calcule juste… sur de fausses données. Avant la plongée, vérifie :</p>
+<ul><li>le <b>mélange</b> : air (21 %) ou le pourcentage de Nitrox analysé ;</li><li>le <b>facteur de prudence</b> (conservatisme) : plus prudent si tu es fatigué, si l’eau est froide, si tu reprends ;</li><li>l’<b>altitude</b> pour un lac de montagne ;</li><li>la <b>batterie</b> et l’heure.</li></ul>
+<h3>Plonger en palanquée avec des ordinateurs</h3>
+<p>Chaque plongeur a <b>son</b> ordinateur, porté depuis la première plongée de la journée. Les ordinateurs n’ont pas tous le même modèle : la palanquée suit toujours <b>le plus pénalisant</b>, c’est-à-dire celui qui demande de remonter le plus tôt ou de faire le plus de paliers.</p>
+${ex("<p>Jade : NDL 12 min. Toi : palier obligatoire de 2 min. La palanquée remonte et fait ton palier, tous ensemble. Ce n’est pas « ton » problème, c’est la règle de la palanquée.</p>")}
+<h3>Après la plongée</h3>
+<p>L’ordinateur continue de calculer en surface : <b>temps de désaturation</b>, intervalle avant une plongée successive, <b>interdiction de vol</b>. Ne l’éteins pas, ne le prête pas, ne l’échange pas dans la journée : il perdrait l’historique de ton azote.</p>
+<div class="callout"><span class="eyebrow">À retenir</span><p>L’ordinateur est un outil de calcul, pas un garde du corps : il ne sait pas que tu as froid, que tu as forcé, ou que tu as mal dormi. C’est toi qui ajoutes la prudence.</p></div>`,
+    approfondir: `
+<h3>Comment il calcule</h3>
+<p>L’ordinateur utilise un <b>modèle</b> : des compartiments (« tissus ») qui se chargent et se déchargent en azote à des vitesses différentes, selon la pression partielle d’azote respiré (loi de Henry). Quand un compartiment approche de sa limite de sursaturation, le NDL arrive à zéro et un palier devient nécessaire.</p>
+<p>Contrairement à la table, il suit ton <b>profil réel</b> : si tu passes du temps moins profond, il te « rend » du temps. C’est pour ça qu’un ordinateur donne souvent plus de temps qu’une table sur une plongée en escalier. Ce n’est pas un cadeau : c’est un calcul, avec les limites d’un modèle.</p>
+${ex("<p>Profil en escalier : 10 min à 25 m, puis 20 min à 12 m. La table compte toute la plongée comme si tu étais resté à 25 m. L’ordinateur sait que tu es remonté et calcule moins d’azote. Les deux sont « justes », l’ordinateur est simplement plus précis sur ton profil.</p>")}
+<h3>Les profils à risque</h3>
+<ul><li><b>Yo-yo</b> : monter et descendre plusieurs fois, favorise les bulles.</li><li><b>Profil inversé</b> : finir plus profond qu’au début. On fait toujours le plus profond en premier.</li><li><b>Successives profondes</b> sur plusieurs jours : on prévoit une journée de repos.</li><li><b>Effort, froid, déshydratation</b> : le modèle ne les voit pas. Augmente le facteur de prudence.</li></ul>
+<h3>Panne en plongée</h3>
+<p>Écran éteint ou affichage incohérent : tu le signales à ta palanquée, tu suis l’ordinateur d’un équipier qui a eu le même profil (ou ton ordinateur de secours), tu remontes lentement et tu fais un palier de sécurité allongé.</p>
+${val("<p>Procédure du club en cas de panne, et délai avant de replonger avec un nouvel ordinateur (souvent 24 h, selon les fabricants et les clubs).</p>")}
+<h3>Palier omis</h3>
+<p>Si tu sors sans faire un palier obligatoire, l’ordinateur peut se bloquer en mode « erreur » pendant plusieurs heures. On prévient le DP, on surveille les signes, oxygène au moindre doute, et pas d’autre plongée.</p>
+<h3>Avion et altitude</h3>
+<p>En avion, la pression de la cabine est plus basse qu’au niveau de la mer : les micro-bulles grossissent. Respecte le délai affiché par l’ordinateur, et au minimum les recommandations de ta fédération.</p>
+${val("<p>Délais avant l’avion recommandés par la FFESSM et par le fabricant de ton ordinateur.</p>")}`,
+    memo: [["NDL", "Temps restant sans palier obligatoire : on remonte bien avant zéro."], ["Palanquée", "On suit l’ordinateur le plus pénalisant."], ["Un ordinateur par plongeur", "Porté toute la journée, jamais prêté ni échangé."], ["Réglages", "Mélange analysé, facteur de prudence, altitude, batterie."], ["Vitesse", "Alarme de remontée : ralentir, purger, se stabiliser."], ["Panne", "Signaler, suivre un équipier au même profil, palier de sécurité allongé."], ["Après", "Désaturation, successive, avion : on ne l’éteint pas."]],
+    moniteur: ["Quel facteur de prudence conseilles-tu pour mon niveau ?", "Quelle procédure le club applique-t-il si mon ordinateur tombe en panne ?"],
+    quiz: [
+      { q: "À 18 m, ton ordinateur affiche « NDL 4 ». Que signifie ce chiffre ?", c: ["Il te reste 4 minutes d’air à cette profondeur selon ta consommation", "Dans 4 minutes, un palier deviendra obligatoire si tu restes à cette profondeur", "Tu devras faire 4 minutes de palier à 3 m en fin de plongée", "Tu peux encore descendre de 4 mètres avant la limite de ton niveau"], a: 1, e: "NDL = No Decompression Limit : le temps restant sans palier obligatoire. On remonte bien avant qu’il arrive à zéro." },
+      { q: "Ton binôme a un NDL de 12 min, ton ordinateur demande 2 min de palier. Que fait la palanquée ?", c: ["Elle fait la moyenne des deux et un palier d’une minute", "Ton binôme sort et tu fais ton palier seul au mouillage", "Toute la palanquée fait le palier demandé par ton ordinateur", "Elle suit l’ordinateur le plus récent des deux, plus fiable"], a: 2, e: "La palanquée suit l’ordinateur le plus pénalisant et reste groupée." },
+      { q: "L’alarme de vitesse de remontée se déclenche. Que fais-tu ?", c: ["Tu ralentis, tu purges ton gilet et tu te stabilises si besoin", "Tu remontes encore un peu plus vite pour finir la remontée au plus tôt", "Tu redescends de 10 mètres pour remettre l’alarme à zéro", "Tu continues : l’alarme est réglée très large par le fabricant"], a: 0, e: "Remonter trop vite favorise les bulles et la surpression pulmonaire. On ralentit tout de suite." },
+      { q: "Tu plonges au Nitrox 32 % analysé à 32 %. Sur quoi règles-tu ton ordinateur ?", c: ["Sur air (21 %), pour garder une marge sur la décompression", "Sur 32 %, la valeur analysée", "Sur 40 %, pour être plus prudent sur l’oxygène", "Le réglage n’a aucune importance pour une plongée à 20 m"], a: 1, e: "On règle la valeur analysée : elle sert au calcul de l’azote et surtout de l’oxygène (profondeur maximale)." },
+      { q: "Pourquoi ne pas prêter ton ordinateur à un ami pour sa deuxième plongée de la journée ?", c: ["Parce que les réglages de langue et d’unités seraient différents pour lui", "Parce que ton ordinateur garde en mémoire ton azote, pas le sien", "Parce que la batterie ne tiendrait pas deux plongées dans la même journée", "Parce que la loi interdit de plonger avec l’ordinateur d’une autre personne"], a: 1, e: "L’ordinateur calcule l’azote de celui qui l’a porté. Pour ton ami, le calcul serait faux, et toi tu perds ton historique." },
+      { q: "Ton ordinateur indique « SAFETY STOP 3 min » à 5 m. C’est :", c: ["Un palier obligatoire, sinon l’ordinateur se bloque pour 24 heures", "Un palier de sécurité conseillé, qu’on fait toujours", "Une alarme de batterie faible qui demande de remonter", "Une limite de profondeur à ne pas dépasser pendant 3 minutes"], a: 1, e: "Facultatif en théorie, mais fortement recommandé : il réduit le risque d’accident de désaturation." },
+      { q: "Pourquoi un ordinateur donne-t-il souvent plus de temps qu’une table sur une plongée en escalier ?", c: ["Parce qu’il est réglé moins prudemment que les tables par les fabricants", "Parce qu’il suit ton profil réel au lieu de compter toute la plongée à la profondeur maximale", "Parce qu’il ne prend pas en compte la profondeur maximale atteinte", "Parce que les tables comptent aussi le temps passé en surface avant la plongée"], a: 1, e: "La table prend la profondeur maxi pour toute la durée. L’ordinateur calcule sur ce que tu as vraiment fait." },
+      { q: "Tu es fatigué, l’eau est à 14 °C et tu reprends après un an. Quel réglage modifies-tu ?", c: ["Le mélange, en passant sur un pourcentage d’oxygène plus élevé", "L’altitude, pour simuler une plongée plus difficile", "Le facteur de prudence, vers plus de conservatisme", "Aucun : l’ordinateur mesure déjà la température et ta fatigue"], a: 2, e: "Le modèle ne voit ni ta fatigue ni le froid. Le facteur de prudence raccourcit les temps sans palier." },
+      { q: "Ton ordinateur s’éteint à 15 m. Que fais-tu ?", c: ["Tu continues la plongée en suivant simplement la palanquée, comme si de rien n’était", "Tu le signales et tu suis un équipier au même profil, avec un palier allongé", "Tu remontes seul en surface au plus vite pour le redémarrer", "Tu le secoues pour le relancer et tu restes au fond en attendant"], a: 1, e: "Signaler, s’appuyer sur un équipier au profil identique (ou un ordinateur de secours), remontée lente, palier de sécurité allongé. Procédure du club : à faire valider." },
+      { q: "Quel profil est le plus risqué pour la décompression ?", c: ["Descendre au plus profond au début, puis remonter peu à peu", "Monter et redescendre plusieurs fois pendant la plongée (yo-yo)", "Rester à profondeur constante toute la plongée en surveillant le NDL", "Faire un palier de sécurité plus long que celui proposé"], a: 1, e: "Les montées-descentes répétées favorisent les bulles. On fait le plus profond d’abord, puis on remonte progressivement." },
+      { q: "Après la plongée, l’écran affiche « NO FLY 20 h ». Cela veut dire :", c: ["Tu peux replonger dans 20 heures seulement, pas avant", "Tu dois attendre au moins ce délai avant de prendre l’avion", "Il te reste 20 heures de batterie avant de recharger", "C’est le temps total de plongée enregistré depuis l’achat"], a: 1, e: "En avion, la pression cabine baisse : les micro-bulles grossissent. On respecte ce délai, et les recommandations fédérales." },
+      { q: "Tu remontes à 6 m avec un NDL qui augmente. Pourquoi ?", c: ["Parce que la batterie se recharge un peu quand l’ordinateur se rapproche de la surface", "Parce que moins profond, ton corps absorbe moins d’azote et en rend une partie", "Parce que l’ordinateur passe en mode surface à partir de 6 m", "Parce que la pression de ton bloc baisse et qu’il recalcule ton autonomie"], a: 1, e: "Moins de pression = moins d’azote absorbé, et les tissus rapides commencent à se décharger : le temps sans palier augmente." },
+      { q: "Ton écran affiche « 23,5 m », la limite du DP est 20 m pour votre palanquée autonome. Que fais-tu ?", c: ["Rien de spécial, 3 m de plus restent dans la marge de l’ordinateur", "Tu remontes au-dessus de 20 m et tu le dis au débriefing", "Tu continues jusqu’à 25 m puisque le NDL est encore long", "Tu le signales au DP seulement si l’ordinateur sonne une alarme"], a: 1, e: "Le NDL ne fixe pas la profondeur : la limite vient de ton niveau et du briefing. On remonte. (Limites du N2 : à faire valider.)" },
+      { q: "En surface, ton ordinateur indique un palier omis et se bloque. Que fais-tu ?", c: ["Tu le réinitialises pour pouvoir replonger l’après-midi normalement", "Tu redescends faire le palier une heure plus tard sans prévenir", "Tu préviens le DP, tu surveilles l’apparition de signes et tu ne replonges pas", "Tu empruntes un autre ordinateur pour pouvoir faire la plongée suivante de la journée"], a: 2, e: "Palier omis = risque d’ADD. Prévenir, surveiller, oxygène au moindre signe, pas d’autre plongée." },
+      { q: "Pourquoi garder ton ordinateur allumé (ou en veille) entre deux plongées ?", c: ["Pour qu’il compte la désaturation et calcule correctement la plongée successive", "Pour qu’il reste chaud et donne une température de l’eau exacte", "Pour que le capteur de pression ne prenne pas l’humidité", "Pour qu’il garde l’heure exacte, sinon tout ton carnet de plongée serait faux ensuite"], a: 0, e: "Il suit l’élimination de l’azote en surface. Éteint ou réinitialisé, il repart de zéro et ta successive serait mal calculée." },
+      { q: "Ton ordinateur indique encore 15 min de NDL, mais ton manomètre affiche 60 bar. Qui décide ?", c: ["L’ordinateur, puisqu’il calcule la décompression avec beaucoup de précision au fond", "Le manomètre : l’air nécessaire à la remontée passe avant le NDL", "Le binôme qui a le plus d’air, il peut partager avec toi", "On fait la moyenne entre le temps restant et l’air restant"], a: 1, e: "Le NDL dit ce que permet l’azote, pas ce que permet ton air. La réserve décide de la remontée." }
+    ]
+  });
+
+  C.addCards([
+    { id: "ordi-c1", m: "n2-ordi", f: "NDL", b: "Temps restant sans palier obligatoire à la profondeur actuelle. On remonte bien avant zéro." },
+    { id: "ordi-c2", m: "n2-ordi", f: "Deux ordinateurs différents dans la palanquée", b: "On suit le plus pénalisant, tous ensemble." },
+    { id: "ordi-c3", m: "n2-ordi", f: "Réglages avant de plonger", b: "Mélange analysé, facteur de prudence, altitude, batterie." },
+    { id: "ordi-c4", m: "n2-ordi", f: "Panne d’ordinateur au fond", b: "Signaler, suivre un équipier au même profil, remontée lente, palier de sécurité allongé." },
+    { id: "ordi-c5", m: "n2-ordi", f: "Pourquoi ne jamais prêter son ordinateur ?", b: "Il garde en mémoire l’azote de celui qui l’a porté." },
+    { id: "ordi-c6", m: "n2-ordi", f: "NO FLY", b: "Délai avant de prendre l’avion : la pression cabine baisse, les bulles grossissent." }
+  ]);
+
+  C.notions = Object.assign(C.notions || {}, {
+    "n2-ordi": [["ndl", "Le temps sans palier (NDL)", "ndl|sans palier|temps restant", "NDL"], ["palan", "Plusieurs ordinateurs dans la palanquée", "binome|palanquee|pretter|preter|ami|plus penalisant|deux ordinateurs", "palanquée"], ["regl", "Les réglages", "regl|nitrox|prudence|conservat|altitude|batterie|melange", "Le régler"], ["vitesse", "Vitesse de remontée et paliers", "vitesse|alarme|safety|palier de securite|stop", "Vitesse de remontée"], ["panne", "Panne et palier omis", "panne|s.eteint|omis|bloque|secours", "Panne en plongée"], ["apres", "Après la plongée : successive et avion", "no fly|avion|desatur|successive|allume|veille", "Après la plongée"], ["profil", "Profils et calcul", "profil|escalier|yo-yo|table|modele|tissu|ndl qui augmente|moins profond", "Comment il calcule"]]
+  });
+})();
+
+/* content/fr/enrich-24.js */
+/* =====================================================================
+   Abysse Academy 2.4 · Cours enrichis
+   Un exemple concret (situation réelle, chiffres, décision) pour chaque
+   thème qui n'en avait pas, et parfois « le piège » à éviter.
+   Notions du tuteur pour Découverte et N1.
+   On ajoute à la fin des cours, on ne réécrit rien. Aucune valeur MN90.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const C = AA.content;
+  const ex = (title, h) => `<div class="callout ex"><span class="eyebrow">Exemple · ${title}</span>${h}</div>`;
+  const trap = h => `<div class="callout trap"><span class="eyebrow">Le piège</span>${h}</div>`;
+  const add = (id, html) => C.extend(id, { essentiel: `<h3>En situation</h3>` + html });
+
+  /* ---------- N2 ---------- */
+  add("physio", ex("l’essoufflement", "<p>Tu palmes contre le courant à 20 m. Ta respiration devient courte et rapide, tu as l’impression de manquer d’air alors que ton bloc est plein. Ce n’est pas l’oxygène qui manque : c’est le <b>CO₂</b> qui s’accumule, parce que tu n’expires plus assez. Remède : tu t’arrêtes, tu t’accroches, et tu <b>souffles longuement</b>. En une minute, le rythme redescend.</p>")
+    + trap("<p>Inspirer plus fort pour « avoir plus d’air » aggrave l’essoufflement. C’est l’expiration qu’il faut allonger.</p>"));
+  add("accidents", ex("après la plongée", "<p>Une heure après une plongée à 35 m, Hugo dit qu’il a « l’épaule qui tire » et qu’il est très fatigué. Il pense à un faux mouvement en portant son bloc. Toi, tu penses <b>ADD</b> : douleur articulaire et fatigue anormale après une plongée. Tu préviens le DP, il est mis sous <b>oxygène</b>, l’alerte est donnée. Au caisson, le médecin confirme un ADD articulaire, traité à temps.</p>")
+    + trap("<p>Le déni : « c’est rien, ça va passer ». Le moindre signe après une plongée se signale. Une fausse alerte ne coûte rien, un ADD non traité peut laisser des séquelles.</p>"));
+  add("materiel", ex("le calcul d’autonomie", "<p>Bloc de 12 L gonflé à 200 bar : 12 × 200 = <b>2 400 L</b> d’air détendu. Tu gardes 50 bar de réserve (600 L) : il te reste 1 800 L utilisables. À 20 m (3 bar), avec 20 L/min en surface, tu consommes 60 L/min : environ <b>30 minutes</b> au fond, avant de devoir remonter. Un calcul simple qui explique pourquoi le manomètre se regarde souvent.</p>"));
+  add("regles", ex("le jour J", "<p>Tu arrives dans un club que tu ne connais pas, avec ta carte N2. Le DP te demande ta carte, ton certificat médical, ta licence (assurance) et ton carnet. Il te place en autonomie avec un autre N2, <b>20 m maximum</b>, ou encadré plus profond avec un guide. C’est lui qui décide, en fonction de ton expérience et des conditions du jour.</p>")
+    + `<div class="callout trap"><span class="eyebrow">À faire valider</span><p>Profondeurs exactes en autonomie et en encadré pour le N2 selon le Code du sport en vigueur.</p></div>`);
+  add("pa20", ex("la perte de binôme", "<p>À 15 m, dans une eau trouble, tu ne vois plus Léo. Vous aviez convenu au briefing : <b>tour d’horizon d’une minute</b> sur place, en regardant aussi vers le haut (ses bulles), puis <b>remontée</b> lente avec palier de sécurité. En surface, tu le retrouves qui fait pareil, à 20 m de toi. Vous signalez au bateau. La plongée est terminée : on ne redescend pas.</p>"));
+
+  /* ---------- N3 ---------- */
+  add("n3-deco", ex("la journée à deux plongées", "<p>Le matin, 40 m. L’après-midi, prévu : 35 m. Au déjeuner, ton ordinateur indique encore plusieurs heures de désaturation. Tu choisis une seconde plongée <b>moins profonde</b> (25 m), plus courte, avec un palier de sécurité long. Tu respectes l’ordre classique : le plus profond d’abord, le moins profond ensuite. Le soir, tu ne prends pas l’avion.</p>"));
+  add("n3-baro", ex("le sinus bloqué", "<p>À 8 m, une douleur au-dessus de l’œil droit, comme un coup de couteau. C’est le <b>sinus frontal</b> qui n’arrive pas à s’équilibrer, souvent après un rhume. Tu remontes d’un ou deux mètres : la douleur baisse. Si elle revient en redescendant, la plongée s’arrête là. Forcer peut provoquer un saignement du sinus.</p>")
+    + trap("<p>Prendre un décongestionnant pour « passer quand même » : son effet peut cesser pendant la plongée et bloquer l’air à la remontée. Avis médical d’abord.</p>"));
+  add("n3-tables", ex("lire une table sans recopier les chiffres", "<p>Ta plongée : 31 m maximum, 22 minutes. Tu ne lis pas la ligne 30 m : tu prends la <b>profondeur juste supérieure</b>. Pour la durée, idem : la ligne <b>juste supérieure</b> à 22 min. Tu lis les paliers et la lettre de groupe. Toujours arrondir du côté de la sécurité.</p>"));
+  add("n3-speciales", ex("la dérivante", "<p>Courant de 1 nœud. Le bateau vous largue en amont, vous descendez <b>ensemble</b> et vite, pour ne pas vous disperser. Une bouée de surface tenue par le guide montre votre position. À la fin, palier en pleine eau en dérivant, parachute levé. Le bateau suit la bouée et vous récupère en aval. Celui qui lâche le groupe se retrouve seul, loin : on reste serrés.</p>"));
+  add("n3-bloc", ex("lire les marquages", "<p>Sur l’ogive : « PS 230 bar », « PE 345 bar », une date d’épreuve, « 15 L ». Le bloc se gonfle au maximum à <b>230 bar</b> (pression de service) ; 345 bar est la pression d’épreuve, testée lors de la requalification, jamais pour plonger. Si la date de requalification est dépassée, le bloc ne se gonfle pas.</p>"));
+
+  /* ---------- N4 ---------- */
+  add("n4-accidents", ex("trier les signes", "<p>Trois plongeurs, trois plaintes après la même plongée. Paul a mal à l’oreille et des vertiges dès la descente : <b>barotraumatisme</b> (mécanique). Inès s’est sentie euphorique à 38 m, ça a disparu en remontant : <b>narcose</b> (toxicité). Marc a des fourmillements dans la jambe 30 minutes après la sortie : <b>ADD</b> (biophysique). Le guide ne pose pas le diagnostic : il repère, il protège, il alerte.</p>"));
+  add("n4-modeles", ex("deux ordinateurs, deux réponses", "<p>Même plongée, même palanquée : un ordinateur affiche 3 minutes de palier, l’autre aucun. L’un utilise un modèle plus prudent, ou un facteur de prudence plus élevé. Aucun n’est « faux ». Le guide fait suivre à toute la palanquée <b>le plus pénalisant</b>.</p>"));
+  add("n4-materiel", ex("le givrage", "<p>Eau à 11 °C, 40 m. Un équipier gonfle longuement son gilet : son premier étage refroidit brutalement et se met en <b>débit continu</b>. Il ferme le robinet de ce premier étage et passe sur son second détendeur, indépendant. Les inflateurs longs et les purges brutales en eau froide sont à éviter.</p>"));
+  add("n4-resp", ex("l’incident sans blessé", "<p>Un de tes plongeurs est remonté seul trop vite, sans signe d’accident. Tu le signales au DP, qui le note sur la fiche de sécurité et le fait surveiller. Si des signes apparaissent plus tard, tout est traçable : profil, heure, décisions. Signaler, c’est protéger le plongeur… et toi.</p>"));
+
+  /* ---------- E1 ---------- */
+  add("e1-cursus", ex("compétence, pas exercice", "<p>L’exercice « vider son masque » n’est pas un but en soi. La compétence, c’est : <b>« retrouver la vision sous l’eau sans remonter »</b>. Elle est acquise quand l’élève le fait seul, calmement, à n’importe quel moment de la plongée, pas seulement quand tu lui demandes au fond de la piscine.</p>"));
+  add("e1-apprendre", ex("le bon retour", "<p>Au lieu de « non, c’est pas ça », tu dis : « Bien, tu as gardé ton calme. Cette fois, <b>relève la tête</b> en soufflant par le nez. » Un point positif, une seule consigne précise, un nouvel essai. L’élève sait quoi changer.</p>"));
+  add("e1-exercices", ex("la sécurité dans un exercice", "<p>Lâcher-reprise d’embout à 2 m. Avant : signe d’arrêt convenu, ton octopus prêt. Pendant : tu es face à l’élève, à portée de main, et tu le regardes dans les yeux. Si quelque chose ne va pas, tu lui donnes de l’air d’abord, tu remontes ensemble ensuite.</p>"));
+  add("e1-cours", ex("un cours de 15 minutes", "<p>Sujet : pourquoi on équilibre ses oreilles. <b>Accroche</b> (1 min) : une bouteille d’eau vide qui s’écrase au fond. <b>Explication</b> (8 min) : la pression augmente, l’air de l’oreille se comprime, le tympan se creuse. <b>Pratique</b> (4 min) : chacun montre la manœuvre. <b>Bilan</b> (2 min) : trois questions pour vérifier.</p>"));
+  add("e1-public", ex("l’adulte anxieux", "<p>Sophie, 45 ans, a peur de « ne plus pouvoir respirer ». Tu commences avec la tête dans l’eau en surface, debout, là où elle a pied. Tu lui laisses le temps, tu l’encourages à chaque étape réussie, et c’est elle qui donne le signal pour descendre. Le progrès se mesure en confiance, pas en mètres.</p>"));
+  add("e1-cadre", ex("qui décide ?", "<p>Mardi soir, piscine : le moniteur responsable t’attribue trois débutants et le petit bain. Un élève te demande d’aller dans la fosse. Ce n’est pas prévu : tu restes dans le cadre fixé et tu en parles au responsable après la séance. L’initiateur agit sous l’autorité d’un moniteur, dans ses prérogatives.</p>")
+    + `<div class="callout trap"><span class="eyebrow">À faire valider</span><p>Prérogatives exactes de l’initiateur (lieu, profondeur, niveaux d’élèves) selon le Code du sport et la FFESSM.</p></div>`);
+
+  /* ---------- E2 ---------- */
+  add("e2-n1mer", ex("de la piscine à la mer", "<p>En piscine, ton élève vide son masque sans souci. En mer, avec la houle, l’eau à 17 °C et un fond à 6 m, il panique au premier essai. C’est normal : le milieu ajoute du stress. Tu reprends près d’un fond, en eau calme, et tu redonnes une démonstration. La compétence acquise en piscine doit être <b>reconstruite</b> en mer.</p>"));
+  add("e2-orga", ex("la feuille du DP", "<p>Avant de partir, tu annonces : « Clara et Yanis, N1 en formation, objectif lâcher-reprise et octopus, zone du sec Est, 6 à 12 m, 35 min, retour 11 h 10. » Le DP l’inscrit sur la fiche de sécurité. Si tu n’es pas de retour, on sait où chercher.</p>"));
+  add("e2-exmer", ex("où placer l’exercice", "<p>Tu fais les exercices <b>au début</b> de la plongée, près d’un fond de sable à 6 m, quand les élèves ont froid le moins et de l’air le plus. L’exploration vient ensuite, comme une récompense. L’inverse, c’est faire travailler des élèves fatigués, froids, avec peu d’air.</p>"));
+  add("e2-incidents", ex("après l’incident", "<p>Yanis est remonté trop vite après avoir lâché son embout. En surface, il dit que tout va bien. Tu préviens le DP, il est surveillé, tu notes ce qui s’est passé. Au débriefing, tu lui expliques calmement, sans le culpabiliser, et tu adaptes la séance suivante.</p>"));
+
+  /* ---------- RIFAP ---------- */
+  add("r-bilan", ex("le bilan en 30 secondes", "<p>Victime allongée sur le pont. <b>Conscience</b> : « Tu m’entends ? Serre-moi la main. » Elle répond. <b>Respiration</b> : régulière. <b>Circulation</b> : pas de saignement important. Puis le complémentaire : où as-tu mal, depuis quand, profil de plongée, palier fait ? Et tu recommences régulièrement : un bilan qui change, c’est une info pour les secours.</p>"));
+  add("r-rcp", ex("l’enchaînement", "<p>La victime ne répond pas et ne respire pas normalement. Tu fais alerter et apporter le défibrillateur. Tu commences <b>30 compressions</b> au centre de la poitrine, puis <b>2 insufflations</b>. Le défibrillateur arrive : tu l’allumes et tu suis ses consignes, en reprenant les compressions dès qu’il le dit. Tu ne t’arrêtes qu’à l’arrivée des secours ou si elle reprend une respiration normale.</p>"));
+  add("r-sortie", ex("sortir d’un semi-rigide", "<p>La victime est en surface contre le boudin. Tu gonfles son gilet, tu lui retires les plombs et le bloc dans l’eau. Deux personnes à bord la saisissent sous les bras, une troisième aide dans l’eau, et on la fait passer d’un mouvement, en gardant la tête protégée. Puis : bilan, oxygène, alerte.</p>"));
+  add("r-acc", ex("le déni", "<p>« Non, non, c’est rien, j’ai dû me cogner. » Marc a des fourmillements dans le bras et refuse l’oxygène. Tu insistes calmement : « Ça ne coûte rien, et si c’est un accident de plongée, chaque minute compte. » Tu préviens le DP. Le déni est un signe fréquent : il ne doit pas retarder les secours.</p>"));
+
+  /* ---------- Nitrox ---------- */
+  add("nx-calculs", ex("la MOD pas à pas", "<p>Nitrox 36 %, Pp O₂ max 1,4 bar. Pression absolue max = 1,4 ÷ 0,36 = <b>3,89 bar</b>. Profondeur = (3,89 − 1) × 10 = <b>28,9 m</b>, arrondie prudemment à <b>28 m</b>. On arrondit toujours vers le moins profond pour la MOD.</p>"));
+  add("nx-toxo", ex("les signes d’alerte", "<p>À 34 m avec un Nitrox 40 %, un plongeur voit son champ de vision se rétrécir et ses lèvres trembler. Ce sont des signes possibles de toxicité neurologique de l’oxygène, qui peuvent précéder une <b>crise convulsive</b>. On remonte immédiatement de quelques mètres et on termine la plongée. Mieux : on ne dépasse jamais la MOD.</p>"));
+  add("nx-confirme", ex("le changement de gaz", "<p>En fin de plongée, à 6 m, tu passes sur un bloc à 80 % d’oxygène pour accélérer la décompression. Avant de respirer dessus, la palanquée vérifie : bon bloc, bonne profondeur (sous sa MOD), bon détendeur, et l’ordinateur basculé sur ce gaz. Se tromper de gaz en profondeur peut provoquer une crise hyperoxique.</p>")
+    + `<div class="callout trap"><span class="eyebrow">À faire valider</span><p>Mélanges et usages autorisés au Nitrox confirmé selon la FFESSM.</p></div>`);
+
+  /* ---------- Découverte et N1 : un exemple de plus ---------- */
+  add("n1-physique", ex("le gilet qui change", "<p>À 3 m, tu es bien équilibré. Tu descends à 15 m sans toucher à ton gilet : tu deviens de plus en plus lourd, parce que l’air du gilet et le néoprène s’écrasent. Tu ajoutes un peu d’air. En remontant, c’est l’inverse : l’air se dilate, tu purges régulièrement pour ne pas partir vers la surface.</p>"));
+  add("n1-secu", ex("la panne d’air", "<p>À 12 m, Paul te fait le signe « plus d’air ». Tu lui tends ton octopus, vous vous tenez par la sangle du gilet, et tu le montres au guide. La palanquée remonte ensemble, lentement. C’est un geste qu’on travaille en piscine pour qu’il devienne automatique.</p>"));
+
+  /* ---------- Notions du tuteur : Découverte et N1 ---------- */
+  C.notions = Object.assign(C.notions || {}, {
+    "d-bapteme": [["deroul", "Le déroulement du baptême", "bapteme|moniteur|age|enfant|certificat|tenu", "Le baptême"], ["resp", "Respirer avec un détendeur", "respir|detendeur|bouche|souffl|bulle", "Respirer"], ["prof", "La profondeur du baptême", "profond|metre|6 m|surface", "Profondeur"], ["souci", "Si ça ne va pas", "signe|souci|peur|remonte|probleme|panique", "Un souci"]],
+    "d-materiel": [["masque", "Le masque", "masque|nez|buee|sangle|vitre", "Masque"], ["bloc", "La bouteille", "bouteille|bloc|bar|air comprime|oxygene", "Bouteille"], ["detendeur", "Le détendeur", "detendeur|embout|octopus|deuxieme etage", "Détendeur"], ["gilet", "Le gilet et le lest", "gilet|lest|plomb|flott|combinaison", "Gilet"]],
+    "d-oreilles": [["equil", "Équilibrer ses oreilles", "oreille|equilibr|valsalva|pince|tympan|deglut", "Oreilles"], ["bloque", "Si ça bloque", "bloque|douleur|mal|force|remonte", "Si ça bloque"], ["masque", "Le masque et le nez", "masque|plaque|souffl.*nez", "Masque"], ["calme", "Rester calme", "calme|stress|lent|panique|peur", "Calme"]],
+    "n1-signes": [["ok", "« Ça va » et « ça ne va pas »", "ca va|rond|pouce.*index|oscille|ca ne va pas", "Ça va"], ["haut", "Monter, descendre", "pouce|monte|descend|remonte", "Pouce en haut"], ["air", "Panne d’air et réserve", "gorge|plus d.air|reserve|mi-pression|50 bar|manometre", "Main sur la gorge"], ["autres", "Froid, essoufflement, stop", "froid|essouffl|stop|ensemble|regarde|lampe", "Main qui oscille"]],
+    "n1-physique": [["press", "La pression augmente avec la profondeur", "pression|bar|10 m|absolue|profond", "La règle"], ["air", "L’air se comprime et se dilate", "volume|comprim|dilat|ballon|mariotte|poumon", "L’air"], ["gilet", "Le gilet et la flottabilité", "gilet|flott|leste|purge|poumon ballast|archimede", "Le gilet"], ["zone", "La zone des premiers mètres", "premiers metres|0.10|surface|zone|double", "La zone sensible"]],
+    "n1-accidents": [["oreille", "Les oreilles et le masque", "oreille|tympan|sinus|masque|plaqu", "Oreilles"], ["essouf", "L’essoufflement", "essouffl|co2|effort|souffl|courant", "Essoufflé"], ["froid", "Le froid", "froid|frisson|hypotherm|temperature", "Froid"], ["remontee", "La remontée et ses risques", "remont|apnee|surpression|bloque.*respir|vite|add|desatur", "Remontée"]],
+    "n1-secu": [["n1", "Ce que permet le N1", "n1|20 m|encadre|guide|prerogat", "N1"], ["palan", "La palanquée", "palanquee|binome|equipier|ensemble|groupe", "Palanquée"], ["panne", "La panne d’air", "panne|plus d.air|octopus|partag|reserve", "Panne d’air"], ["remontee", "Remonter et sortir", "remont|vitesse|palier|surface|bateau|bulles", "Remontée"]],
+    "n1-milieu": [["regle", "Regarder sans toucher", "touch|ramass|nourri|regarde|souvenir", "Règle"], ["stab", "Se stabiliser au-dessus du fond", "stabil|fond|palme|sable|ras", "Stabilisation"], ["posi", "La posidonie", "posidonie|herbier|plante|nurserie", "Posidonie"], ["dang", "Les espèces à connaître", "rascasse|vive|oursin|meduse|murene|pique|venin|brul", "Rascasse"]]
+  });
+})();
+
+/* 2.4 : les schémas en étapes deviennent du HTML (lisible sur mobile, même
+   animation étape par étape). Les schémas sont construits à l'affichage,
+   donc ce remplacement s'applique à tous les cours. */
+(function () {
+  "use strict";
+  const D = AA.content.dgb; if (!D) return;
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  D.flowSvg = D.flow;
+  D.flow = (steps, cap) => `<figure class="diagram anim hflow-fig"><ol class="hflow" role="list">${steps.map(([title, det], i) =>
+    `<li style="--i:${i}"><span class="hf-n">${i + 1}</span><span class="hf-b"><b>${esc(title)}</b>${det ? `<span>${esc(det)}</span>` : ""}</span></li>`).join("")}</ol><figcaption>${cap}</figcaption></figure>`;
+})();
+
 /* content/fr/qcm-audit.js */
 /* =====================================================================
    Abysse Academy 2.2.4 · audit des QCM
@@ -19814,6 +20401,553 @@ ${VAL}Le cursus nitrox confirmé (mélanges autorisés, Pp O₂ max de décompre
     (B.conds || []).forEach(c => { if (CO[c.id] && c.c && c.c.length === CO[c.id].length) c.c = CO[c.id]; });
     if (B.who) B.who.c = ["Le directeur de plongée, selon les prérogatives", "Le guide, selon le niveau de chacun", "Le plus qualifié de la palanquée", "Le DP pour la profondeur, le guide pour la durée"];
   }
+})();
+
+/* content/fr/stories-24.js */
+/* Abysse Academy · contenu FR · Aventures 2.4
+   Une aventure complète par niveau et par rôle : baptisé, encadré, autonome,
+   plongeur profond, guide, initiateur, moniteur, secouriste, nitrox.
+   Un mauvais choix avec « go » mène à sa conséquence : on peut se rattraper
+   (scène alt) ou l'aventure finit mal (end + bad), avec l'explication et une
+   reprise juste avant l'erreur. Les personnages et les sites sont inventés.
+   Les valeurs réglementaires suivent le Code du sport et la FFESSM au moment
+   de l'écriture : « À faire valider » auprès de ton moniteur. */
+(function () {
+  const C = AA.content;
+  const O = (t, e, m, go) => ({ t, ok: 1, e, m, go });
+  const X = (t, e, m, go) => (go ? { t, ok: 0, e, m, go } : { t, ok: 0, e, m });
+
+  /* ---------- Découverte : le baptême en mer ---------- */
+  C.addStory({
+    id: "bapt-mer", world: "decouverte", role: "Baptisé", icon: "wave", xp: 80, title: "Premières bulles en mer", sub: "Ton baptême depuis le bateau, avec Karim, ton moniteur.",
+    unlock: null, start: "a1", cast: { karim: "Karim, moniteur", ines: "Inès, ta sœur" },
+    nodes: {
+      a1: { depth: 0, scene: "Sur le ponton, 10 h. Soleil, eau à 21 °C.", who: "karim", text: "Avant de t’équiper, dis-moi s’il y a quelque chose que je dois savoir sur ta santé.", q: "Tu as eu un gros rhume la semaine dernière et ton nez est encore un peu bouché. Que réponds-tu ?",
+        choices: [
+          X("Je préfère ne pas en parler, sinon il risque d’annuler mon baptême.", "Un nez bouché empêche souvent d’équilibrer les oreilles. Le moniteur doit le savoir pour décider, et il préfère décaler qu’abîmer une oreille.", "d-oreilles"),
+          O("Je lui parle de mon rhume et du nez bouché, il décidera avec moi.", "Le moniteur a besoin de tout savoir pour ta sécurité. Ici, le nez se débouche bien en surface : il te fera descendre très doucement.", "d-oreilles", "a2"),
+          X("Je lui dis que tout va bien, un rhume guéri ne compte plus vraiment.", "Les sinus et la trompe d’Eustache restent souvent enflammés quelques jours. C’est justement l’info dont il a besoin.", "d-oreilles") ] },
+      a2: { depth: 0, scene: "Karim te tend un masque.", who: "karim", text: "Vérifie qu’il est à ta taille.", q: "Comment le vérifies-tu ?",
+        choices: [
+          X("Je serre la sangle au maximum pour qu’aucune goutte d’eau ne puisse entrer.", "Trop serré, il marque le visage et fuit même davantage. Un bon masque tient presque seul.", "d-materiel"),
+          X("Je choisis le plus grand modèle, il donne un champ de vision plus large.", "Un masque trop grand laisse entrer l’eau. La taille se choisit sur ton visage, pas sur le champ de vision.", "d-materiel"),
+          O("Je le pose sans la sangle et j’inspire par le nez : il doit tenir seul.", "C’est le test classique : s’il reste collé quand tu inspires par le nez, il est étanche. La sangle sert juste à le maintenir.", "d-materiel", "a3") ] },
+      a3: { depth: 0, scene: "Dans l’eau, tenue par Karim, la tête sous la surface.", text: "Tu entends ta respiration, fort. Ton cœur accélère un peu.", q: "Que fais-tu ?",
+        choices: [
+          X("J’enlève le détendeur pour reprendre une vraie bouffée d’air frais.", "Sans détendeur, la tête dans l’eau, tu bois la tasse. Le détendeur donne de l’air normal : c’est seulement le bruit qui surprend.", "d-bapteme", "a3b"),
+          O("Je souffle longuement par la bouche, puis j’inspire calmement.", "Souffler d’abord, longtemps : c’est ce qui calme le rythme. Le bruit des bulles devient vite rassurant.", "d-bapteme", "a4"),
+          X("Je respire vite et fort, pour être sûre d’avoir assez d’air.", "Respirer vite fatigue et augmente l’impression de manquer. On fait l’inverse : expiration longue, inspiration tranquille.", "d-bapteme") ] },
+      a3b: { depth: 0, alt: true, scene: "Tu as bu la tasse et tu tousses.", who: "karim", text: "Karim te tient, te remet le détendeur en bouche et te regarde dans les yeux. « Doucement. Souffle. »", q: "Et maintenant ?",
+        choices: [
+          X("Je lui fais tout de suite le signe « ça va » pour ne pas le décevoir.", "On fait « ça va » seulement quand c’est vrai. Le moniteur a besoin d’un signe honnête pour décider.", "d-bapteme"),
+          O("Je souffle longuement, puis je fais « ça va » quand c’est vrai.", "Bien rattrapé. Tu as compris qu’on garde le détendeur et que l’air arrive normalement.", "d-bapteme", "a4"),
+          X("Je lui fais signe de tout arrêter, j’ai compris que ce n’est pas pour moi.", "C’est possible, mais un incident comme ça se passe souvent en dix secondes. Essaie d’abord de respirer calmement avec lui.", "d-bapteme") ] },
+      a4: { depth: 2, scene: "Karim te fait descendre le long d’un rocher.", text: "À 2 m, tu sens une légère pression dans les oreilles.", q: "Que fais-tu ?",
+        choices: [
+          O("Je pince le nez et je souffle doucement, puis je recommence souvent.", "On équilibre tôt et souvent, avant d’avoir mal. Toujours en douceur.", "d-oreilles", "a5"),
+          X("J’attends d’avoir mal, comme ça je sais que c’est vraiment nécessaire.", "Attendre la douleur, c’est déjà trop tard : l’écart de pression est grand et plus difficile à rattraper.", "d-oreilles"),
+          X("J’ai déjà équilibré en surface, c’est fait pour toute la descente.", "La pression augmente à chaque mètre : il faut équilibrer pendant toute la descente.", "d-oreilles") ] },
+      a5: { depth: 4, scene: "4 m. L’oreille droite passe, la gauche reste bloquée et commence à faire mal.", q: "Que fais-tu ?",
+        choices: [
+          X("Je souffle très fort, nez pincé, pour que ça passe d’un coup.", "Un Valsalva en force peut léser l’oreille. On remonte un peu au lieu de forcer.", "d-oreilles", "a5bad"),
+          X("Je continue de descendre derrière Karim sans rien montrer, ça va passer.", "Plus tu descends, plus l’écart augmente : c’est le barotraumatisme assuré. Il faut prévenir.", "d-oreilles"),
+          O("Je montre mon oreille à Karim, on remonte d’un mètre et je réessaie.", "En remontant un peu, l’écart diminue et l’oreille se débloque plus facilement. Karim adapte la descente.", "d-oreilles", "a6") ] },
+      a5bad: { depth: 0, end: true, bad: true, retry: "a5", title: "Baptême écourté", text: "Une douleur vive, un vertige : Karim te ramène en surface. Le médecin parlera d’un barotraumatisme de l’oreille. Quelques semaines sans plonger.",
+        why: "Forcer sur une oreille bloquée crée une surpression brutale. Il fallait signaler, remonter un peu et réessayer doucement.", learn: ["On équilibre tôt, souvent et doucement.", "Oreille bloquée : on remonte d’un mètre, on ne force jamais.", "Toujours prévenir le moniteur par signe."] },
+      a6: { depth: 5, scene: "5 m. Karim fait un rond avec le pouce et l’index.", text: "Il attend ta réponse.", q: "Tout va bien. Quel signe fais-tu ?",
+        choices: [
+          X("Le pouce levé, comme on fait à terre pour dire que c’est super.", "Sous l’eau, le pouce levé veut dire « on remonte ». C’est le piège le plus courant du baptême.", "n1-signes"),
+          O("Le même rond pouce-index, pour répondre que tout va bien.", "Le rond, c’est « ça va ». Le pouce levé veut dire « on remonte ».", "n1-signes", "a7"),
+          X("Un hochement de tête, il voit très bien mon visage à travers le masque.", "Sous l’eau, on se comprend par des signes nets et convenus. Un mouvement de tête est trop flou.", "n1-signes") ] },
+      a7: { depth: 6, scene: "6 m. Un herbier de posidonie, un oursin violet, un poulpe qui se cache.", text: "Tu as très envie de toucher.", q: "Que fais-tu ?",
+        choices: [
+          X("Je ramène une petite étoile de mer en souvenir pour la montrer à Inès.", "Les animaux et les plantes restent dans l’eau. Une étoile de mer sortie de l’eau meurt.", "n1-milieu"),
+          X("Je caresse doucement l’oursin, il ne pique pas s’il ne bouge pas.", "Les piquants d’oursin cassent dans la peau et s’infectent. On regarde, on ne touche pas.", "n1-milieu"),
+          O("Je regarde de près sans toucher, palmes loin du fond.", "Regarder sans toucher protège le milieu et te protège aussi : piquants, brûlures, coupures.", "n1-milieu", "a8") ] },
+      a8: { depth: 4, scene: "Karim lève le pouce : on remonte.", text: "Tu as encore de l’air plein les poumons après une grande inspiration.", q: "Comment remontes-tu ?",
+        choices: [
+          O("Doucement, avec Karim, en respirant normalement tout le long.", "En remontant, l’air des poumons se dilate : on respire normalement pour qu’il s’échappe. Jamais d’apnée en remontant.", "d-bapteme", "a9"),
+          X("Je bloque ma respiration pour garder l’air jusqu’en surface.", "Bloquer sa respiration en remontant est la seule vraie faute grave du baptême : l’air se dilate dans les poumons.", "n1-physique", "a8bad"),
+          X("Je palme vite vers la lumière pour retrouver Inès plus tôt.", "Une remontée rapide est dangereuse. Karim règle la vitesse, tu le suis.", "d-bapteme") ] },
+      a8bad: { depth: 0, end: true, bad: true, retry: "a8", title: "Karim t’arrête net", text: "Karim a vu tes joues gonflées : il te tient fermement, te fait souffler et remonte très lentement. Rien de grave cette fois, mais il t’explique le danger en surface.",
+        why: "L’air dans les poumons se dilate quand la pression baisse (loi de Mariotte). En bloquant ta respiration, tu risques la surpression pulmonaire, même à quelques mètres.", learn: ["Jamais d’apnée en remontant.", "Respirer normalement, c’est laisser sortir l’air qui se dilate.", "Le moniteur règle la vitesse : on le suit."] },
+      a9: { depth: 0, scene: "Sur le bateau, une heure plus tard.", who: "ines", text: "Alors, c’était comment ? Tu fais une drôle de tête.", q: "Ton oreille gauche reste un peu bouchée. Que fais-tu ?",
+        choices: [
+          X("Je ne dis rien à Karim, ça partira tout seul cette nuit.", "C’est souvent vrai, mais le moniteur doit le savoir, et une douleur qui dure se fait voir par un médecin.", "d-oreilles"),
+          X("Je fais encore quelques Valsalva très forts pour la déboucher.", "Forcer sur une oreille irritée peut l’aggraver. Douceur, et un avis médical si ça dure.", "d-oreilles"),
+          O("Je le dis à Karim, et un médecin vérifie si ça dure.", "Une gêne qui persiste après la plongée se signale. Le médecin vérifie le tympan avant la prochaine plongée.", "d-oreilles", "end") ] },
+      end: { depth: 0, end: true, title: "Tu veux recommencer !", text: "Karim note ton baptême dans ton carnet. « Tu as bien respiré, tu as prévenu pour l’oreille, et tu n’as rien touché. Tu as le bon état d’esprit pour le Niveau 1. »",
+        learn: ["Tout dire au moniteur, même un rhume.", "Équilibrer tôt et en douceur ; remonter un peu si ça bloque.", "Le rond = ça va ; le pouce levé = on remonte.", "Jamais d’apnée en remontant."] }
+    }
+  });
+
+  /* ---------- N1 : encadré en mer ---------- */
+  C.addStory({
+    id: "n1-mer", world: "n1", role: "Plongeur encadré (N1)", icon: "users", xp: 80, title: "Le sec des Gorgones", sub: "Ta première vraie plongée en mer, encadrée par Maëlle, avec Paul.",
+    unlock: null, start: "b1", cast: { maelle: "Maëlle, guide de palanquée", paul: "Paul, N1 comme toi" },
+    nodes: {
+      b1: { depth: 0, scene: "Sur le bateau. Ton bloc est sanglé, détendeur monté.", text: "Maëlle te demande de vérifier ton matériel avant de t’équiper.", q: "Que vérifies-tu ?",
+        choices: [
+          X("Que le bloc est bien attaché au bateau ; le gonflage a été fait et vérifié ce matin.", "Gonflé ne veut pas dire ouvert ni en état. Chacun vérifie son air et ses détendeurs.", "n1-secu"),
+          X("Je garde le bloc fermé jusqu’à l’eau pour ne pas perdre d’air.", "Un bloc fermé à la mise à l’eau, c’est la panne d’air dès la première inspiration.", "n1-secu"),
+          O("J’ouvre le bloc, je lis la pression et je respire sur les deux détendeurs.", "Pression lue, deux détendeurs testés, gilet qui gonfle : tu sais que tout fonctionne avant de sauter.", "n1-secu", "b2") ] },
+      b2: { depth: 0, scene: "Briefing.", who: "maelle", text: "18 mètres maximum, 40 minutes, on revient avec au moins 50 bar. Vous restez près de moi.", q: "Quel est ton rôle dans cette palanquée ?",
+        choices: [
+          O("Rester près de Maëlle, surveiller Paul et lui montrer mon manomètre.", "Encadré ne veut pas dire passif : tu suis le guide, tu surveilles ton binôme et tu donnes ton air quand on te le demande.", "n1-secu", "b3"),
+          X("Profiter du paysage un peu à l’écart ; c’est elle qui gère la sécurité.", "Le guide est responsable, mais il compte sur toi : rester près, surveiller ton binôme, répondre aux signes.", "n1-secu"),
+          X("Gérer mon parcours avec mon ordinateur, je suis certifié maintenant.", "Le N1 plonge encadré jusqu’à 20 m (À faire valider) : c’est le guide qui choisit le parcours.", "n1-secu") ] },
+      b3: { depth: 0, scene: "Assis sur le boudin du bateau, dos à la mer.", text: "Maëlle compte « trois, deux, un ».", q: "Juste avant la bascule arrière ?",
+        choices: [
+          X("Je gonfle mon gilet à fond et je saute en avant pour mieux voir.", "Sur un semi-rigide, on bascule en arrière. Et c’est la main sur le masque qui compte, pas le saut.", "n1-secu"),
+          O("Une main sur le masque et le détendeur, je vérifie que derrière c’est libre.", "La main protège masque et détendeur au choc, et on évite de tomber sur quelqu’un.", "n1-secu", "b4"),
+          X("Je mettrai le détendeur en bouche une fois dans l’eau, pour ne pas le cogner.", "Détendeur en bouche avant de basculer : sinon tu arrives dans l’eau sans air, la tête en bas.", "n1-secu") ] },
+      b4: { depth: 4, scene: "Descente le long du bout. Paul est sous toi.", text: "Il s’arrête et se tient l’oreille.", q: "Que fais-tu ?",
+        choices: [
+          X("Je lui fais signe de continuer, ça finit toujours par passer.", "Continuer à descendre aggrave l’écart de pression. Il faut le dire au guide et attendre.", "n1-accidents"),
+          X("Je descends rejoindre Maëlle pour ne pas perdre la palanquée.", "Laisser son binôme en difficulté, c’est l’inverse de la palanquée. On reste ensemble.", "n1-secu"),
+          O("Je reste à côté de Paul et j’attire l’attention de Maëlle.", "Rester avec son binôme et prévenir le guide : elle va le faire remonter un peu pour équilibrer.", "n1-accidents", "b5") ] },
+      b5: { depth: 15, scene: "15 m. Les gorgones rouges. Eau à 16 °C.", text: "Ça fait 20 minutes. Tu frissonnes de plus en plus.", q: "Que fais-tu ?",
+        choices: [
+          O("Je fais le signe « j’ai froid » à Maëlle.", "Le froid fatigue, fait consommer plus et favorise l’accident de désaturation. Le guide raccourcit la plongée.", "n1-accidents", "b6"),
+          X("Je palme plus fort pour me réchauffer, sans déranger personne.", "Palmer fort augmente la consommation et l’essoufflement. Il faut prévenir.", "n1-accidents"),
+          X("J’attends la fin : il ne reste qu’une vingtaine de minutes.", "Vingt minutes à grelotter, c’est beaucoup. Le guide doit savoir pour décider.", "n1-accidents") ] },
+      b6: { depth: 16, scene: "16 m. Tu regardes ton manomètre sans qu’on te le demande.", text: "L’aiguille est sur 50 bar.", q: "Que fais-tu ?",
+        choices: [
+          X("J’attends que Maëlle me demande, pour ne pas interrompre la plongée.", "La réserve se signale tout de suite : c’est elle qui permet la remontée.", "n1-secu", "b6b"),
+          O("Je fais tout de suite le signe « réserve » à Maëlle.", "50 bar, c’est la réserve annoncée au briefing : on prévient sans attendre, et la palanquée remonte.", "n1-secu", "b7"),
+          X("Je respire moins souvent pour faire durer mon air jusqu’à la fin.", "Retenir sa respiration crée de l’essoufflement. On signale, on ne triche pas avec l’air.", "n1-physique") ] },
+      b6b: { depth: 16, alt: true, scene: "Cinq minutes plus tard.", who: "maelle", text: "Maëlle te demande ta pression. Tu lui montres : 30 bar. Elle fait aussitôt signe : on remonte.", q: "Comment réagis-tu ?",
+        choices: [
+          X("Je remonte vite devant tout le monde pour sortir avant de manquer d’air.", "Une remontée rapide expose à la surpression pulmonaire. Il reste de l’air : on remonte avec le guide, calmement.", "n1-physique"),
+          X("Je propose de rester encore un peu, il me reste quand même 30 bar.", "30 bar, c’est sous la réserve. On remonte maintenant.", "n1-secu"),
+          O("Je reste contre elle, je respire normalement et je remonte à son rythme.", "Bien rattrapé. La prochaine fois, signale la réserve dès que tu l’atteins.", "n1-secu", "b7") ] },
+      b7: { depth: 8, scene: "Remontée. Maëlle te tient par la sangle.", text: "Ton gilet commence à te tirer vers le haut.", q: "Que fais-tu ?",
+        choices: [
+          X("Je gonfle un peu plus le gilet pour me laisser porter doucement vers la surface.", "L’air du gilet se dilate en remontant : en ajouter, c’est partir en remontée « ballon ».", "n1-physique", "b7bad"),
+          O("Je purge un peu le gilet et je remonte lentement, à son rythme.", "En remontant, l’air du gilet se dilate : on purge régulièrement pour garder une remontée lente.", "n1-physique", "b8"),
+          X("Je palme vers le haut pour rester au niveau de Maëlle.", "Le problème vient du gilet qui se dilate : c’est lui qu’il faut purger.", "n1-physique") ] },
+      b7bad: { depth: 0, end: true, bad: true, retry: "b7", title: "Remontée en ballon", text: "Tu files vers la surface, Maëlle ne peut pas te retenir. En surface, elle t’oblige à rester au calme et prévient la directrice de plongée pour te surveiller.",
+        why: "L’air se dilate quand la pression baisse : un gilet qu’on gonfle en remontant t’emporte. Remontée trop rapide = risque de surpression pulmonaire et d’accident de désaturation.", learn: ["En remontant, on purge le gilet.", "La vitesse se règle sur le guide.", "Une remontée rapide se signale toujours au DP."] },
+      b8: { depth: 3, scene: "Palier de sécurité de quelques minutes à 3 m.", text: "Paul monte, descend, remonte.", q: "Et toi, comment tiens-tu le palier ?",
+        choices: [
+          X("Je m’accroche au bout du mouillage avec les deux mains pour ne plus bouger.", "Tenir le bout aide, mais la vraie technique, c’est la respiration et un gilet bien réglé.", "n1-physique"),
+          X("Je remonte en surface attendre, le palier de sécurité est facultatif.", "Recommandé, pas obligatoire, mais on ne quitte jamais sa palanquée pour sortir seul.", "n1-secu"),
+          O("Je me stabilise avec la respiration et je reste au niveau de Maëlle.", "Poumon ballast : inspirer fait monter un peu, expirer fait descendre. Et on reste groupés.", "n1-physique", "b9") ] },
+      b9: { depth: 0, scene: "Surface. Le bateau est à 30 m. Paul est essoufflé.", q: "Que faites-vous ?",
+        choices: [
+          O("Gilets gonflés, détendeur ou tuba en bouche, on fait signe au bateau.", "En surface, on flotte d’abord (gilet), on respire sans boire la tasse, puis on signale et on attend.", "n1-secu", "end"),
+          X("On retire les gilets pour nager plus vite jusqu’au bateau.", "Sans gilet, on ne flotte plus. On gonfle et on attend le bateau.", "n1-secu"),
+          X("Paul enlève son masque pour mieux respirer, je fais comme lui.", "Sans masque, les vagues arrivent dans le nez et on boit la tasse. On garde le masque.", "n1-secu") ] },
+      end: { depth: 0, end: true, title: "Une palanquée qui fonctionne", text: "Au débriefing, Maëlle sourit : « Tu as pensé à Paul, tu as signalé le froid et la réserve. Tu es un vrai équipier. »",
+        learn: ["Vérifier son air et ses deux détendeurs avant l’eau.", "Signaler froid, oreille et réserve tout de suite.", "Purger le gilet en remontant.", "En surface : gilet gonflé, masque gardé."] }
+    }
+  });
+
+  /* ---------- N2 : autonome dans le courant ---------- */
+  C.addStory({
+    id: "n2-courant", world: "n2", role: "Plongeur autonome (N2)", icon: "compass", xp: 90, title: "La dérive du Cap Rouge", sub: "Autonomie à 20 m avec Jade, quand le courant se lève.",
+    unlock: null, start: "c1", cast: { marc: "Marc, directeur de plongée", jade: "Jade, ta binôme N2" },
+    nodes: {
+      c1: { depth: 0, scene: "Bateau au mouillage. Le bout tire fort vers l’est.", who: "marc", text: "Il y a du courant aujourd’hui. Vous êtes en autonomie : 20 m maxi, 45 min. Présentez-moi votre plan.", q: "Dans quel sens partez-vous ?",
+        choices: [
+          X("Avec le courant, pour garder des forces au retour.", "Le retour se ferait alors à contre-courant, fatigués et avec moins d’air. C’est l’inverse qu’il faut.", "pa20"),
+          O("Face au courant, pour revenir avec lui vers le mouillage.", "On dépense ses forces au début, quand on est frais et qu’on a de l’air. Le retour se fait porté.", "pa20", "c2"),
+          X("Perpendiculaire au courant, comme ça il ne joue sur aucun des deux trajets.", "Le courant te fera dériver quand même. On part face à lui pour revenir porté.", "pa20") ] },
+      c2: { depth: 0, scene: "Marc regarde vos équipements.", who: "marc", text: "Vous avez de quoi vous signaler si vous sortez loin du bateau ?", q: "Que réponds-tu ?",
+        choices: [
+          X("Pas besoin, on remontera forcément le long du mouillage.", "Avec du courant, rater le mouillage arrive vite. Le parachute de palier est indispensable.", "pa20"),
+          O("Oui, un parachute avec son dévidoir, et on sait tous les deux le lancer.", "Un parachute bien lancé au palier montre ta position au bateau, même loin du mouillage.", "pa20", "c3"),
+          X("Oui, une lampe flash puissante, ça se voit de très loin même en plein jour.", "Une lampe aide la nuit. En plein jour, on se signale avec un parachute bien visible.", "pa20") ] },
+      c3: { depth: 3, scene: "Mise à l’eau. Le courant te tire déjà loin du bateau en surface.", q: "Comment descendez-vous ?",
+        choices: [
+          O("Le long du bout, en le tenant, et on se regroupe au fond.", "Le bout te guide et t’empêche de dériver pendant la descente.", "pa20", "c4"),
+          X("En pleine eau, chacun à son rythme, rendez-vous à 20 m.", "En pleine eau, le courant vous sépare et vous éloigne du mouillage.", "pa20"),
+          X("On attend en surface que le courant faiblisse avant de descendre.", "En surface, vous dérivez encore plus vite. On descend le long du bout.", "pa20") ] },
+      c4: { depth: 20, scene: "20 m. Ton ordinateur affiche 21,5 m.", who: "jade", text: "Jade te montre une murène plus bas, vers 26 m, et commence à descendre.", q: "Que fais-tu ?",
+        choices: [
+          X("Je la suis quelques mètres, juste le temps de voir la murène.", "La limite fixée est 20 m en autonomie (À faire valider) : elle protège de la narcose et de la décompression.", "regles", "c4b"),
+          X("Je reste à 20 m et je la regarde descendre, elle connaît ses limites.", "En autonomie, vous êtes responsables l’un de l’autre : on ne laisse pas son binôme dépasser.", "pa20"),
+          O("Je la retiens d’un signe ferme : 20 m, c’est la limite annoncée.", "En autonomie, le plan annoncé au DP est le contrat. Le binôme se rappelle les limites.", "regles", "c5") ] },
+      c4b: { depth: 26, alt: true, scene: "26 m. La murène est magnifique.", text: "Tu te sens léger, un peu euphorique. Jade rit dans son détendeur.", q: "Que faites-vous ?",
+        choices: [
+          X("On profite encore une minute, c’est juste une narcose légère.", "La narcose altère le jugement : on ne la sent jamais aussi forte qu’elle est. On remonte.", "dalton"),
+          O("On remonte au-dessus de 20 m ensemble et on vérifie nos paramètres.", "Bien rattrapé : remonter de quelques mètres fait passer la narcose. Vous le signalerez au DP.", "dalton", "c5"),
+          X("On descend un peu plus pour s’habituer à la profondeur.", "Plus profond = plus d’azote = narcose plus forte.", "dalton") ] },
+      c5: { depth: 18, scene: "18 m. Le courant forcit. Vous palmez fort sans avancer.", q: "Que faites-vous ?",
+        choices: [
+          X("On palme encore plus fort en pleine eau pour passer la pointe.", "Lutter contre le courant mène à l’essoufflement. On utilise le relief.", "physio"),
+          O("On se rapproche du fond, à l’abri des rochers, et on fait demi-tour.", "Près du fond, le courant est plus faible. Faire demi-tour plus tôt, c’est garder de l’air et des forces.", "physio", "c6"),
+          X("On se laisse porter par le courant, le bateau viendra nous chercher en surface à la fin.", "Vous risquez de sortir très loin du bateau. Mieux vaut faire demi-tour tant que c’est possible.", "pa20") ] },
+      c6: { depth: 18, scene: "Derrière un rocher.", who: "jade", text: "Jade respire très vite, à petites bouffées. Elle te fait signe qu’elle est essoufflée.", q: "Que fais-tu ?",
+        choices: [
+          X("On remonte vite vers la surface pour qu’elle respire mieux.", "Remonter vite en plein essoufflement, c’est le risque de surpression pulmonaire.", "accidents", "c6bad"),
+          O("Je la fais s’arrêter, s’accrocher et souffler longuement.", "L’essoufflement vient d’un excès de CO₂. On arrête l’effort et on souffle longuement pour l’évacuer.", "physio", "c7"),
+          X("Je lui donne mon octopus, elle doit manquer d’air.", "Elle a de l’air : c’est l’expiration qui est trop courte. Le remède, c’est l’arrêt et l’expiration longue.", "physio") ] },
+      c6bad: { depth: 0, end: true, bad: true, retry: "c6", title: "Sortie en catastrophe", text: "Vous jaillissez en surface loin du bateau. Jade tousse, a mal dans la poitrine. Marc déclenche l’alerte et l’oxygène.",
+        why: "En essoufflement, on expire mal : une remontée rapide avec des poumons pleins expose à la surpression pulmonaire. Il fallait d’abord arrêter l’effort et souffler.", learn: ["Essoufflement : arrêt, appui, expiration longue.", "On ne remonte qu’une fois la respiration calmée.", "Le courant se gère avec le relief, pas avec les jambes."] },
+      c7: { depth: 15, scene: "15 m. Jade respire calmement. Vous comparez vos manomètres.", text: "Toi : 90 bar. Jade : 60 bar.", q: "Que faites-vous ?",
+        choices: [
+          O("On commence le retour : la plus basse pression décide pour la palanquée.", "La palanquée se règle sur celui qui a le moins d’air. Il faut garder de quoi remonter et faire le palier.", "pa20", "c8"),
+          X("On continue un peu : j’ai encore 90 bar, je peux lui en donner.", "Ton air est ta réserve de secours, pas un supplément. On gère avec celui qui a le moins.", "pa20"),
+          X("On continue jusqu’à ce que Jade arrive à 50 bar pile, puis on remonte tranquillement.", "À 50 bar, il faut déjà être en route : remontée, palier et imprévus consomment.", "materiel") ] },
+      c8: { depth: 5, scene: "5 m. Le mouillage est introuvable. Vous dérivez.", q: "Que faites-vous ?",
+        choices: [
+          X("On redescend chercher le mouillage au fond tant qu’on a de l’air.", "Chercher au fond use l’air et le temps. Le palier se fait là où vous êtes.", "pa20"),
+          X("On saute le palier pour se montrer plus vite en surface.", "Le palier de sécurité est recommandé, et rien ne presse : le parachute vous signale.", "deco"),
+          O("On lance le parachute et on fait le palier en dérivant.", "Le parachute signale votre position, et vous faites le palier tranquillement en dérivant ensemble.", "deco", "c9") ] },
+      c9: { depth: 0, scene: "Surface. Le bateau est à 300 m, il vous a vus.", q: "En attendant le bateau ?",
+        choices: [
+          X("On nage vers la côte à 500 m, en laissant le parachute.", "Sans parachute, on vous perd de vue. Et nager contre le courant épuise.", "pa20"),
+          O("Gilets gonflés, ensemble, parachute bien haut, et on attend.", "En surface : flotter, rester groupés, rester visibles. C’est le bateau qui vient à vous.", "pa20", "end"),
+          X("On se sépare un peu pour être repérés de deux endroits à la fois.", "Séparés, vous êtes plus difficiles à récupérer. On reste ensemble.", "pa20") ] },
+      end: { depth: 0, end: true, title: "Récupérés au large", text: "Marc vous récupère : « Le courant a forci plus que prévu. Vous avez fait demi-tour, géré l’essoufflement et lancé le parachute. C’est ça, être autonome. »",
+        learn: ["Partir face au courant, revenir avec lui.", "La plus basse pression décide pour la palanquée.", "Essoufflement : arrêt et expiration longue.", "Parachute au palier si on rate le mouillage."] }
+    }
+  });
+
+  /* ---------- N3 : autonome en profondeur ---------- */
+  C.addStory({
+    id: "n3-tombant", world: "n3", role: "Plongeur autonome (N3)", icon: "gauge", xp: 100, title: "Le tombant des Cinquante", sub: "Plongée autonome à 50 m avec Lina et Rémi. Gaz, narcose, froid.",
+    unlock: null, start: "d1", cast: { lina: "Lina, N3", remi: "Rémi, N3", dp: "Odile, directrice de plongée" },
+    nodes: {
+      d1: { depth: 0, scene: "Préparation. Blocs de 15 L à 230 bar, deux premiers étages chacun.", who: "dp", text: "Vous êtes autonomes jusqu’à 50 m. Quelle est votre règle d’air ?", q: "Quelle règle choisissez-vous ?",
+        choices: [
+          X("Remonter à 50 bar comme à 20 m : la règle de réserve reste la même quelle que soit la profondeur.", "À 50 m, on consomme beaucoup plus : 50 bar au fond ne suffisent peut-être pas pour remonter, faire les paliers et aider.", "n3-autonomie"),
+          O("Une pression de retour qui couvre la remontée, les paliers et un équipier.", "En profondeur, on calcule la réserve : remontée, paliers et partage d’air avec un équipier en panne.", "n3-autonomie", "d2"),
+          X("On remontera à l’alarme de l’ordinateur, il est réglé pour ça.", "L’alarme est une aide. La pression de retour se décide et s’annonce avant, pour toute la palanquée.", "n3-autonomie") ] },
+      d2: { depth: 0, scene: "Rémi fait ses calculs sur son ardoise.", who: "remi", text: "Je consomme 20 litres par minute en surface. Et à 50 m ?", q: "Sa consommation au fond ?",
+        choices: [
+          X("100 L/min", "Tu as multiplié par la pression relative (5 bar). Il faut la pression absolue : 6 bar.", "n3-physique"),
+          X("70 L/min", "La consommation se multiplie par la pression absolue : 20 × 6.", "n3-physique"),
+          O("120 L/min", "20 L/min × 6 bar (pression absolue à 50 m) = 120 L/min. Un bloc se vide six fois plus vite qu’en surface.", "n3-physique", "d3") ] },
+      d3: { depth: 40, scene: "Descente rapide le long du tombant. 40 m.", text: "Lina fixe le bleu, la main immobile sur le tombant. Elle met longtemps à répondre au « ça va ».", q: "Que fais-tu ?",
+        choices: [
+          O("Je lui prends le bras, on remonte de quelques mètres et on observe.", "Réponse lente et regard fixe : narcose possible. Quelques mètres plus haut, elle s’atténue.", "n3-accidents", "d4"),
+          X("On continue jusqu’à 50 m, la narcose s’atténue en s’habituant.", "La narcose dépend de la profondeur : elle ne passe pas en continuant à descendre.", "n3-accidents"),
+          X("Je la laisse se reprendre seule pendant que je surveille Rémi.", "Une équipière narcosée ne se surveille pas de loin : contact, remontée de quelques mètres.", "n3-accidents") ] },
+      d4: { depth: 45, scene: "45 m. Lina va mieux. Vous comparez les ordinateurs.", text: "Celui de Rémi annonce plus de paliers que le tien.", q: "Lequel suivez-vous ?",
+        choices: [
+          X("Le mien, il est plus récent et je l’ai mieux réglé.", "On ne choisit pas l’ordinateur qui arrange. La palanquée suit le plus pénalisant.", "n3-deco"),
+          O("Celui de Rémi : le plus pénalisant décide pour toute la palanquée.", "Les ordinateurs calculent différemment. Toute la palanquée suit celui qui demande le plus de paliers.", "n3-deco", "d5"),
+          X("On fait la moyenne des deux ordinateurs pour ne pas rallonger inutilement les paliers.", "Une moyenne n’a aucun sens pour la décompression. On suit le plus pénalisant.", "n3-deco") ] },
+      d5: { depth: 45, scene: "Eau à 13 °C. Le détendeur de Rémi se met en débit continu.", text: "Un torrent de bulles. Il te regarde.", q: "Que fait la palanquée ?",
+        choices: [
+          X("Il respire dessus en le tenant entrouvert jusqu’à la fin de la plongée.", "Possible quelques secondes, mais à 45 m le bloc se vide très vite. Il faut fermer le robinet en panne.", "n3-materiel"),
+          O("Il ferme le robinet de ce premier étage et passe sur son second détendeur.", "Deux premiers étages indépendants servent exactement à ça. On fait la fin de plongée prévue, sans profondeur en plus.", "n3-materiel", "d6"),
+          X("On remonte tout de suite, en direct, sans faire de paliers.", "Le débit continu ne justifie pas de sauter les paliers : c’est un ADD presque assuré.", "n3-deco", "d5bad") ] },
+      d5bad: { depth: 0, end: true, bad: true, retry: "d5", title: "Paliers sautés", text: "En surface, une heure plus tard, Rémi ne sent plus ses jambes. Odile lance l’alerte et l’oxygène. Il part en caisson.",
+        why: "Après 45 m, l’azote dissous doit sortir doucement, pendant les paliers. Le débit continu se règle en fermant le premier étage en panne ; on garde la remontée et les paliers prévus.", learn: ["Deux premiers étages : on ferme celui qui est en panne.", "Un incident ne fait jamais sauter les paliers.", "Prévoir un bloc ou des détendeurs adaptés à l’eau froide."] },
+      d6: { depth: 30, scene: "Remontée vers les paliers.", q: "À quelle vitesse ?",
+        choices: [
+          X("Celle du plus rapide d’entre nous, pour rester groupés.", "On se règle sur l’ordinateur et sur le plus lent, pas sur le plus rapide.", "n3-deco"),
+          X("Vite jusqu’au premier palier : avant celui-ci, l’azote dissous ne pose pas de problème.", "La vitesse compte sur toute la remontée. Trop vite, on fabrique des bulles avant même le palier.", "n3-deco"),
+          O("Lente et régulière, comme l’indique l’ordinateur, encore plus près de la surface.", "La remontée fait partie de la décompression. Près de la surface, la pression change le plus vite en proportion.", "n3-deco", "d7") ] },
+      d7: { depth: 6, scene: "Palier. Il reste 9 minutes à faire.", who: "lina", text: "Lina te montre son manomètre : 40 bar. Elle grelotte.", q: "Que faites-vous ?",
+        choices: [
+          O("Je partage mon air avec elle au palier et on lance le parachute.", "Elle respire sur ton octopus, vous finissez les paliers ensemble, et le parachute alerte la surface.", "n3-autonomie", "d8"),
+          X("Elle sort seule, il ne lui reste que quelques minutes de palier.", "Sortir avec des paliers non faits, seule, c’est cumuler deux risques. On partage l’air.", "n3-deco"),
+          X("On réduit tous les paliers de moitié pour qu’elle tienne avec son air.", "Les paliers ne se négocient pas. C’est l’air qu’on partage.", "n3-deco") ] },
+      d8: { depth: 0, scene: "Sur le bateau.", who: "remi", text: "On refait 40 m cet après-midi ?", q: "Que décidez-vous ?",
+        choices: [
+          X("On garde 40 m, l’ordinateur gère très bien la plongée successive.", "L’ordinateur calcule, mais il ne connaît ni le froid ni les incidents. On prévoit plus doux.", "n3-deco"),
+          O("Une plongée plus douce et moins profonde, toujours avec l’ordinateur.", "Après une plongée profonde, froide et agitée, on choisit une successive plus courte et moins profonde.", "n3-deco", "d9"),
+          X("On plonge l’après-midi à 50 m pour finir le tombant qu’on n’a pas vu.", "Une successive plus profonde que la première charge encore plus en azote : on fait l’inverse.", "n3-deco") ] },
+      d9: { depth: 0, scene: "Une demi-heure plus tard.", who: "lina", text: "J’ai des démangeaisons sur le ventre, et des marbrures violettes.", q: "Que fais-tu ?",
+        choices: [
+          X("Ce sont sûrement des piqûres de méduse, on met du vinaigre et on surveille.", "Démangeaisons et marbrures après une plongée profonde : on pense d’abord accident de désaturation cutané.", "n3-accidents"),
+          X("Un bain chaud au port pour relancer la circulation.", "Pas de bain chaud : on traite comme un ADD, oxygène et alerte.", "n3-accidents"),
+          O("Je pense à un ADD cutané : oxygène, alerte d’Odile, surveillance.", "Les marbrures sont une forme d’ADD qui peut évoluer. Oxygène, alerte, transport selon l’avis médical.", "n3-accidents", "end") ] },
+      end: { depth: 0, end: true, title: "Décisions de N3", text: "Lina est traitée à temps et récupère sans séquelle. Odile conclut : « Gaz calculés, narcose repérée, panne gérée, paliers tenus. Vous avez été autonomes jusqu’au bout. »",
+        learn: ["À 50 m, on consomme 6 fois plus qu’en surface.", "Narcose : on remonte de quelques mètres.", "Débit continu : fermer le premier étage en panne.", "Le plus pénalisant des ordinateurs décide."] }
+    }
+  });
+
+  /* ---------- N4 : guide de palanquée ---------- */
+  C.addStory({
+    id: "n4-guide", world: "n4", role: "Guide de palanquée (N4)", icon: "flag", xp: 110, title: "Guide d’un jour", sub: "Tu emmènes trois N1 sur l’épave. Ils comptent sur toi.",
+    unlock: null, start: "g1", cast: { claire: "Claire, directrice de plongée", theo: "Théo, N1", anna: "Anna, N1", sofiane: "Sofiane, N1" },
+    nodes: {
+      g1: { depth: 0, scene: "Sur le bateau.", who: "claire", text: "Tu prends Anna, Théo et Sofiane, trois N1. 20 m maximum, 40 minutes.", q: "Avant de t’équiper, que fais-tu ?",
+        choices: [
+          X("Je vérifie seulement ma bouteille et mon gilet, chacun gère son propre matériel.", "Le guide vérifie que sa palanquée est prête : niveau, expérience, matériel, état du jour.", "n4-guide"),
+          O("Je fais connaissance : expérience, dernière plongée, matériel, forme du jour.", "Savoir qui tu emmènes te permet d’adapter le parcours et de repérer celui qu’il faudra surveiller de plus près.", "n4-guide", "g2"),
+          X("Je regarde leurs cartes de niveau, le reste les regarde.", "La carte dit ce qu’ils peuvent faire, pas comment ils vont aujourd’hui ni depuis quand ils n’ont pas plongé.", "n4-guide") ] },
+      g2: { depth: 0, scene: "Briefing.", text: "Théo n’a pas plongé depuis deux ans. Anna a un gilet neuf.", q: "Que dois contenir ton briefing ?",
+        choices: [
+          X("Les poissons qu’on va voir et le plan de l’épave, pour qu’ils en profitent.", "C’est bien pour la motivation, mais il manque l’essentiel : paramètres, signes, conduite en cas de problème.", "n4-guide"),
+          X("Mes paliers et ma consommation, pour qu’ils sachent quand me suivre.", "Ce sont leurs paramètres à eux qui comptent : pression de retour, profondeur, signes.", "n4-guide"),
+          O("Profondeur, durée, pression de retour, signes, et quoi faire si on se perd.", "Un briefing de guide pose les limites et prépare les incidents. Les N1 doivent savoir quoi faire sans toi.", "n4-guide", "g3") ] },
+      g3: { depth: 0, scene: "En surface, à côté du bateau.", text: "Théo respire vite et serre ton bras.", q: "Que fais-tu ?",
+        choices: [
+          O("Je reste avec lui, je le rassure et on descend quand il respire calmement.", "Un plongeur stressé en surface sera stressé au fond. On prend deux minutes : c’est de la sécurité.", "n4-assistance", "g4"),
+          X("Je le fais descendre tout de suite en le tenant, sous l’eau ça va passer tout seul.", "Le stress augmente souvent sous l’eau. On ne descend qu’avec un plongeur calme.", "n4-assistance"),
+          X("Je l’envoie sur le bateau sans lui demander son avis.", "Ça peut être la bonne décision, mais d’abord on essaie de l’apaiser et on décide avec lui.", "n4-guide") ] },
+      g4: { depth: 15, scene: "15 m, sur l’épave.", q: "Comment places-tu ta palanquée ?",
+        choices: [
+          X("Derrière moi en file, je me retourne de temps en temps.", "Derrière toi, tu ne les vois pas. Un incident peut durer longtemps avant que tu le remarques.", "n4-guide"),
+          O("À côté ou juste devant moi, dans mon champ de vision.", "Le guide voit toujours sa palanquée et vérifie chacun souvent, surtout Théo.", "n4-guide", "g5"),
+          X("Libres autour de l’épave, je les regroupe pour la remontée.", "Des N1 encadrés restent avec leur guide pendant toute la plongée.", "n4-guide") ] },
+      g5: { depth: 18, scene: "18 m.", text: "Anna monte sans le vouloir : déjà 4 m au-dessus de vous, elle tâtonne sur son gilet neuf.", q: "Que fais-tu ?",
+        choices: [
+          X("Je fais signe aux autres d’attendre et je la regarde : elle va gérer.", "Une remontée non contrôlée ne se règle pas seule. Le guide intervient vite.", "n4-assistance", "g5bad"),
+          X("Je fonce sous elle et je la pousse vers le bas par les palmes.", "On la saisit et on purge son gilet. La pousser par les palmes ne freine pas une remontée.", "n4-assistance"),
+          O("Je la rattrape, je la saisis et je purge son gilet pour freiner.", "Vite, mais en gardant un œil sur les deux autres : tu purges et tu ralentis. Puis tu regroupes.", "n4-assistance", "g6") ] },
+      g5bad: { depth: 0, end: true, bad: true, retry: "g5", title: "Anna remonte seule", text: "Anna arrive en surface en quelques secondes. Tu dois remonter les deux autres pour la rejoindre. Claire la met sous oxygène par précaution.",
+        why: "Un plongeur en remontée incontrôlée ne peut souvent plus s’arrêter : le gilet se dilate. Le guide intervient tout de suite, puis regroupe sa palanquée.", learn: ["Remontée incontrôlée : saisir et purger.", "Gilet neuf = le faire essayer avant la plongée.", "Tout incident de remontée se signale au DP."] },
+      g6: { depth: 18, scene: "Palanquée regroupée.", text: "Sofiane te fait le signe : plus d’air.", q: "Que fais-tu ?",
+        choices: [
+          X("Je lui donne mon octopus et je laisse les deux autres finir le tour.", "On ne disperse jamais la palanquée pendant un incident. Tout le monde remonte.", "n4-assistance"),
+          O("Je lui donne mon octopus, je le tiens, je regroupe et on remonte tous.", "Air d’abord, contact ensuite, palanquée regroupée, remontée contrôlée.", "n4-assistance", "g7"),
+          X("Je fais passer l’octopus de Théo à Sofiane, il est plus près de lui.", "Théo est N1 et nerveux. C’est le guide qui donne son air et qui contrôle la remontée.", "n4-assistance") ] },
+      g7: { depth: 5, scene: "5 m. Tu tiens Sofiane. Anna et Théo dérivent un peu.", q: "Pendant le palier ?",
+        choices: [
+          X("Je raccourcis le palier pour limiter la dérive.", "La dérive se gère avec le parachute et le regroupement, pas en coupant le palier.", "n4-deco"),
+          X("Je fais remonter Anna et Théo d’abord, ensemble, et je reste au palier avec Sofiane.", "On ne fait pas sortir des N1 seuls. La palanquée sort ensemble.", "n4-guide"),
+          O("Parachute lancé, tous regroupés autour de moi, je surveille air et signes.", "Le parachute te signale, le regroupement te permet de surveiller les quatre.", "n4-guide", "g8") ] },
+      g8: { depth: 0, scene: "À bord.", who: "claire", text: "Alors, cette plongée ?", q: "Que lui dis-tu ?",
+        choices: [
+          O("La panne d’air et le gilet d’Anna, avec heures et profondeurs, et je surveille.", "Le DP doit tout savoir pour surveiller, compléter la fiche de sécurité et décider de la suite.", "n4-resp", "end"),
+          X("Rien de particulier : tout s’est bien fini, personne n’est blessé, inutile de l’inquiéter.", "Un incident sans blessé se signale quand même : des signes peuvent apparaître plus tard.", "n4-resp"),
+          X("J’en parlerai au débriefing de fin de semaine, avec tout le monde.", "Le DP a besoin de l’info maintenant, pour surveiller les plongeurs concernés.", "n4-resp") ] },
+      end: { depth: 0, end: true, title: "Une palanquée ramenée", text: "Claire note tout sur la fiche. « Tu les as vus, tu as réagi vite, et tu me dis tout. C’est exactement ce que j’attends d’un guide. »",
+        learn: ["Connaître sa palanquée avant l’eau.", "Les garder dans son champ de vision.", "Remontée incontrôlée : saisir et purger.", "Tout incident se dit au DP, tout de suite."] }
+    }
+  });
+
+  /* ---------- E1 : initiateur en piscine ---------- */
+  C.addStory({
+    id: "e1-piscine", world: "e1", role: "Initiateur (E1)", icon: "teach", xp: 100, title: "Le mardi soir des débutants", sub: "Ta première séance d’initiateur en piscine, sous la responsabilité d’Hélène.",
+    unlock: null, start: "p1", cast: { helene: "Hélène, monitrice responsable", lea: "Léa, débutante", tom: "Tom, débutant" },
+    nodes: {
+      p1: { depth: 0, scene: "Bord du bassin, 20 h.", who: "helene", text: "Je te confie trois débutants. L’objectif du jour : vider son masque.", q: "Comment prépares-tu ta séance ?",
+        choices: [
+          X("Je montre toutes les techniques de vidage d’un coup pour gagner du temps.", "Trop d’infos à la fois, rien ne reste. Un objectif, des étapes, une technique.", "e1-cours"),
+          O("Un objectif, des étapes simples, le matériel prêt et ma place dans l’eau.", "Une séance se prépare : objectif, progression, matériel, sécurité. Tu sais où tu vas.", "e1-cours", "p2"),
+          X("Je verrai sur place selon leur forme, c’est plus naturel.", "S’adapter, oui, mais à partir d’un plan. Sans plan, on improvise la sécurité aussi.", "e1-cours") ] },
+      p2: { depth: 0, scene: "Les trois débutants t’attendent dans le petit bain.", q: "Comment présentes-tu le geste ?",
+        choices: [
+          X("Je l’explique au bord pendant vingt minutes, avec tous les détails.", "Les débutants retiennent peu d’un long discours. Ils retiennent ce qu’ils voient et ce qu’ils font.", "e1-apprendre"),
+          X("Je les laisse essayer seuls dans le grand bain, on apprend en se trompant.", "Essayer, oui, mais dans un cadre sûr et après une démonstration.", "e1-apprendre"),
+          O("Je montre lentement, j’explique pourquoi en une phrase, puis ils essaient.", "Démonstration, explication courte, essai : c’est la base d’un apprentissage efficace.", "e1-apprendre", "p3") ] },
+      p3: { depth: 2, scene: "2 m. Léa laisse entrer l’eau dans son masque.", text: "Elle panique, gestes rapides, et pousse sur ses palmes vers le haut.", q: "Que fais-tu ?",
+        choices: [
+          O("Je la tiens doucement, regard dans les yeux, je lui montre de souffler par le nez.", "Contact, calme, consigne simple. Si ça ne passe pas, on remonte ensemble, calmement.", "e1-exercices", "p4"),
+          X("Je la laisse remonter seule au bord et je continue l’exercice avec les deux autres au fond.", "Un élève qui panique ne remonte jamais seul : on l’accompagne, et on ne laisse pas les autres sans surveillance.", "e1-public", "p3b"),
+          X("Je lui retire son masque pour qu’elle voie que ce n’est pas grave.", "Retirer le masque d’une élève qui panique la met encore plus en difficulté.", "e1-exercices") ] },
+      p3b: { depth: 0, alt: true, scene: "Léa est au bord, en larmes. Tom et Lucas sont seuls au fond.", q: "Que fais-tu ?",
+        choices: [
+          X("Je reste avec Léa jusqu’à la fin, les deux autres continuent seuls.", "Des débutants seuls au fond, même en piscine, ce n’est pas possible.", "e1-cadre"),
+          O("Je fais remonter les deux autres, je rassure Léa, et on reprend en petit fond.", "Bien rattrapé : tout le monde regroupé, puis l’exercice reprend là où Léa a pied.", "e1-public", "p4"),
+          X("J’appelle Hélène pour qu’elle prenne Léa en charge et je replonge vite rejoindre les autres.", "Hélène peut aider, mais tes deux élèves sont seuls au fond pendant ce temps. On regroupe d’abord.", "e1-cadre") ] },
+      p4: { depth: 2, scene: "Le groupe reprend l’exercice.", q: "Où te places-tu ?",
+        choices: [
+          X("Derrière eux, pour ne pas les gêner du regard.", "Derrière, tu ne vois ni leurs yeux ni leurs gestes, et ils ne voient pas tes signes.", "e1-exercices"),
+          O("Face à eux, à portée de main, en voyant tout le groupe.", "Face à eux, tu vois tout le monde, tu montres le geste et tu peux intervenir tout de suite.", "e1-exercices", "p5"),
+          X("Au bord, debout, pour avoir une vue d’ensemble du bassin.", "Du bord, tu ne peux pas intervenir vite. L’initiateur est dans l’eau avec ses élèves.", "e1-exercices") ] },
+      p5: { depth: 2, scene: "Tom vide son masque tête baissée. L’eau reste dedans.", q: "Comment corriges-tu ?",
+        choices: [
+          X("Je lui dis devant le groupe que c’est faux et je passe au suivant.", "Corriger sans montrer la solution ni encourager décourage. On valorise l’essai et on montre.", "e1-apprendre"),
+          O("Je valorise l’essai, je montre la tête relevée, et il recommence.", "Une correction : un point positif, un seul conseil précis, un nouvel essai.", "e1-apprendre", "p6"),
+          X("Je ne corrige pas, il trouvera tout seul avec le temps.", "Sans correction, il prend une mauvaise habitude. Un conseil précis fait gagner beaucoup de temps.", "e1-apprendre") ] },
+      p6: { depth: 0, scene: "Hélène arrive avec un garçon de 10 ans.", who: "helene", text: "Hugo veut essayer avec ton groupe.", q: "Comment fais-tu ?",
+        choices: [
+          X("La même séance que les adultes, avec les mêmes consignes : les règles sont pareilles pour tous.", "Un enfant n’apprend pas comme un adulte : concentration plus courte, froid plus vite, matériel adapté.", "e1-public"),
+          X("Je le laisse jouer en surface pendant que les adultes travaillent.", "Il est venu pour plonger : on l’intègre avec une séance adaptée, sous surveillance.", "e1-public"),
+          O("Matériel à sa taille, consignes courtes et ludiques, séance plus courte, petit fond.", "Les enfants : matériel adapté, jeu, séances courtes, faible profondeur (règles enfants : À faire valider).", "e1-public", "p7") ] },
+      p7: { depth: 2, scene: "Fin d’exercice.", who: "tom", text: "On peut aller voir la fosse à 6 mètres ?", q: "Que réponds-tu ?",
+        choices: [
+          O("Pas ce soir : on reste dans l’espace et la profondeur prévus par Hélène.", "L’initiateur travaille dans le cadre fixé par le moniteur responsable, dans ses prérogatives (À faire valider).", "e1-cadre", "p8"),
+          X("Oui, c’est la piscine, il n’y a aucun risque.", "Même en piscine, la pression agit sur les oreilles, et ce n’était pas prévu.", "e1-cadre", "p7bad"),
+          X("Oui, mais seulement avec Tom, il est le plus à l’aise du groupe.", "Laisser le groupe pour emmener un seul élève plus profond, c’est sortir du cadre et de la surveillance.", "e1-cadre") ] },
+      p7bad: { depth: 0, end: true, bad: true, retry: "p7", title: "Séance arrêtée", text: "Dans la fosse, Léa a mal aux oreilles et remonte vite. Hélène arrête ta séance et t’explique ce qui ne va pas.",
+        why: "Tes élèves n’avaient jamais dépassé 2 m. En descendant à 6 m sans préparation, tu sors du cadre fixé et tu les exposes au barotraumatisme.", learn: ["On reste dans le cadre fixé par le responsable.", "Une nouvelle profondeur se prépare.", "L’initiateur garde toujours son groupe ensemble."] },
+      p8: { depth: 0, scene: "Bord du bassin.", q: "Comment termines-tu ?",
+        choices: [
+          X("Je liste toutes leurs erreurs pour qu’ils les corrigent la prochaine fois.", "Une liste d’erreurs décourage. On valorise le progrès et on donne une seule piste.", "e1-cours"),
+          O("Je leur demande leur ressenti, je souligne un progrès et l’étape suivante.", "Un bon bilan : ils parlent d’abord, tu valorises, tu annonces la suite.", "e1-cours", "p9"),
+          X("Pas de bilan, on a déjà fini un peu en retard.", "Le bilan est court mais indispensable : c’est là que la séance s’ancre.", "e1-cours") ] },
+      p9: { depth: 0, scene: "Vestiaire.", who: "helene", text: "Raconte-moi ta séance.", q: "Que lui dis-tu ?",
+        choices: [
+          X("Que tout s’est très bien passé, pour ne pas l’inquiéter.", "Hélène est responsable : elle doit connaître la panique de Léa pour suivre l’élève.", "e1-cadre"),
+          X("Uniquement ce qui a raté pendant la séance, pour qu’elle me donne des conseils précis.", "Dis aussi ce qui a marché : c’est utile pour la suite du groupe et pour toi.", "e1-cadre"),
+          O("Ce qui a marché, la panique de Léa, et ce que je propose la prochaine fois.", "Un compte rendu honnête et des propositions : c’est comme ça qu’on progresse comme initiateur.", "e1-cadre", "end") ] },
+      end: { depth: 0, end: true, title: "Une vraie séance", text: "Hélène : « Tu as préparé, montré, corrigé avec bienveillance, et tu es resté dans le cadre. Mardi prochain, on travaille le lâcher-reprise d’embout. »",
+        learn: ["Un objectif par séance.", "Démonstration, explication courte, essai.", "Face aux élèves, à portée de main.", "On reste dans le cadre fixé par le responsable."] }
+    }
+  });
+
+  /* ---------- E2 : moniteur en mer ---------- */
+  C.addStory({
+    id: "e2-mer", world: "e2", role: "Moniteur (E2)", icon: "shield", xp: 110, title: "Deux N1 au sec de la Tortue", sub: "Tu enseignes en mer à Clara et Yanis, puis tu dois évaluer.",
+    unlock: null, start: "m1", cast: { bastien: "Bastien, directeur de plongée", clara: "Clara, élève N1", yanis: "Yanis, élève N1" },
+    nodes: {
+      m1: { depth: 0, scene: "Préparation de la séance.", text: "Objectif : lâcher et reprendre l’embout, puis respirer sur l’octopus d’un équipier, à 6 m.", q: "Comment construis-tu la séance ?",
+        choices: [
+          X("Les deux exercices en même temps, à 6 m, pour qu’ils voient tout de suite le lien entre les deux.", "Deux nouveautés à la fois, c’est trop. On enchaîne : une compétence maîtrisée, puis la suivante.", "e2-n1mer"),
+          X("Toute la séance en pleine eau à 15 m, pour être en conditions réelles.", "Une nouvelle compétence s’apprend près d’un fond, peu profond. Les conditions réelles viennent ensuite.", "e2-n1mer"),
+          O("Un exercice à la fois, près d’un fond, démonstration puis essai, avec un signe d’arrêt.", "Progression, fond proche, démonstration, signe d’arrêt : l’élève apprend en sécurité.", "e2-n1mer", "m2") ] },
+      m2: { depth: 0, scene: "Avant de partir.", who: "bastien", text: "Tu pars où, avec qui ?", q: "Que lui annonces-tu ?",
+        choices: [
+          O("Objectif, zone, profondeur, durée et heure de retour, et le niveau des élèves.", "Le DP organise la sécurité de toutes les palanquées : il a besoin de ces infos.", "e2-orga", "m3"),
+          X("L’heure de retour seulement, il connaît déjà mes élèves.", "Zone et profondeur comptent aussi : c’est là qu’on te cherchera en cas de problème.", "e2-orga"),
+          X("Je lui demande de choisir lui-même les exercices et la zone, c’est lui le directeur de plongée.", "Le DP organise, le moniteur conçoit sa séance. Tu lui présentes ton plan.", "e2-orga") ] },
+      m3: { depth: 6, scene: "6 m, à genoux sur le sable.", text: "Clara lâche l’embout et ne le retrouve plus. Elle tâtonne derrière son épaule.", q: "Que fais-tu ?",
+        choices: [
+          X("Je la fais remonter, elle reprendra l’embout en surface.", "Remonter sans air, c’est le danger qu’on veut justement éviter. On reprend l’embout au fond.", "e2-exmer"),
+          O("Je lui montre le balayage du bras, mon octopus prêt à lui donner.", "Tu guides le bon geste et tu gardes la solution d’air prête : elle apprend sans être en danger.", "e2-exmer", "m4"),
+          X("Je lui remets l’embout moi-même, à chaque essai, pour aller plus vite.", "Elle ne saura pas le faire seule. On guide le geste, on n’agit à sa place qu’en cas de besoin.", "e2-peda") ] },
+      m4: { depth: 6, scene: "Tu es avec Clara.", text: "Du coin de l’œil, tu vois Yanis qui monte doucement, à 4 m déjà.", q: "Que fais-tu ?",
+        choices: [
+          X("Je finis avec Clara, Yanis saura bien redescendre.", "Un élève qui monte seul peut ne plus savoir s’arrêter. Le moniteur surveille tout le groupe.", "e2-securite", "m4bad"),
+          O("Je ramène Yanis d’un geste, puis je reprends avec Clara.", "Le moniteur voit toujours tous ses élèves : on règle l’urgence la plus grave, et on reprend.", "e2-securite", "m5"),
+          X("Je confie Clara à Yanis et je pars voir ce qui se passe.", "Deux élèves ne se surveillent pas l’un l’autre : c’est toi qui gardes le groupe ensemble.", "e2-securite") ] },
+      m4bad: { depth: 0, end: true, bad: true, retry: "m4", title: "Yanis en surface", text: "Yanis arrive seul en surface, surpris, détendeur hors de la bouche. Bastien le récupère et met fin à ta séance.",
+        why: "Un N1 en formation ne doit jamais quitter le fond sans toi. Le moniteur garde tous ses élèves dans son champ de vision et intervient sur le danger le plus grave en premier.", learn: ["Le groupe reste dans ton champ de vision.", "On traite d’abord le danger le plus grave.", "Tout incident se signale au DP."] },
+      m5: { depth: 6, scene: "Fin des exercices.", who: "bastien", text: "Au retour, Bastien te demandera si Clara valide la compétence. Elle a réussi deux fois sur trois.", q: "Que lui diras-tu ?",
+        choices: [
+          X("Je la valide : elle est très motivée et elle a réussi au moins une fois.", "La motivation ne suffit pas : on valide une compétence reproduite de façon fiable.", "e2-evaluer"),
+          O("Pas encore : elle a réussi deux fois sur trois, à revoir avant de valider.", "Une évaluation dit ce qu’on a observé. Une compétence de sécurité doit être fiable avant d’être validée.", "e2-evaluer", "m6"),
+          X("Je la valide pour ne pas la décourager, elle progressera ensuite.", "Une validation de complaisance la met en danger plus tard. On l’encourage autrement.", "e2-evaluer") ] },
+      m6: { depth: 12, scene: "Petite exploration à 12 m. Le courant monte.", text: "Clara respire vite et fort.", q: "Que fais-tu ?",
+        choices: [
+          O("J’arrête le groupe à l’abri, elle souffle longuement, on repart avec le courant.", "Essoufflement : arrêt, abri, expiration longue. On repart dans le sens le plus facile.", "e2-securite", "m7"),
+          X("On accélère pour sortir vite de la zone de courant.", "Accélérer, c’est plus d’effort et plus de CO₂ : l’essoufflement empire.", "e2-securite"),
+          X("Je lui donne mon octopus tout de suite, elle doit être en panne d’air avec cet effort.", "Elle a de l’air : c’est l’expiration qui manque. On arrête l’effort.", "e2-securite") ] },
+      m7: { depth: 3, scene: "Palier de sécurité.", text: "Clara et Yanis ont des ordinateurs. Celui de Yanis affiche un palier de 2 minutes que tu n’avais pas prévu.", q: "Que faites-vous ?",
+        choices: [
+          X("On sort, mon ordinateur n’impose rien et c’est moi le moniteur.", "La palanquée suit l’ordinateur le plus pénalisant, même si c’est celui d’un élève.", "e2-securite"),
+          X("Yanis fait son palier seul, Clara et moi sortons.", "On ne sépare pas une palanquée d’élèves. Tout le monde reste.", "e2-securite"),
+          O("Toute la palanquée fait le palier demandé par l’ordinateur de Yanis.", "L’ordinateur le plus pénalisant décide pour tout le monde.", "e2-securite", "m8") ] },
+      m8: { depth: 0, scene: "À bord.", who: "yanis", text: "J’ai mal au front, au-dessus des yeux.", q: "Que fais-tu ?",
+        choices: [
+          X("C’est sûrement le masque trop serré, je lui donne un antidouleur et on n’en parle plus.", "Douleur frontale après la plongée : possible barotraumatisme des sinus. On le note et on prévient.", "e2-incidents"),
+          O("Je préviens Bastien, je note l’incident, pas de nouvelle plongée sans avis.", "Barotraumatisme des sinus possible : on signale, on note, on fait voir un médecin si ça persiste.", "e2-incidents", "m9"),
+          X("On en reparlera la semaine prochaine si ça dure.", "Le DP doit savoir maintenant, et Yanis ne doit pas replonger aujourd’hui.", "e2-incidents") ] },
+      m9: { depth: 0, scene: "Débriefing avec les élèves.", q: "Comment le mènes-tu ?",
+        choices: [
+          X("Je leur détaille tout ce qui n’allait pas pour qu’ils progressent vite.", "Un débriefing qui ne parle que des erreurs décourage. Ressenti, réussites, une piste, la suite.", "e2-evaluer"),
+          X("Je les félicite chaleureusement, tout s’est bien passé, et on se retrouve la semaine prochaine.", "Ils ont besoin de savoir ce qui reste à travailler, et pourquoi.", "e2-evaluer"),
+          O("Leur ressenti, ce qu’ils ont réussi, ce qui reste à travailler, la prochaine étape.", "Ressenti, réussites, axes de progrès, suite du cursus : chacun repart en sachant où il en est.", "e2-evaluer", "end") ] },
+      end: { depth: 0, end: true, title: "Moniteur, pas seulement plongeur", text: "Bastien : « Séance construite, groupe surveillé, évaluation honnête, incident signalé. C’est le métier. »",
+        learn: ["Une compétence à la fois, près d’un fond.", "Tous les élèves dans le champ de vision.", "On valide ce qui est fiable, pas ce qui est espéré.", "Incident = DP prévenu, noté, pas de replongée."] }
+    }
+  });
+
+  /* ---------- RIFAP : le malaise au port ---------- */
+  C.addStory({
+    id: "rifap-port", world: "rifap", role: "Secouriste (RIFAP)", icon: "o2", xp: 100, title: "Le malaise du ponton", sub: "Quarante minutes après la plongée, Didier ne se sent pas bien.",
+    unlock: null, start: "r1", cast: { nadia: "Nadia, directrice de plongée", didier: "Didier, 55 ans", eric: "Éric, binôme de Didier" },
+    nodes: {
+      r1: { depth: 0, scene: "Au port, 40 minutes après une plongée à 32 m.", who: "didier", text: "J’ai des fourmis dans les jambes… et je me sens faible.", q: "Que fais-tu ?",
+        choices: [
+          X("Je lui conseille de marcher un peu pour relancer la circulation.", "L’effort aggrave un accident de désaturation. On met au repos, allongé.", "r-vict"),
+          O("Je l’allonge, je préviens Nadia et je pense accident de désaturation.", "Fourmillements et faiblesse après une plongée : on pense ADD jusqu’à preuve du contraire.", "r-vict", "r2"),
+          X("Je lui dis de s’asseoir dans sa voiture au frais en attendant.", "Seul dans sa voiture, personne ne le surveille. On l’allonge et on prévient le DP.", "r-vict") ] },
+      r2: { depth: 0, scene: "Nadia t’apporte la bouteille d’oxygène.", q: "Comment l’utilises-tu ?",
+        choices: [
+          X("Avec des lunettes nasales, à faible débit, pour économiser la bouteille.", "Il faut une forte concentration : masque à haute concentration et débit élevé (débit exact : À faire valider).", "r-o2"),
+          X("Seulement s’il commence à avoir du mal à respirer.", "Dans un accident de plongée, l’oxygène se donne tout de suite, même s’il respire bien.", "r-o2"),
+          O("Masque à haute concentration, débit élevé, tout de suite.", "L’oxygène pur aide à éliminer l’azote et limite les lésions. Plus tôt il est donné, mieux c’est.", "r-o2", "r3") ] },
+      r3: { depth: 0, scene: "Didier est sous oxygène.", who: "nadia", text: "Tu passes l’alerte pendant que je reste avec lui ?", q: "Qui appelles-tu ?",
+        choices: [
+          O("Le 15 (ou le 112) : accident de plongée, signes, heure, profil, gestes faits.", "À terre, le 15 ou le 112 vous met en lien avec un médecin régulateur. En mer, c’est le CROSS par VHF canal 16.", "r-alerte", "r4"),
+          X("Sa famille d’abord, pour qu’elle vienne vite le chercher et l’emmène elle-même aux urgences.", "Un transport en voiture fait perdre du temps et l’oxygène. Le médecin régulateur décide du transport.", "r-alerte"),
+          X("Le club voisin qui a un caisson, pour qu’ils le prennent directement.", "Le caisson se décide par la régulation médicale, qui organise aussi le transport.", "r-alerte") ] },
+      r4: { depth: 0, scene: "Au téléphone.", text: "Le médecin régulateur te pose des questions.", q: "Que lui donnes-tu en priorité ?",
+        choices: [
+          X("Son nom, son adresse et le nom de son médecin traitant.", "Utile ensuite, mais le médecin a d’abord besoin du profil de plongée et des signes.", "r-bilan"),
+          O("Profondeur, durée, paliers, ordinateur, signes et heure de leur début.", "Le profil et l’heure d’apparition des signes orientent le diagnostic et le traitement.", "r-bilan", "r5"),
+          X("Le nom du club et de la directrice de plongée, et le numéro de sa licence.", "Ce sont des infos administratives. La régulation a besoin de l’état de la victime et du profil.", "r-bilan") ] },
+      r5: { depth: 0, scene: "Didier est bien conscient.", who: "didier", text: "J’ai soif.", q: "Que fais-tu ?",
+        choices: [
+          X("Je ne lui donne surtout pas à boire, quelle que soit la situation.", "S’il est bien conscient et sans nausée, boire de l’eau par petites gorgées est conseillé (À faire valider).", "r-acc"),
+          O("De l’eau plate par petites gorgées, s’il est bien conscient et sans nausée.", "L’hydratation aide la circulation. Seulement s’il est conscient et ne vomit pas.", "r-acc", "r6"),
+          X("Une boisson bien fraîche et gazeuse, pour le réveiller un peu.", "On donne de l’eau plate, pas une boisson gazeuse.", "r-acc") ] },
+      r6: { depth: 0, scene: "Dix minutes plus tard.", text: "Didier ne répond plus quand tu l’appelles. Il respire.", q: "Que fais-tu ?",
+        choices: [
+          X("Je le laisse allongé sur le dos, au calme, et je cours chercher les secours au bout du quai.", "Une victime inconsciente sur le dos peut s’étouffer avec sa langue ou en vomissant.", "r-vict", "r6bad"),
+          X("Je commence tout de suite les compressions thoraciques.", "Il respire : pas de compressions. La position latérale protège ses voies aériennes.", "r-rcp"),
+          O("PLS, oxygène maintenu, et je rappelle pour signaler l’aggravation.", "Inconscient qui respire : PLS, oxygène, nouvel appel. La régulation adapte les secours.", "r-vict", "r7") ] },
+      r6bad: { depth: 0, end: true, bad: true, retry: "r6", title: "Voies aériennes bouchées", text: "Quand tu reviens, Didier a vomi et respire très mal. Nadia le met en PLS en urgence ; les secours arrivent, inquiets.",
+        why: "Une personne inconsciente sur le dos peut s’étouffer : la langue tombe en arrière, les vomissements vont dans les poumons. On ne la laisse jamais seule.", learn: ["Inconscient qui respire : PLS.", "On ne laisse jamais la victime seule.", "Toute aggravation se signale à la régulation."] },
+      r7: { depth: 0, scene: "Les pompiers arrivent.", q: "Que leur transmets-tu ?",
+        choices: [
+          X("Qu’il a fait une plongée ce matin et qu’il est sous oxygène, ils sauront le reste à l’hôpital.", "Sans détails, l’équipe perd du temps. Profil, heures, gestes et évolution doivent suivre la victime.", "r-sortie"),
+          O("La fiche d’évacuation : profil, heure des signes, oxygène depuis quand, évolution.", "La fiche suit la victime jusqu’au caisson : le médecin sait tout ce qui s’est passé.", "r-sortie", "r8"),
+          X("Son ordinateur seulement, tout est dedans.", "L’ordinateur aide, mais pas pour les signes, les heures et les gestes faits : la fiche est indispensable.", "r-sortie") ] },
+      r8: { depth: 0, scene: "Didier part vers le caisson.", who: "eric", text: "J’ai fait exactement la même plongée que lui. Je replonge cet après-midi ?", q: "Que lui dis-tu ?",
+        choices: [
+          X("Oui, il n’a aucun signe, c’est que tout va bien pour lui.", "Même profil, même risque : des signes peuvent apparaître plusieurs heures après.", "r-acc"),
+          X("Rentre chez toi te reposer, tu n’as plus rien à faire ici.", "Seul chez lui, personne ne le surveille. Il reste sous surveillance et on le signale.", "r-acc"),
+          O("Non : même profil, même risque. Tu restes surveillé et on le signale.", "Le binôme d’un accidenté est aussi à risque : pas de plongée, surveillance, signalement à la régulation.", "r-acc", "end") ] },
+      end: { depth: 0, end: true, title: "Les bons gestes, dans l’ordre", text: "Le lendemain, Nadia a des nouvelles : Didier récupère bien après le caisson. « L’oxygène tôt, l’alerte précise, la PLS au bon moment. Tu as fait la différence. »",
+        learn: ["Signe après une plongée = ADD jusqu’à preuve du contraire.", "Oxygène tout de suite, fort débit.", "Alerte : 15 ou 112 à terre, CROSS en mer.", "Inconscient qui respire : PLS."] }
+    }
+  });
+
+  /* ---------- Nitrox : l’épave au mélange ---------- */
+  C.addStory({
+    id: "nx-epave", world: "nitrox", role: "Plongeur Nitrox", icon: "mol", xp: 100, title: "L’épave au Nitrox", sub: "Ton premier Nitrox sur une épave à 30 m, avec Malik qui plonge à l’air.",
+    unlock: null, start: "x1", cast: { malik: "Malik, ton binôme à l’air", sarah: "Sarah, gonfleuse du club" },
+    nodes: {
+      x1: { depth: 0, scene: "Local de gonflage. Ton bloc est étiqueté « Nitrox 32 % ».", who: "sarah", text: "Ton bloc est prêt.", q: "Que fais-tu ?",
+        choices: [
+          X("Je fais confiance à l’étiquette : Sarah a analysé ce matin.", "Chaque plongeur analyse lui-même son bloc avant de plonger, et le note.", "nx-pratique"),
+          X("J’analyse un bloc sur deux seulement, puisqu’ils viennent tous du même remplissage.", "Chaque bloc peut être différent. On analyse le sien, à chaque fois.", "nx-pratique"),
+          O("J’analyse moi-même mon bloc, je note le résultat et je signe le registre.", "L’analyse personnelle est la règle : tu sais exactement ce que tu respires.", "nx-pratique", "x2") ] },
+      x2: { depth: 0, scene: "L’analyseur affiche 33 %.", q: "Comment règles-tu ton ordinateur ?",
+        choices: [
+          O("Sur 33 %, la valeur que j’ai mesurée.", "On règle l’ordinateur sur la valeur analysée : c’est elle qui sert au calcul de l’oxygène.", "nx-pratique", "x3"),
+          X("Sur 32 %, l’écart d’un point ne change pas grand-chose.", "Sous-estimer l’oxygène fausse la profondeur maximale. On règle ce qu’on a mesuré.", "nx-pratique"),
+          X("Sur 21 %, comme de l’air, pour garder plus de marge.", "Régler « air » avec du nitrox sous-estime l’oxygène : l’ordinateur ne t’alertera pas à la bonne profondeur.", "nx-securite") ] },
+      x3: { depth: 0, scene: "Ton ardoise. Pp O₂ maximale retenue par le club : 1,6 bar (À faire valider), 1,4 bar conseillé.", q: "Ta profondeur maximale avec 33 % ?",
+        choices: [
+          X("40 m, la valeur classique pour un Nitrox 32 %.", "Avec 33 % : 1,6 / 0,33 ≈ 4,85 bar, soit environ 38 m. Ton mélange est un peu plus riche.", "nx-calculs"),
+          O("Environ 38 m à 1,6 bar, et je vise plutôt 32 m à 1,4 bar.", "Pabs = Pp O₂ / FO₂ : 1,6 / 0,33 ≈ 4,85 bar (≈ 38 m) ; 1,4 / 0,33 ≈ 4,2 bar (≈ 32 m).", "nx-calculs", "x4"),
+          X("48 m, en ajoutant la marge habituelle de l’air.", "On ne part pas de l’air : la limite vient de la pression partielle d’oxygène.", "nx-calculs") ] },
+      x4: { depth: 0, scene: "Sur le bateau.", who: "malik", text: "Avec ton Nitrox, tu n’auras pas de narcose, toi.", q: "Que lui réponds-tu ?",
+        choices: [
+          X("Oui, moins d’azote : aucune narcose avec un Nitrox à 32 %.", "L’oxygène est probablement narcotique aussi. On considère la narcose comme à l’air à même profondeur.", "nx-toxo"),
+          O("Pas vraiment : on la considère comme à l’air, l’oxygène compte aussi.", "Le Nitrox ne protège pas de la narcose. Son intérêt, c’est moins d’azote pour la décompression.", "nx-toxo", "x5"),
+          X("Oui, mais seulement en dessous de 30 m, là où l’azote commence à vraiment compter.", "Aucune règle de ce genre. On la considère comme à l’air.", "nx-toxo") ] },
+      x5: { depth: 0, scene: "Plan de plongée.", text: "Toi au Nitrox, Malik à l’air.", q: "Comment gérez-vous la palanquée ?",
+        choices: [
+          X("Chacun suit son propre ordinateur, quitte à remonter à des moments un peu différents.", "Une palanquée reste ensemble. Elle suit les limites les plus strictes des deux.", "nx-securite"),
+          O("Son ordinateur à l’air pour la déco, ma profondeur max pour la profondeur.", "On combine : la décompression la plus pénalisante (l’air) et la profondeur la plus limitée (ton Nitrox).", "nx-securite", "x6"),
+          X("On suit le mien, le Nitrox donne plus de temps à tous les deux.", "Malik respire de l’air : son azote compte. Ton ordinateur ne le protège pas.", "nx-securite") ] },
+      x6: { depth: 30, scene: "30 m. Un couloir de l’épave descend vers 37 m.", text: "Ton ordinateur bipe : Pp O₂ élevée.", q: "Que fais-tu ?",
+        choices: [
+          X("Je reste juste le temps d’une photo, la limite a déjà une marge.", "La marge sert aux imprévus, pas à la photo. L’alarme Pp O₂ veut dire : on remonte.", "nx-toxo", "x6b"),
+          X("Je descends encore un peu pour voir si l’alarme se coupe seule.", "Plus profond = plus d’oxygène. On remonte au-dessus de la limite.", "nx-toxo"),
+          O("Je remonte au-dessus de ma limite, on reste sur le haut de l’épave.", "On respecte la profondeur maximale calculée : l’hyperoxie peut provoquer une crise convulsive sans prévenir.", "nx-toxo", "x7") ] },
+      x6b: { depth: 37, alt: true, scene: "37 m.", text: "Ta vision se rétrécit, tes lèvres tremblent.", q: "Que fais-tu ?",
+        choices: [
+          O("Je remonte de quelques mètres, Malik me tient, on met fin à la plongée.", "Signes d’hyperoxie : on remonte tout de suite et on termine la plongée. Le DP sera prévenu.", "nx-toxo", "x7"),
+          X("Je respire plus lentement pour consommer moins d’oxygène.", "Ce n’est pas la quantité respirée qui compte, c’est la Pp O₂ : il faut remonter.", "nx-toxo"),
+          X("Je continue la photo en tenant fort l’épave pour ne pas tomber.", "Ces signes peuvent précéder une convulsion. On remonte immédiatement.", "nx-toxo") ] },
+      x7: { depth: 0, scene: "Après la plongée.", text: "Ton ordinateur affiche une exposition à l’oxygène (SNC %) plus élevée que d’habitude.", q: "Et pour la plongée suivante ?",
+        choices: [
+          X("Ce chiffre ne compte que pour les plongées techniques.", "L’exposition à l’oxygène s’additionne entre les plongées : elle compte aussi en loisir.", "nx-toxo"),
+          O("J’en tiens compte : plus long intervalle, ou moins profond.", "L’exposition à l’oxygène se cumule et baisse avec le temps en surface.", "nx-toxo", "x8"),
+          X("Je replonge au même endroit, le compteur se remet à zéro au bateau.", "Le compteur redescend lentement, pas instantanément. Il faut l’intégrer au plan.", "nx-toxo") ] },
+      x8: { depth: 0, scene: "L’après-midi.", who: "sarah", text: "Il me reste un bloc à 40 % pour toi.", q: "Que vérifies-tu ?",
+        choices: [
+          X("Rien de nouveau : même plan qu’au 32 %, seul le temps sans palier change.", "La profondeur maximale baisse beaucoup avec 40 % : environ 25 m à 1,4 bar.", "nx-calculs"),
+          X("Que la bouteille est bien pleine et bien fermée, le pourcentage est déjà écrit sur l’étiquette.", "On analyse, on vérifie sa qualification et on recalcule la profondeur maximale.", "nx-pratique"),
+          O("Ma qualification pour ce mélange, l’analyse, et la profondeur max : environ 25 m à 1,4 bar.", "1,4 / 0,40 = 3,5 bar, soit 25 m. Vérifie aussi que ta qualification couvre ce pourcentage (À faire valider).", "nx-confirme", "end") ] },
+      end: { depth: 0, end: true, title: "Le Nitrox maîtrisé", text: "Malik : « Je pensais que le Nitrox, c’était juste plus de temps. Tu as tout analysé, tout recalculé. » Sarah te tend le registre signé.",
+        learn: ["On analyse son bloc et on règle l’ordinateur sur la mesure.", "Profondeur max (m) = (Pp O₂ max ÷ FO₂ − 1) × 10.", "Le Nitrox ne protège pas de la narcose.", "L’exposition à l’oxygène se cumule."] }
+    }
+  });
+
+  /* Rôles des aventures existantes */
+  [["anse", "Plongeur autonome (N2)"], ["recif", "Secouriste (RIFAP)"], ["bapteme", "Moniteur de baptême"]].forEach(([id, r]) => { if (C.storyById[id]) C.storyById[id].role = r; });
+
+  /* Trophées des aventures */
+  C.addBadges([
+    { id: "story5", icon: "scroll", name: "Conteur des profondeurs", desc: "Finir 5 aventures", test: { k: "story", n: 5 } },
+    { id: "story12", icon: "trophy", name: "Toutes les vies du plongeur", desc: "Finir les 12 aventures", test: { k: "story", n: 12 } }
+  ]);
 })();
 
 /* js/app.js */
