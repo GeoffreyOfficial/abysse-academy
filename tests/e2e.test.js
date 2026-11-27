@@ -380,6 +380,26 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(r.known.dup === 0 && r.known.n === 9, "doublon du contenu (même énoncé, deux identifiants) : écarté et remplacé, la série garde sa longueur");
       await ctx.close(); }
 
+    console.log("• Réglages et thèmes alignés sur petit écran (2.7.2)");
+    { const { ctx, p } = await newPage(b, 360, 820); await p.goto(URL); await seed(p); const bad = [];
+      for (const w of [280, 320, 360]) for (const ts of [1, 1.4]) for (const th of ["nacre", "minuit", "auto"]) {
+        await p.setViewportSize({ width: w, height: 820 });
+        await p.evaluate(([ts, th]) => { AA.S.profile.textSize = ts; AA.S.profile.theme = th; AA.store.save(true); }, [ts, th]);
+        await p.reload(); await ready(p);
+        for (const r of ["settings", "profile"]) {
+          await p.evaluate(r => { location.hash = "#/" + r; }, r); await p.waitForTimeout(300);
+          const out = await p.evaluate(() => { const o = [], vw = innerWidth;
+            const scroller = e => { for (let q = e.parentElement; q && q.id !== "view"; q = q.parentElement) if (/auto|scroll/.test(getComputedStyle(q).overflowX)) return true; return false; };
+            document.querySelectorAll("#view .swatch").forEach(s => { const R = s.getBoundingClientRect(); s.querySelectorAll("*").forEach(e => { const r = e.getBoundingClientRect(); if (r.width && (r.left < R.left - 1 || r.right > R.right + 1)) o.push("tuile de thème « " + s.textContent.trim() + " »"); }); });
+            document.querySelectorAll("#view .card").forEach(c => { const R = c.getBoundingClientRect(); c.querySelectorAll("*").forEach(e => { const r = e.getBoundingClientRect(); if (!r.width || scroller(e) || getComputedStyle(e).position === "absolute") return; if (r.left < R.left - 1 || r.right > R.right + 1) o.push("sort de sa carte : " + (e.textContent || e.tagName).trim().slice(0, 24)); }); });
+            document.querySelectorAll("#view *").forEach(e => { const r = e.getBoundingClientRect(); if (r.width && !scroller(e) && getComputedStyle(e).position !== "fixed" && (r.right > vw + 1 || r.left < -1)) o.push("sort de l’écran : " + (e.textContent || e.tagName).trim().slice(0, 24)); });
+            return [...new Set(o)]; });
+          out.forEach(x => bad.push(`${r} ${w}px ×${ts} ${th} : ${x}`));
+        }
+      }
+      ok(!bad.length, "réglages et profil : rien ne déborde, thèmes Nacre, Minuit et Automatique, 280 à 360 px, texte ×1 et ×1,4" + (bad.length ? " — " + bad.slice(0, 5).join(" ; ") : ""));
+      await ctx.close(); }
+
     console.log("• Briefing, successives, défis, club (1.9)");
     { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
       ok(await p.evaluate(() => AA.content.computer.length >= 19 && AA.content.qById["pc-" + (AA.content.computer.length - 1)]), "mode ordinateur : nouveaux cas ajoutés à la fin");

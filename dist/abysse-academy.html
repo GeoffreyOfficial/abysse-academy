@@ -2488,6 +2488,13 @@ details.dg-row>summary .grow{min-width:0}
 .tank.live{touch-action:pan-y;cursor:pointer}
 .tank.current .aq-sway{animation-duration:2.2s!important}
 .aq-hint{margin:6px 2px 0}
+/* 2.7.2 · sélecteur de thèmes : tuiles qui ne débordent jamais (texte agrandi, écrans étroits) */
+.sw-group .swatches,.swatches{grid-template-columns:repeat(auto-fill,minmax(min(100%,6.2rem),1fr))}
+.swatch{min-width:0;width:100%;box-sizing:border-box;overflow:hidden}
+.swatch i{width:100%;max-width:100%}
+.swatch b,.swatch span{min-width:0;max-width:100%;overflow-wrap:anywhere;text-align:center;line-height:1.2}
+.tiles>*{min-width:0}
+.tile b,.tile span{min-width:0;max-width:100%;white-space:normal;overflow-wrap:break-word}
 
 </style>
 </head>
@@ -2511,7 +2518,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.7.1";
+  AA.VERSION = "2.7.2";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
