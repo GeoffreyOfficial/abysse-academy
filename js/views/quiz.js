@@ -296,7 +296,7 @@
     const q = it.q, n = c.mode === "apnee" ? null : c.items.length, answered = c.picked != null;
     const isOrd = q.type === "order" && Array.isArray(q.steps);
     if (isOrd && !it.pool) { it.pool = u.shuffle(flatSteps(q).concat(q.extra || [])); it.seq = []; }
-    if (!isOrd && it.inp == null) it.inp = !window.AA_PLAIN && c.mode !== "duel" && c.mode !== "rduel" && Q.canType(q) && Math.random() < .6;
+    if (!isOrd && it.inp == null) it.inp = !window.AA_PLAIN && c.mode !== "duel" && c.mode !== "rduel" && Q.canType(q) && Math.random() < (Q.typeRate || .6);
     const isNum = !isOrd && it.inp;
     const okNow = answered && c.picked === q.a;
     const prog = c.mode === "apnee" ? c.time / 60 : (c.idx + (answered ? 1 : 0)) / n;

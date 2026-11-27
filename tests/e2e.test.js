@@ -344,7 +344,9 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(f1.food >= 10 && await p.evaluate(() => AA.S.fedOn === AA.u.today()), "nourrir : les granulés tombent, le repas du jour est compté");
       await p.waitForTimeout(9000); const f2 = await p.evaluate(() => AA.aquaLive.state());
       ok(f2.eaten >= 8 && f2.fish.some(f => f.sat), "nourrir : les poissons viennent manger puis repartent rassasiés (" + f2.eaten + " granulés mangés)");
-      const box = await p.evaluate(() => { const r = document.querySelector("#tank").getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + 40 }; });
+      const box = await p.evaluate(() => { const r = document.querySelector("#tank").getBoundingClientRect(), fs = [...document.querySelectorAll(".aq-fish, .aq-fs")].map(f => f.getBoundingClientRect());
+        for (let y = r.top + 30; y < r.bottom - 60; y += 12) for (let x = r.left + 20; x < r.right - 20; x += 12) if (!fs.some(f => x >= f.left - 4 && x <= f.right + 4 && y >= f.top - 4 && y <= f.bottom + 4)) return { x, y };
+        return { x: r.left + 10, y: r.top + 10 }; });
       await p.mouse.click(box.x, box.y); await p.waitForTimeout(100);
       ok((await p.evaluate(() => AA.aquaLive.state().food)) >= 1 && !(await p.$(".sheet-wrap")), "toucher l’eau : une pincée de nourriture, sans ouvrir de fiche");
       ok(await p.evaluate(() => AA.content.decor.length >= 28 && ["fan", "cave", "oyster", "castle", "sub", "diver", "flag", "tank"].every(k => AA.content.decor.some(d => d.kind === k))), "décors : 8 nouveaux décors à débloquer");
@@ -398,6 +400,61 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
         }
       }
       ok(!bad.length, "réglages et profil : rien ne déborde, thèmes Nacre, Minuit et Automatique, 280 à 360 px, texte ×1 et ×1,4" + (bad.length ? " — " + bad.slice(0, 5).join(" ; ") : ""));
+      await ctx.close(); }
+
+    console.log("• Hors ligne, thèmes en 3 étapes, cursus, réponses à taper (2.8)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await ready(p);
+      await p.evaluate(() => { const S = AA.S; S.profile.onboarded = true; S.profile.name = "Test"; S.evoSeen = 9; S.profile.driveNag = "2099-01-01"; AA.path.applyLevel("n1"); S.profile.goal = "n2"; AA.store.save(true); });
+      await p.reload(); await ready(p);
+      /* Hors ligne : l'appli se rouvre sans réseau une fois fermée. */
+      const sw = await p.evaluate(async () => { if (!navigator.serviceWorker) return false; await navigator.serviceWorker.ready; return true; });
+      if (sw) {
+        await p.reload(); await ready(p); await p.waitForTimeout(300);
+        await ctx.setOffline(true);
+        const p2 = await ctx.newPage(); await p2.goto(URL + "#/home").catch(() => {}); await p2.waitForFunction(() => window.AA && AA.router && AA.router.name, null, { timeout: 8000 }).catch(() => {}); await p2.waitForTimeout(600);
+        ok(await p2.evaluate(() => !!(window.AA && AA.router && AA.router.name)).catch(() => false), "hors ligne : l’appli se rouvre sans réseau après fermeture");
+        ok(await p2.evaluate(() => { const b = document.getElementById("netbar"); return !!b && /Hors ligne/.test(b.textContent) && /appareil/.test(b.textContent); }).catch(() => false), "hors ligne : bandeau « progression gardée sur l’appareil »");
+        await p2.close(); await ctx.setOffline(false);
+      } else ok(true, "hors ligne : service worker indisponible ici (test sauté)");
+      const sy = await p.evaluate(async () => { let called = 0; const s = AA.sync; s.linked = () => true; s.possible = () => true; s.now = () => { called++; return Promise.resolve(true); };
+        Object.defineProperty(navigator, "onLine", { configurable: true, get: () => false }); dispatchEvent(new Event("offline")); await new Promise(r => setTimeout(r, 100));
+        const txt = (document.getElementById("netbar") || {}).textContent || "";
+        Object.defineProperty(navigator, "onLine", { configurable: true, get: () => true }); dispatchEvent(new Event("online")); await new Promise(r => setTimeout(r, 1800));
+        return { txt, called, gone: !document.getElementById("netbar") }; });
+      ok(/Google/.test(sy.txt) && sy.called >= 1 && sy.gone, "retour du réseau : synchro Google lancée seule, bandeau retiré");
+      /* « Lu » = vraiment lu. */
+      const st = await p.evaluate(() => { const T = AA.tutor, l = AA.content.inWorld("n2"), S = AA.S; S.placed = { [l[1].id]: AA.u.today() }; S.read[l[2].id] = { e: "2026-11-01", mig: 1 }; S.v28read = 0;
+        const fixed = T.fixRead(); return { placed: T.state(l[1].id), read: T.worldInfo("n2").read, fixed, still: !!(S.read[l[2].id] || {}).e }; });
+      ok(st.placed === "placed" && st.read === 0 && st.fixed >= 1 && !st.still, "un thème validé au test n’est pas « lu » ; les faux « lu » sont réparés");
+      /* Trois étapes, gardien verrouillé avant lecture et quiz. */
+      const mid = await p.evaluate(() => AA.content.inWorld("n2")[3].id);
+      await p.evaluate(m => { location.hash = "#/gardien/" + m; }, mid); await p.waitForTimeout(400);
+      ok(await p.$(".st3-lock") && await p.$(".tu3-card .tu3.next"), "gardien : verrouillé tant que le cours n’est pas lu et le quiz pas réussi, avec l’étape suivante");
+      await p.evaluate(m => { AA.S.read[m] = { e: AA.u.today(), x: 1 }; AA.S.themes[m] = { best: 60, tries: 1 }; AA.store.save(true); location.hash = "#/home"; }, mid); await p.waitForTimeout(200);
+      await p.evaluate(m => { location.hash = "#/gardien/" + m; }, mid); await p.waitForTimeout(400);
+      ok(!(await p.$(".st3-lock")) && await p.$("#btGo"), "gardien : ouvert après lecture et quiz réussi");
+      await p.evaluate(m => { location.hash = "#/lesson/" + m; }, mid); await p.waitForTimeout(400);
+      ok(await p.evaluate(() => document.querySelectorAll(".tu3-card .tu3.done").length === 2 && !!document.querySelector(".tu3-card .tu3.next")), "page du cours : 3 étapes, lu et entraîné cochés, gardien en prochaine étape");
+      await p.evaluate(() => { location.hash = "#/cours/n2"; }); await p.waitForTimeout(400);
+      ok(await p.evaluate(() => document.querySelectorAll(".tu-step .tu3s").length === AA.content.inWorld("n2").length), "liste des cours : les 3 étapes sur chaque thème");
+      /* Cursus en schéma. */
+      await p.evaluate(() => { location.hash = "#/cursus"; }); await p.waitForTimeout(400);
+      ok(await p.evaluate(() => document.querySelectorAll(".road > .rd-step").length >= 7 && !!document.querySelector(".rd-step.you .rd-you") && !!document.querySelector(".rd-node.st-next") && document.querySelectorAll(".rd-br .rd-node").length >= 3), "cursus : étapes numérotées reliées, « Tu es ici », prochaine étape, branches");
+      /* Réponses à taper : aussi les valeurs chiffrées du contenu. */
+      const ty = await p.evaluate(() => { const Q = AA.quiz, C = AA.content; const st = C.questions.filter(q => !q.gen && Q.canType(q)); return { n: st.length, rate: Q.typeRate, p0: Q.canType(C.qById["pression-0"]), listy: st.some(q => /parmi|lequel|laquelle/i.test(q.q)) }; });
+      ok(ty.n >= 60 && ty.rate >= .8 && ty.p0 && !ty.listy, "réponses à taper : " + ty.n + " questions chiffrées du contenu en plus des calculs, 80 % des cas");
+      /* Aventure du boss sur la carte. */
+      await p.evaluate(() => { location.hash = "#/map/n2"; }); await p.waitForTimeout(500);
+      ok(await p.evaluate(() => { const q = document.querySelector(".questspot a.node.quest"), b = document.querySelector(".bossspot"); return !!q && /#\/story\/boss-n2$/.test(q.getAttribute("href")) && !!(q.closest(".spot").nextElementSibling === b); }), "carte : l’aventure qui mène au boss apparaît juste avant lui");
+      /* Calculatrice de plongée. */
+      const ce = await p.evaluate(() => { const E = AA.quiz.calcEval; return [E("20×1,5+3"), E("(1,5+2)²"), E("√(16)÷2"), E("−3+5"), E("2×(3"), E("10÷4")]; });
+      ok(ce[0] === 33 && ce[1] === 12.25 && ce[2] === 2 && ce[3] === 2 && ce[4] === null && ce[5] === 2.5, "calculatrice : priorités, parenthèses, carré, racine, erreurs refusées");
+      await p.evaluate(() => { window.AA_PLAIN = 0; AA.quiz.typeRate = 1; AA.S.unlockAll = true; AA.quiz.start("drill", [AA.content.qById["pression-0"], AA.content.qById["mariotte-0"]], { title: "Calc", back: "home" }); }); await p.waitForTimeout(500);
+      ok(await p.$("#dcopen"), "calculatrice : bouton sur une question de calcul");
+      await p.click("#dcopen"); for (const k of ["3", "×", "1", "0", "÷", "1", "0", "+", "1", "="]) await p.click(`.dc-k[data-k="${k}"]`);
+      const ins = await p.evaluate(() => { const b = document.getElementById("dcins"); if (b && !b.hidden) b.click(); const n = document.getElementById("numv"); return { v: n && n.value, closed: !document.getElementById("divecalc") }; });
+      ok(ins.v === "4" && ins.closed, "calculatrice : le résultat se met dans la réponse à taper");
+      await p.evaluate(() => { window.AA_PLAIN = 1; AA.quiz.typeRate = .8; location.hash = "#/home"; }); await p.waitForTimeout(200);
       await ctx.close(); }
 
     console.log("• Briefing, successives, défis, club (1.9)");
@@ -491,6 +548,8 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
         for (let i = 0; i < 2; i++) { await R.p.click("#nextq"); await R.p.waitForTimeout(150); await R.p.click("#qdk"); await R.p.waitForTimeout(150); }
         await R.p.click("#nextq"); await R.p.waitForTimeout(300);
         ok(await R.p.evaluate(() => AA.ctx.done && !/undefined/.test(document.querySelector("#view").innerText) && /ne savais pas/.test(document.querySelector("#view").innerText)), "quiz : bilan lisible après des « Je ne sais pas »");
+        /* 2.8 : le gardien demande le cours lu et le quiz du thème réussi. */
+        await R.p.evaluate(() => { AA.S.read.pression = Object.assign({}, AA.S.read.pression, { e: AA.u.today(), x: 1 }); AA.S.themes.pression = Object.assign({ tries: 1 }, AA.S.themes.pression, { best: Math.max(60, (AA.S.themes.pression || {}).best || 0) }); AA.store.save(true); });
         await R.p.goto(URL + "#/gardien/pression"); await R.p.waitForTimeout(300); await R.p.click("#btGo"); await R.p.waitForTimeout(400);
         await R.p.click("#btDk"); await R.p.waitForTimeout(900);
         ok(await R.p.evaluate(() => document.querySelectorAll("#btLives span.off").length === 1 && !!document.querySelector(".bt-c.good") && !document.querySelector("#btDk")), "combat : « Je ne sais pas » montre la réponse (une vie perdue)");
@@ -557,7 +616,8 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       await p.evaluate(() => document.querySelectorAll(".toast").forEach(x => x.remove())); await p.click("#btNext"); await p.waitForTimeout(200);
       await p.evaluate(() => { const q = document.querySelector(".bt-qt").textContent, Q = AA.content.questions.find(x => x.q === q); [...document.querySelectorAll(".bt-c")].find(b => +b.dataset.ci !== Q.a).click(); }); await p.waitForTimeout(800);
       ok(await p.evaluate(() => document.querySelectorAll("#btLives span.off").length) === 1 && await p.$(".bt-c.good"), "combat : erreur = une vie perdue et la bonne réponse montrée");
-      await p.goto(URL + "#/gardien/pression"); await p.waitForTimeout(250); ok(await p.$("#btGo"), "gardien d’un cours lu prêt au combat");
+      await p.evaluate(() => { AA.S.themes.pression = Object.assign({ tries: 1 }, AA.S.themes.pression, { best: 60 }); AA.store.save(true); });
+      await p.goto(URL + "#/gardien/pression"); await p.waitForTimeout(250); ok(await p.$("#btGo"), "gardien d’un cours lu et entraîné prêt au combat");
       await p.goto(URL + "#/jeux/n2"); await p.waitForTimeout(250); ok((await p.$$(".gm-g")).length === 12 && await p.$(".gm-final"), "jeux : gardiens et boss final du niveau");
       await p.goto(URL + "#/paires"); await p.waitForTimeout(250); ok((await p.$$(".pg-card")).length === 12, "Paires : 12 cartes");
       await p.goto(URL + "#/vraifaux"); await p.waitForTimeout(250); await p.click("#vfGo"); await p.waitForTimeout(250); ok(await p.$("#vfCard") && await p.$("[data-v='1']"), "Vrai ou faux : partie lancée");

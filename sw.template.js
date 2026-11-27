@@ -12,11 +12,19 @@ self.addEventListener("fetch", e => {
   const req = e.request; if (req.method !== "GET") return;
   const url = new URL(req.url); if (url.origin !== location.origin) return;
   if (req.mode === "navigate") {
-    e.respondWith(fetch(req).then(r => { const cp = r.clone(); caches.open(VERSION).then(c => c.put("index.html", cp)); return r; })
-      .catch(() => caches.match("index.html")));
+    /* 2.8 : réseau d'abord, mais 3 s maximum (avion, wifi sans internet) ; sinon la copie en cache.
+       On ne garde que des pages valides (jamais une erreur 404 ou un portail captif). */
+    const cached = () => caches.match("index.html", { ignoreSearch: true }).then(h => h || caches.match("./", { ignoreSearch: true }));
+    const net = fetch(req).then(r => { if (r.ok && r.type === "basic") { const cp = r.clone(); caches.open(VERSION).then(c => c.put("index.html", cp)); } return r.ok ? r : cached().then(h => h || r); });
+    const slow = new Promise(res => setTimeout(res, 3000)).then(cached);
+    e.respondWith(new Promise(res => {
+      let done = false; const fin = r => { if (!done && r) { done = true; res(r); } };
+      net.then(fin, () => cached().then(h => fin(h || Response.error())));
+      slow.then(h => { if (h) fin(h); });
+    }));
     return;
   }
-  e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(r => {
+  e.respondWith(caches.match(req, { ignoreSearch: /\.(woff2?|png|svg|webmanifest)$/.test(url.pathname) }).then(hit => hit || fetch(req).then(r => {
     if (r.ok) { const cp = r.clone(); caches.open(VERSION).then(c => c.put(req, cp)); }
     return r;
   })));

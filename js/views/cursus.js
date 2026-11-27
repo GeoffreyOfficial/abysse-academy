@@ -44,6 +44,30 @@
               <b>${u.esc(c.lv)}</b><span class="xs">${u.esc(c.tag)}</span>${st ? `<em class="cn-st">${t("cur." + st)}</em>` : ""}</button>`; }).join("")}</div>`; }).join("")}
     </div>`;
 
+  /* 2.8 : le chemin en schéma vertical — étapes numérotées reliées, branches à côté,
+     « Tu es ici », prochaine étape et prérequis. */
+  const SPINE = ["decouverte", "n1", "n2", "n3", "n4", "e2", "mf"];
+  const BRANCH = { n1: ["nitrox", "rifap"], n2: ["e1"] };
+  const rstate = id => {
+    const certs = AA.S.certs || {}, lv = AA.S.profile.level, goal = AA.game.goalWorld();
+    if (certs[id] || id === lv) return "got";
+    if (id === goal) return "next";
+    const pre = AFTER[id]; return !pre || certs[pre] || pre === lv ? "open" : "later";
+  };
+  const road = sel => {
+    const you = (() => { const l = SPINE.filter(id => rstate(id) === "got"); return l[l.length - 1]; })();
+    const node = (id, n, small) => { const c = C.cursusById[id]; if (!c) return ""; const st = rstate(id), pre = C.cursusById[AFTER[id]], wl = c.world ? C.inWorld(c.world) : [];
+      const rd = wl.length ? wl.filter(m => AA.tutor && AA.tutor.explicitRead(m.id)).length : 0;
+      return `<button class="cur-node rd-node st-${st} ${small ? "small" : ""} ${id === sel ? "on" : ""}" data-id="${id}" style="--wc:var(${(C.worldById[c.world] || {}).color || "--muted"})">
+        <span class="rd-dot">${st === "got" ? AA.icon("check") : small ? "+" : n}</span>
+        <span class="rd-txt"><b>${u.esc(c.lv)}</b><span class="xs muted">${u.esc(c.tag)}</span>
+          ${pre && st !== "got" ? `<span class="xs muted">${t("rd.pre", { lv: u.esc(pre.lv) })}</span>` : ""}
+          ${st === "next" && wl.length ? `<span class="xs">${t("rd.prog", { r: rd, n: wl.length })}</span>` : ""}</span>
+        <em class="rd-st">${t("rd.st." + st)}</em></button>`; };
+    return `<ol class="road">${SPINE.map((id, i) => `<li class="rd-step st-${rstate(id)} ${id === you ? "you" : ""}">
+        ${id === you ? `<span class="rd-you">${AA.icon("dive")} ${t("rd.you")}</span>` : ""}${node(id, i + 1)}
+        ${(BRANCH[id] || []).length ? `<div class="rd-br"><span class="xs muted">${t("rd.branch")}</span>${BRANCH[id].map(b => node(b, 0, true)).join("")}</div>` : ""}</li>`).join("")}</ol>`;
+  };
   const detail = id => { const c = C.cursusById[id], st = state(id), n = c.world ? C.inWorld(c.world).length : 0, prev = C.cursusById[AFTER[id]];
     return `<div class="cur-detail card" style="--wc:var(${(C.worldById[c.world] || {}).color || "--muted"})" aria-live="polite">
       <p class="eyebrow">${t("cur.line." + PLACE[id][0])}${prev ? ` · ${t("cur.after", { lv: u.esc(prev.lv) })}` : ""}</p>
@@ -63,7 +87,7 @@
         <p class="muted cur-intro">${t("cur.intro")}</p>
         ${lv ? `<div class="row cur-you"><span class="chip ok">${t("cur.youLv")} : ${u.esc(t("lv." + lv.id))}</span>${(C.worldById[goal] || {}).short ? `<span class="chip gold">${t("cur.goal")} : ${u.esc(C.worldById[goal].short)}</span>` : ""}</div>` : ""}
         <div class="cur-layout">
-          <section class="card trk-card"><div class="dc-head"><h3>${t("cur.pathT")}</h3><span class="xs muted">${t("cur.pathH")}</span></div>${track(sel)}</section>
+          <section class="card trk-card"><div class="dc-head"><h3>${t("cur.pathT")}</h3><span class="xs muted">${t("rd.how")}</span></div>${road(sel)}</section>
           <aside class="cur-side" id="cdet">${detail(sel)}</aside>
           ${depthChart()}
         </div>

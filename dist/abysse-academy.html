@@ -2495,6 +2495,78 @@ details.dg-row>summary .grow{min-width:0}
 .swatch b,.swatch span{min-width:0;max-width:100%;overflow-wrap:anywhere;text-align:center;line-height:1.2}
 .tiles>*{min-width:0}
 .tile b,.tile span{min-width:0;max-width:100%;white-space:normal;overflow-wrap:break-word}
+/* 2.8.0 · hors ligne, étapes des thèmes */
+#netbar{position:fixed;left:0;right:0;margin:0 auto;width:max-content;bottom:calc(env(safe-area-inset-bottom,0px) + 88px);z-index:60;display:flex;gap:8px;align-items:center;max-width:min(92vw,560px);padding:8px 14px;border-radius:999px;border:1px solid var(--warn,var(--accent));background:var(--surface);color:var(--ink);font:500 var(--fs-xs) var(--font-body);text-align:left;box-shadow:0 6px 20px rgba(0,0,0,.3);cursor:pointer}
+#netbar svg{width:18px;height:18px;flex:none;color:var(--warn,var(--accent))}
+.in-session #netbar{bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
+.tu3s{display:flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0}
+.tu3s .tu3-j{flex:0 0 10px;height:2px;background:var(--line)}
+.tu3{display:inline-flex;align-items:center;gap:5px;padding:3px 8px 3px 3px;border-radius:999px;border:1px solid var(--line);font:600 var(--fs-xs) var(--font-body);color:var(--muted);background:none;min-width:0}
+.tu3-n{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--surface-3,var(--surface-2));font-size:.72rem;flex:none}
+.tu3-n svg{width:12px;height:12px}
+.tu3.done{color:var(--ok);border-color:var(--ok)} .tu3.done .tu3-n{background:var(--ok);color:var(--bg,#000)}
+.tu3.next{color:var(--primary);border-color:var(--primary)} .tu3.next .tu3-n{background:var(--primary);color:var(--bg,#000)}
+.tu3.lock{opacity:.6}
+.tu3s.big{gap:6px}.tu3s.big .tu3{padding:6px 12px 6px 6px;font-size:var(--fs-sm);text-decoration:none;cursor:pointer}
+.tu3s.big .tu3-n{width:26px;height:26px}
+.tu3s.big .tu3>svg{width:16px;height:16px;margin-left:2px}
+.tu3s.big .tu3-j{flex:1 1 8px;min-width:6px;max-width:28px}
+.tu3-card{margin-bottom:var(--sp-4)}
+.st3-lock{text-align:center;display:grid;justify-items:center;gap:6px;margin-bottom:var(--sp-4)}
+.chip.st-placed{color:var(--muted);border-color:var(--line)}
+.node.placed{opacity:.85;outline:2px dashed var(--line);outline-offset:2px}
+/* 2.8.0 · cursus en schéma */
+.road{list-style:none;margin:var(--sp-3) 0 0;padding:0;display:flex;flex-direction:column;gap:var(--sp-3);position:relative}
+.rd-step{position:relative;padding-left:0}
+.rd-step:not(:last-child)::after{content:"";position:absolute;left:21px;top:44px;bottom:calc(-1 * var(--sp-3));width:3px;border-radius:2px;background:var(--line)}
+.rd-step.st-got:not(:last-child)::after{background:var(--ok)}
+.rd-node{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:var(--sp-3);align-items:center;width:100%;text-align:left;padding:8px 10px 8px 0;border:1px solid transparent;border-radius:var(--r-lg);background:none;color:var(--ink);cursor:pointer;position:relative;z-index:1}
+.rd-node.on{border-color:var(--wc,var(--primary));background:var(--surface-2)}
+.rd-dot{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:3px solid var(--line);background:var(--surface);font:700 1rem var(--font-display,inherit)}
+.rd-dot svg{width:20px;height:20px}
+.rd-txt{display:grid;gap:2px;min-width:0}.rd-txt b{overflow-wrap:anywhere}
+.rd-st{font-style:normal;font:600 var(--fs-xs) var(--font-body);padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.st-got>.rd-node .rd-dot,.rd-node.st-got .rd-dot{border-color:var(--ok);background:var(--ok);color:var(--bg,#000)}
+.rd-node.st-got .rd-st{color:var(--ok);border-color:var(--ok)}
+.rd-node.st-next .rd-dot{border-color:var(--primary);color:var(--primary);box-shadow:0 0 0 4px var(--primary-soft)}
+.rd-node.st-next .rd-st{color:var(--primary);border-color:var(--primary)}
+.rd-node.st-later{opacity:.7}
+.rd-you{display:inline-flex;gap:6px;align-items:center;margin:0 0 4px 52px;font:700 var(--fs-xs) var(--font-body);color:var(--gold);text-transform:uppercase;letter-spacing:.06em}
+.rd-you svg{width:14px;height:14px}
+.rd-br{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0 0 52px}
+.rd-node.small{grid-template-columns:30px minmax(0,1fr) auto;width:auto;flex:1 1 13rem;padding:4px 8px 4px 4px;border-color:var(--line);border-style:dashed}
+.rd-node.small .rd-dot{width:30px;height:30px;border-width:2px;font-size:.9rem}
+@media (max-width:360px){.rd-st{display:none}.rd-node{grid-template-columns:44px minmax(0,1fr)}.rd-node.small{grid-template-columns:30px minmax(0,1fr)}}
+/* 2.8.0 · aventure du boss sur la carte, calculatrice de plongée */
+.node.quest{display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#BFF3EE,var(--primary) 60%,#0B5A60);color:#04252A;box-shadow:0 6px 0 #0A3C42,0 0 0 6px var(--primary-soft)}
+.node.quest.done{background:radial-gradient(circle at 35% 30%,#FFF1C2,var(--gold) 60%,#A06C00);color:var(--gold-ink,#2a1a00)}
+.questspot{margin-inline:auto!important}
+.dc-row{margin:6px 0 0}.dc-open svg{width:16px;height:16px}
+.dcalc{position:fixed;z-index:70;right:max(12px,env(safe-area-inset-right));bottom:calc(env(safe-area-inset-bottom,0px) + 12px);width:min(320px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;padding:12px;border-radius:22px;border:1px solid rgba(120,220,230,.35);
+  background:linear-gradient(180deg,#0E4C6A 0%,#0A2E48 55%,#061A2C 100%);color:#E6F6FB;box-shadow:0 18px 50px rgba(0,0,0,.5);isolation:isolate}
+.dc-sea{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:-1}
+.dc-sea::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(100deg,transparent 0 30px,rgba(255,255,255,.05) 30px 44px,transparent 44px 90px);-webkit-mask-image:linear-gradient(180deg,#000,transparent 60%);mask-image:linear-gradient(180deg,#000,transparent 60%)}
+.dc-fish{position:absolute;width:42px;opacity:.55;animation:dcswim 16s linear infinite}
+.dc-fish .creature{width:100%;height:auto}
+.dc-fish.f0{top:22%;animation-duration:14s}.dc-fish.f1{top:48%;animation-duration:19s;animation-delay:-6s;width:34px}.dc-fish.f2{top:70%;animation-duration:23s;animation-delay:-11s}
+.dc-fish.f3{top:86%;animation-duration:17s;animation-delay:-3s;width:30px}.dc-fish.f4{top:36%;animation-duration:26s;animation-delay:-15s;width:26px}
+@keyframes dcswim{from{transform:translateX(-60px)}to{transform:translateX(360px)}}
+.dc-b{position:absolute;bottom:-12px;width:8px;height:8px;border-radius:50%;border:1.5px solid rgba(230,246,251,.6);animation:dcbub 6s ease-in infinite}
+.dc-b.b1{left:12%}.dc-b.b2{left:38%;animation-delay:-2s;width:6px;height:6px}.dc-b.b3{left:66%;animation-delay:-4s}.dc-b.b4{left:88%;animation-delay:-1s;width:5px;height:5px}
+@keyframes dcbub{to{transform:translateY(-480px);opacity:0}}
+.dc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.dc-top b{display:flex;gap:6px;align-items:center;font:700 var(--fs-sm) var(--font-display,inherit)}
+.dc-top svg{width:18px;height:18px}.dc-top .iconbtn{color:#E6F6FB}
+.dc-lcd{display:grid;gap:2px;padding:10px 12px;border-radius:14px;background:#0B1E14;border:2px solid #2E4A3A;box-shadow:inset 0 0 18px rgba(120,255,170,.12);font-family:var(--font-mono,ui-monospace,monospace);color:#8CF5B4;text-align:right;margin-bottom:10px;min-width:0}
+.dc-expr{font-size:.8rem;opacity:.8;overflow-wrap:anywhere;min-height:1.1em}.dc-res{font-size:1.9rem;font-weight:700;line-height:1.1;overflow-wrap:anywhere}
+.dc-unit{font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;opacity:.55}
+.dc-keys{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.dc-k{min-height:44px;border-radius:999px;border:1px solid rgba(190,240,250,.35);background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.35),rgba(120,200,230,.16) 45%,rgba(20,80,110,.35));color:#F2FBFF;font:700 1.05rem var(--font-body);cursor:pointer;box-shadow:inset 0 -3px 6px rgba(0,0,0,.25)}
+.dc-k:active{transform:scale(.94)}
+.dc-k.op{color:#FFD36E}.dc-k.eq{background:radial-gradient(circle at 30% 25%,#BFF3EE,var(--primary) 60%,#0B5A60);color:#04252A;border-color:transparent}
+.dc-k.c{color:#FF9A8A}
+.dcalc.bubbleup .dc-res{animation:dcpop .35s ease-out}@keyframes dcpop{50%{transform:scale(1.08)}}
+.reduce-motion .dc-fish,.reduce-motion .dc-b{animation:none}
+@media (min-width:900px){.dcalc{right:24px;bottom:24px}}
 
 </style>
 </head>
@@ -2518,7 +2590,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.7.2";
+  AA.VERSION = "2.8.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -5251,7 +5323,7 @@ window.AA={BUNDLED:true};
     const q = it.q, n = c.mode === "apnee" ? null : c.items.length, answered = c.picked != null;
     const isOrd = q.type === "order" && Array.isArray(q.steps);
     if (isOrd && !it.pool) { it.pool = u.shuffle(flatSteps(q).concat(q.extra || [])); it.seq = []; }
-    if (!isOrd && it.inp == null) it.inp = !window.AA_PLAIN && c.mode !== "duel" && c.mode !== "rduel" && Q.canType(q) && Math.random() < .6;
+    if (!isOrd && it.inp == null) it.inp = !window.AA_PLAIN && c.mode !== "duel" && c.mode !== "rduel" && Q.canType(q) && Math.random() < (Q.typeRate || .6);
     const isNum = !isOrd && it.inp;
     const okNow = answered && c.picked === q.a;
     const prog = c.mode === "apnee" ? c.time / 60 : (c.idx + (answered ? 1 : 0)) / n;
@@ -7134,6 +7206,30 @@ window.AA={BUNDLED:true};
               <b>${u.esc(c.lv)}</b><span class="xs">${u.esc(c.tag)}</span>${st ? `<em class="cn-st">${t("cur." + st)}</em>` : ""}</button>`; }).join("")}</div>`; }).join("")}
     </div>`;
 
+  /* 2.8 : le chemin en schéma vertical — étapes numérotées reliées, branches à côté,
+     « Tu es ici », prochaine étape et prérequis. */
+  const SPINE = ["decouverte", "n1", "n2", "n3", "n4", "e2", "mf"];
+  const BRANCH = { n1: ["nitrox", "rifap"], n2: ["e1"] };
+  const rstate = id => {
+    const certs = AA.S.certs || {}, lv = AA.S.profile.level, goal = AA.game.goalWorld();
+    if (certs[id] || id === lv) return "got";
+    if (id === goal) return "next";
+    const pre = AFTER[id]; return !pre || certs[pre] || pre === lv ? "open" : "later";
+  };
+  const road = sel => {
+    const you = (() => { const l = SPINE.filter(id => rstate(id) === "got"); return l[l.length - 1]; })();
+    const node = (id, n, small) => { const c = C.cursusById[id]; if (!c) return ""; const st = rstate(id), pre = C.cursusById[AFTER[id]], wl = c.world ? C.inWorld(c.world) : [];
+      const rd = wl.length ? wl.filter(m => AA.tutor && AA.tutor.explicitRead(m.id)).length : 0;
+      return `<button class="cur-node rd-node st-${st} ${small ? "small" : ""} ${id === sel ? "on" : ""}" data-id="${id}" style="--wc:var(${(C.worldById[c.world] || {}).color || "--muted"})">
+        <span class="rd-dot">${st === "got" ? AA.icon("check") : small ? "+" : n}</span>
+        <span class="rd-txt"><b>${u.esc(c.lv)}</b><span class="xs muted">${u.esc(c.tag)}</span>
+          ${pre && st !== "got" ? `<span class="xs muted">${t("rd.pre", { lv: u.esc(pre.lv) })}</span>` : ""}
+          ${st === "next" && wl.length ? `<span class="xs">${t("rd.prog", { r: rd, n: wl.length })}</span>` : ""}</span>
+        <em class="rd-st">${t("rd.st." + st)}</em></button>`; };
+    return `<ol class="road">${SPINE.map((id, i) => `<li class="rd-step st-${rstate(id)} ${id === you ? "you" : ""}">
+        ${id === you ? `<span class="rd-you">${AA.icon("dive")} ${t("rd.you")}</span>` : ""}${node(id, i + 1)}
+        ${(BRANCH[id] || []).length ? `<div class="rd-br"><span class="xs muted">${t("rd.branch")}</span>${BRANCH[id].map(b => node(b, 0, true)).join("")}</div>` : ""}</li>`).join("")}</ol>`;
+  };
   const detail = id => { const c = C.cursusById[id], st = state(id), n = c.world ? C.inWorld(c.world).length : 0, prev = C.cursusById[AFTER[id]];
     return `<div class="cur-detail card" style="--wc:var(${(C.worldById[c.world] || {}).color || "--muted"})" aria-live="polite">
       <p class="eyebrow">${t("cur.line." + PLACE[id][0])}${prev ? ` · ${t("cur.after", { lv: u.esc(prev.lv) })}` : ""}</p>
@@ -7153,7 +7249,7 @@ window.AA={BUNDLED:true};
         <p class="muted cur-intro">${t("cur.intro")}</p>
         ${lv ? `<div class="row cur-you"><span class="chip ok">${t("cur.youLv")} : ${u.esc(t("lv." + lv.id))}</span>${(C.worldById[goal] || {}).short ? `<span class="chip gold">${t("cur.goal")} : ${u.esc(C.worldById[goal].short)}</span>` : ""}</div>` : ""}
         <div class="cur-layout">
-          <section class="card trk-card"><div class="dc-head"><h3>${t("cur.pathT")}</h3><span class="xs muted">${t("cur.pathH")}</span></div>${track(sel)}</section>
+          <section class="card trk-card"><div class="dc-head"><h3>${t("cur.pathT")}</h3><span class="xs muted">${t("rd.how")}</span></div>${road(sel)}</section>
           <aside class="cur-side" id="cdet">${detail(sel)}</aside>
           ${depthChart()}
         </div>
@@ -11219,6 +11315,253 @@ window.AA={BUNDLED:true};
   addEventListener("hashchange", () => { if (!/^#\/aquarium/.test(location.hash)) stop(); });
 })();
 
+/* js/views/v28.js */
+/* =====================================================================
+   2.8.0 · Retours après un vol (hors ligne) et parcours guidé.
+   - Hors ligne : bandeau clair tant qu'il n'y a pas de réseau (progression
+     gardée sur l'appareil, synchro Google au retour), synchro automatique
+     dès que le réseau revient.
+   - « Lu » veut dire lu : un thème validé au test de positionnement ou
+     d'un niveau déjà obtenu n'est plus affiché comme lu.
+   - Chaque thème en 3 étapes : 1 Lire, 2 S'entraîner (quiz du thème à
+     50 % ou plus), 3 Gardien. Le gardien attend les deux premières.
+   - Plus de réponses à taper : toutes les valeurs chiffrées, pas seulement
+     les calculs générés (80 % des cas, hors duel).
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, T = AA.tutor, Q = AA.quiz, GM = AA.games, V = AA.views, fx = AA.fx, ui = AA.ui, esc = u.esc;
+  if (!T || !Q) return;
+  const S = () => AA.S;
+  const inArt = () => !!(window.claude && window.claude.use);
+
+  /* ---------- Hors ligne ---------- */
+  const netbar = () => {
+    let b = document.getElementById("netbar");
+    const off = !navigator.onLine;
+    if (!off) { if (b) b.remove(); return; }
+    const linked = !!(AA.sync && AA.sync.linked && AA.sync.linked());
+    const txt = inArt() ? t("nb.art") : linked ? t("nb.sync") : t("nb.local");
+    if (!b) { b = document.createElement("button"); b.id = "netbar"; b.type = "button"; b.setAttribute("role", "status"); b.onclick = () => AA.netSheet && AA.netSheet(); document.body.appendChild(b); }
+    b.innerHTML = `${AA.icon("offline")}<span><b>${t("nb.t")}</b> · ${txt}</span>`;
+  };
+  AA.netbar = netbar;
+  addEventListener("offline", netbar);
+  addEventListener("online", () => {
+    netbar();
+    const sy = AA.sync;
+    if (sy && sy.linked && sy.linked() && sy.possible && sy.possible()) {
+      setTimeout(() => sy.now(false).then(ok => { if (ok) fx.toast(t("nb.syncedT"), t("nb.syncedS"), "refresh"); }), 1500);
+    }
+  });
+  setTimeout(netbar, 300);
+
+  /* ---------- « Lu » = vraiment lu ---------- */
+  const placed = mid => !!(S().placed || {})[mid];
+  const cert = mid => { const m = C.byId[mid]; return !!(m && AA.path && AA.path.certified(m.world)); };
+  /* Réparation unique : les cours marqués lus par l'ancienne migration (étoiles 2.0) sans quiz ni lecture réelle. */
+  T.fixRead = () => {
+    const s = S(); if (s.v28read) return 0; let n = 0;
+    Object.keys(s.read || {}).forEach(mid => { const r = s.read[mid]; if (r && r.e && r.mig && !r.x && !(s.themes || {})[mid]) { delete r.e; delete r.mig; n++; } });
+    s.v28read = 1; return n;
+  };
+  const state0 = T.state;
+  T.state = mid => {
+    const st = state0(mid);
+    if (S().unlockAll || T.explicitRead(mid)) return st;
+    if (cert(mid)) return "cert";
+    if (placed(mid)) return "placed";
+    return st === "toread" ? st : "toread";
+  };
+  const chip0 = T.chip;
+  T.chip = mid => T.state(mid) === "placed" ? `<span class="chip tu-st st-placed">${AA.icon("check")} ${t("tu.st.placed")}</span>` : chip0(mid);
+  const wi0 = T.worldInfo;
+  T.worldInfo = wid => { const I = wi0(wid); I.read = I.l.filter(m => T.explicitRead(m.id)).length; return I; };
+
+  /* ---------- Trois étapes par thème ---------- */
+  T.steps = mid => {
+    const read = T.explicitRead(mid), train = G.stars(mid) >= 1, guard = !!(GM && GM.miniWon && GM.miniWon(mid));
+    const free = !!S().unlockAll || cert(mid) || placed(mid);
+    return { read, train, guard, free, ready: free || (read && train), next: !read ? "read" : !train ? "train" : !guard ? "guard" : null };
+  };
+  T.stepsHtml = (mid, compact) => {
+    const s = T.steps(mid), m = C.byId[mid]; if (!m) return "";
+    const it = (k, n, done, ic) => {
+      const cls = `tu3 ${done ? "done" : s.next === k ? "next" : "todo"}${k === "guard" && !s.ready && !done ? " lock" : ""}`;
+      const lab = `<span class="tu3-n">${done ? AA.icon("check") : n}</span><span class="tu3-l">${t("st3." + k)}</span>`;
+      if (compact) return `<span class="${cls}">${lab}</span>`;
+      const href = k === "read" ? `#/lesson/${mid}` : k === "guard" ? `#/gardien/${mid}` : "";
+      return href ? `<a class="${cls}" href="${href}">${lab}${AA.icon(k === "guard" && !s.ready && !done ? "lock" : ic)}</a>` : `<button class="${cls}" data-st3quiz="${mid}">${lab}${AA.icon(ic)}</button>`;
+    };
+    const parts = [it("read", 1, s.read, "book"), it("train", 2, s.train, "play"), it("guard", 3, s.guard, "swords")];
+    if (compact) return `<span class="tu3s" aria-label="${t("st3.aria")}">${parts.join('<i class="tu3-j"></i>')}</span>`;
+    const hint = s.next ? t("st3.h." + s.next) + (s.next !== "read" && s.free && !s.read ? " " + t("st3.free") : "") : t("st3.h.done");
+    return `<section class="card tu3-card"><p class="eyebrow">${t("st3.title")}</p><div class="tu3s big">${parts.join('<i class="tu3-j"></i>')}</div><p class="small muted" style="margin:var(--sp-2) 0 0">${hint}</p></section>`;
+  };
+  document.addEventListener("click", e => { const b = e.target.closest && e.target.closest("[data-st3quiz]"); if (!b) return; const m = C.byId[b.dataset.st3quiz]; if (m) { fx.sfx.tap(); Q.module(m); } });
+  const wrap = (name, fn) => { const v = V[name]; if (!v) return; const r = v.render; v.render = function (el, args) { const out = r.call(this, el, args); try { fn(el, args || []); } catch (e) { console.error(e); } return out; }; };
+  /* Cours : chaque thème montre ses 3 étapes. */
+  wrap("cours", el => {
+    u.$$(".tu-step:not(.exam) .tu-step-a", el).forEach(a => { const mid = (a.getAttribute("href") || "").split("/")[2]; const b = u.$(".tu-step-b", a); if (mid && b && !u.$(".tu3s", b)) b.insertAdjacentHTML("beforeend", T.stepsHtml(mid, true)); });
+  });
+  /* Page du cours : les 3 étapes en tête. */
+  wrap("lesson", (el, [id]) => {
+    if (!C.byId[id] || u.$(".tu3-card", el)) return;
+    const h = u.$(".pagehead", el); if (h) h.insertAdjacentHTML("afterend", T.stepsHtml(id));
+    u.$$(".gm-lg", el).forEach(a => { if (!T.steps(id).ready) a.remove(); });
+  });
+  /* Carte : « fait » seulement si vraiment lu ; le gardien n'apparaît que quand il est prêt. */
+  wrap("map", el => {
+    u.$$(".spot", el).forEach(sp => { const b = u.$(".node[data-id]", sp); if (!b) return; const id = b.dataset.id, real = T.explicitRead(id) || cert(id) || !!S().unlockAll;
+      b.classList.toggle("done", real); b.classList.toggle("placed", !real && placed(id));
+      const gc = u.$(".gm-gchip", sp); if (gc && !T.steps(id).ready) gc.remove(); });
+  });
+  /* Espace Jeux : gardiens verrouillés tant que les 2 premières étapes ne sont pas faites. */
+  wrap("jeux", el => {
+    u.$$(".gm-g[href^='#/gardien/']", el).forEach(a => { const id = a.getAttribute("href").split("/")[2], s = T.steps(id); if (!s.ready && !s.guard) { a.classList.remove("ready"); a.classList.add("lock"); } });
+  });
+  /* Gardien : écran d'attente qui dit quoi faire d'abord. */
+  if (V.gardien) {
+    const g0 = V.gardien.render;
+    V.gardien.render = function (el, args) {
+      const mid = (args || [])[0], m = C.byId[mid], s = m && T.steps(mid), live = GM.battle && GM.battle();
+      if (!m || s.ready || s.guard || (live && live.def && live.def.mid === mid)) return g0.call(this, el, args);
+      el.innerHTML = `${ui.head(t("gm.guardOf", { t: esc(m.title) }), "cours/" + m.world)}
+        <section class="card st3-lock"><span class="medal">${AA.icon("lock")}</span><h2 class="h3">${t("st3.lockT")}</h2><p class="small muted">${t("st3.lockS")}</p></section>
+        ${T.stepsHtml(mid)}`;
+    };
+  }
+  const acts0 = T.actions;
+  T.actions = () => acts0().filter(a => a.k !== "mini" || (() => { const m = C.modules.find(x => a.t === t("gm.a.mini", { t: x.title })); return !m || T.steps(m.id).ready; })());
+
+  /* ---------- Réponses à taper ---------- */
+  const ct0 = Q.canType;
+  const LISTY = /parmi|lequel|laquelle|lesquel|ces valeurs|n[’']est pas|ne .{1,30} pas|faux|incorrect|intrus/i;
+  Q.canType = q => !!q && (ct0(q) || (!q.gen && !q.proc && !LISTY.test(q.q || "") && ct0(Object.assign({}, q, { calc: true }))));
+  Q.typeRate = .8;
+
+  const st0 = AA.router.start;
+  AA.router.start = function () { try { if (T.fixRead()) AA.store.save(true); } catch (e) {} const out = st0.apply(this, arguments); try { netbar(); } catch (e) {} return out; };
+})();
+
+/* =====================================================================
+   2.8.0 · Aventure du boss sur la carte, calculatrice de plongée.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, Q = AA.quiz, GM = AA.games, V = AA.views, fx = AA.fx, esc = u.esc;
+  if (!Q) return;
+
+  /* ---------- Carte : l'aventure qui mène au boss, juste avant lui ---------- */
+  if (V.map) {
+    const m0 = V.map.render;
+    V.map.render = function (el, args) {
+      const out = m0.call(this, el, args);
+      try {
+        const bs = u.$(".bossspot", el), wid = (args && args[0]) || G.goalWorld(), s = C.storyById && C.storyById["boss-" + wid];
+        if (bs && s && !u.$(".questspot", el)) {
+          const rec = (AA.S.story || {})[s.id] || {}, done = !!rec.done, started = !done && rec.node && rec.node !== s.start;
+          const cls = done ? "done" : "cur";
+          bs.insertAdjacentHTML("beforebegin", `<div class="spot questspot" data-depth="${bs.dataset.depth || 0}"><a class="node quest ${cls}" href="#/story/${s.id}" aria-label="${esc(s.title)}">${AA.icon("scroll")}</a>
+            <div class="info"><small>${t("qm.eyebrow")}</small><b>${esc(s.title)}</b><span>${done ? t("qm.done") : started ? `<span style="color:var(--primary)">${t("qm.resume")}</span>` : `<span style="color:var(--primary)">${t("qm.todo")}</span>`}</span></div></div>`);
+        }
+      } catch (e) { console.error(e); }
+      return out;
+    };
+  }
+
+  /* ---------- Calculatrice ---------- */
+  const OPS = { "+": [1, (a, b) => a + b], "−": [1, (a, b) => a - b], "×": [2, (a, b) => a * b], "÷": [2, (a, b) => a / b] };
+  /* Évalue sans eval : nombres, + − × ÷, parenthèses, %, x², √. */
+  Q.calcEval = src => {
+    const s = String(src).replace(/,/g, ".").replace(/\*/g, "×").replace(/\//g, "÷").replace(/-/g, "−").replace(/\s+/g, "");
+    const toks = []; let i = 0;
+    while (i < s.length) {
+      const ch = s[i];
+      if (/[\d.]/.test(ch)) { let j = i; while (j < s.length && /[\d.]/.test(s[j])) j++; const v = parseFloat(s.slice(i, j)); if (!isFinite(v)) return null; toks.push(v); i = j; continue; }
+      if (ch === "−" && (!toks.length || (typeof toks[toks.length - 1] === "string" && toks[toks.length - 1] !== ")" && toks[toks.length - 1] !== "²" && toks[toks.length - 1] !== "%"))) { toks.push("neg"); i++; continue; }
+      if ("+−×÷()√²%".includes(ch)) { toks.push(ch); i++; continue; }
+      return null;
+    }
+    const out = [], st = [];
+    const prec = o => o === "neg" || o === "√" ? 3 : OPS[o] ? OPS[o][0] : 0;
+    for (const k of toks) {
+      if (typeof k === "number") out.push(k);
+      else if (k === "²" || k === "%") out.push(k);
+      else if (k === "neg" || k === "√") st.push(k);
+      else if (k === "(") st.push(k);
+      else if (k === ")") { while (st.length && st[st.length - 1] !== "(") out.push(st.pop()); if (!st.length) return null; st.pop(); if (st.length && (st[st.length - 1] === "√" || st[st.length - 1] === "neg")) out.push(st.pop()); }
+      else { while (st.length && st[st.length - 1] !== "(" && prec(st[st.length - 1]) >= prec(k)) out.push(st.pop()); st.push(k); }
+    }
+    while (st.length) { const o = st.pop(); if (o === "(") return null; out.push(o); }
+    const v = [];
+    for (const k of out) {
+      if (typeof k === "number") v.push(k);
+      else if (k === "²") { if (!v.length) return null; v.push(v.pop() ** 2); }
+      else if (k === "%") { if (!v.length) return null; v.push(v.pop() / 100); }
+      else if (k === "neg") { if (!v.length) return null; v.push(-v.pop()); }
+      else if (k === "√") { if (!v.length) return null; const a = v.pop(); if (a < 0) return null; v.push(Math.sqrt(a)); }
+      else { if (v.length < 2) return null; const b = v.pop(), a = v.pop(); v.push(OPS[k][1](a, b)); }
+    }
+    return v.length === 1 && isFinite(v[0]) ? v[0] : null;
+  };
+  const fmt = x => { if (x == null) return "—"; const r = Math.round(x * 1e6) / 1e6; return String(r).replace(".", ","); };
+  const KEYS = ["C", "(", ")", "÷", "7", "8", "9", "×", "4", "5", "6", "−", "1", "2", "3", "+", "0", ",", "⌫", "=", "√", "x²", "%", "Ans"];
+  let expr = "", ans = null;
+  const panel = () => document.getElementById("divecalc");
+  AA.calc = {
+    open() {
+      if (panel()) return;
+      const p = document.createElement("section"); p.id = "divecalc"; p.className = "dcalc"; p.setAttribute("role", "dialog"); p.setAttribute("aria-label", t("cx.title"));
+      const fish = Array.from({ length: 5 }, (_, i) => `<span class="dc-fish f${i}">${AA.creature(["damsel", "wrasse", "fish", "bream", "damsel"][i], [["#F2C230", "#2B6FD6", "#F07A3A"], ["#E8763A", "#2BA8C8", "#F3C64A"], ["#C9D2D8", "#3A4650", "#9AA6AE"], ["#B8C4CC", "#14202A", "#8C9BA5"], ["#2BA8C8", "#1E3A46", "#F3C64A"]][i])}</span>`).join("");
+      p.innerHTML = `<div class="dc-sea" aria-hidden="true">${fish}<i class="dc-b b1"></i><i class="dc-b b2"></i><i class="dc-b b3"></i><i class="dc-b b4"></i></div>
+        <div class="dc-top"><b>${AA.icon("calc")} ${t("cx.title")}</b><button class="iconbtn" id="dcx" aria-label="${t("cx.close")}">${AA.icon("close")}</button></div>
+        <div class="dc-lcd" aria-live="polite"><span class="dc-expr" id="dcexpr">&nbsp;</span><span class="dc-res" id="dcres">0</span><span class="dc-unit">${t("cx.lcd")}</span></div>
+        <div class="dc-keys">${KEYS.map(k => `<button class="dc-k ${/[0-9,]/.test(k) ? "n" : k === "=" ? "eq" : k === "C" ? "c" : "op"}" data-k="${k}">${k}</button>`).join("")}</div>
+        <button class="btn block sm" id="dcins" hidden>${AA.icon("check")} ${t("cx.insert")}</button>`;
+      document.body.appendChild(p);
+      const show = () => { const v = Q.calcEval(expr.replace(/Ans/g, ans == null ? "0" : "(" + ans + ")")); u.$("#dcexpr").textContent = expr ? expr : " "; u.$("#dcres").textContent = expr ? fmt(v) : fmt(ans == null ? 0 : ans); AA.calc._v = v; const nin = document.getElementById("numv"); u.$("#dcins").hidden = !(nin && !nin.disabled && (v != null || ans != null)); };
+      p.addEventListener("click", e => {
+        const b = e.target.closest("[data-k]"); if (!b) return; const k = b.dataset.k; fx.sfx && fx.sfx.tap && fx.sfx.tap();
+        if (k === "C") expr = "";
+        else if (k === "⌫") expr = expr.replace(/(Ans|.)$/, "");
+        else if (k === "=") { const v = Q.calcEval(expr.replace(/Ans/g, ans == null ? "0" : "(" + ans + ")")); if (v != null) { ans = v; expr = ""; p.classList.remove("bubbleup"); void p.offsetWidth; p.classList.add("bubbleup"); } else { const l = u.$("#dcres"); l.classList.add("shake"); setTimeout(() => l.classList.remove("shake"), 400); } }
+        else if (k === "x²") expr += "²";
+        else if (k === "√") expr += "√(";
+        else expr += k;
+        show();
+      });
+      u.$("#dcx").onclick = () => AA.calc.close();
+      u.$("#dcins").onclick = () => { const v = expr ? AA.calc._v : ans, nin = document.getElementById("numv"); if (nin && v != null) { nin.value = fmt(v); nin.dispatchEvent(new Event("input", { bubbles: true })); try { nin.focus({ preventScroll: true }); } catch (e) {} AA.calc.close(); } };
+      addEventListener("keydown", AA.calc._key);
+      show();
+    },
+    close() { const p = panel(); if (p) p.remove(); removeEventListener("keydown", AA.calc._key); },
+    _key(e) { const p = panel(); if (!p || e.target.id === "numv") return; const map = { "/": "÷", "*": "×", "-": "−", "+": "+", Enter: "=", Backspace: "⌫", Escape: "x", ".": ",", ",": ",", "(": "(", ")": ")" }; const k = /^[0-9]$/.test(e.key) ? e.key : map[e.key]; if (!k) return; e.preventDefault(); if (k === "x") return AA.calc.close(); const b = p.querySelector(`[data-k="${k}"]`); if (b) b.click(); }
+  };
+  /* Question qui demande un calcul : propositions chiffrées ou calcul généré. */
+  Q.needsCalc = q => !!q && !q.proc && (!!q.calc || !!q.gen || (Q.canType && Q.canType(q) && /\d/.test(q.q || "")));
+  const btn = () => `<button class="chip dc-open" id="dcopen" type="button">${AA.icon("calc")} ${t("cx.open")}</button>`;
+  if (V.quiz) {
+    const q0 = V.quiz.render;
+    V.quiz.render = function (el, args) {
+      const out = q0.call(this, el, args);
+      try { const c = AA.ctx || {}, it = c.items && c.items[c.idx], h = u.$(".qhead", el);
+        if (it && h && Q.needsCalc(it.q) && c.mode !== "duel" && c.mode !== "rduel" && !u.$("#dcopen", el)) { h.insertAdjacentHTML("afterend", `<div class="qactions dc-row">${btn()}</div>`); u.$("#dcopen", el).onclick = () => AA.calc.open(); }
+        else if (!it || !Q.needsCalc(it.q)) AA.calc.close();
+      } catch (e) {}
+      return out;
+    };
+  }
+  /* Combats : même bouton sous la question. */
+  new MutationObserver(() => {
+    const box = document.getElementById("btQbox"); if (!box || u.$("#dcopen", box)) return;
+    const b = GM && GM.battle && GM.battle(), qs = GM && GM.qs ? GM.qs() : [], q = b ? qs[b.i] : null;
+    if (q && Q.needsCalc(q)) { const h = u.$(".bt-q, h2, h3", box); (h || box.firstElementChild || box).insertAdjacentHTML("afterend", `<div class="qactions dc-row">${btn()}</div>`); u.$("#dcopen", box).onclick = () => AA.calc.open(); }
+  }).observe(document.documentElement, { childList: true, subtree: true });
+  addEventListener("hashchange", () => { if (!/^#\/(quiz|boss|gardien)/.test(location.hash)) AA.calc.close(); });
+})();
+
 /* locales/fr.js */
 /* =====================================================================
    Abysse Academy · textes de l'interface en français
@@ -11755,6 +12098,19 @@ AA.i18n.add("fr", {
   "mq.rules": "Une notion est solide seulement si : le cours est lu, tu as répondu au moins {n} fois, avec {a} % de bonnes réponses sur les 10 dernières, les {l} dernières justes, des réussites sur {d} jours différents et dans {f} formats différents, et une révision il y a moins de {r} jours. Tant qu’il manque une preuve, la notion reste sous 80 %. Un cours non lu divise le score par deux. Le pourcentage du niveau est la moyenne de toutes ses notions : non lue ou pas testée = 0 %. Pour un brevet déjà obtenu, chaque notion part à 50 % et {c} bonnes réponses d’affilée la confirment.",
   "mq.actT": "Prouver {n} notions en bonne voie", "mq.actS": "Tu les as réussies un autre jour : les réussir aujourd’hui les rapproche de « solide ».", "mq.actTitle": "Preuves du jour",
   "aq3.current": "Courant", "aq3.calm": "Eau calme", "aq3.flow": "Léger courant", "aq3.hint": "Touche l’eau pour donner une pincée de nourriture. Glisse le doigt : les curieux te suivent.",
+  "nb.t": "Hors ligne", "nb.local": "ta progression est gardée sur cet appareil.", "nb.sync": "ta progression est gardée sur cet appareil et sera synchronisée avec Google au retour du réseau.",
+  "nb.art": "l’appli marche tant que cette page reste ouverte ; ta progression est gardée. Pour l’ouvrir sans réseau, installe la version téléchargeable (Profil › Sauvegarde).",
+  "nb.syncedT": "Synchronisé avec Google", "nb.syncedS": "Ta progression hors ligne est maintenant sur ton Drive.",
+  "tu.st.placed": "Validé au test · cours non lu",
+  "st3.title": "Ton parcours sur ce thème", "st3.aria": "Étapes du thème", "st3.read": "Lire", "st3.train": "S’entraîner", "st3.guard": "Gardien",
+  "st3.h.read": "Commence par lire le cours, puis touche « J’ai lu ce cours » en bas.", "st3.h.train": "Fais le quiz du thème : 50 % ou plus débloque le gardien.", "st3.h.guard": "Le gardien t’attend : 4 coups pour le vaincre, 3 vies pour toi.",
+  "st3.h.done": "Thème bouclé : lu, entraîné, gardien vaincu. Reviens de temps en temps pour garder la maîtrise.", "st3.free": "(Ce thème est déjà validé, le gardien est ouvert.)",
+  "st3.lockT": "Ce gardien attend que tu sois prêt", "st3.lockS": "L’ordre conseillé : lire le cours, réussir le quiz du thème (50 % ou plus), puis affronter le gardien.",
+  "rd.how": "De haut en bas : chaque étape demande la précédente. Les qualifications à côté se passent en parallèle. Touche un niveau pour sa fiche.",
+  "rd.you": "Tu es ici", "rd.pre": "Après {lv}", "rd.prog": "{r} cours lus sur {n}", "rd.branch": "En parallèle :",
+  "rd.st.got": "Obtenu", "rd.st.next": "Prochaine étape", "rd.st.open": "Accessible", "rd.st.later": "Plus tard",
+  "qm.eyebrow": "Aventure avant le boss", "qm.todo": "À vivre pour ouvrir le combat", "qm.resume": "En cours : reprends l’aventure", "qm.done": "Aventure terminée",
+  "cx.title": "Calculatrice", "cx.open": "Calculatrice", "cx.close": "Fermer la calculatrice", "cx.insert": "Mettre ce résultat dans la réponse", "cx.lcd": "ordi de plongée",
   "dg.none": "Rien d’urgent : continue ton parcours et tes révisions du jour.", "dg.how": "Le tuteur regarde tes dernières réponses notion par notion : les erreurs qui se répètent, les calculs, ce que tu n’as pas revu depuis longtemps. Il propose l’action la plus utile pour chaque cas.",
   "dg.actT": "Voir ton diagnostic", "dg.actS": "Tes points faibles notion par notion, avec la cause probable",
   "dg.s.confusion": "Erreurs répétées", "dg.s.calc": "Calculs à reprendre", "dg.s.fragile": "Encore fragile", "dg.s.forgot": "En train de s’oublier", "dg.s.stale": "Solide, mais à rafraîchir", "dg.s.untested": "Pas encore testé", "dg.s.unread": "Cours pas encore lu", "dg.s.solid": "Solide",

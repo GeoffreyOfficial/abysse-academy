@@ -48,7 +48,7 @@ function scan() {
   const b = await chromium.launch(); const bad = [], errs = []; let n = 0;
   try {
     for (const [w, ts, theme] of CASES) {
-      const ctx = await b.newContext({ viewport: { width: w, height: 820 } }); await ctx.addInitScript(() => { window.AA_NOGUARD = 1; }); const p = await ctx.newPage();
+      const ctx = await b.newContext({ viewport: { width: w, height: 820 } }); await ctx.addInitScript(() => { window.AA_NOGUARD = 1; window.AA_PLAIN = 1; }); const p = await ctx.newPage();
       p.on("pageerror", e => errs.push(`${w}px ${e.message}`));
       await p.goto(URL); await p.waitForFunction(() => window.AA && AA.router && AA.router.name);
       await p.evaluate(([ts, theme]) => { const S = AA.S; S.profile.onboarded = true; S.profile.name = "Maximilien-Alexandre"; S.evoSeen = 9; S.profile.driveNag = "2099-01-01"; S.unlockAll = true; S.profile.textSize = ts; S.profile.motion = false; S.profile.theme = theme; S.profile.examDate = AA.u.addDays(30); S.xp = 123456; AA.store.save(); }, [ts, theme]);
