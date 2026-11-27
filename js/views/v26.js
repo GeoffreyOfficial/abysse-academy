@@ -233,3 +233,109 @@
     return r;
   };
 })();
+
+/* =====================================================================
+   2.6.2 · Sessions protégées : pendant un quiz (positionnement, brevet
+   blanc, urgences…), un combat ou une aventure, les onglets sont masqués
+   et tout départ (retour du téléphone, lien, bouton fermer) demande :
+   Continuer / Mettre en pause / Quitter. Une session en pause se reprend
+   depuis l'accueil (carte « À reprendre »).
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, R = AA.router, GM = AA.games, V = AA.views, fx = AA.fx;
+  if (!R) return;
+  const SKIP = new Set(["duel", "rduel", "five", "apnee", "boss"]);
+  const keyOf = c => [c.mode, c.world || "", c.module || "", c.full ? 1 : 0].join("|");
+  const nameOf = h => (decodeURIComponent(String(h || "").replace(/^#\/?/, "")).split("/").filter(Boolean)[0] || "home");
+  /* La session en cours sur l'écran affiché, ou null. */
+  const session = () => {
+    const n = R.name, c = AA.ctx || {};
+    if (n === "quiz" && Array.isArray(c.items) && !c.done && !c.flipped0) {
+      const started = (c.answers || []).length > 0 || c.picked != null || !!c.timer;
+      if (!started) return null;
+      const keep = !SKIP.has(c.mode) && !c.players;
+      return { kind: "quiz", keep, title: c.title || t("run.quiz"),
+        pause: () => { try { if (AA.run && AA.run.save) AA.run.save(c); } catch (e) {} clearInterval(c.timer); c.timer = null; },
+        quit: () => { clearInterval(c.timer); if (AA.run) { AA.run._quit = true; try { AA.run.clear(keyOf(c)); } catch (e) {} setTimeout(() => { AA.run._quit = false; }, 800); } } };
+    }
+    if ((n === "boss" || n === "gardien") && GM && GM.battle) {
+      const b = GM.battle(); if (!b) return null;
+      return { kind: "boss", keep: true, title: b.def.name, pause: () => GM.pause(), quit: () => GM.drop() };
+    }
+    /* Exercices et jeux en cours (2.6.2) */
+    if (n === "brief" && c.brief && !c.brief.saved && (c.brief.phase > 0 || Object.keys(c.brief.sel || {}).length)) return { kind: "game", keep: false, title: t("br.title"), pause: () => {}, quit: () => { AA.ctx.brief = null; } };
+    if (n === "succ" && c.succ && !c.succ.saved && (c.succ.i > 0 || c.succ.pick != null)) return { kind: "game", keep: false, title: t("su.title"), pause: () => {}, quit: () => { AA.ctx.succ = null; } };
+    if (n === "paires" && GM && GM.pairsLive && GM.pairsLive()) return { kind: "game", keep: true, title: t("gm.paires"), pause: () => {}, quit: null };
+    if (n === "vraifaux" && GM && GM.vfLive && GM.vfLive()) return { kind: "game", keep: false, title: t("gm.vf") || "Vrai ou faux", pause: () => {}, quit: () => GM.vfDrop() };
+    if (n === "flash" && c.flash && c.flash.deck && c.flash.i > 0 && c.flash.i < c.flash.deck.length) return { kind: "game", keep: true, title: t("mode.flash"), pause: () => {}, quit: null };
+    if (n === "story" && document.querySelector("#view .st-choice") && (() => { const id = decodeURIComponent(String(last || "").replace(/^#\/?/, "")).split("/")[1], st = id && AA.content.storyById[id], r = st && (AA.S.story || {})[id]; return !!(r && r.node && r.node !== st.start); })()) {
+      return { kind: "story", keep: true, title: (document.querySelector("#view h1, #view h2") || {}).textContent || t("story.title"), pause: () => {}, quit: null };
+    }
+    return null;
+  };
+  R.session = session;
+  let last = location.hash, pass = false;
+  const go = h => { pass = true; if (location.hash === h) { pass = false; R.render(); } else location.hash = h; };
+  R.leave = target => {
+    const s = session(), h = "#/" + String(target || "home").replace(/^#?\/?/, "");
+    if (!s) return go(h);
+    if (document.querySelector(".sheet-wrap.sg")) return;
+    const close = AA.ui.sheet(`<div class="sg-sheet"><span class="medal">${AA.icon(s.kind === "boss" ? "swords" : s.kind === "story" ? "scroll" : "pause")}</span>
+      <h3>${t("sg.t")}</h3><p class="small muted">${t("sg.s." + s.kind, { t: u.esc(s.title) })}</p>
+      <div class="stack"><button class="btn block" data-sg="stay">${AA.icon("play")} ${t("sg.stay")}</button>
+      ${s.keep ? `<button class="btn ghost block" data-sg="pause">${AA.icon("pause")} ${t("sg.pause")}</button>` : ""}
+      ${s.quit ? `<button class="btn ghost block sg-quit" data-sg="quit">${AA.icon("close")} ${t(s.keep ? "sg.quit" : "sg.quitLost")}</button>` : ""}</div></div>`, t("sg.t"));
+    const wrap = document.querySelector(".sheet-wrap:last-of-type"); if (wrap) wrap.classList.add("sg");
+    u.$$("[data-sg]").forEach(b => b.onclick = () => {
+      const k = b.dataset.sg; if (typeof close === "function") close(); else document.querySelectorAll(".sheet-wrap.sg").forEach(x => x.remove());
+      if (k === "stay") return;
+      if (k === "pause") s.pause(); else if (s.quit) s.quit();
+      fx.sfx.tap(); go(h);
+    });
+  };
+  /* Appelé par le routeur avant tout changement d'écran. */
+  R.hold = () => {
+    const prev = last, next = location.hash;
+    if (pass) { pass = false; last = next; return false; }
+    if (window.AA_NOGUARD || nameOf(prev) === nameOf(next) || !session()) { last = next; return false; } /* AA_NOGUARD : tests automatiques anciens */
+    history.replaceState(null, "", prev); last = prev;
+    R.leave(next.replace(/^#\/?/, ""));
+    return true;
+  };
+  const r0 = R.render;
+  R.render = function () { const out = r0.apply(this, arguments); last = location.hash; return out; };
+  /* Les onglets disparaissent pendant une session (le bouton fermer reste). */
+  const mark = () => { const on = !!session(); document.documentElement.classList.toggle("in-session", on); };
+  setInterval(mark, 400); addEventListener("hashchange", () => setTimeout(mark, 50));
+  /* Un onglet touché malgré tout : même question. */
+  document.addEventListener("click", e => {
+    const b = e.target.closest && e.target.closest("#tabbar [data-tab]"); if (!b || window.AA_NOGUARD || !session()) return;
+    e.preventDefault(); e.stopImmediatePropagation(); R.leave(b.dataset.tab === "home" ? "home" : b.dataset.tab);
+  }, true);
+  /* Fermer un quiz : même choix (pause ou quitter). */
+  if (V.quiz) {
+    const q0 = V.quiz.render;
+    V.quiz.render = function (el, args) {
+      const out = q0.call(this, el, args);
+      const x = u.$("#qclose", el), c = AA.ctx || {};
+      if (x && !window.AA_NOGUARD && session()) x.onclick = () => R.leave(c.back || "home");
+      return out;
+    };
+  }
+  /* Accueil : un combat mis en pause se reprend comme une série. */
+  if (V.home && GM && GM.battle) {
+    const h0 = V.home.render;
+    V.home.render = function (el, args) {
+      const out = h0.call(this, el, args);
+      try {
+        const b = GM.battle(); if (!b || !b.paused || u.$(".run-card.bt-run", el)) return out;
+        const main = u.$(".col-main", el) || el, d = b.def, route = (d.kind === "boss" ? "boss/" + d.wid : "gardien/" + d.mid);
+        main.insertAdjacentHTML("afterbegin", `<section class="card run-card bt-run"><span class="medal">${AA.icon("swords")}</span><div class="grow"><p class="eyebrow">${t("run.eyebrow")}</p><b>${u.esc(d.name)}</b>${AA.ui.bar(b.i / Math.max(1, b.n), "var(--bad)")}<span class="xs muted">${t("sg.btWhere", { hp: b.hp, l: b.lives })}</span></div>
+          <div class="run-btns"><a class="btn sm" href="#/${route}">${AA.icon("play")} ${t("run.go")}</a><button class="btn ghost sm" data-btdrop>${t("run.drop")}</button></div></section>`);
+        const dr = u.$("[data-btdrop]", el); if (dr) dr.onclick = () => AA.ui.confirm(t("run.dropQ"), t("run.dropYes"), () => { GM.drop(); R.refresh(); });
+      } catch (e) { /* accueil modifié */ }
+      return out;
+    };
+  }
+})();

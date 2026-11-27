@@ -226,9 +226,9 @@
     "exm.hyp": "Format proche de l’écrit des clubs (QCM et calculs). C’est une hypothèse : le format exact peut varier selon les centres.",
     /* Statuts d'un cours */
     "tu.st.toread": "À lire", "tu.st.quiz": "Lu · quiz à faire", "tu.st.gap": "Lacune à combler", "tu.st.review": "À réviser",
-    "tu.st.learning": "Lu · en cours", "tu.st.ok": "Acquis", "tu.st.master": "Maîtrisé", "tu.st.cert": "Niveau obtenu",
+    "tu.st.learning": "Lu · en cours", "tu.st.ok": "En bonne voie", "tu.st.master": "Maîtrisé", "tu.st.cert": "Niveau obtenu",
     /* Notions */
-    "tu.n.new": "Pas encore vue", "tu.n.weak": "Fragile", "tu.n.mid": "En cours", "tu.n.ok": "Acquise", "tu.n.master": "Maîtrisée", "tu.n.gap": "Lacune",
+    "tu.n.new": "Pas encore vue", "tu.n.weak": "Fragile", "tu.n.mid": "En cours", "tu.n.ok": "En bonne voie", "tu.n.master": "Solide", "tu.n.acq": "Brevet obtenu · à confirmer", "tu.n.gap": "Lacune",
     "tu.general": "Vue d’ensemble",
     /* Cours lu */
     "tu.readT": "Tu as fini ce cours ?",

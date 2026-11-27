@@ -209,6 +209,7 @@
   function renderBattle(el, def) {
     if (!def) { el.innerHTML = ui.empty("swords", t("search.none"), ""); return; }
     if (B && B.def.id === def.id && B.def.kind === def.kind) {
+      B.paused = false;
       if (B.done) { el.innerHTML = `<div class="bt-wrap">${resultHtml()}</div>`; u.$("#btAgain", el).onclick = () => { fx.sfx.tap(); GM.begin(def); }; return; }
       el.innerHTML = `<div class="bt-wrap fight">${arena(def)}<div class="bt-qbox" id="btQbox">${qPanel()}</div></div>`;
       hud(); bindQ();
@@ -222,7 +223,14 @@
   }
   AA.view("gardien", { tab: "map", depth: 20, render(el, [mid]) { GM.from = GM.from || "map"; renderBattle(el, GM.mini(mid)); } });
   AA.view("boss", { tab: "map", depth: 45, render(el, [wid]) { renderBattle(el, GM.final(wid || G.goalWorld())); } });
-  addEventListener("hashchange", () => { if (B && !/^#\/(gardien|boss)\//.test(location.hash)) { clearT(); if (!B.done) B = null; } });
+  addEventListener("hashchange", () => { if (B && !/^#\/(gardien|boss)\//.test(location.hash)) { clearT(); if (!B.done && !B.paused) B = null; } });
+  /* 2.6.2 : combat en cours (pour la garde de session et la reprise). */
+  GM.battle = () => (B && !B.done ? { def: B.def, i: B.i, n: B.qs.length, hp: B.hp, lives: B.lives, paused: !!B.paused, started: B.answers.length > 0 || !B.fresh } : null);
+  GM.pause = () => { if (B && !B.done) B.paused = true; };
+  GM.drop = () => { clearT(); B = null; };
+  GM.pairsLive = () => !!(P && !P.done && P.moves > 0);
+  GM.vfLive = () => !!(VF && VF.phase === "play" && VF.timer);
+  GM.vfDrop = () => { if (VF && VF.timer) clearInterval(VF.timer); VF = null; };
 
   /* ---------- Paires ---------- */
   const shortTxt = (s, n) => { s = String(s || "").replace(/\s+/g, " ").trim(); return s.length > n ? s.slice(0, n - 1).replace(/[\s,;:.]+\S*$/, "") + "…" : s; };

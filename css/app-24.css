@@ -278,3 +278,33 @@ h1,h2,.pagetitle{text-wrap:balance}
 .ctx-dl dd{margin:0;font-size:var(--fs-sm);line-height:1.45;overflow-wrap:anywhere}
 @media (max-width:360px){.ctx-dl div{grid-template-columns:minmax(0,1fr)}}
 .tu-coach .eyebrow{display:flex;align-items:center;gap:6px}.tu-coach .eyebrow svg{width:16px;height:16px}.tu-coach-btns{flex-wrap:wrap;gap:8px}
+/* 2.6.2 · sessions protégées, réponses du boss pleine largeur, espacements de l'accueil */
+.in-session #tabbar{display:none!important}
+.sg-sheet{display:grid;gap:10px;text-align:center;justify-items:center}
+.sg-sheet .stack{width:100%}
+.sg-sheet h3{margin:0}
+.sg-quit{color:var(--bad)}
+@media (pointer:coarse){.bt-c{grid-template-columns:minmax(0,1fr)}}
+.bt-c .grow{overflow-wrap:break-word;word-break:normal;hyphens:manual;min-width:0}
+.choice>span:not(.k):not(.mk){overflow-wrap:break-word;word-break:normal}
+#view>.hello{margin-bottom:var(--sp-4)}
+#view>.place-card,#view>.tu-mig{margin-bottom:var(--sp-4)}
+.home-grid .col-main,.home-grid .col-side{display:flex;flex-direction:column;gap:var(--sp-4);min-width:0}
+.home-grid .col-main>*,.home-grid .col-side>*{margin-top:0;margin-bottom:0}
+.home-grid .col-main>.section-title,.home-grid .col-side>.section-title{margin-bottom:calc(var(--sp-2) - var(--sp-4))}
+.home-grid .tu-then{gap:var(--sp-3)}
+.home-grid{row-gap:var(--sp-4)}
+/* 2.7.0 · maîtrise détaillée */
+.mq-counts{display:flex;flex-wrap:wrap;gap:6px;margin-top:var(--sp-2)}
+.mq-solid{color:var(--gold)}.mq-proving{color:var(--ok)}.mq-work{color:var(--warn,var(--accent))}
+details.dg-row{display:block}
+details.dg-row>summary{display:flex;align-items:center;gap:var(--sp-3);cursor:pointer;list-style:none;min-width:0}
+details.dg-row>summary::-webkit-details-marker{display:none}
+details.dg-row>summary .grow{min-width:0}
+.mq-det{padding:var(--sp-2) 0 var(--sp-3) 0;display:flex;flex-direction:column;gap:var(--sp-2);min-width:0}
+.mq-det .row{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+.mq-crit{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:.9em}
+.mq-crit li{display:flex;gap:8px;align-items:flex-start;color:var(--muted);overflow-wrap:break-word;min-width:0}
+.mq-crit li.ok{color:var(--ok)}
+.mq-crit li svg{width:16px;height:16px;flex:none;margin-top:2px}
+.mq-o{width:12px;height:12px;border-radius:50%;border:2px solid currentColor;flex:none;margin:3px 2px 0}

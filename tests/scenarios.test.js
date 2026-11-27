@@ -22,6 +22,8 @@ let fails = 0; const errs = [];
 const ok = (c, m) => { if (c) console.log("  ✓ " + m); else { fails++; console.error("  ✗ " + m); } };
 const ready = p => p.waitForFunction(() => window.AA && AA.router && AA.router.name && document.documentElement.classList.contains("ready"), null, { timeout: 15000 });
 async function page(ctx, w) {
+  /* La garde de session (2.6.2) a son test dans e2e : ici on navigue librement. */
+  await ctx.addInitScript(() => { window.AA_NOGUARD = 1; });
   const p = await ctx.newPage(); if (w) await p.setViewportSize({ width: w, height: 844 });
   p.on("pageerror", e => errs.push(e.message));
   p.on("console", m => { if (m.type() === "error" && !/vibrate|favicon|net::|Failed to load/.test(m.text())) errs.push(m.text()); });

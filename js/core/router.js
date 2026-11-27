@@ -74,5 +74,9 @@
   R.scroll = {};
   R.refresh = () => { const y = window.scrollY; R.render(); requestAnimationFrame(() => window.scrollTo(0, y)); };
   addEventListener("scroll", () => { R.scroll[location.hash] = window.scrollY; }, { passive: true });
+  /* 2.6.2 : garde de session. Écouteur posé avant ceux des écrans : R.hold peut
+     annuler un changement d'écran (retour système, onglet, lien) pendant un
+     quiz, un combat ou une aventure, pour proposer « Pause » ou « Quitter ». */
+  addEventListener("hashchange", e => { try { if (R.hold && R.hold()) e.stopImmediatePropagation(); } catch (err) { /* garde facultative */ } });
   R.start = () => { addEventListener("hashchange", onHash); direction(); R.render("tab"); };
 })();

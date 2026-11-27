@@ -117,7 +117,7 @@
   const ST_IC = { toread: "book", quiz: "play", gap: "buoy", review: "refresh", learning: "chart", ok: "check", master: "trophy", cert: "check" };
   const ST_CL = { toread: "", quiz: "pri", gap: "warn", review: "warn", learning: "pri", ok: "ok", master: "gold", cert: "ok" };
   T.chip = mid => { const st = T.state(mid); return `<span class="chip tu-st st-${st} ${ST_CL[st]}">${AA.icon(ST_IC[st])} ${t("tu.st." + st)}</span>`; };
-  const N_CL = { new: "", weak: "warn", mid: "pri", ok: "ok", master: "gold", gap: "warn" };
+  const N_CL = { new: "", weak: "warn", mid: "pri", ok: "ok", master: "gold", gap: "warn", acq: "ok" };
   const nChip = nid => { const st = T.nState(nid); return `<span class="chip xs ${N_CL[st]}">${t("tu.n." + st)}</span>`; };
   const pct = x => Math.round((x || 0) * 100);
   const barCol = x => x >= .85 ? "var(--gold)" : x >= .65 ? "var(--ok)" : x >= .45 ? "var(--primary)" : "var(--accent)";

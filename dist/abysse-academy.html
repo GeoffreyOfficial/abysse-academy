@@ -2449,6 +2449,36 @@ h1,h2,.pagetitle{text-wrap:balance}
 .ctx-dl dd{margin:0;font-size:var(--fs-sm);line-height:1.45;overflow-wrap:anywhere}
 @media (max-width:360px){.ctx-dl div{grid-template-columns:minmax(0,1fr)}}
 .tu-coach .eyebrow{display:flex;align-items:center;gap:6px}.tu-coach .eyebrow svg{width:16px;height:16px}.tu-coach-btns{flex-wrap:wrap;gap:8px}
+/* 2.6.2 · sessions protégées, réponses du boss pleine largeur, espacements de l'accueil */
+.in-session #tabbar{display:none!important}
+.sg-sheet{display:grid;gap:10px;text-align:center;justify-items:center}
+.sg-sheet .stack{width:100%}
+.sg-sheet h3{margin:0}
+.sg-quit{color:var(--bad)}
+@media (pointer:coarse){.bt-c{grid-template-columns:minmax(0,1fr)}}
+.bt-c .grow{overflow-wrap:break-word;word-break:normal;hyphens:manual;min-width:0}
+.choice>span:not(.k):not(.mk){overflow-wrap:break-word;word-break:normal}
+#view>.hello{margin-bottom:var(--sp-4)}
+#view>.place-card,#view>.tu-mig{margin-bottom:var(--sp-4)}
+.home-grid .col-main,.home-grid .col-side{display:flex;flex-direction:column;gap:var(--sp-4);min-width:0}
+.home-grid .col-main>*,.home-grid .col-side>*{margin-top:0;margin-bottom:0}
+.home-grid .col-main>.section-title,.home-grid .col-side>.section-title{margin-bottom:calc(var(--sp-2) - var(--sp-4))}
+.home-grid .tu-then{gap:var(--sp-3)}
+.home-grid{row-gap:var(--sp-4)}
+/* 2.7.0 · maîtrise détaillée */
+.mq-counts{display:flex;flex-wrap:wrap;gap:6px;margin-top:var(--sp-2)}
+.mq-solid{color:var(--gold)}.mq-proving{color:var(--ok)}.mq-work{color:var(--warn,var(--accent))}
+details.dg-row{display:block}
+details.dg-row>summary{display:flex;align-items:center;gap:var(--sp-3);cursor:pointer;list-style:none;min-width:0}
+details.dg-row>summary::-webkit-details-marker{display:none}
+details.dg-row>summary .grow{min-width:0}
+.mq-det{padding:var(--sp-2) 0 var(--sp-3) 0;display:flex;flex-direction:column;gap:var(--sp-2);min-width:0}
+.mq-det .row{display:flex;flex-wrap:wrap;gap:var(--sp-2)}
+.mq-crit{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:.9em}
+.mq-crit li{display:flex;gap:8px;align-items:flex-start;color:var(--muted);overflow-wrap:break-word;min-width:0}
+.mq-crit li.ok{color:var(--ok)}
+.mq-crit li svg{width:16px;height:16px;flex:none;margin-top:2px}
+.mq-o{width:12px;height:12px;border-radius:50%;border:2px solid currentColor;flex:none;margin:3px 2px 0}
 
 </style>
 </head>
@@ -2472,7 +2502,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.6.1";
+  AA.VERSION = "2.7.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -4136,6 +4166,10 @@ window.AA={BUNDLED:true};
   R.scroll = {};
   R.refresh = () => { const y = window.scrollY; R.render(); requestAnimationFrame(() => window.scrollTo(0, y)); };
   addEventListener("scroll", () => { R.scroll[location.hash] = window.scrollY; }, { passive: true });
+  /* 2.6.2 : garde de session. Écouteur posé avant ceux des écrans : R.hold peut
+     annuler un changement d'écran (retour système, onglet, lien) pendant un
+     quiz, un combat ou une aventure, pour proposer « Pause » ou « Quitter ». */
+  addEventListener("hashchange", e => { try { if (R.hold && R.hold()) e.stopImmediatePropagation(); } catch (err) { /* garde facultative */ } });
   R.start = () => { addEventListener("hashchange", onHash); direction(); R.render("tab"); };
 })();
 
@@ -8089,7 +8123,7 @@ window.AA={BUNDLED:true};
   const ST_IC = { toread: "book", quiz: "play", gap: "buoy", review: "refresh", learning: "chart", ok: "check", master: "trophy", cert: "check" };
   const ST_CL = { toread: "", quiz: "pri", gap: "warn", review: "warn", learning: "pri", ok: "ok", master: "gold", cert: "ok" };
   T.chip = mid => { const st = T.state(mid); return `<span class="chip tu-st st-${st} ${ST_CL[st]}">${AA.icon(ST_IC[st])} ${t("tu.st." + st)}</span>`; };
-  const N_CL = { new: "", weak: "warn", mid: "pri", ok: "ok", master: "gold", gap: "warn" };
+  const N_CL = { new: "", weak: "warn", mid: "pri", ok: "ok", master: "gold", gap: "warn", acq: "ok" };
   const nChip = nid => { const st = T.nState(nid); return `<span class="chip xs ${N_CL[st]}">${t("tu.n." + st)}</span>`; };
   const pct = x => Math.round((x || 0) * 100);
   const barCol = x => x >= .85 ? "var(--gold)" : x >= .65 ? "var(--ok)" : x >= .45 ? "var(--primary)" : "var(--accent)";
@@ -9123,6 +9157,7 @@ window.AA={BUNDLED:true};
   function renderBattle(el, def) {
     if (!def) { el.innerHTML = ui.empty("swords", t("search.none"), ""); return; }
     if (B && B.def.id === def.id && B.def.kind === def.kind) {
+      B.paused = false;
       if (B.done) { el.innerHTML = `<div class="bt-wrap">${resultHtml()}</div>`; u.$("#btAgain", el).onclick = () => { fx.sfx.tap(); GM.begin(def); }; return; }
       el.innerHTML = `<div class="bt-wrap fight">${arena(def)}<div class="bt-qbox" id="btQbox">${qPanel()}</div></div>`;
       hud(); bindQ();
@@ -9136,7 +9171,14 @@ window.AA={BUNDLED:true};
   }
   AA.view("gardien", { tab: "map", depth: 20, render(el, [mid]) { GM.from = GM.from || "map"; renderBattle(el, GM.mini(mid)); } });
   AA.view("boss", { tab: "map", depth: 45, render(el, [wid]) { renderBattle(el, GM.final(wid || G.goalWorld())); } });
-  addEventListener("hashchange", () => { if (B && !/^#\/(gardien|boss)\//.test(location.hash)) { clearT(); if (!B.done) B = null; } });
+  addEventListener("hashchange", () => { if (B && !/^#\/(gardien|boss)\//.test(location.hash)) { clearT(); if (!B.done && !B.paused) B = null; } });
+  /* 2.6.2 : combat en cours (pour la garde de session et la reprise). */
+  GM.battle = () => (B && !B.done ? { def: B.def, i: B.i, n: B.qs.length, hp: B.hp, lives: B.lives, paused: !!B.paused, started: B.answers.length > 0 || !B.fresh } : null);
+  GM.pause = () => { if (B && !B.done) B.paused = true; };
+  GM.drop = () => { clearT(); B = null; };
+  GM.pairsLive = () => !!(P && !P.done && P.moves > 0);
+  GM.vfLive = () => !!(VF && VF.phase === "play" && VF.timer);
+  GM.vfDrop = () => { if (VF && VF.timer) clearInterval(VF.timer); VF = null; };
 
   /* ---------- Paires ---------- */
   const shortTxt = (s, n) => { s = String(s || "").replace(/\s+/g, " ").trim(); return s.length > n ? s.slice(0, n - 1).replace(/[\s,;:.]+\S*$/, "") + "…" : s; };
@@ -10589,6 +10631,332 @@ window.AA={BUNDLED:true};
   };
 })();
 
+/* =====================================================================
+   2.6.2 · Sessions protégées : pendant un quiz (positionnement, brevet
+   blanc, urgences…), un combat ou une aventure, les onglets sont masqués
+   et tout départ (retour du téléphone, lien, bouton fermer) demande :
+   Continuer / Mettre en pause / Quitter. Une session en pause se reprend
+   depuis l'accueil (carte « À reprendre »).
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, R = AA.router, GM = AA.games, V = AA.views, fx = AA.fx;
+  if (!R) return;
+  const SKIP = new Set(["duel", "rduel", "five", "apnee", "boss"]);
+  const keyOf = c => [c.mode, c.world || "", c.module || "", c.full ? 1 : 0].join("|");
+  const nameOf = h => (decodeURIComponent(String(h || "").replace(/^#\/?/, "")).split("/").filter(Boolean)[0] || "home");
+  /* La session en cours sur l'écran affiché, ou null. */
+  const session = () => {
+    const n = R.name, c = AA.ctx || {};
+    if (n === "quiz" && Array.isArray(c.items) && !c.done && !c.flipped0) {
+      const started = (c.answers || []).length > 0 || c.picked != null || !!c.timer;
+      if (!started) return null;
+      const keep = !SKIP.has(c.mode) && !c.players;
+      return { kind: "quiz", keep, title: c.title || t("run.quiz"),
+        pause: () => { try { if (AA.run && AA.run.save) AA.run.save(c); } catch (e) {} clearInterval(c.timer); c.timer = null; },
+        quit: () => { clearInterval(c.timer); if (AA.run) { AA.run._quit = true; try { AA.run.clear(keyOf(c)); } catch (e) {} setTimeout(() => { AA.run._quit = false; }, 800); } } };
+    }
+    if ((n === "boss" || n === "gardien") && GM && GM.battle) {
+      const b = GM.battle(); if (!b) return null;
+      return { kind: "boss", keep: true, title: b.def.name, pause: () => GM.pause(), quit: () => GM.drop() };
+    }
+    /* Exercices et jeux en cours (2.6.2) */
+    if (n === "brief" && c.brief && !c.brief.saved && (c.brief.phase > 0 || Object.keys(c.brief.sel || {}).length)) return { kind: "game", keep: false, title: t("br.title"), pause: () => {}, quit: () => { AA.ctx.brief = null; } };
+    if (n === "succ" && c.succ && !c.succ.saved && (c.succ.i > 0 || c.succ.pick != null)) return { kind: "game", keep: false, title: t("su.title"), pause: () => {}, quit: () => { AA.ctx.succ = null; } };
+    if (n === "paires" && GM && GM.pairsLive && GM.pairsLive()) return { kind: "game", keep: true, title: t("gm.paires"), pause: () => {}, quit: null };
+    if (n === "vraifaux" && GM && GM.vfLive && GM.vfLive()) return { kind: "game", keep: false, title: t("gm.vf") || "Vrai ou faux", pause: () => {}, quit: () => GM.vfDrop() };
+    if (n === "flash" && c.flash && c.flash.deck && c.flash.i > 0 && c.flash.i < c.flash.deck.length) return { kind: "game", keep: true, title: t("mode.flash"), pause: () => {}, quit: null };
+    if (n === "story" && document.querySelector("#view .st-choice") && (() => { const id = decodeURIComponent(String(last || "").replace(/^#\/?/, "")).split("/")[1], st = id && AA.content.storyById[id], r = st && (AA.S.story || {})[id]; return !!(r && r.node && r.node !== st.start); })()) {
+      return { kind: "story", keep: true, title: (document.querySelector("#view h1, #view h2") || {}).textContent || t("story.title"), pause: () => {}, quit: null };
+    }
+    return null;
+  };
+  R.session = session;
+  let last = location.hash, pass = false;
+  const go = h => { pass = true; if (location.hash === h) { pass = false; R.render(); } else location.hash = h; };
+  R.leave = target => {
+    const s = session(), h = "#/" + String(target || "home").replace(/^#?\/?/, "");
+    if (!s) return go(h);
+    if (document.querySelector(".sheet-wrap.sg")) return;
+    const close = AA.ui.sheet(`<div class="sg-sheet"><span class="medal">${AA.icon(s.kind === "boss" ? "swords" : s.kind === "story" ? "scroll" : "pause")}</span>
+      <h3>${t("sg.t")}</h3><p class="small muted">${t("sg.s." + s.kind, { t: u.esc(s.title) })}</p>
+      <div class="stack"><button class="btn block" data-sg="stay">${AA.icon("play")} ${t("sg.stay")}</button>
+      ${s.keep ? `<button class="btn ghost block" data-sg="pause">${AA.icon("pause")} ${t("sg.pause")}</button>` : ""}
+      ${s.quit ? `<button class="btn ghost block sg-quit" data-sg="quit">${AA.icon("close")} ${t(s.keep ? "sg.quit" : "sg.quitLost")}</button>` : ""}</div></div>`, t("sg.t"));
+    const wrap = document.querySelector(".sheet-wrap:last-of-type"); if (wrap) wrap.classList.add("sg");
+    u.$$("[data-sg]").forEach(b => b.onclick = () => {
+      const k = b.dataset.sg; if (typeof close === "function") close(); else document.querySelectorAll(".sheet-wrap.sg").forEach(x => x.remove());
+      if (k === "stay") return;
+      if (k === "pause") s.pause(); else if (s.quit) s.quit();
+      fx.sfx.tap(); go(h);
+    });
+  };
+  /* Appelé par le routeur avant tout changement d'écran. */
+  R.hold = () => {
+    const prev = last, next = location.hash;
+    if (pass) { pass = false; last = next; return false; }
+    if (window.AA_NOGUARD || nameOf(prev) === nameOf(next) || !session()) { last = next; return false; } /* AA_NOGUARD : tests automatiques anciens */
+    history.replaceState(null, "", prev); last = prev;
+    R.leave(next.replace(/^#\/?/, ""));
+    return true;
+  };
+  const r0 = R.render;
+  R.render = function () { const out = r0.apply(this, arguments); last = location.hash; return out; };
+  /* Les onglets disparaissent pendant une session (le bouton fermer reste). */
+  const mark = () => { const on = !!session(); document.documentElement.classList.toggle("in-session", on); };
+  setInterval(mark, 400); addEventListener("hashchange", () => setTimeout(mark, 50));
+  /* Un onglet touché malgré tout : même question. */
+  document.addEventListener("click", e => {
+    const b = e.target.closest && e.target.closest("#tabbar [data-tab]"); if (!b || window.AA_NOGUARD || !session()) return;
+    e.preventDefault(); e.stopImmediatePropagation(); R.leave(b.dataset.tab === "home" ? "home" : b.dataset.tab);
+  }, true);
+  /* Fermer un quiz : même choix (pause ou quitter). */
+  if (V.quiz) {
+    const q0 = V.quiz.render;
+    V.quiz.render = function (el, args) {
+      const out = q0.call(this, el, args);
+      const x = u.$("#qclose", el), c = AA.ctx || {};
+      if (x && !window.AA_NOGUARD && session()) x.onclick = () => R.leave(c.back || "home");
+      return out;
+    };
+  }
+  /* Accueil : un combat mis en pause se reprend comme une série. */
+  if (V.home && GM && GM.battle) {
+    const h0 = V.home.render;
+    V.home.render = function (el, args) {
+      const out = h0.call(this, el, args);
+      try {
+        const b = GM.battle(); if (!b || !b.paused || u.$(".run-card.bt-run", el)) return out;
+        const main = u.$(".col-main", el) || el, d = b.def, route = (d.kind === "boss" ? "boss/" + d.wid : "gardien/" + d.mid);
+        main.insertAdjacentHTML("afterbegin", `<section class="card run-card bt-run"><span class="medal">${AA.icon("swords")}</span><div class="grow"><p class="eyebrow">${t("run.eyebrow")}</p><b>${u.esc(d.name)}</b>${AA.ui.bar(b.i / Math.max(1, b.n), "var(--bad)")}<span class="xs muted">${t("sg.btWhere", { hp: b.hp, l: b.lives })}</span></div>
+          <div class="run-btns"><a class="btn sm" href="#/${route}">${AA.icon("play")} ${t("run.go")}</a><button class="btn ghost sm" data-btdrop>${t("run.drop")}</button></div></section>`);
+        const dr = u.$("[data-btdrop]", el); if (dr) dr.onclick = () => AA.ui.confirm(t("run.dropQ"), t("run.dropYes"), () => { GM.drop(); R.refresh(); });
+      } catch (e) { /* accueil modifié */ }
+      return out;
+    };
+  }
+})();
+
+/* js/views/v27.js */
+/* =====================================================================
+   2.7.0 · Maîtrise exigeante et expliquée.
+   Une notion n'est « solide » qu'avec des preuves : cours lu, au moins
+   5 réponses, 80 % de bonnes sur les 10 dernières, les 3 dernières justes,
+   des bonnes réponses sur 3 jours différents, dans 2 formats différents,
+   et une révision il y a moins de 30 jours. Le pourcentage affiché est la
+   moyenne sur TOUTES les notions du niveau (non lues et non testées = 0 %),
+   donc il colle aux compteurs. Niveau déjà obtenu : les notions partent
+   à 50 % (« Brevet obtenu, à confirmer ») et 3 bonnes réponses d'affilée
+   les confirment.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, T = AA.tutor, Q = AA.quiz, fx = AA.fx, ui = AA.ui, esc = u.esc;
+  if (!T || !T.mastery) return;
+  const S = () => AA.S;
+  const RULE = T.RULE = { n: 5, acc: .8, last: 3, days: 3, fmt: 2, fresh: 30, solid: .8, certStart: .5, certLast: 3 };
+
+  /* ---------- Traces : jours de bonnes réponses et formats ---------- */
+  const fmtNow = () => {
+    try {
+      const r = AA.router.name || "", c = AA.ctx || {};
+      if (r === "quiz") { const it = c.items && c.items[c.i]; return "quiz:" + (it && it.inp ? "saisie" : it && it.q && it.q.type === "order" ? "ordre" : (c.mode || "qcm")); }
+      return r || "autre";
+    } catch (e) { return "autre"; }
+  };
+  const note0 = T.note;
+  T.note = (q, ok) => {
+    note0(q, ok);
+    const nid = T.notionOf(q); if (!nid) return;
+    const r = (S().nstat || {})[nid]; if (!r) return;
+    if (!r.f) r.f = r.n > 1 ? ["quiz:ancien"] : [];
+    if (!r.dk) r.dk = r.ok > 1 && r.d ? [r.d] : [];
+    if (ok) {
+      const f = fmtNow(); if (!r.f.includes(f)) r.f = r.f.concat(f).slice(-6);
+      const d = u.today(); if (!r.dk.includes(d)) r.dk = r.dk.concat(d).slice(-6);
+    }
+  };
+
+  /* ---------- Exactitude récente (pour les lacunes et les priorités) ---------- */
+  T.acc = nid => {
+    const r = T.stat(nid); if (!r || !r.n) return null;
+    let w = 1, sw = .6, sx = .3;
+    for (let i = r.h.length - 1; i >= 0; i--) { sx += w * +r.h[i]; sw += w; w *= .75; }
+    return sx / sw;
+  };
+  T.isGap = nid => { const r = T.stat(nid); if (!r || r.n < 2) return false; return /00$/.test(r.h) || (r.n >= 3 && T.acc(nid) < .45); };
+
+  /* ---------- Preuves d'une notion ---------- */
+  const certOf = nid => { const n = T.notion(nid), m = n && C.byId[n.mid]; return !!(m && AA.path && AA.path.certified(m.world)); };
+  T.proof = nid => {
+    const n = T.notion(nid), r = T.stat(nid), cert = certOf(nid);
+    const read = !!(n && T.isRead(n.mid));
+    const h = r ? r.h : "", last = h.slice(-10);
+    const okN = (last.match(/1/g) || []).length;
+    const dk = r ? (r.dk || (r.ok && r.d ? [r.d] : [])) : [], f = r ? (r.f || (r.n ? ["quiz:ancien"] : [])) : [];
+    const age = r && r.d ? u.daysBetween(r.d, u.today()) : null;
+    const p = {
+      cert, read, n: r ? r.n : 0, okN, ratio: last.length ? okN / last.length : 0,
+      lastOk: h.length >= RULE.last && /^1+$/.test(h.slice(-RULE.last)),
+      lastRun: (h.match(/1*$/) || [""])[0].length,
+      days: dk.length, fmt: f.length, age, lastErr: h.lastIndexOf("0") >= 0 ? h.length - 1 - h.lastIndexOf("0") : null
+    };
+    /* Critères, dans l'ordre où on les remplit. */
+    p.crit = cert && !T.explicitRead(n ? n.mid : "") && p.n < RULE.n
+      ? [{ k: "cert", ok: true }, { k: "run", ok: p.lastRun >= RULE.certLast, v: Math.min(p.lastRun, RULE.certLast), of: RULE.certLast }, { k: "fresh", ok: age != null && age <= RULE.fresh, v: age }]
+      : [{ k: "read", ok: read },
+        { k: "n", ok: p.n >= RULE.n, v: Math.min(p.n, RULE.n), of: RULE.n },
+        { k: "acc", ok: last.length >= RULE.n && p.ratio >= RULE.acc, v: Math.round(p.ratio * 100) },
+        { k: "last", ok: p.lastOk },
+        { k: "days", ok: p.days >= RULE.days, v: Math.min(p.days, RULE.days), of: RULE.days },
+        { k: "fmt", ok: p.fmt >= RULE.fmt, v: Math.min(p.fmt, RULE.fmt), of: RULE.fmt },
+        { k: "fresh", ok: age != null && age <= RULE.fresh, v: age }];
+    p.solid = p.crit.every(c => c.ok);
+    p.todo = p.crit.filter(c => !c.ok);
+    return p;
+  };
+  T.solid = nid => T.proof(nid).solid;
+
+  /* ---------- Maîtrise : 0 à 1, sous 80 % tant qu'il manque une preuve ---------- */
+  T.mastery = nid => {
+    const r = T.stat(nid);
+    if (!r || !r.n) return certOf(nid) ? RULE.certStart : null;
+    const p = T.proof(nid);
+    let m;
+    if (p.crit[0].k === "cert") {
+      /* Niveau obtenu : on part de 50 %, chaque bonne réponse d'affilée confirme. */
+      m = p.ratio * (RULE.certStart + (1 - RULE.certStart) * Math.min(1, p.lastRun / RULE.certLast));
+    } else {
+      const cN = Math.min(1, p.n / RULE.n), cD = Math.min(1, p.days / RULE.days), cF = Math.min(1, p.fmt / RULE.fmt);
+      m = p.ratio * (.4 + .25 * cN + .2 * cD + .15 * cF) * (p.read ? 1 : .5);
+    }
+    if (p.age > RULE.fresh) m *= 1 - Math.min(.4, (p.age - RULE.fresh) / 90);
+    return p.solid ? Math.max(RULE.solid, m) : Math.min(RULE.solid - .01, m);
+  };
+  T.nState = nid => {
+    const r = T.stat(nid);
+    if (!r || !r.n) return certOf(nid) ? "acq" : "new";
+    if (T.isGap(nid)) return "gap";
+    if (T.solid(nid)) return "master";
+    const a = T.acc(nid);
+    return a >= .65 ? "ok" : a >= .45 ? "mid" : "weak";
+  };
+  T.modInfo = mid => {
+    const ns = T.notions(mid).filter(n => T.stat(n.id) || T.qsOf(n.id).length);
+    const seen = ns.filter(n => T.stat(n.id)).length;
+    const ms = ns.map(n => T.mastery(n.id) || 0);
+    return { ns, seen, tot: ns.length, solid: ns.filter(n => T.solid(n.id)).length, mastery: ns.length ? ms.reduce((a, b) => a + b, 0) / ns.length : 0, gaps: ns.filter(n => T.isGap(n.id)) };
+  };
+  const state0 = T.state;
+  T.state = mid => {
+    const st = state0(mid);
+    if (st !== "master" && st !== "ok") return st;
+    const I = T.modInfo(mid);
+    return I.tot && I.solid === I.tot ? "master" : I.mastery >= .6 ? "ok" : "learning";
+  };
+
+  /* ---------- Diagnostic : cause et prochaine étape ---------- */
+  T.cause = nid => {
+    const n = T.notion(nid); if (!n) return null; const r = T.stat(nid);
+    if (!T.isRead(n.mid) && (!r || !r.n)) return { k: "unread", ic: "book" };
+    if (!r || !r.n) return certOf(nid) ? { k: "acq", ic: "check" } : { k: "untested", ic: "play" };
+    const p = T.proof(nid);
+    if (p.solid) return p.age > 21 ? { k: "stale", ic: "refresh", d: p.age } : { k: "solid", ic: "check" };
+    if ((n.gen || /calc|gen/.test(n.id)) && /0/.test(r.h.slice(-4))) return { k: "calc", ic: "calc" };
+    if (T.repeated(nid)) return { k: "confusion", ic: "buoy" };
+    if (p.age > 14 && /1/.test(r.h.slice(0, -2))) return { k: "forgot", ic: "refresh", d: p.age };
+    if (T.acc(nid) >= .65) return { k: "proving", ic: "target" };
+    return { k: "fragile", ic: "target" };
+  };
+  const PRIO = { confusion: 0, calc: 1, fragile: 2, forgot: 3, proving: 4, stale: 5, acq: 6, untested: 7, unread: 8, solid: 9 };
+  const ORDER = ["confusion", "calc", "fragile", "forgot", "proving", "stale", "acq", "untested", "unread", "solid"];
+  T.diagnose = wid => {
+    const out = [];
+    C.inWorld(wid).forEach(m => T.notions(m.id).filter(n => !n.gen).forEach(n => { const c = T.cause(n.id); if (c) out.push({ n, c, m: T.mastery(n.id) || 0 }); }));
+    return out;
+  };
+  /* Synthèse d'un niveau : les mêmes chiffres partout (diagnostic, tuteur, tests). */
+  T.levelSum = wid => {
+    const all = T.diagnose(wid), by = k => all.filter(x => x.c.k === k).length;
+    const pct = all.length ? Math.round(100 * all.reduce((a, x) => a + x.m, 0) / all.length) : 0;
+    return { all, n: all.length, pct, solid: by("solid") + by("stale"), work: by("confusion") + by("calc") + by("fragile") + by("forgot"), proving: by("proving"), acq: by("acq"), untested: by("untested"), unread: by("unread") };
+  };
+  const critTxt = c => t("mq.c." + c.k, { v: c.v == null ? "" : c.v, of: c.of || "" });
+  const nextStep = (x, p) => {
+    if (x.c.k === "unread") return t("mq.next.read");
+    if (x.c.k === "untested") return t("mq.next.test");
+    if (x.c.k === "acq") return t("mq.next.acq", { n: RULE.certLast });
+    if (p.solid) return t("mq.next.keep");
+    const c = p.todo[0];
+    return c ? t("mq.next." + c.k, { n: c.of ? c.of - (c.v || 0) : "" }) : "";
+  };
+  const DW = () => { const g = G.goalWorld(); return AA.ctx.dw && C.worldById[AA.ctx.dw] ? AA.ctx.dw : g; };
+  AA.view("diagnostic", {
+    tab: "train", depth: 2,
+    render(el) {
+      const wid = DW(), W = C.worldById[wid], L = T.levelSum(wid), all = L.all;
+      const by = k => all.filter(x => x.c.k === k);
+      const prio = all.filter(x => !["solid", "unread", "acq", "untested"].includes(x.c.k)).sort((a, b) => PRIO[a.c.k] - PRIO[b.c.k] || (T.acc(a.n.id) ?? .5) - (T.acc(b.n.id) ?? .5)).slice(0, 3);
+      const worlds = C.worlds.filter(w => !w.soon && C.inWorld(w.id).length);
+      const cert = AA.path.certified(wid), dash = Math.round(L.pct / 100 * 283);
+      const row = x => {
+        const k = x.c.k, p = T.proof(x.n.id), r = T.stat(x.n.id);
+        const facts = r && r.n ? t("mq.facts", { n: r.n, ok: p.okN, of: Math.min(10, r.h.length), d: p.age === 0 ? t("mq.today") : t("mq.ago", { d: p.age }) }) + (p.lastErr != null ? " · " + (p.lastErr === 0 ? t("mq.errLast") : t("mq.errAgo", { n: p.lastErr })) : "") : "";
+        const crit = ["unread", "untested"].includes(k) ? "" : `<ul class="mq-crit">${p.crit.map(c => `<li class="${c.ok ? "ok" : ""}">${c.ok ? AA.icon("check") : `<i class="mq-o"></i>`}<span>${critTxt(c)}</span></li>`).join("")}</ul>`;
+        return `<details class="dg-row dg-${k}"><summary><span class="dg-ic">${AA.icon(x.c.ic)}</span><div class="grow"><b>${esc(x.n.t)}</b><span class="xs muted">${esc(C.byId[x.n.mid].title)} · ${t("dg.c." + k, { d: x.c.d || "" })} · ${Math.round(x.m * 100)} %</span>
+          <i class="dg-bar"><b style="width:${Math.round(x.m * 100)}%"></b></i></div></summary>
+          <div class="mq-det">${facts ? `<p class="xs muted">${facts}</p>` : ""}${crit}<p class="small"><b>${t("mq.next")}</b> ${nextStep(x, p)}</p>
+          <div class="row">${k === "unread" ? `<a class="btn ghost sm" href="#/lesson/${x.n.mid}">${AA.icon("book")} ${t("dg.read")}</a>` : `<button class="btn sm" data-dgo="${x.n.id}">${AA.icon("play")} ${t("dg.train")}</button><button class="btn ghost sm" data-dread="${x.n.id}">${AA.icon("book")} ${t("dg.read")}</button>`}</div></div></details>`;
+      };
+      const sec = (k, list) => list.length ? `<details class="card dg-sec" ${["confusion", "calc", "fragile", "proving"].includes(k) ? "open" : ""}><summary><b>${t("dg.s." + k)}</b><span class="chip">${list.length}</span></summary>${list.map(row).join("")}</details>` : "";
+      const counts = [["solid", L.solid], ["proving", L.proving], ["work", L.work], ["acq", L.acq], ["untested", L.untested], ["unread", L.unread]].filter(([, v]) => v);
+      el.innerHTML = `${ui.head(t("dg.title"), "train")}
+        <div class="seg dg-worlds" role="tablist">${worlds.map(w => `<button data-dw="${w.id}" aria-pressed="${w.id === wid}">${esc(w.short)}</button>`).join("")}</div>
+        <section class="card dg-hero"><svg class="dg-ring" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="45" class="tr"/><circle cx="50" cy="50" r="45" class="fg" style="stroke-dasharray:${dash} 283"/></svg>
+          <div class="grow"><p class="eyebrow">${esc(W.short)}${cert ? " · " + t("mq.cert") : ""}</p><h2>${t("dg.mastery", { p: L.pct })}</h2>
+          <p class="small muted">${t("mq.sum", { s: L.solid, n: L.n })}</p>
+          <div class="mq-counts">${counts.map(([k, v]) => `<span class="chip xs mq-${k}">${t("mq.k." + k, { n: v })}</span>`).join("")}</div></div></section>
+        ${cert ? `<p class="callout">${t("mq.certS", { n: RULE.certLast })}</p>` : ""}
+        ${prio.length ? `<section class="card dg-prio"><p class="eyebrow">${AA.icon("target")} ${t("dg.prio")}</p>${prio.map((x, i) => `<div class="dg-p" style="--i:${i}"><span class="dg-num">${i + 1}</span><div class="grow"><b>${esc(x.n.t)}</b><span class="small muted">${t("dg.why." + x.c.k, { d: x.c.d || "" })}</span></div><button class="btn sm" data-dgo="${x.n.id}">${t("dg.go")}</button></div>`).join("")}</section>`
+          : L.unread === L.n ? `<p class="callout">${t("mq.allUnread")}</p>` : L.solid === L.n ? `<p class="callout ok">${t("dg.none")}</p>` : `<p class="callout">${t("mq.noPrio")}</p>`}
+        ${ORDER.map(k => sec(k, by(k))).join("")}
+        <details class="card mq-rules"><summary><b>${t("mq.rulesT")}</b></summary><p class="small">${t("mq.rules", { n: RULE.n, a: Math.round(RULE.acc * 100), l: RULE.last, d: RULE.days, f: RULE.fmt, r: RULE.fresh, c: RULE.certLast })}</p></details>`;
+      u.$$("[data-dw]", el).forEach(b => b.onclick = () => { AA.ctx.dw = b.dataset.dw; fx.sfx.tap(); AA.router.refresh(); });
+      u.$$("[data-dgo]", el).forEach(b => b.onclick = () => T.drill(b.dataset.dgo));
+      u.$$("[data-dread]", el).forEach(b => b.onclick = () => T.openNotion(b.dataset.dread));
+    }
+  });
+
+  /* ---------- Tuteur plus exigeant ---------- */
+  /* Notions « en bonne voie » qui attendent une preuve espacée (pas déjà réussie aujourd'hui). */
+  T.toProve = () => Object.keys(S().nstat || {}).filter(nid => {
+    const n = T.notion(nid); if (!n || n.gen || !G.inPlay(n.mid)) return false;
+    if (T.nState(nid) !== "ok") return false;
+    const r = T.stat(nid); return !(r.dk || []).includes(u.today());
+  }).sort((a, b) => (T.mastery(b) || 0) - (T.mastery(a) || 0));
+  const acts0 = T.actions;
+  T.actions = () => {
+    const a = acts0(), pv = T.toProve();
+    if (pv.length >= 2 && !a.some(x => x.k === "prove")) {
+      const i = a.findIndex(x => x.k === "session");
+      a.splice(i < 0 ? a.length : i, 0, { k: "prove", ic: "target", t: t("mq.actT", { n: Math.min(pv.length, 5) }), s: t("mq.actS"), run: () => T.proveRun() });
+    }
+    return a;
+  };
+  T.proveRun = () => {
+    const used = new Set(), qs = [];
+    T.toProve().slice(0, 5).forEach(nid => u.shuffle(T.qsOf(nid)).filter(q => !used.has(q.id)).slice(0, 2).forEach(q => { used.add(q.id); qs.push(q); }));
+    if (!qs.length) return T.session();
+    Q.start("drill", u.shuffle(qs), { title: t("mq.actTitle"), back: "home" });
+  };
+  /* La séance du tuteur glisse aussi une preuve espacée. */
+  const start1 = Q.start;
+  Q.start = (mode, qs, opts) => {
+    if (mode === "tutor") { try { const pv = T.toProve().slice(0, 2); if (pv.length) AA.ctx.tuBoost = (AA.ctx.tuBoost || []).concat(pv.filter(x => !(AA.ctx.tuBoost || []).includes(x))); } catch (e) {} }
+    return start1(mode, qs, opts);
+  };
+})();
+
 /* locales/fr.js */
 /* =====================================================================
    Abysse Academy · textes de l'interface en français
@@ -10841,7 +11209,7 @@ AA.i18n.add("fr", {
   "boss.toWorld": "Découvrir le monde {world}", "boss.retry": "Réessayer", "boss.study": "Voir mes erreurs fréquentes", "boss.toReview": "À revoir",
 
   "story.title": "Aventures", "story.intro": "De vraies histoires de plongée, pour chaque niveau et chaque rôle : encadré, autonome, guide, initiateur, moniteur, secouriste. Chaque choix a des conséquences. Un bon choix du premier coup = 1 point.",
-  "story.len": "{n} décisions", "story.toBoss": "Affronter {name}", "story.bossChip": "mène au boss", "bq.need": "Vis d’abord l’aventure « {t} » : c’est elle qui te mène jusqu’au boss.", "bq.also": "Il te faudra aussi vivre l’aventure « {t} », qui mène jusqu’à lui.", "bq.go": "Vivre l’aventure", "bq.story": "Ton aventure t’a mené jusqu’ici", "bq.epi": "La suite de l’histoire", "hm.coachT": "Ton tuteur", "hm.coachS": "Une séance de questions choisies pour toi dans tes cours lus : lacunes, révisions espacées, notions fragiles et un calcul. Le diagnostic montre tes points faibles notion par notion.", "hm.coachDiag": "Le diagnostic montre tes points faibles notion par notion, avec la cause probable.", "hm.coachGo": "Lancer la séance", "hm.coachDg": "Voir le diagnostic", "cq.title": "De quoi parle la question ?", "cq.theme": "Thème : {t}", "cq.notion": "notion : {n}", "dv.ok": "Bonne réponse", "dv.bad": "Raté", "dv.dk": "Passée", "dv.depth": "−{m} m", "dv.comboS": "Combo ×{n} · tu descends à −{m} m. {s}", "dv.streak": { one: "Toujours en immersion : {n} jour d’affilée.", other: "Toujours en immersion : {n} jours d’affilée." }, "dv.set": "Ambiance plongée", "dv.set.full": "Complète", "dv.set.calm": "Discrète", "dv.set.off": "Coupée", "dv.setS": "Bulles, sonar et profondeur pendant les quiz, les combos et les jours d’affilée. « Discrète » garde les sons classiques sans effets ; le verdict (bonne réponse ou raté) reste toujours affiché.", "dv.c.bulles.t": "Bulles en rafale", "dv.c.bulles.s": "Bien lancé, continue.", "dv.c.thermo.t": "Thermocline franchie", "dv.c.thermo.s": "L’eau fraîchit, tes réponses aussi.", "dv.c.sonar.t": "Sonar verrouillé", "dv.c.sonar.s": "Plus rien ne t’échappe.", "dv.c.bleu.t": "Grand bleu", "dv.c.bleu.s": "Plus de fond en vue, que du bleu.", "dv.c.tombant.t": "Le long du tombant", "dv.c.tombant.s": "Une série digne d’un N3.", "dv.c.abysses.t": "Abysses", "dv.c.abysses.s": "Même les poissons-lanternes applaudissent.", "dv.c.fosse.t": "Fosse océane", "dv.c.fosse.s": "Série légendaire.", "dv.c.legende.t": "Légende des abysses", "dv.c.legende.s": "Tu ne remontes plus.", "ord.chip": "Gestes dans l’ordre", "ord.help": "Touche les gestes dans l’ordre où tu les fais ({n} bons gestes, les autres sont des pièges). Touche un geste choisi pour le retirer.", "ord.yours": "Ton enchaînement", "ord.pool": "Gestes possibles", "ord.empty": "Ton enchaînement apparaîtra ici.", "ord.go": "Valider mon enchaînement ({n})", "ord.score": "{g} geste(s) bien placé(s) sur {n}", "ord.right": "Le bon enchaînement :", "ord.free": "ordre libre", "ord.extraT": "Gestes à ne pas faire que tu as choisis :", "num.chip": "Réponse à taper", "num.label": "Tape ta réponse (l’unité est déjà indiquée) :", "num.ph": "ex. 2,5", "num.go": "Valider", "num.qcm": "Voir des propositions", "num.yours": "Ta réponse :", "num.badT": "Il faut un nombre", "num.badS": "Tape seulement le nombre, par exemple 2,5 ou 12.", "pr.title": "Procédures d’urgence", "pr.tileS": "Remets les bons gestes dans l’ordre", "pr.count": "{n} / {tot} réussies", "pr.eyebrow": "Les bons gestes, dans le bon ordre", "pr.intro": "Pour chaque niveau, des situations d’urgence réelles : un camarade qui ne se sent pas bien, une panne d’air, une victime en surface… Tu choisis les bons gestes parmi une longue liste et tu les remets dans l’ordre.", "pr.how": "Certains gestes de la liste sont des pièges. Quand deux gestes peuvent se faire dans n’importe quel ordre, la correction l’indique. Les procédures varient selon les structures : fais-les valider par ton moniteur.", "pr.steps": "{n} gestes parmi {x}", "pr.all": "Enchaîner les {n} procédures {w}", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
+  "story.len": "{n} décisions", "story.toBoss": "Affronter {name}", "story.bossChip": "mène au boss", "bq.need": "Vis d’abord l’aventure « {t} » : c’est elle qui te mène jusqu’au boss.", "bq.also": "Il te faudra aussi vivre l’aventure « {t} », qui mène jusqu’à lui.", "bq.go": "Vivre l’aventure", "bq.story": "Ton aventure t’a mené jusqu’ici", "bq.epi": "La suite de l’histoire", "sg.t": "Quitter la session ?", "sg.s.quiz": "Ta série « {t} » n’est pas finie. Mets-la en pause pour la reprendre plus tard depuis l’accueil, ou quitte-la.", "sg.s.boss": "Le combat contre {t} n’est pas fini. En pause, tu le reprends depuis l’accueil (tant que l’appli reste ouverte).", "sg.s.story": "Ton aventure « {t} » est en cours. Ta progression est gardée : tu reprendras à la même scène.", "sg.s.game": "« {t} » est en cours. Que veux-tu faire ?", "sg.stay": "Continuer", "sg.pause": "Mettre en pause", "sg.quit": "Quitter et abandonner", "sg.quitLost": "Quitter (cette série sera perdue)", "sg.btWhere": "Combat en pause · {hp} PV au boss, {l} vies pour toi", "hm.coachT": "Ton tuteur", "hm.coachS": "Une séance de questions choisies pour toi dans tes cours lus : lacunes, révisions espacées, notions fragiles et un calcul. Le diagnostic montre tes points faibles notion par notion.", "hm.coachDiag": "Le diagnostic montre tes points faibles notion par notion, avec la cause probable.", "hm.coachGo": "Lancer la séance", "hm.coachDg": "Voir le diagnostic", "cq.title": "De quoi parle la question ?", "cq.theme": "Thème : {t}", "cq.notion": "notion : {n}", "dv.ok": "Bonne réponse", "dv.bad": "Raté", "dv.dk": "Passée", "dv.depth": "−{m} m", "dv.comboS": "Combo ×{n} · tu descends à −{m} m. {s}", "dv.streak": { one: "Toujours en immersion : {n} jour d’affilée.", other: "Toujours en immersion : {n} jours d’affilée." }, "dv.set": "Ambiance plongée", "dv.set.full": "Complète", "dv.set.calm": "Discrète", "dv.set.off": "Coupée", "dv.setS": "Bulles, sonar et profondeur pendant les quiz, les combos et les jours d’affilée. « Discrète » garde les sons classiques sans effets ; le verdict (bonne réponse ou raté) reste toujours affiché.", "dv.c.bulles.t": "Bulles en rafale", "dv.c.bulles.s": "Bien lancé, continue.", "dv.c.thermo.t": "Thermocline franchie", "dv.c.thermo.s": "L’eau fraîchit, tes réponses aussi.", "dv.c.sonar.t": "Sonar verrouillé", "dv.c.sonar.s": "Plus rien ne t’échappe.", "dv.c.bleu.t": "Grand bleu", "dv.c.bleu.s": "Plus de fond en vue, que du bleu.", "dv.c.tombant.t": "Le long du tombant", "dv.c.tombant.s": "Une série digne d’un N3.", "dv.c.abysses.t": "Abysses", "dv.c.abysses.s": "Même les poissons-lanternes applaudissent.", "dv.c.fosse.t": "Fosse océane", "dv.c.fosse.s": "Série légendaire.", "dv.c.legende.t": "Légende des abysses", "dv.c.legende.s": "Tu ne remontes plus.", "ord.chip": "Gestes dans l’ordre", "ord.help": "Touche les gestes dans l’ordre où tu les fais ({n} bons gestes, les autres sont des pièges). Touche un geste choisi pour le retirer.", "ord.yours": "Ton enchaînement", "ord.pool": "Gestes possibles", "ord.empty": "Ton enchaînement apparaîtra ici.", "ord.go": "Valider mon enchaînement ({n})", "ord.score": "{g} geste(s) bien placé(s) sur {n}", "ord.right": "Le bon enchaînement :", "ord.free": "ordre libre", "ord.extraT": "Gestes à ne pas faire que tu as choisis :", "num.chip": "Réponse à taper", "num.label": "Tape ta réponse (l’unité est déjà indiquée) :", "num.ph": "ex. 2,5", "num.go": "Valider", "num.qcm": "Voir des propositions", "num.yours": "Ta réponse :", "num.badT": "Il faut un nombre", "num.badS": "Tape seulement le nombre, par exemple 2,5 ou 12.", "pr.title": "Procédures d’urgence", "pr.tileS": "Remets les bons gestes dans l’ordre", "pr.count": "{n} / {tot} réussies", "pr.eyebrow": "Les bons gestes, dans le bon ordre", "pr.intro": "Pour chaque niveau, des situations d’urgence réelles : un camarade qui ne se sent pas bien, une panne d’air, une victime en surface… Tu choisis les bons gestes parmi une longue liste et tu les remets dans l’ordre.", "pr.how": "Certains gestes de la liste sont des pièges. Quand deux gestes peuvent se faire dans n’importe quel ordre, la correction l’indique. Les procédures varient selon les structures : fais-les valider par ton moniteur.", "pr.steps": "{n} gestes parmi {x}", "pr.all": "Enchaîner les {n} procédures {w}", "story.count": "Terminées : {n} sur {tot}", "story.learn": "Ce qu’il faut retenir", "story.badEnd": "Ça s’est mal terminé", "story.why": "Pourquoi", "story.retryFrom": "Reprendre avant l’erreur", "story.alt": "conséquence", "story.conseq": "Voir ce qui se passe",
   "story.locked": "Termine l’aventure précédente pour l’ouvrir.", "story.lockedT": "Aventure fermée", "story.resume": "Reprendre",
   "story.best": "Meilleur : {n} / {tot}", "story.step": "scène {n}/{tot}", "story.surface": "Surface",
   "story.good": "Bon réflexe", "story.bad": "Pas tout à fait", "story.retry": "Essaie un autre choix.", "story.continue": "Continuer",
@@ -11104,6 +11472,26 @@ AA.i18n.add("fr", {
   "les24.key": "L’essentiel en 30 secondes",
   "exp3.repT": "Erreurs répétées", "exp3.rep": "Tu as raté {e} des {n} dernières questions sur « {t} ». Ce n’est pas un hasard : on reprend cette notion calmement, puis une petite série ciblée.", "exp3.drill": "Séance ciblée sur cette notion",
   "dg.title": "Ton diagnostic", "dg.mastery": "Maîtrise : {p} %", "dg.sum": "{s} notions solides sur {n} · {c} à travailler en priorité.", "dg.prio": "Tes trois priorités", "dg.go": "S’entraîner", "dg.train": "Séance ciblée", "dg.read": "Revoir dans le cours",
+ "dg.s.proving": "En bonne voie : il manque des preuves", "dg.s.acq": "Brevet obtenu : à confirmer",
+  "dg.c.proving": "bonnes réponses, preuves incomplètes", "dg.c.acq": "acquis déclaré, à confirmer",
+  "dg.why.proving": "Tu réponds juste, mais il faut encore le prouver sur d’autres jours et d’autres formats.",
+  "mq.cert": "brevet obtenu", "mq.sum": "{s} notion(s) solide(s) sur {n}. Le pourcentage compte toutes les notions du niveau.",
+  "mq.k.solid": "{n} solides", "mq.k.proving": "{n} en bonne voie", "mq.k.work": "{n} à travailler", "mq.k.acq": "{n} à confirmer", "mq.k.untested": "{n} pas testées", "mq.k.unread": "{n} à lire d’abord",
+  "mq.certS": "Tu as déjà ce brevet : chaque notion part à 50 %. Réponds juste {n} fois d’affilée pour la confirmer comme solide.",
+  "mq.allUnread": "Tu n’as encore lu aucun cours de ce niveau : commence par le premier, le diagnostic se remplira au fil des quiz.",
+  "mq.noPrio": "Pas d’erreur à corriger : il te reste des cours à lire et des notions à tester.",
+  "mq.facts": "{n} réponse(s), {ok} juste(s) sur les {of} dernières · dernière révision {d}", "mq.today": "aujourd’hui", "mq.ago": "il y a {d} j",
+  "mq.errLast": "dernière réponse fausse", "mq.errAgo": "dernière erreur il y a {n} réponse(s)",
+  "mq.c.read": "Cours lu", "mq.c.n": "Au moins 5 réponses ({v}/{of})", "mq.c.acc": "80 % de bonnes réponses sur les 10 dernières (actuellement {v} %)", "mq.c.last": "Les 3 dernières réponses justes",
+  "mq.c.days": "Réussie sur 3 jours différents ({v}/{of})", "mq.c.fmt": "Réussie dans 2 formats différents : quiz, saisie, jeux, combat… ({v}/{of})", "mq.c.fresh": "Revue il y a moins de 30 jours",
+  "mq.c.cert": "Brevet obtenu", "mq.c.run": "3 bonnes réponses d’affilée pour confirmer ({v}/{of})",
+  "mq.next": "Pour passer à « solide » :", "mq.next.read": "lis d’abord le cours de ce thème.", "mq.next.test": "fais le quiz du thème pour une première mesure.", "mq.next.acq": "réponds juste {n} fois d’affilée sur cette notion.",
+  "mq.next.keep": "c’est solide : une révision de temps en temps suffit.", "mq.next.n": "encore {n} réponse(s) sur cette notion.", "mq.next.acc": "fais une séance ciblée pour remonter ton taux de bonnes réponses.",
+  "mq.next.last": "enchaîne 3 bonnes réponses d’affilée.", "mq.next.days": "réussis-la encore sur {n} autre(s) jour(s) : revenir le lendemain compte plus qu’insister le même jour.",
+  "mq.next.fmt": "réussis-la dans un autre format : saisie, vrai ou faux, combat, aventure…", "mq.next.fresh": "révise-la : ta dernière réponse date de plus de 30 jours.", "mq.next.run": "enchaîne 3 bonnes réponses d’affilée.", "mq.next.cert": "",
+  "mq.rulesT": "Comment la maîtrise est calculée",
+  "mq.rules": "Une notion est solide seulement si : le cours est lu, tu as répondu au moins {n} fois, avec {a} % de bonnes réponses sur les 10 dernières, les {l} dernières justes, des réussites sur {d} jours différents et dans {f} formats différents, et une révision il y a moins de {r} jours. Tant qu’il manque une preuve, la notion reste sous 80 %. Un cours non lu divise le score par deux. Le pourcentage du niveau est la moyenne de toutes ses notions : non lue ou pas testée = 0 %. Pour un brevet déjà obtenu, chaque notion part à 50 % et {c} bonnes réponses d’affilée la confirment.",
+  "mq.actT": "Prouver {n} notions en bonne voie", "mq.actS": "Tu les as réussies un autre jour : les réussir aujourd’hui les rapproche de « solide ».", "mq.actTitle": "Preuves du jour",
   "dg.none": "Rien d’urgent : continue ton parcours et tes révisions du jour.", "dg.how": "Le tuteur regarde tes dernières réponses notion par notion : les erreurs qui se répètent, les calculs, ce que tu n’as pas revu depuis longtemps. Il propose l’action la plus utile pour chaque cas.",
   "dg.actT": "Voir ton diagnostic", "dg.actS": "Tes points faibles notion par notion, avec la cause probable",
   "dg.s.confusion": "Erreurs répétées", "dg.s.calc": "Calculs à reprendre", "dg.s.fragile": "Encore fragile", "dg.s.forgot": "En train de s’oublier", "dg.s.stale": "Solide, mais à rafraîchir", "dg.s.untested": "Pas encore testé", "dg.s.unread": "Cours pas encore lu", "dg.s.solid": "Solide",
@@ -15711,9 +16099,9 @@ Object.assign(AA.content.help, {
     "exm.hyp": "Format proche de l’écrit des clubs (QCM et calculs). C’est une hypothèse : le format exact peut varier selon les centres.",
     /* Statuts d'un cours */
     "tu.st.toread": "À lire", "tu.st.quiz": "Lu · quiz à faire", "tu.st.gap": "Lacune à combler", "tu.st.review": "À réviser",
-    "tu.st.learning": "Lu · en cours", "tu.st.ok": "Acquis", "tu.st.master": "Maîtrisé", "tu.st.cert": "Niveau obtenu",
+    "tu.st.learning": "Lu · en cours", "tu.st.ok": "En bonne voie", "tu.st.master": "Maîtrisé", "tu.st.cert": "Niveau obtenu",
     /* Notions */
-    "tu.n.new": "Pas encore vue", "tu.n.weak": "Fragile", "tu.n.mid": "En cours", "tu.n.ok": "Acquise", "tu.n.master": "Maîtrisée", "tu.n.gap": "Lacune",
+    "tu.n.new": "Pas encore vue", "tu.n.weak": "Fragile", "tu.n.mid": "En cours", "tu.n.ok": "En bonne voie", "tu.n.master": "Solide", "tu.n.acq": "Brevet obtenu · à confirmer", "tu.n.gap": "Lacune",
     "tu.general": "Vue d’ensemble",
     /* Cours lu */
     "tu.readT": "Tu as fini ce cours ?",

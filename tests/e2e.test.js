@@ -29,6 +29,8 @@ async function newPage(b, w, h, rich) {
   const ctx = await b.newContext({ viewport: { width: w, height: h } }); const p = await ctx.newPage();
   /* Les anciens parcours répondent par QCM : sans procédures ni calculs à taper (testés à part). */
   if (!rich) await ctx.addInitScript(() => { window.AA_PLAIN = 1; });
+  /* La garde de session (2.6.2) a son propre test : les anciens parcours naviguent librement. */
+  await ctx.addInitScript(() => { window.AA_NOGUARD = 1; });
   p.on("pageerror", e => errs.push(`${w}px ${e.message}`));
   p.on("console", m => { if (m.type() === "error" && !/vibrate|favicon/.test(m.text())) errs.push(`${w}px ${m.text()}`); });
   return { ctx, p };
@@ -253,6 +255,80 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       await p.goto(URL + "#/home"); await p.waitForTimeout(400);
       const dup = await p.evaluate(() => { const acts = AA.tutor._acts || []; const sess = document.querySelectorAll("#view [data-tusession]").length + acts.filter((a, i) => a.k === "session" && document.querySelector('#view [data-tuact="' + i + '"]')).length; const dg = document.querySelectorAll('#view a[href="#/diagnostic"]').length + acts.filter((a, i) => a.k === "diag" && document.querySelector('#view [data-tuact="' + i + '"]')).length; const titles = [...document.querySelectorAll("#view .tu-act b")].map(b => b.textContent); return { sess, dg, uniq: new Set(titles).size === titles.length }; });
       ok(dup.sess <= 1 && dup.dg <= 1 && dup.uniq, "accueil : une seule entrée pour la séance du tuteur et le diagnostic");
+      await ctx.close(); }
+
+    console.log("• Sessions protégées, mise en page (2.6.2)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
+      await p.evaluate(() => { window.AA_NOGUARD = 0; });
+      /* Quiz : retour système → question, la série reste ; pause → carte « À reprendre ». */
+      await p.evaluate(() => AA.quiz.module(AA.content.inWorld("n2")[0])); await p.waitForTimeout(300);
+      await p.click(".choice >> nth=0"); await p.waitForTimeout(100); await p.click("#nextq"); await p.waitForTimeout(150);
+      ok(await p.evaluate(() => getComputedStyle(document.getElementById("tabbar")).display === "none" || document.getElementById("tabbar").hidden), "quiz : onglets masqués pendant la série");
+      await p.evaluate(() => { location.hash = "#/cours"; }); await p.waitForTimeout(300);
+      ok(await p.evaluate(() => AA.router.name === "quiz" && !!document.querySelector(".sg-sheet") && AA.ctx.answers.length === 1), "quiz : quitter l’écran demande Pause ou Quitter, la série reste");
+      await p.click('[data-sg="pause"]'); await p.waitForTimeout(300); await p.goto(URL + "#/home"); await p.waitForTimeout(400);
+      ok(await p.$(".run-card [data-run=\"go\"]"), "quiz : en pause, la série se reprend depuis l’accueil");
+      /* Combat : onglet ou retour → question ; pause → reprise au même point. */
+      await p.evaluate(() => { AA.S.story["boss-n2"] = { done: AA.u.today(), node: "q1" }; AA.S.unlockAll = true; AA.store.save(true); });
+      await p.goto(URL + "#/boss/n2"); await p.waitForTimeout(400); await p.click("#btGo"); await p.waitForTimeout(1200);
+      ok(await p.evaluate(() => getComputedStyle(document.getElementById("tabbar")).display === "none"), "combat : onglets masqués");
+      await p.click(".bt-c >> nth=0"); await p.waitForTimeout(300);
+      const at = await p.evaluate(() => AA.games.battle().i);
+      await p.evaluate(() => history.back()); await p.waitForTimeout(400);
+      ok(await p.evaluate(() => AA.router.name === "boss" && !!document.querySelector(".sg-sheet")), "combat : le retour du téléphone demande Pause ou Quitter");
+      await p.click('[data-sg="pause"]'); await p.waitForTimeout(400); await p.goto(URL + "#/home"); await p.waitForTimeout(400);
+      ok(await p.$(".bt-run a.btn"), "combat : carte « À reprendre » sur l’accueil");
+      await p.click(".bt-run a.btn"); await p.waitForTimeout(800);
+      ok(await p.evaluate(a => AA.router.name === "boss" && !!document.querySelector("#btQbox") && AA.games.battle() && AA.games.battle().i >= a, at), "combat : reprise au même point");
+      /* Réponses du boss : texte sur toute la largeur du bouton. */
+      ok(await p.evaluate(() => [...document.querySelectorAll(".bt-c")].every(b => { const g = b.querySelector(".grow"); return g && g.getBoundingClientRect().width >= b.getBoundingClientRect().width - 90; })), "combat : texte des réponses sur toute la largeur");
+      await p.evaluate(() => { const x = document.querySelector("#tabbar [data-tab=\"train\"]"); x && x.click(); }); await p.waitForTimeout(300);
+      ok(await p.evaluate(() => AA.router.name === "boss"), "combat : un onglet ne fait pas quitter sans demander");
+      await p.evaluate(() => { document.querySelectorAll(".sheet-wrap").forEach(x => x._close && x._close()); AA.games.drop(); location.hash = "#/home"; }); await p.waitForTimeout(500);
+      /* Aventure : rien à confirmer avant le premier choix ; ensuite pause et reprise à la même scène. */
+      await p.goto(URL + "#/story/n1-mer"); await p.waitForTimeout(300); await p.evaluate(() => { location.hash = "#/train"; }); await p.waitForTimeout(300);
+      ok(await p.evaluate(() => AA.router.name === "train" && !document.querySelector(".sg-sheet")), "aventure : partir avant le premier choix ne demande rien");
+      await p.goto(URL + "#/story/n1-mer"); await p.waitForTimeout(300);
+      const gi = await p.evaluate(() => { const s = AA.content.storyById["n1-mer"], n = s.nodes[AA.ctx.story.node]; return n.choices.findIndex(c => c.ok); });
+      await p.click(`.st-choice[data-i="${gi}"]`); await p.waitForTimeout(200); const nx = await p.$("#stnext"); if (nx) await nx.click(); await p.waitForTimeout(300);
+      const node = await p.evaluate(() => AA.S.story["n1-mer"].node);
+      await p.evaluate(() => { location.hash = "#/train"; }); await p.waitForTimeout(300);
+      ok(await p.evaluate(() => AA.router.name === "story" && !!document.querySelector(".sg-sheet")), "aventure commencée : partir demande Continuer ou Pause");
+      await p.click('[data-sg="pause"]'); await p.waitForTimeout(300); await p.goto(URL + "#/story/n1-mer"); await p.waitForTimeout(300);
+      ok(await p.evaluate(n => AA.ctx.story && AA.ctx.story.node === n, node), "aventure : reprise à la même scène");
+      await p.evaluate(() => { AA.S.story["n1-mer"] = { node: AA.content.storyById["n1-mer"].start, tries: 0 }; AA.store.save(true); location.hash = "#/home"; }); await p.waitForTimeout(400);
+      /* Accueil : espacement régulier entre les cartes. */
+      const gaps = await p.evaluate(() => { const els = [document.querySelector("#view .hello")].concat([...document.querySelectorAll("#view .col-main > .card, #view .col-main > .stack, #view .col-side > .card")]).filter(Boolean).map(e => e.getBoundingClientRect()).sort((a, b) => a.top - b.top); const g = []; for (let i = 1; i < els.length; i++) g.push(Math.round(els[i].top - els[i - 1].bottom)); return g; });
+      ok(gaps.length >= 3 && gaps.every(g => g >= 8), "accueil : au moins 8 px entre chaque carte (" + gaps.join(", ") + ")");
+      await ctx.close(); }
+
+    console.log("• Maîtrise exigeante et cohérente (2.7)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await ready(p);
+      await p.evaluate(() => { const S = AA.S; S.profile.onboarded = true; S.profile.name = "Test"; S.evoSeen = 9; S.profile.driveNag = "2099-01-01"; AA.path.applyLevel("n1"); S.profile.goal = "n2"; AA.store.save(true); });
+      await p.reload(); await ready(p);
+      const r = await p.evaluate(() => { const C = AA.content, G = AA.game, T = AA.tutor;
+        const n1 = T.levelSum("n1");
+        C.questions.filter(q => C.byId[q.m].world === "n2").slice(0, 40).forEach((q, i) => G.record(q, i % 5 !== 0));
+        const L = T.levelSum("n2"), mean = Math.round(100 * L.all.reduce((a, x) => a + (T.mastery(x.n.id) || 0), 0) / L.n);
+        const sum = L.solid + L.proving + L.work + L.acq + L.untested + L.unread;
+        const solidOk = L.all.filter(x => T.solid(x.n.id)).length === L.solid && L.all.every(x => T.solid(x.n.id) === (x.m >= T.RULE.solid));
+        /* Une notion réussie 6 fois le même jour, dans un seul format : pas solide. */
+        const nid = "archimede:poussee", q = T.qsOf(nid)[0]; AA.S.read.archimede = { e: AA.u.today() }; delete (AA.S.nstat || {})[nid];
+        for (let i = 0; i < 6; i++) G.record(q, true);
+        const sameDay = T.solid(nid), m1 = T.mastery(nid);
+        const rec = AA.S.nstat[nid]; rec.dk = [AA.u.addDays(-6), AA.u.addDays(-3), AA.u.today()]; rec.f = ["quiz:module", "vraifaux"];
+        const spaced = T.solid(nid), m2 = T.mastery(nid);
+        G.record(q, false); const afterErr = T.solid(nid), m3 = T.mastery(nid);
+        return { n1, pct: L.pct, mean, sum, n: L.n, solid: L.solid, solidOk, sameDay, m1, spaced, m2, afterErr, m3 }; });
+      ok(r.n1.acq === r.n1.n && r.n1.pct === 50, "brevet obtenu : notions « à confirmer » à 50 %, pas 0 % (" + r.n1.pct + " %)");
+      ok(r.pct < 25 && r.solid === 0, "quelques quiz sans lire le cours : maîtrise basse (" + r.pct + " %), aucune notion solide");
+      ok(r.pct === r.mean && r.sum === r.n && r.solidOk, "le pourcentage et les compteurs disent la même chose");
+      ok(!r.sameDay && r.m1 < .8, "6 bonnes réponses le même jour dans un seul format : pas encore solide (" + Math.round(r.m1 * 100) + " %)");
+      ok(r.spaced && r.m2 >= .8, "réussites sur 3 jours et 2 formats : notion solide");
+      ok(!r.afterErr && r.m3 < .8, "une erreur récente : la notion n’est plus solide");
+      await p.evaluate(() => { location.hash = "#/diagnostic"; }); await p.waitForTimeout(400);
+      const d = await p.evaluate(() => ({ crit: document.querySelectorAll(".mq-crit li").length, counts: document.querySelectorAll(".mq-counts .chip").length, rules: !!document.querySelector(".mq-rules") }));
+      ok(d.crit > 0 && d.counts >= 2 && d.rules, "diagnostic : critères par notion, compteurs et règle de calcul affichés");
       await ctx.close(); }
 
     console.log("• Briefing, successives, défis, club (1.9)");
