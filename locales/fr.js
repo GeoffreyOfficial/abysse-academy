@@ -747,3 +747,14 @@ AA.i18n.add("fr", {
 AA.i18n.add("fr", {
   "vf2.lead": "Vrai ou faux ?", "vf2.true": "Vrai.", "vf2.false": "Faux : la bonne réponse était « {a} »."
 });
+
+/* 2.10 : combats et aventures épiques */
+AA.i18n.add("fr", {
+  "ep.kickBoss": "Boss de niveau", "ep.kickMini": "Gardien du thème", "ep.crit": "COUP CRITIQUE !",
+  "ep.win": "VICTOIRE", "ep.winS": "{n} s’incline devant ton savoir.", "ep.ko": "K.O.", "ep.koS": "Remonte, révise, et reviens plus fort.",
+  "ep.lockT": "Aventure obligatoire", "ep.lockS": "Pour affronter ce boss, vis d’abord l’aventure « {t} » : c’est elle qui te mène jusqu’à lui.", "ep.lockRead": "Il te reste aussi {n} cours à lire.",
+  "ep.chap": "Scène {n}", "ep.questTag": "Quête du boss · {n} t’attend au bout",
+  "ep.adv": "Ton aventure", "ep.advBoss": "Quête du boss", "ep.advBossS": "Vis cette aventure pour pouvoir défier {n}.", "ep.advGo": "Partir à l’aventure", "ep.advResume": "Reprendre l’aventure",
+  "ep.advsT": "Aventures du niveau", "ep.advsAll": "Toutes les aventures", "ep.questOf": "Quête obligatoire avant le boss", "ep.done": "terminée", "ep.inProgress": "en cours", "ep.notYet": "à vivre",
+  "ep.curAdv": "{n} aventure(s) de ce niveau"
+});

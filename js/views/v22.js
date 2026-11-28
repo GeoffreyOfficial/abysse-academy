@@ -113,7 +113,7 @@
       if (A && boss && me) {
         const [x0, y0] = center(me), [x1, y1] = center(boss);
         spawn(A, "bt-shot" + (crit ? " crit" : ""), "<i></i><i></i><i></i>", x0, y0, { "--dx": (x1 - x0) + "px", "--dy": (y1 - y0) + "px" });
-        later(() => { shake(boss, "hit"); spawn(A, "bt-dmg" + (crit ? " crit" : ""), crit ? `−${dmg} · ${t("gm.crit")}` : `−${dmg}`, x1, y1 - 30); fx.burst(x1, y1, crit ? 34 : 16, crit ? "rgba(255,210,90,.95)" : "rgba(120,240,255,.9)"); if (crit) shake(A); B.hp -= dmg; checkPhase(); hud(); if (B.hp <= 0) win(); }, 420);
+        later(() => { shake(boss, "hit"); spawn(A, "bt-dmg" + (crit ? " crit" : ""), crit ? `−${dmg} · ${t("gm.crit")}` : `−${dmg}`, x1, y1 - 30); fx.burst(x1, y1, crit ? 34 : 16, crit ? "rgba(255,210,90,.95)" : "rgba(120,240,255,.9)"); if (crit) shake(A); B.pend = 0; B.hp -= dmg; checkPhase(); hud(); if (B.hp <= 0) win(); }, 420); B.pend = dmg;
       } else { B.hp -= dmg; if (B.hp <= 0) win(); }
       fb.innerHTML = `<p class="callout ok bt-fb"><b>${t(crit ? "gm.crit" : "gm.hit")}</b>${q.e ? `<span class="small">${esc(q.e)}</span>` : ""}</p>`;
     } else {
@@ -138,6 +138,8 @@
   }
   function next() {
     if (!B || B.done) return; clearT();
+    /* 2.10 : « Suivant » pressé avant l’impact, le coup compte quand même. */
+    if (B.pend) { B.hp -= B.pend; B.pend = 0; checkPhase(); hud(); }
     if (B.hp <= 0) return win();
     if (B.lives <= 0) return lose();
     B.i++; B.picked = null;

@@ -229,7 +229,7 @@
     V.quiz.render = function (el, args) {
       const out = q0.call(this, el, args);
       try { const c = AA.ctx || {}, it = c.items && c.items[c.idx], h = u.$(".qhead", el);
-        if (it && h && Q.needsCalc(it.q) && c.mode !== "duel" && c.mode !== "rduel" && !u.$("#dcopen", el)) { h.insertAdjacentHTML("afterend", `<div class="qactions dc-row">${btn()}</div>`); u.$("#dcopen", el).onclick = () => AA.calc.open(); }
+        if (it && h && Q.needsCalc(it.q) && c.mode !== "duel" && c.mode !== "rduel" && !u.$("#dcopen", el)) { h.insertAdjacentHTML("afterend", `<div class="qactions cx-row">${btn()}</div>`); u.$("#dcopen", el).onclick = () => AA.calc.open(); }
         else if (!it || !Q.needsCalc(it.q)) AA.calc.close();
       } catch (e) {}
       return out;
@@ -239,7 +239,7 @@
   new MutationObserver(() => {
     const box = document.getElementById("btQbox"); if (!box || u.$("#dcopen", box)) return;
     const b = GM && GM.battle && GM.battle(), qs = GM && GM.qs ? GM.qs() : [], q = b ? qs[b.i] : null;
-    if (q && Q.needsCalc(q)) { const h = u.$(".bt-q, h2, h3", box); (h || box.firstElementChild || box).insertAdjacentHTML("afterend", `<div class="qactions dc-row">${btn()}</div>`); u.$("#dcopen", box).onclick = () => AA.calc.open(); }
+    if (q && Q.needsCalc(q)) { const h = u.$(".bt-q, h2, h3", box); (h || box.firstElementChild || box).insertAdjacentHTML("afterend", `<div class="qactions cx-row">${btn()}</div>`); u.$("#dcopen", box).onclick = () => AA.calc.open(); }
   }).observe(document.documentElement, { childList: true, subtree: true });
   addEventListener("hashchange", () => { if (!/^#\/(quiz|boss|gardien)/.test(location.hash)) AA.calc.close(); });
 })();

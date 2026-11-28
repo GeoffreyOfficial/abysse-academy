@@ -2541,7 +2541,7 @@ details.dg-row>summary .grow{min-width:0}
 .node.quest{display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle at 35% 30%,#BFF3EE,var(--primary) 60%,#0B5A60);color:#04252A;box-shadow:0 6px 0 #0A3C42,0 0 0 6px var(--primary-soft)}
 .node.quest.done{background:radial-gradient(circle at 35% 30%,#FFF1C2,var(--gold) 60%,#A06C00);color:var(--gold-ink,#2a1a00)}
 .questspot{margin-inline:auto!important}
-.dc-row{margin:6px 0 0}.dc-open svg{width:16px;height:16px}
+.cx-row{margin:6px 0 0}.dc-open{white-space:nowrap;flex:0 0 auto;max-width:100%}.dc-open svg{width:16px;height:16px}
 .dcalc{position:fixed;z-index:70;right:max(12px,env(safe-area-inset-right));bottom:calc(env(safe-area-inset-bottom,0px) + 12px);width:min(320px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;padding:12px;border-radius:22px;border:1px solid rgba(120,220,230,.35);
   background:linear-gradient(180deg,#0E4C6A 0%,#0A2E48 55%,#061A2C 100%);color:#E6F6FB;box-shadow:0 18px 50px rgba(0,0,0,.5);isolation:isolate}
 .dc-sea{position:absolute;inset:0;overflow:hidden;border-radius:inherit;pointer-events:none;z-index:-1}
@@ -2674,6 +2674,78 @@ details.dg-row>summary .grow{min-width:0}
 .pagehead .chip{white-space:nowrap}
 .pl-lcd span{font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
+/* ===================== 2.10 · combats et aventures épiques ===================== */
+.ep-arena{isolation:isolate}
+.ep-cine{position:absolute;inset:0;z-index:30;pointer-events:none;display:grid;place-items:center;overflow:hidden}
+.ep-cine .ep-bar{position:absolute;left:0;right:0;height:16%;background:#000;animation:epbar 2.3s ease forwards}.ep-cine .ep-bar.top{top:0;transform-origin:top}.ep-cine .ep-bar.bot{bottom:0;transform-origin:bottom}
+@keyframes epbar{0%{transform:scaleY(0)}12%,80%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.ep-cine-in{position:relative;text-align:center;padding:0 12px;animation:epin 2.3s cubic-bezier(.2,.9,.2,1) forwards}
+@keyframes epin{0%{opacity:0;transform:scale(2.4)}14%{opacity:1;transform:scale(.96)}20%{transform:scale(1)}82%{opacity:1}100%{opacity:0;transform:scale(1.05)}}
+.ep-kick{margin:0;font:800 var(--fs-xs) var(--font-body);letter-spacing:.3em;text-transform:uppercase;color:var(--glow,#5CE1E6)}
+.ep-name{display:block;font:900 clamp(1.6rem,7vw,3.2rem)/1.05 var(--font-display,inherit);color:#fff;text-shadow:0 0 24px var(--glow,#5CE1E6),0 4px 0 rgba(0,0,0,.6);overflow-wrap:anywhere}
+.ep-sub{display:block;margin-top:6px;color:#fff;opacity:.8;font-size:var(--fs-sm)}
+.ep-cine.k-mini .ep-name{font-size:clamp(1.3rem,5.5vw,2.4rem)}
+.ep-cine.rm .ep-bar,.ep-cine.rm .ep-cine-in{animation:epfade 1.1s ease forwards}@keyframes epfade{0%,80%{opacity:1}100%{opacity:0}}
+.ep-entering .bt-boss{animation:eprise 1.6s cubic-bezier(.2,.9,.2,1)}@keyframes eprise{0%{transform:translateY(40%) scale(.6);filter:brightness(0)}60%{filter:brightness(1.6)}100%{transform:none;filter:none}}
+.ep-hp{position:relative;height:10px;margin-top:6px;border-radius:999px;background:rgba(0,0,0,.45);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+.ep-hp i{position:absolute;inset:0 auto 0 0;width:100%;border-radius:inherit}
+.ep-hp .ghost{background:#fff;opacity:.55;transition:width .8s ease .1s}
+.ep-hp .fill{background:linear-gradient(90deg,#ff4d4d,#ffb347 50%,#ffe066);transition:width .25s ease}
+.ep-hp.low .fill{background:linear-gradient(90deg,#ff2a2a,#ff6a3d);animation:eplow .7s steps(2) infinite}@keyframes eplow{50%{filter:brightness(1.5)}}
+.ep-slash{position:absolute;left:50%;top:32%;width:min(60%,320px);height:120px;transform:translate(-50%,-50%) rotate(-24deg);pointer-events:none;z-index:25}
+.ep-slash i{position:absolute;left:0;right:0;top:50%;height:4px;border-radius:4px;background:linear-gradient(90deg,transparent,#fff,transparent);box-shadow:0 0 14px #9ff;animation:epsl .45s ease-out forwards}
+.ep-slash i+i{top:62%;animation-delay:.07s;opacity:.7}.ep-slash.crit i{height:7px;background:linear-gradient(90deg,transparent,#ffe27a,#fff,transparent);box-shadow:0 0 22px #ffd24a}
+@keyframes epsl{from{clip-path:inset(0 100% 0 0)}60%{clip-path:inset(0 0 0 0);opacity:1}to{clip-path:inset(0 0 0 100%);opacity:0}}
+.ep-crit{position:absolute;left:50%;top:16%;transform:translateX(-50%);z-index:26;pointer-events:none;white-space:nowrap}.ep-crit b{display:block;font:900 clamp(1.2rem,5vw,2rem) var(--font-display,inherit);color:#ffe066;text-shadow:0 0 16px #ff9b2f,0 3px 0 #7a3b00;animation:epcrit 1.3s cubic-bezier(.2,1.6,.4,1) forwards}
+@keyframes epcrit{0%{transform:scale(3) rotate(-8deg);opacity:0}20%{transform:scale(1) rotate(-4deg);opacity:1}80%{opacity:1}100%{transform:scale(1.1) translateY(-14px);opacity:0}}
+.ep-atk{position:absolute;left:50%;top:44%;transform:translateX(-50%);z-index:26;pointer-events:none;text-align:center;padding:8px 16px;border-radius:12px;background:rgba(80,0,10,.78);border:1px solid #ff6a5a;color:#fff;animation:epatk 1.5s ease forwards;max-width:90%}
+.ep-atk span{display:block;opacity:.8}.ep-atk b{font:800 clamp(1rem,4.2vw,1.5rem) var(--font-display,inherit);color:#ffb3a8}
+@keyframes epatk{0%{transform:translateX(-50%) scale(.4);opacity:0}15%{transform:translateX(-50%) scale(1.08);opacity:1}25%{transform:translateX(-50%) scale(1)}80%{opacity:1}100%{opacity:0}}
+.ep-taunt{position:absolute;right:8px;top:56px;z-index:26;pointer-events:none;max-width:min(78%,360px);padding:8px 12px;border-radius:14px 14px 4px 14px;background:var(--surface);border:2px solid var(--glow,#5CE1E6);color:var(--ink);display:grid;gap:2px;animation:eptaunt 2.6s ease forwards;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.ep-taunt b{font-size:var(--fs-xs);color:var(--glow,#5CE1E6)}
+@keyframes eptaunt{0%{transform:scale(.6);opacity:0}10%{transform:scale(1);opacity:1}85%{opacity:1}100%{opacity:0}}
+.ep-arena.ph2 .bt-aura{filter:hue-rotate(-40deg) saturate(1.6)}.ep-arena.ph3 .bt-aura{filter:hue-rotate(-80deg) saturate(2.2) brightness(1.3);animation-duration:.9s}
+.ep-arena.ph3::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;box-shadow:inset 0 0 80px rgba(255,40,40,.35)}
+.ep-arena.ep-danger::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:3;box-shadow:inset 0 0 60px rgba(255,0,0,.55);animation:epbeat 1s ease-in-out infinite}
+@keyframes epbeat{50%{box-shadow:inset 0 0 20px rgba(255,0,0,.25)}}
+.ep-arena.ep-fire .bt-me{filter:drop-shadow(0 0 12px #ffb347) drop-shadow(0 0 24px #ff6a00)}
+.ep-stage .bt-rise{animation:eprise 1.4s cubic-bezier(.2,.9,.2,1)}
+.ep-res{position:relative;display:grid;place-items:center;gap:4px;padding:var(--sp-4) 0 var(--sp-2);overflow:hidden;text-align:center}
+.ep-res b{position:relative;font:900 clamp(2rem,10vw,3.6rem)/1 var(--font-display,inherit);letter-spacing:.06em;animation:epwin .9s cubic-bezier(.2,1.6,.4,1)}
+.ep-res.win b{color:#ffe066;text-shadow:0 0 24px #ffb000,0 4px 0 #7a4b00}.ep-res.ko b{color:#ff8a80;text-shadow:0 4px 0 #5a0d0d}
+.ep-res span{position:relative;color:var(--muted)}
+.ep-rays{position:absolute;left:50%;top:50%;width:520px;height:520px;margin:-260px 0 0 -260px;background:repeating-conic-gradient(from 0deg,rgba(255,215,90,.22) 0 10deg,transparent 10deg 22deg);border-radius:50%;animation:eprays 14s linear infinite;mask:radial-gradient(circle,#000 20%,transparent 65%);-webkit-mask:radial-gradient(circle,#000 20%,transparent 65%)}
+.ep-res.ko .ep-rays{display:none}
+@keyframes eprays{to{transform:rotate(360deg)}}@keyframes epwin{0%{transform:scale(3);opacity:0}100%{transform:none;opacity:1}}
+.ep-lock{display:grid;gap:4px;margin-bottom:var(--sp-3)}.ep-lock b{display:flex;gap:6px;align-items:center}.ep-lock svg{width:16px;height:16px}
+.bt-quest.gold{animation:eppulse 1.8s ease-in-out infinite}
+@keyframes eppulse{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--gold) 30%,transparent)}}
+.ep-pulse{animation:eppulse 1.6s ease-in-out infinite}
+/* Aventures */
+.ep-scene{position:relative;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--wc,var(--primary)) calc(10% + var(--dp,0) * 25%),var(--surface)),var(--surface))}
+.ep-scene>*{position:relative;z-index:1}
+.ep-lurk{position:absolute!important;z-index:0!important;right:-8%;top:50%;width:calc(30% + var(--p) * 45%);max-width:340px;transform:translateY(-50%) scaleX(-1);opacity:calc(.08 + var(--p) * .22);filter:drop-shadow(0 0 18px var(--glow)) blur(calc((1 - var(--p)) * 2px));pointer-events:none;animation:eplurk 6s ease-in-out infinite}
+.ep-lurk svg{width:100%;height:auto;display:block}
+@keyframes eplurk{50%{transform:translateY(-54%) scaleX(-1) rotate(3deg)}}
+.ep-qtag{display:flex;gap:6px;align-items:center;margin:var(--sp-2) 0 0;font:700 var(--fs-xs) var(--font-body);color:var(--gold);text-transform:uppercase;letter-spacing:.08em}.ep-qtag svg{width:14px;height:14px}
+.ep-chap{position:absolute!important;z-index:3!important;inset:0;display:grid;place-content:center;gap:2px;text-align:center;pointer-events:none;background:color-mix(in srgb,var(--bg,#001) 70%,transparent);animation:epchap 1.7s ease forwards}
+.ep-chap span{font:800 var(--fs-xs) var(--font-body);letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}.ep-chap b{font:900 clamp(1.6rem,6vw,2.4rem) var(--font-display,inherit);color:var(--ink)}
+@keyframes epchap{0%{opacity:0}15%,60%{opacity:1}100%{opacity:0;visibility:hidden}}
+.ep-chap.rm{animation:epfade .9s ease forwards}
+.ep-qcard{border-color:color-mix(in srgb,var(--gold) 60%,var(--line))!important;box-shadow:0 0 0 1px color-mix(in srgb,var(--gold) 30%,transparent)}
+.ep-adv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--sp-3);align-items:center;margin-top:var(--sp-4);overflow:hidden;position:relative}
+.ep-adv.boss{border-color:color-mix(in srgb,var(--gold) 55%,var(--line));background:radial-gradient(circle at 0 50%,color-mix(in srgb,var(--glow) 22%,transparent),transparent 60%),var(--surface)}
+.ep-adv-art{width:clamp(64px,20vw,110px)}.ep-adv-art svg{width:100%;height:auto;display:block;filter:drop-shadow(0 0 10px var(--glow));animation:certfish 4s ease-in-out infinite}
+.ep-adv-art.ic{display:grid;place-items:center;width:56px;height:56px;border-radius:50%;background:var(--primary-soft);color:var(--primary)}.ep-adv-art.ic svg{width:28px;height:28px;filter:none;animation:none}
+.ep-adv .btn{justify-self:start}
+.ep-qtile .medal{background:color-mix(in srgb,var(--gold) 30%,var(--surface-2));color:var(--gold)}
+.reduce-motion .ep-lurk,.reduce-motion .ep-adv-art svg,.reduce-motion .ep-rays,.reduce-motion .ep-arena.ep-danger::before,.reduce-motion .bt-quest.gold,.reduce-motion .ep-pulse,.reduce-motion .ep-hp.low .fill,.reduce-motion .ep-entering .bt-boss,.reduce-motion .ep-stage .bt-rise{animation:none}
+
+/* 2.10 · aucun texte ne déborde de son cadre (écrans étroits, texte agrandi) */
+.pagehead{flex-wrap:wrap;row-gap:6px}
+.pagehead .eyebrow.grow{flex:1 1 8rem;min-width:0;overflow-wrap:anywhere}
+.pagehead:has(.lvchip) .eyebrow.grow{min-width:max-content}
+
 </style>
 </head>
 <body>
@@ -2696,7 +2768,7 @@ window.AA={BUNDLED:true};
 (function () {
   "use strict";
   const AA = (window.AA = window.AA || {});
-  AA.VERSION = "2.9.1";
+  AA.VERSION = "2.10.0";
   AA.NAME = "Abysse Academy";
 
   /* Réglages de déploiement. googleClientId : identifiant client OAuth « Application Web »
@@ -9326,7 +9398,7 @@ window.AA={BUNDLED:true};
       if (A && boss && me) {
         const [x0, y0] = center(me), [x1, y1] = center(boss);
         spawn(A, "bt-shot" + (crit ? " crit" : ""), "<i></i><i></i><i></i>", x0, y0, { "--dx": (x1 - x0) + "px", "--dy": (y1 - y0) + "px" });
-        later(() => { shake(boss, "hit"); spawn(A, "bt-dmg" + (crit ? " crit" : ""), crit ? `−${dmg} · ${t("gm.crit")}` : `−${dmg}`, x1, y1 - 30); fx.burst(x1, y1, crit ? 34 : 16, crit ? "rgba(255,210,90,.95)" : "rgba(120,240,255,.9)"); if (crit) shake(A); B.hp -= dmg; checkPhase(); hud(); if (B.hp <= 0) win(); }, 420);
+        later(() => { shake(boss, "hit"); spawn(A, "bt-dmg" + (crit ? " crit" : ""), crit ? `−${dmg} · ${t("gm.crit")}` : `−${dmg}`, x1, y1 - 30); fx.burst(x1, y1, crit ? 34 : 16, crit ? "rgba(255,210,90,.95)" : "rgba(120,240,255,.9)"); if (crit) shake(A); B.pend = 0; B.hp -= dmg; checkPhase(); hud(); if (B.hp <= 0) win(); }, 420); B.pend = dmg;
       } else { B.hp -= dmg; if (B.hp <= 0) win(); }
       fb.innerHTML = `<p class="callout ok bt-fb"><b>${t(crit ? "gm.crit" : "gm.hit")}</b>${q.e ? `<span class="small">${esc(q.e)}</span>` : ""}</p>`;
     } else {
@@ -9351,6 +9423,8 @@ window.AA={BUNDLED:true};
   }
   function next() {
     if (!B || B.done) return; clearT();
+    /* 2.10 : « Suivant » pressé avant l’impact, le coup compte quand même. */
+    if (B.pend) { B.hp -= B.pend; B.pend = 0; checkPhase(); hud(); }
     if (B.hp <= 0) return win();
     if (B.lives <= 0) return lose();
     B.i++; B.picked = null;
@@ -11679,7 +11753,7 @@ window.AA={BUNDLED:true};
     V.quiz.render = function (el, args) {
       const out = q0.call(this, el, args);
       try { const c = AA.ctx || {}, it = c.items && c.items[c.idx], h = u.$(".qhead", el);
-        if (it && h && Q.needsCalc(it.q) && c.mode !== "duel" && c.mode !== "rduel" && !u.$("#dcopen", el)) { h.insertAdjacentHTML("afterend", `<div class="qactions dc-row">${btn()}</div>`); u.$("#dcopen", el).onclick = () => AA.calc.open(); }
+        if (it && h && Q.needsCalc(it.q) && c.mode !== "duel" && c.mode !== "rduel" && !u.$("#dcopen", el)) { h.insertAdjacentHTML("afterend", `<div class="qactions cx-row">${btn()}</div>`); u.$("#dcopen", el).onclick = () => AA.calc.open(); }
         else if (!it || !Q.needsCalc(it.q)) AA.calc.close();
       } catch (e) {}
       return out;
@@ -11689,7 +11763,7 @@ window.AA={BUNDLED:true};
   new MutationObserver(() => {
     const box = document.getElementById("btQbox"); if (!box || u.$("#dcopen", box)) return;
     const b = GM && GM.battle && GM.battle(), qs = GM && GM.qs ? GM.qs() : [], q = b ? qs[b.i] : null;
-    if (q && Q.needsCalc(q)) { const h = u.$(".bt-q, h2, h3", box); (h || box.firstElementChild || box).insertAdjacentHTML("afterend", `<div class="qactions dc-row">${btn()}</div>`); u.$("#dcopen", box).onclick = () => AA.calc.open(); }
+    if (q && Q.needsCalc(q)) { const h = u.$(".bt-q, h2, h3", box); (h || box.firstElementChild || box).insertAdjacentHTML("afterend", `<div class="qactions cx-row">${btn()}</div>`); u.$("#dcopen", box).onclick = () => AA.calc.open(); }
   }).observe(document.documentElement, { childList: true, subtree: true });
   addEventListener("hashchange", () => { if (!/^#\/(quiz|boss|gardien)/.test(location.hash)) AA.calc.close(); });
 })();
@@ -12319,6 +12393,241 @@ window.AA={BUNDLED:true};
   if (GM && GM.begin) {
     const b0 = GM.begin;
     GM.begin = function () { const r = b0.apply(this, arguments); try { if (GM.qs) Q.remember(GM.qs() || []); } catch (e) {} return r; };
+  }
+})();
+
+/* js/views/epic.js */
+/* =====================================================================
+   Abysse Academy 2.10 · combats et aventures épiques
+   Combats (boss et gardiens) :
+   - entrée en scène cinématique (bandes noires, nom qui s'abat, rugissement),
+   - barre de vie continue avec dégâts « fantômes », entailles à chaque coup,
+     attaques nommées du boss, provocations à chaque phase, alerte quand il
+     ne te reste qu'une vie, aura de combo,
+   - écran de victoire (« VICTOIRE », rayons, butin) ou de défaite.
+   Aventures :
+   - l'aventure du boss est OBLIGATOIRE pour l'affronter (sauf boss déjà
+     vaincu ou mode « tout débloquer »),
+   - chapitres annoncés à chaque scène, la silhouette du boss rôde dans les
+     quêtes et grossit à l'approche,
+   - « Ton aventure » sur l'accueil, section Aventures dans Jeux, lien depuis
+     le cursus.
+   Les effets visuels suivent « Réduire les animations » ; les sons épiques
+   ne jouent qu'avec l'ambiance « Complète » (jamais en « Discrète » ou
+   « Coupée »). Les surcouches ne captent jamais les clics.
+   ===================================================================== */
+(function () {
+  "use strict";
+  const AA = window.AA, u = AA.u, t = AA.t, C = AA.content, G = AA.game, GM = AA.games, V = AA.views, fx = AA.fx, esc = u.esc;
+  if (!GM || !V.boss) return;
+  const reduced = () => (AA.a11y && AA.a11y.reduced ? AA.a11y.reduced() : false);
+  const full = () => (AA.S.profile.amb || "full") === "full";
+
+  /* ---------- Sons épiques (synthétisés) ---------- */
+  const play = seq => {
+    if (!full()) return; const ac = fx.audio && fx.audio(); if (!ac) return;
+    try { const t0 = ac.currentTime + .01;
+      seq.forEach(([f0, f1, d, st, type, vol]) => { const o = ac.createOscillator(), g = ac.createGain(); o.type = type || "sawtooth";
+        o.frequency.setValueAtTime(f0, t0 + st); o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t0 + st + d);
+        g.gain.setValueAtTime(.0001, t0 + st); g.gain.exponentialRampToValueAtTime(vol || .12, t0 + st + .04); g.gain.exponentialRampToValueAtTime(.0001, t0 + st + d);
+        o.connect(g).connect(ac.destination); o.start(t0 + st); o.stop(t0 + st + d + .05); }); } catch (e) {}
+  };
+  const SND = {
+    roar: () => play([[140, 45, 1.1, 0, "sawtooth", .14], [95, 38, 1.2, .08, "square", .07], [220, 70, .7, .02, "triangle", .06]]),
+    slash: crit => play(crit ? [[1800, 220, .22, 0, "triangle", .12], [900, 110, .35, .05, "sawtooth", .08], [60, 40, .4, .1, "sine", .2]] : [[1400, 300, .16, 0, "triangle", .1]]),
+    attack: () => play([[300, 60, .5, 0, "sawtooth", .1], [120, 50, .6, .1, "square", .06]]),
+    fanfare: () => play([[523, 523, .18, 0, "triangle", .12], [659, 659, .18, .16, "triangle", .12], [784, 784, .18, .32, "triangle", .12], [1047, 1047, .6, .48, "triangle", .14], [262, 262, .9, .48, "sine", .1]]),
+    defeat: () => play([[392, 196, .5, 0, "triangle", .1], [294, 147, .7, .35, "triangle", .1]])
+  };
+  AA.epicSnd = SND;
+
+  const ATTACKS = ["Tourbillon d’azote", "Vague de froid", "Nuage d’encre", "Courant traître", "Morsure des profondeurs", "Piège à bulles", "Narcose hypnotique", "Remontée sauvage", "Coup de houle", "Brouillard de vase"];
+  const TAUNTS2 = ["Tu crois connaître tes paliers ?", "Les abysses ne pardonnent pas l’à-peu-près.", "Ta réserve fond, plongeur…"];
+  const TAUNTS3 = ["Dernier souffle ! Montre ce que tu sais !", "Tu ne remonteras pas sans prouver ton niveau !", "Je suis le gardien de ces profondeurs !"];
+  AA.epic = { ATTACKS, TAUNTS2, TAUNTS3 };
+
+  /* ---------- Combats ---------- */
+  let lastQs = null;
+  const defOf = (name, args) => {
+    try { if (name === "boss") { const w = (args && args[0]) || G.goalWorld(); return GM.final(w); } return GM.mini((args && args[0]) || ""); } catch (e) { return null; }
+  };
+  const fly = (A, cls, html, ms) => { const d = document.createElement("div"); d.className = cls; d.setAttribute("aria-hidden", "true"); d.innerHTML = html || ""; A.appendChild(d); setTimeout(() => d.remove(), ms || 1600); return d; };
+  const cinematic = (A, def) => {
+    const boss = def.kind === "boss";
+    const d = fly(A, "ep-cine " + (boss ? "k-boss" : "k-mini") + (reduced() ? " rm" : ""), `<i class="ep-bar top"></i><i class="ep-bar bot"></i><div class="ep-cine-in"><p class="ep-kick">${t(boss ? "ep.kickBoss" : "ep.kickMini")}</p><b class="ep-name">${esc(def.name)}</b>${def.title || def.depth ? `<span class="ep-sub">${esc([def.title, def.depth].filter(Boolean).join(" · "))}</span>` : ""}</div>`, reduced() ? 1100 : 2300);
+    d.setAttribute("role", "status");
+    A.classList.add("ep-entering"); setTimeout(() => A.classList.remove("ep-entering"), 2200);
+    SND.roar(); fx.buzz && fx.buzz([80, 60, 120]);
+  };
+  const decorate = (el, name, args) => {
+    const A = u.$("#btA", el); if (!A || A.dataset.ep) return;
+    A.dataset.ep = "1"; A.classList.add("ep-arena");
+    const def = defOf(name, args) || {};
+    /* Barre de vie continue */
+    const hud = u.$(".bt-hud .grow", A);
+    if (hud) hud.insertAdjacentHTML("beforeend", `<div class="ep-hp" aria-hidden="true"><i class="ghost"></i><i class="fill"></i></div>`);
+    const pv = u.$("#btPv", A);
+    const upd = () => { const m = (pv && pv.textContent || "").match(/(\d+)\s*\/\s*(\d+)/); if (!m) return; const p = Math.max(0, +m[1] / +m[2]) * 100, bar = u.$(".ep-hp", A); if (!bar) return;
+      bar.querySelector(".fill").style.width = p + "%"; setTimeout(() => { const g = bar.querySelector(".ghost"); if (g) g.style.width = p + "%"; }, 450); bar.classList.toggle("low", p <= 34); };
+    if (pv) new MutationObserver(upd).observe(pv, { childList: true, characterData: true, subtree: true });
+    upd();
+    /* Coups, attaques, phases, vies */
+    new MutationObserver(muts => muts.forEach(mu => mu.addedNodes.forEach(n => {
+      if (!n.classList) return;
+      if (n.classList.contains("bt-dmg")) {
+        const crit = n.classList.contains("crit"); SND.slash(crit);
+        fly(A, "ep-slash" + (crit ? " crit" : ""), "<i></i><i></i>", 900);
+        if (crit) fly(A, "ep-crit", `<b>${t("ep.crit")}</b>`, 1300);
+      } else if (n.classList.contains("bt-wave")) {
+        SND.attack();
+        fly(A, "ep-atk", `<span class="xs">${esc(def.name || "")}</span><b>${esc(u.pick(ATTACKS))} !</b>`, 1500);
+      }
+    }))).observe(A, { childList: true });
+    let ph = 1;
+    new MutationObserver(() => {
+      const p = A.classList.contains("ph3") ? 3 : A.classList.contains("ph2") ? 2 : 1;
+      if (p > ph) { ph = p; setTimeout(() => fly(A, "ep-taunt", `<b>${esc(def.name || "")}</b><span>« ${esc(u.pick(p === 3 ? TAUNTS3 : TAUNTS2))} »</span>`, 2600), 700); }
+    }).observe(A, { attributes: true, attributeFilter: ["class"] });
+    const lv = u.$("#btLives", A);
+    const danger = () => { const n = u.$$("#btLives span:not(.off)", A).length; A.classList.toggle("ep-danger", n === 1); };
+    if (lv) new MutationObserver(danger).observe(lv, { childList: true, subtree: true, attributes: true });
+    const cb = u.$("#btCombo", A);
+    if (cb) new MutationObserver(() => { const m = cb.textContent.match(/\d+/); A.classList.toggle("ep-fire", !cb.hidden && m && +m[0] >= 3); }).observe(cb, { childList: true, characterData: true, subtree: true, attributes: true });
+    /* Entrée en scène, une fois par combat */
+    const qs = GM.qs ? GM.qs() : null;
+    if (qs && qs !== lastQs) { lastQs = qs; cinematic(A, def); }
+  };
+  const resultFx = (el, name, args) => {
+    const r = u.$(".bt-res", el); if (!r || r.dataset.ep) return;
+    r.dataset.ep = "1"; const won = r.classList.contains("won"), def = defOf(name, args) || {};
+    r.insertAdjacentHTML("afterbegin", `<div class="ep-res ${won ? "win" : "ko"}" aria-hidden="true"><i class="ep-rays"></i><b>${t(won ? "ep.win" : "ep.ko")}</b><span>${esc(won ? t("ep.winS", { n: def.name || "" }) : t("ep.koS"))}</span></div>`);
+    (won ? SND.fanfare : SND.defeat)();
+  };
+  ["boss", "gardien"].forEach(name => {
+    const v = V[name]; if (!v) return; const r0 = v.render;
+    v.render = function (el, args) {
+      const out = r0.call(this, el, args);
+      try { decorate(el, name, args); resultFx(el, name, args);
+        const st = u.$(".bt-stage", el); if (st && !st.dataset.ep) { st.dataset.ep = "1"; st.classList.add("ep-stage"); }
+      } catch (e) { console.error(e); }
+      return out;
+    };
+  });
+
+  /* ---------- L'aventure du boss est obligatoire ---------- */
+  const quest = wid => C.storyById["boss-" + wid];
+  const bo = G.bossOpen;
+  /* Niveau déjà obtenu (mode révision ou certifié) : pas d'aventure imposée. */
+  const held = wid => { try { return !!AA.path && (AA.path.mode(wid) !== "learn" || AA.path.certified(wid)); } catch (e) { return false; } };
+  G.bossOpen = wid => bo(wid) && (!!AA.S.unlockAll || G.questDone(wid) || GM.bossWon(wid) || held(wid));
+  G.questNeeded = wid => !!quest(wid) && !AA.S.unlockAll && !G.questDone(wid) && !GM.bossWon(wid) && !held(wid);
+  {
+    const r0 = V.boss.render;
+    V.boss.render = function (el, args) {
+      const out = r0.call(this, el, args);
+      try {
+        const wid = (args && args[0]) || G.goalWorld(), s = quest(wid), card = u.$(".bt-card", el);
+        if (s && card && G.questNeeded(wid) && !u.$(".ep-lock", card)) {
+          const go = u.$("#btGo", card); if (go) go.remove();
+          const has = u.$(".bt-quest", card);
+          const left = GM.toRead(wid).length;
+          card.insertAdjacentHTML("afterbegin", `<div class="ep-lock callout warn"><b>${AA.icon("lock")} ${t("ep.lockT")}</b><span>${t("ep.lockS", { t: esc(s.title) })}</span></div>`);
+          if (!has) { const fl = u.$$("a.btn.ghost", card).pop(); const html = `<a class="btn block bt-quest gold" href="#/story/${s.id}">${AA.icon("scroll")} ${t("bq.go")} · ${esc(s.title)}</a>`; if (fl) fl.insertAdjacentHTML("beforebegin", html); else card.insertAdjacentHTML("beforeend", html); }
+          if (left) card.querySelector(".ep-lock span").insertAdjacentHTML("beforeend", " " + t("ep.lockRead", { n: left }));
+        }
+      } catch (e) { console.error(e); }
+      return out;
+    };
+  }
+
+  /* ---------- Aventures épiques ---------- */
+  const sRec = id => ((AA.S.story || {})[id] || {});
+  let lastNode = "";
+  if (V.story) {
+    const r0 = V.story.render;
+    V.story.render = function (el, args) {
+      const out = r0.call(this, el, args);
+      try {
+        const sid = args && args[0], s = sid && C.storyById[sid], sc = u.$(".story-scene", el), c = AA.ctx && AA.ctx.story;
+        if (s && sc && c) {
+          const n = s.nodes[c.node] || {}, isQ = /^boss-/.test(s.id), depth = n.depth || 0;
+          sc.classList.add("ep-scene"); sc.style.setProperty("--dp", Math.min(1, depth / 40).toFixed(2));
+          if (isQ) {
+            const w = C.worldById[s.world], fd = GM.final(s.world), prog = Math.min(1, (c.steps + 1) / Math.max(1, Object.values(s.nodes).filter(x => !x.end && !x.alt).length));
+            if (fd && !u.$(".ep-lurk", sc)) sc.insertAdjacentHTML("afterbegin", `<div class="ep-lurk" aria-hidden="true" style="--p:${prog.toFixed(2)};--glow:${fd.glow || "#5CE1E6"}">${AA.creature(fd.shape, fd.colors, "bt-cr")}</div>`);
+            sc.classList.add("ep-quest");
+            if (w && !u.$(".ep-qtag", el)) sc.insertAdjacentHTML("beforebegin", `<p class="ep-qtag">${AA.icon("swords")} ${t("ep.questTag", { n: esc(fd ? fd.name : "") })}</p>`);
+          }
+          const key = s.id + ":" + c.node;
+          if (key !== lastNode && !c.fb) {
+            lastNode = key; const k = c.steps + 1;
+            const d = document.createElement("div"); d.className = "ep-chap" + (reduced() ? " rm" : ""); d.setAttribute("aria-hidden", "true");
+            d.innerHTML = `<span>${t("ep.chap", { n: k })}</span><b>${depth ? "−" + depth + " m" : t("story.surface")}</b>`;
+            sc.appendChild(d); setTimeout(() => d.remove(), 1700);
+          }
+        }
+        const nb = u.$(".st-boss", el); if (nb) nb.classList.add("ep-pulse");
+        /* Liste des aventures : les quêtes des boss en tête de chaque niveau */
+        u.$$(".st-group + .stack", el).forEach(st => { const qs = u.$$("[data-s^='boss-']", st); qs.forEach(b => { b.classList.add("ep-qcard"); st.prepend(b); }); });
+      } catch (e) { console.error(e); }
+      return out;
+    };
+  }
+
+  /* ---------- Aventures plus présentes ---------- */
+  const nextAdv = wid => {
+    const w = wid || G.goalWorld(), q = quest(w);
+    if (q && !sRec(q.id).done && !GM.bossWon(w)) return { s: q, boss: true, w };
+    const s = C.stories.find(x => x.world === w && !/^boss-/.test(x.id) && !sRec(x.id).done && (!x.unlock || AA.S.unlockAll || G.met(x.unlock)));
+    return s ? { s, w } : null;
+  };
+  AA.epic.nextAdv = nextAdv;
+  const advCard = a => {
+    const fd = GM.final(a.w), r = sRec(a.s.id), started = r.steps > 0 && !r.done;
+    return `<section class="card ep-adv ${a.boss ? "boss" : ""}" id="epadv" style="--glow:${(fd && fd.glow) || "#5CE1E6"}">
+      ${a.boss && fd ? `<div class="ep-adv-art" aria-hidden="true">${AA.creature(fd.shape, fd.colors, "bt-cr")}</div>` : `<div class="ep-adv-art ic" aria-hidden="true">${AA.icon(a.s.icon || "scroll")}</div>`}
+      <div class="stack" style="gap:6px"><p class="eyebrow">${t(a.boss ? "ep.advBoss" : "ep.adv")}</p><b class="h4">${esc(a.s.title)}</b>
+        <p class="small" style="margin:0">${a.boss && fd ? t("ep.advBossS", { n: esc(fd.name) }) : esc(a.s.sub || "")}</p>
+        <a class="btn sm ${a.boss ? "gold" : ""}" href="#/story/${a.s.id}">${AA.icon("scroll")} ${t(started ? "ep.advResume" : "ep.advGo")}</a></div></section>`;
+  };
+  if (V.home) {
+    const r0 = V.home.render;
+    V.home.render = function (el, args) {
+      const out = r0.call(this, el, args);
+      try { if (!u.$("#epadv", el)) { const a = nextAdv(); if (a) { const anchor = u.$(".tu-next", el) || u.$(".five-cta", el) || u.$(".today", el); if (anchor) anchor.insertAdjacentHTML("afterend", advCard(a)); } } } catch (e) { console.error(e); }
+      return out;
+    };
+  }
+  if (V.jeux) {
+    const r0 = V.jeux.render;
+    V.jeux.render = function (el, args) {
+      const out = r0.call(this, el, args);
+      try {
+        if (!u.$(".ep-advs", el)) {
+          const wid = C.worldById[args && args[0]] && !C.worldById[args[0]].soon ? args[0] : G.goalWorld(), list = C.stories.filter(s => s.world === wid).sort((a, b) => (/^boss-/.test(b.id)) - (/^boss-/.test(a.id)));
+          if (list.length) {
+            const html = `<div class="section-title ep-advs"><h3>${t("ep.advsT")}</h3><a class="small" href="#/story">${t("ep.advsAll")}</a></div>
+              <section class="gm-minis ep-advlist">${list.map(s => { const r = sRec(s.id), boss = /^boss-/.test(s.id);
+                return `<a class="gm-tile ${boss ? "ep-qtile" : ""}" href="#/story/${s.id}"><span class="medal">${AA.icon(boss ? "swords" : s.icon || "scroll")}</span><span class="grow"><b>${esc(s.title)}</b><span class="small muted">${boss ? t("ep.questOf") : esc(s.role || "")}</span><span class="xs">${r.done ? "✓ " + t("ep.done") : r.steps ? t("ep.inProgress") : t("ep.notYet")}</span></span></a>`; }).join("")}</section>`;
+            const anchor = u.$(".gm-final", el); if (anchor) anchor.insertAdjacentHTML("afterend", html); else { const m = u.$(".gm-minis", el); if (m) m.insertAdjacentHTML("beforebegin", html); }
+          }
+        }
+      } catch (e) { console.error(e); }
+      return out;
+    };
+  }
+  if (V.cursus) {
+    const r0 = V.cursus.render;
+    V.cursus.render = function (el, args) {
+      const out = r0.call(this, el, args);
+      try {
+        const add = () => { const d = u.$(".cur-detail", el); if (!d || u.$(".ep-curadv", d)) return; const id = (u.$(".rd-node.on", el) || {}).dataset; const cid = id && id.id, c = cid && C.cursusById[cid];
+          const n = c && c.world ? C.stories.filter(s => s.world === c.world).length : 0;
+          if (n) { const acts = u.$(".cd-acts", d); const html = `<a class="btn ghost sm ep-curadv" href="#/jeux/${c.world}">${AA.icon("scroll")} ${t("ep.curAdv", { n })}</a>`; if (acts) acts.insertAdjacentHTML("beforeend", html); else d.insertAdjacentHTML("beforeend", `<div class="row">${html}</div>`); } };
+        add(); if (!el._epCur) { el._epCur = new MutationObserver(() => { if (AA.router.name === "cursus") add(); }); el._epCur.observe(el, { childList: true, subtree: true }); }
+      } catch (e) { console.error(e); }
+      return out;
+    };
   }
 })();
 
@@ -13071,6 +13380,17 @@ AA.i18n.add("fr", {
 /* 2.9.1 : vrai ou faux dans les séries */
 AA.i18n.add("fr", {
   "vf2.lead": "Vrai ou faux ?", "vf2.true": "Vrai.", "vf2.false": "Faux : la bonne réponse était « {a} »."
+});
+
+/* 2.10 : combats et aventures épiques */
+AA.i18n.add("fr", {
+  "ep.kickBoss": "Boss de niveau", "ep.kickMini": "Gardien du thème", "ep.crit": "COUP CRITIQUE !",
+  "ep.win": "VICTOIRE", "ep.winS": "{n} s’incline devant ton savoir.", "ep.ko": "K.O.", "ep.koS": "Remonte, révise, et reviens plus fort.",
+  "ep.lockT": "Aventure obligatoire", "ep.lockS": "Pour affronter ce boss, vis d’abord l’aventure « {t} » : c’est elle qui te mène jusqu’à lui.", "ep.lockRead": "Il te reste aussi {n} cours à lire.",
+  "ep.chap": "Scène {n}", "ep.questTag": "Quête du boss · {n} t’attend au bout",
+  "ep.adv": "Ton aventure", "ep.advBoss": "Quête du boss", "ep.advBossS": "Vis cette aventure pour pouvoir défier {n}.", "ep.advGo": "Partir à l’aventure", "ep.advResume": "Reprendre l’aventure",
+  "ep.advsT": "Aventures du niveau", "ep.advsAll": "Toutes les aventures", "ep.questOf": "Quête obligatoire avant le boss", "ep.done": "terminée", "ep.inProgress": "en cours", "ep.notYet": "à vivre",
+  "ep.curAdv": "{n} aventure(s) de ce niveau"
 });
 
 /* content/fr/worlds.js */

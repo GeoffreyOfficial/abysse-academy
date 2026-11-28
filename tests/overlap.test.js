@@ -19,7 +19,7 @@ const server = http.createServer((req, res) => {
 });
 const FAST = process.argv[2] === "rapide";
 const SCREENS = ["home", "map/n2", "map/n4", "train", "flash", "lab", "sim", "pc", "scen", "scen/s1", "calc", "tables", "profile", "club", "settings", "cours", "cours/n3", "progres", "progres/n3", "moniteur", "search/palier", "jeux", "jeux/n2", "aquarium", "quests", "story", "story/n1-mer", "story/rifap-port", "diagnostic", "boss/n2", "boss/n1", "gardien/pression", "paires", "vraifaux", "glossary", "mistakes", "backup", "parcours", "cursus", "cursus/e2", "carnet", "examen", "examen/n3/quick", "fiches/n2", "brief", "brief/gp", "brief/auto", "succ", "succ/go", "reports", "sources", "valider", "procs"];
-const CASES = [[320, 1.4, "minuit"], [390, 1, "nacre"], [1366, 1, "abysse"]];
+const CASES = [[280, 1, "abysse"], [320, 1.4, "minuit"], [390, 1, "nacre"], [1366, 1, "abysse"]];
 
 function scan() {
   const SKIP = ".sticky-cta, #scene, #bubbles, .diagram, svg, .map-scene, .aquarium, .aq-tank, .tank, .boss-art, .decor, #diver, .toast, .toasts, .sheet-wrap, [aria-hidden='true'], .sr-only, .visually-hidden, .reveal:not(.in), .face.back, .rip, .flip";
@@ -43,6 +43,25 @@ function scan() {
   return out;
 }
 
+/* 2.10 : texte qui déborde de son propre bouton, pastille ou étiquette
+   (ex. « Calculatrice » coincé dans une colonne trop étroite). */
+function spill() {
+  const SKIP = "#scene, #bubbles, .diagram, svg, .map-scene, .aquarium, .aq-tank, .tank, .decor, .toast, .toasts, [aria-hidden='true'], .sr-only, .visually-hidden, .face.back, .ep-cine, .ep-res, .ep-chap";
+  const SEL = "button, .btn, .chip, .pill, .badge, .tag, .kbd, .eyebrow, .tab, a.quick, .seg > *, .medal";
+  const out = [];
+  document.querySelectorAll("#view " + SEL.split(", ").join(", #view ") + ", .tabbar .tab").forEach(e => {
+    if (out.length >= 4 || e.closest(SKIP)) return;
+    const cs = getComputedStyle(e); if (cs.display === "none" || cs.visibility === "hidden" || cs.textOverflow === "ellipsis") return;
+    if (e.checkVisibility && !e.checkVisibility({ opacityProperty: true, visibilityProperty: true })) return;
+    const r = e.getBoundingClientRect(); if (r.width < 4 || r.height < 4 || !e.textContent.trim()) return;
+    const rg = document.createRange(); rg.selectNodeContents(e); const t = rg.getBoundingClientRect();
+    const over = Math.max(r.left - t.left, t.right - r.right);
+    /* Le cadre du texte suffit : il reste mesuré même quand le bouton coupe ce qui dépasse. */
+    if (over > 2) out.push("texte qui déborde : " + e.tagName.toLowerCase() + [...e.classList].slice(0, 2).map(c => "." + c).join("") + " « " + e.textContent.trim().slice(0, 24) + " »");
+  });
+  return out;
+}
+
 (async () => {
   await new Promise(r => server.listen(PORT, r));
   const b = await chromium.launch(); const bad = [], errs = []; let n = 0;
@@ -62,9 +81,22 @@ function scan() {
       for (const r of routes) {
         await p.evaluate(r => (location.hash = "#/" + r), r); await p.waitForTimeout(r.startsWith("map") ? 450 : 120);
         await p.waitForFunction(() => !document.querySelector(".view-enter"), null, { timeout: 1500 }).catch(() => {}); n++;
-        const out = await p.evaluate(scan);
+        let sp = await p.evaluate(spill); if (sp.length) { await p.waitForTimeout(700); sp = await p.evaluate(spill); } /* ignore une animation en cours */
+        const out = (await p.evaluate(scan)).concat(sp);
         if (r === "home" && !(await p.$(".run-card"))) bad.push("accueil : la carte « À reprendre » n’apparaît pas");
         out.forEach(x => bad.push(`${r} à ${w}px (${theme}, texte ×${ts}) : ${x}`));
+      }
+      /* Écrans de jeu : question de calcul (bouton Calculatrice), combat de boss, gardien. */
+      const PLAYS = {
+        "quiz calcul": () => { const Q = AA.quiz, qs = AA.content.questions.filter(q => Q.needsCalc && Q.needsCalc(q)).slice(0, 6); Q.start("module", qs, { world: "n2", title: "Calculs" }); },
+        "boss": () => { location.hash = "#/boss/n2"; setTimeout(() => { const g = document.querySelector("#btGo"); g && g.click(); }, 300); },
+        "gardien": () => { location.hash = "#/gardien/pression"; setTimeout(() => { const g = document.querySelector("#btGo"); g && g.click(); }, 300); }
+      };
+      for (const [k, fn] of Object.entries(PLAYS)) {
+        await p.evaluate(() => (location.hash = "#/home")); await p.waitForTimeout(200);
+        await p.evaluate(fn); await p.waitForTimeout(3400); n++;
+        const out = (await p.evaluate(scan)).concat(await p.evaluate(spill));
+        out.forEach(x => bad.push(`${k} à ${w}px (${theme}, texte ×${ts}) : ${x}`));
       }
       await ctx.close();
     }

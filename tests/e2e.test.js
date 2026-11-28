@@ -544,6 +544,36 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(r.neg && !r.exVf, "vrai ou faux : jamais sur une question négative ni en brevet blanc");
       await ctx.close(); }
 
+    console.log("• Combats et aventures épiques (2.10)");
+    { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p);
+      await p.evaluate(() => { AA.S.unlockAll = false; delete AA.S.story["boss-n2"]; AA.store.save(true); });
+      await p.goto(URL + "#/home"); await p.waitForTimeout(400);
+      ok(!!(await p.$("#epadv a[href='#/story/boss-n2']")), "accueil : l’aventure du boss est proposée");
+      await p.goto(URL + "#/boss/n2"); await p.waitForTimeout(400);
+      ok(await p.evaluate(() => !AA.game.bossOpen("n2") && !!document.querySelector(".ep-lock") && !document.querySelector("#btGo") && !!document.querySelector("a[href='#/story/boss-n2']")), "boss verrouillé tant que son aventure n’est pas vécue");
+      await p.goto(URL + "#/story/boss-n2"); await p.waitForTimeout(400);
+      ok(!!(await p.$(".ep-chap")) && !!(await p.$(".ep-lurk")), "aventure : chapitre annoncé et boss qui rôde");
+      await p.goto(URL + "#/jeux/n2"); await p.waitForTimeout(400);
+      ok(!!(await p.$(".ep-advs")) && !!(await p.$(".ep-advlist a[href^='#/story/']")), "jeux : les aventures sont listées");
+      await p.evaluate(() => { AA.S.story["boss-n2"] = { done: AA.u.today(), node: "q1" }; AA.store.save(true); });
+      await p.goto(URL + "#/boss/n2"); await p.waitForTimeout(400);
+      ok(await p.evaluate(() => AA.game.bossOpen("n2") && !document.querySelector(".ep-lock")), "boss ouvert une fois l’aventure terminée");
+      await p.click("#btGo"); await p.waitForTimeout(500);
+      ok(!!(await p.$(".ep-cine")) && !!(await p.$(".ep-hp")), "combat : entrée du boss et barre de vie");
+      const wrong = () => p.evaluate(() => { const B = AA.games.battle(); if (!B) return false; const q = AA.games.qs()[B.i]; const x = [...document.querySelectorAll(".bt-c")].find(e => +e.dataset.ci !== q.a); x && x.click(); return !!x; });
+      const right = () => p.evaluate(() => { const B = AA.games.battle(); if (!B) return false; const q = AA.games.qs()[B.i]; const x = [...document.querySelectorAll(".bt-c")].find(e => +e.dataset.ci === q.a); x && x.click(); return !!x; });
+      await wrong(); await p.waitForTimeout(300);
+      ok(!!(await p.$(".ep-atk")), "combat : le boss riposte avec une attaque nommée");
+      /* « Suivant » pressé avant l’impact : le coup compte. */
+      await p.click("#btNext"); await p.waitForTimeout(200); const hp0 = await p.evaluate(() => AA.games.battle().hp);
+      await right(); await p.waitForTimeout(80); await p.click("#btNext"); await p.waitForTimeout(150);
+      ok(await p.evaluate(h => AA.games.battle().hp === h - 1, hp0), "combat : un coup compte même si l’on passe vite à la suite");
+      for (let i = 0; i < 40 && !(await p.$(".bt-res")); i++) { if (await p.$("#btNext")) await p.click("#btNext"); await p.waitForTimeout(120); await right(); await p.waitForTimeout(520); }
+      ok(!!(await p.$(".bt-res.won")) && !!(await p.$(".ep-res.win")), "combat : victoire mise en scène");
+      await p.evaluate(() => { AA.S.unlockAll = true; AA.store.save(true); }); await p.goto(URL + "#/gardien/pression"); await p.waitForTimeout(400); await p.click("#btGo"); await p.waitForTimeout(500);
+      ok(!!(await p.$(".ep-cine")) && !!(await p.$(".ep-hp")), "gardien : entrée et barre de vie");
+      await ctx.close(); }
+
     console.log("• Briefing, successives, défis, club (1.9)");
     { const { ctx, p } = await newPage(b, 390, 844); await p.goto(URL); await seed(p); await p.reload(); await ready(p); await p.waitForTimeout(200);
       ok(await p.evaluate(() => AA.content.computer.length >= 19 && AA.content.qById["pc-" + (AA.content.computer.length - 1)]), "mode ordinateur : nouveaux cas ajoutés à la fin");
@@ -781,7 +811,9 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
 
     console.log("• Sauvegardes");
     { const { ctx, p } = await newPage(b, 390, 844);
-      await p.goto(URL); await p.evaluate(() => { localStorage.clear(); localStorage.setItem("ardoise-n2-v1", JSON.stringify({ xp: 321, pseudo: "Ancien", themes: { pression: { best: 90, tries: 1 } }, stats: {}, days: [] })); });
+      /* Appareil qui n’a connu que l’Ardoise : on attend la fin du premier lancement puis on efface aussi la copie IndexedDB. */
+      await p.goto(URL); await ready(p); await p.waitForTimeout(300); await p.evaluate(() => new Promise(r => { const d = indexedDB.deleteDatabase("abysse-academy"); d.onsuccess = d.onerror = d.onblocked = () => r(); setTimeout(r, 1500); }));
+      await p.evaluate(() => { localStorage.clear(); localStorage.setItem("ardoise-n2-v1", JSON.stringify({ xp: 321, pseudo: "Ancien", themes: { pression: { best: 90, tries: 1 } }, stats: {}, days: [] })); });
       await p.reload(); await ready(p); await p.waitForTimeout(300);
       ok(await p.evaluate(() => AA.S.xp === 321 && AA.S.profile.name === "Ancien" && AA.S.schema === AA.store.SCHEMA), "reprise d’une sauvegarde Ardoise N2");
       await p.evaluate(() => { localStorage.setItem("abysse-academy", JSON.stringify({ schema: 2, xp: 777, profile: { name: "V1", onboarded: true }, themes: {}, stats: {} })); });
