@@ -104,6 +104,9 @@
       if (!g.rest) { g.y += g.vy * dt; g.x += Math.sin(now / 400 + g.ph) * 8 * dt + (E.cur ? 6 * dt : 0); if (g.y >= floorY) { g.y = floorY; g.rest = now; } }
       else if (now - g.rest > 12000) { g.el.remove(); food.splice(i, 1); }
     }
+    /* 2.10.1 : repas terminé, chaque poisson qui a mangé repart rassasié (même s'il n'a eu qu'un ou deux granulés). */
+    if (food.length) E.hadFood = true;
+    else if (E.hadFood) { E.hadFood = false; fish.forEach(o => { if (o.ate > 0) { o.sat = now + rnd(15000, 25000); o.ate = 0; o.next = 0; } }); }
     fish.forEach(o => {
       const p = o.p;
       if (o.role === "fixed") { o.x = u.clamp(o.x, o.w / 2, W - o.w / 2); o.y = floorY - o.h * .35; return; }

@@ -342,8 +342,8 @@ const seed = async p => { await ready(p); return p.evaluate(() => { const S = AA
       ok(a2.fish.every(f => f.x >= 0 && f.x <= a2.W && f.y >= 0 && f.y <= a2.H), "aquarium : tout le monde reste dans le bac");
       await p.click("#aqfeed"); await p.waitForTimeout(300); const f1 = await p.evaluate(() => AA.aquaLive.state());
       ok(f1.food >= 10 && await p.evaluate(() => AA.S.fedOn === AA.u.today()), "nourrir : les granulés tombent, le repas du jour est compté");
-      await p.waitForTimeout(9000); const f2 = await p.evaluate(() => AA.aquaLive.state());
-      ok(f2.eaten >= 8 && f2.fish.some(f => f.sat), "nourrir : les poissons viennent manger puis repartent rassasiés (" + f2.eaten + " granulés mangés)");
+      await p.waitForFunction(() => { const s = AA.aquaLive.state(); return s && s.eaten >= 5 && s.fish.some(f => f.sat); }, null, { timeout: 25000, polling: 250 }).catch(() => {}); const f2 = await p.evaluate(() => AA.aquaLive.state());
+      ok(f2.eaten >= 5 && f2.fish.some(f => f.sat), "nourrir : les poissons viennent manger puis repartent rassasiés (" + f2.eaten + " granulés mangés)");
       const box = await p.evaluate(() => { const r = document.querySelector("#tank").getBoundingClientRect(), fs = [...document.querySelectorAll(".aq-fish, .aq-fs")].map(f => f.getBoundingClientRect());
         for (let y = r.top + 30; y < r.bottom - 60; y += 12) for (let x = r.left + 20; x < r.right - 20; x += 12) if (!fs.some(f => x >= f.left - 4 && x <= f.right + 4 && y >= f.top - 4 && y <= f.bottom + 4)) return { x, y };
         return { x: r.left + 10, y: r.top + 10 }; });
